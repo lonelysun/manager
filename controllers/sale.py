@@ -185,14 +185,7 @@ class born_manager_sale(http.Controller):
 
         request.cr.execute(sql)
 
-        # #Change in order to prevent sql injection
-        # if keyword == '':
-        #     request.cr.execute(sql)
-        # else:
-        #     # x = 1
-        #     request.cr.execute("select * from res_partner where id=%s",(x,))
-        #     request.cr.execute(sql, (keyword,keyword,keyword))
-        #     # request.cr.execute(sql)
+
 
 
         partners = request.cr.dictfetchall()
@@ -375,6 +368,7 @@ class born_manager_sale(http.Controller):
                 'track_time':track.track_time or '',
                 'notes':track.notes or '',
                 'remark':track.remark or '',
+                'remark_time':track.write_date or '',
                 'employee_id':track.employee_id.name or '',
                 'result_name_string':result_name_string
             }
@@ -501,6 +495,8 @@ class born_manager_sale(http.Controller):
 
 
         vals['comment'] = post.get('comment','')
+
+        vals['is_company'] = True
 
 
         # 跟踪记录

@@ -55,19 +55,22 @@
             <li class="list-group-item" style="height:50px ">
                     <span class="" style="color:#999;">
                         <select ng-model="vm.partner.state_id" class="m-b" ng-change="vm.getArea()" style="border:0;background:0 0;width :30%"
-                                ng-options="state.id as state.name for state in vm.states" >
+                                ng-options="state.id as state.name for state in vm.states"
+                                ng-disabled="vm.notNewPartner">
                             <option value="">省</option>
                         </select>
                     </span>
                     <span class="" style="color:#999;">
                         <select ng-model="vm.partner.area_id" class=" m-b" ng-change="vm.getSubdivide()" style="border:0;background:0 0;width :30%"
-                                ng-options="area.id as area.name for area in vm.areas">
+                                ng-options="area.id as area.name for area in vm.areas"
+                                ng-disabled="vm.notNewPartner">
                             <option value="">市</option>
                         </select>
                     </span>
                     <span class="" style="color:#999;">
                         <select ng-model="vm.partner.subdivide_id" class=" m-b" ng-change="vm.getBusiness()" style="width :80px;border:0;background:0 0;width :30%"
-                                ng-options="subdivide.id as subdivide.name for subdivide in vm.subdivides">
+                                ng-options="subdivide.id as subdivide.name for subdivide in vm.subdivides"
+                                ng-disabled="vm.notNewPartner">
                             <option value="">区</option>
                         </select>
                     </span>
@@ -81,11 +84,12 @@
 
                     <select ng-model="vm.partner.business_id" class=" m-b"
                             style="border:0;background:0 0;width :80px"
-                            ng-options="business.id as business.name for business in vm.businesses">
+                            ng-options="business.id as business.name for business in vm.businesses"
+                            ng-disabled="vm.notNewPartner">
                         <option value="">请选择</option>
                     </select>
                 </span>
-                商圈<i class="fa fa-asterisk" style="font-size: 50%;color: rgba(255, 0, 0, 0.62);vertical-align: middle;margin-left:4px"></i>
+                商圈<i ng-hide="vm.notNewPartner" class="fa fa-asterisk" style="font-size: 50%;color: rgba(255, 0, 0, 0.62);vertical-align: middle;margin-left:4px"></i>
             </li>
 
 
@@ -263,7 +267,7 @@
 
                 <div class="media-body">
                     <div >
-                        <div class="list-group-item" style="padding-left: 0">
+                        <div class="list-group-item" style="padding-left: 0;padding-top: 0">
                         <div class="text-balck" style="font-size: 16px;">
                         {{vm.partner.name }}
                         </div>
@@ -290,13 +294,13 @@
                         </div>
 
 
-                        <div class="list-group-item" style="padding-left: 0">
+                        <div ng-show="track.remark" class="list-group-item" style="padding-left: 0;padding-bottom: 0">
                             <div class="clear" style="color:#999;">
                             主管批注：{{track.remark}}
                             </div>
 
                             <div class="clear" style="color:#999;">
-                            批注时间：
+                            批注时间：{{track.remark_time}}
                             </div>
                         </div>
 

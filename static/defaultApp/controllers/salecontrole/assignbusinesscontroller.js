@@ -59,6 +59,7 @@
             getArea();
         }
 
+        //获取用户掌管分区信息
         function getArea() {
         	
         	if(vm.busy)return;

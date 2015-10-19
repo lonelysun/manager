@@ -130,6 +130,9 @@ class born_salermanager(http.Controller):
         region_obj = request.registry.get('res.country.state.area.subdivide')
         partner_obj = request.registry.get('res.partner')
         data=[]
+#        为了得到符合格式的数据结构，通过循环得到数据
+        print team.subdivide_ids
+        print team.business_ids
         for city in team.city_ids:
             reg_list=[]
             city_number=0
@@ -140,14 +143,13 @@ class born_salermanager(http.Controller):
                     for business in team.business_ids:
                         if(business.area_id.id==region.id):
                             bus_partners = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','=',business.id),('employee_id','=',False)], context=request.context)
-                            if(len(bus_partners)!=0):
-                                bus_val = {
-                                           'businessid' : business.id,
-                                           'business' : business.name,
-                                           'number':len(bus_partners)
-                                }
-                                region_number = region_number+len(bus_partners)
-                                bus_list.append(bus_val)
+                            bus_val = {
+                                        'businessid' : business.id,
+                                        'business' : business.name,
+                                        'number':len(bus_partners)
+                            }
+                            region_number = region_number+len(bus_partners)
+                            bus_list.append(bus_val)
                     if(bus_list==[]):
                         business_ids = business_obj.search(request.cr, SUPERUSER_ID,[('area_id','=',region.id)], context=request.context)
                         businesses = business_obj.browse(request.cr, SUPERUSER_ID, business_ids, context=request.context)
@@ -274,13 +276,13 @@ class born_salermanager(http.Controller):
             country_ids.add(subdivide.country_id.id)
         for business in team.business_ids:
             b_ids.add(business.id)
-            area_ids.add(business.area_id)
+            area_ids.add(business.area_id.id)
         all_cityids = [val for val in c_ids.difference(country_ids)]
         exits_ids = region_obj.search(request.cr, SUPERUSER_ID,[('country_id','in',all_cityids)], context=request.context)
         s_ids = s_ids | set(exits_ids)
-        all_cityids = [val for val in s_ids.difference(area_ids)]
-        exits_ids = business_obj.search(request.cr, SUPERUSER_ID,[('area_id','in',all_cityids)], context=request.context)
-        b_ids = b_ids | set(exits_ids)
+        all_business = [val for val in s_ids.difference(area_ids)]
+        exits_business = business_obj.search(request.cr, SUPERUSER_ID,[('area_id','in',all_business)], context=request.context)
+        b_ids = b_ids | set(exits_business)
         businesses_ids = [id for id in b_ids]
 
         request.session.businessids = businesses_ids

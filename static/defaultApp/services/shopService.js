@@ -132,12 +132,13 @@
 
 
 		  //获取Partner列表
-        factory.getPartners = function (pageIndex,keyword) {
+        factory.getPartners = function (pageIndex,keyword,stateFilter) {
 
             return $http.get(serviceBase + 'partners', {
                 params : {
                     index:pageIndex,
-                    keyword:keyword
+                    keyword:keyword,
+                    statefilter:stateFilter
                 }
                 }).then(function(results) {
                     return results.data;

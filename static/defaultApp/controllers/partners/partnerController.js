@@ -45,10 +45,6 @@
 
             dataService.getPartners(vm.partners.length,vm.keyword,vm.stateFilter)
             .then(function (data) {
-
-                    console.info('---get All partners---');
-                    console.info(data);
-
                     vm.counts = data;
                 for (var i = 0; i < data['partner_list'].length; i++) {
                     vm.partners.push(data['partner_list'][i]);

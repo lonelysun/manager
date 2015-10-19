@@ -34,7 +34,7 @@
 
             <ul class="list-group">
 
-                <li ng-repeat="partner in vm.partners | filter : {'state':vm.stateFilter }" class="list-group-item" ng-style="{'background-color':partner.bgcolor}">
+                <li ng-repeat="partner in vm.partners" class="list-group-item" ng-style="{'background-color':partner.bgcolor}">
                     <a ng-href="{{partner.href}}" >
                         <div class="media-body" >
                             <div ng-class="{'text-black' : partner.my_customer =='yes'}">
@@ -70,9 +70,9 @@
 
 
 </div>
-<div style="height:60px; padding-bottom: 66px;line-height: 60px;" ng-show="vm.busy" class="text-center" >正在加载...</div>
+<div style="height:126px; padding-bottom: 126px; line-height: 126px;"  ng-show="vm.busy" class="text-center" >正在加载...</div>
 
-<div ng-show="vm.focus" class="settings" style="width:100%;background-color:#f0f3f4;bottom: 0px;">
+<div  class="settings" style="width:100%;background-color:#f0f3f4;bottom: 0px;">
     <p style="width:80%;margin:0 auto;padding-top: 10px;padding-bottom: 10px;">
         <a  href="#/partners/newpartner" class="btn btn-info btn-lg btn-block" ><i class="icon-plus" style="padding-right:10px "></i>新建商户</a>
       </p>

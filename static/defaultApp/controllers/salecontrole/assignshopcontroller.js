@@ -61,6 +61,7 @@
             
         }
 
+        //获取用户掌管分区信息
         vm.getShop = function(){
         	
         	if(vm.busy)return;

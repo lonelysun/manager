@@ -29,6 +29,7 @@
             .then(function (data) {
             vm.partner = data;
 
+
                     //初始化省市县
                     if (vm.partner['state_id']){
                         vm.getArea();
@@ -42,7 +43,10 @@
                     }
 
 
+            if(partnerId != 0){
+                vm.notNewPartner = true;
 
+            }
 
 
             $timeout(function () {
