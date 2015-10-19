@@ -1,0 +1,57 @@
+<div class="bg-auto ">
+
+    <div class="panel panel-default  no-border" style="color:#000;border: 0px;">
+        <div class="panel-heading b-t" style="color: #999">
+           <span ng-hide="vm.contact.id">添加</span>联系人
+        </div>
+
+
+        <ul class="list-group no-radius no-bg">
+
+
+            <li class="list-group-item">
+                <span class="pull-right" style="color:#999;">
+                    <input type="text" class="ng-scope ng-binding text-right editable editable-click no-border" data-ng-model="vm.contact.name">
+                    <i class="fa fa-fw fa-angle-right text"></i>
+                </span>
+                姓名
+            </li>
+
+            <li class="list-group-item">
+                <span class="pull-right" style="color:#999;">
+                    <input type="text" class="ng-scope ng-binding text-right editable editable-click no-border" data-ng-model="vm.contact.mobile">
+                    <i class="fa fa-fw fa-angle-right text"></i>
+                </span>
+                手机
+            </li>
+
+
+            <li class="list-group-item">
+                <span class="pull-right" style="color:#999;">
+                    <input type="text" class="ng-scope ng-binding text-right editable editable-click no-border" data-ng-model="vm.contact.function ">
+                    <i class="fa fa-fw fa-angle-right text"></i>
+                </span>
+                工作岗位
+            </li>
+
+            <li class="list-group-item">
+                <span class="pull-right" style="color:#999;">
+                    <input type="text" class="ng-scope ng-binding text-right editable editable-click no-border" data-ng-model="vm.contact.phone ">
+                    <i class="fa fa-fw fa-angle-right text"></i>
+                </span>
+                座机
+            </li>
+
+
+        </ul>
+
+    </div>
+
+
+
+</div>
+<div class="settings" style="width:100%;background-color:#f0f3f4;bottom: 0px;">
+    <p style="width:80%;margin:0 auto;padding-top: 10px;padding-bottom: 10px;">
+        <button type="submit" class="btn btn-info btn-lg btn-block" data-ng-click="vm.submitContact()"><i class="fa fa-check-square-o" style="padding-right:10px "></i>完成</button>
+    </p>
+</div>

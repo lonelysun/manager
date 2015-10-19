@@ -1,0 +1,25 @@
+<div class="show-hide-animation" >
+
+	<div class="panel panel-info no-border" style="margin-bottom: 0px;">
+            <ul class="list-group">
+            	<li ng-repeat="saler in vm.salers" class="list-group-item" style="">
+            		<a href="#/assignments/{{saler.id}}">
+            		<div>
+            			<span class="pull-right m-t-sm" ng-hide="saler.number==0" style="width: 82px;"><span class="pull-right"><small class="text-info">{{saler.number}}家商户<span class="text-muted"><i class="fa  fa-angle-right " style="padding-left: 5px;"></i></span></small></span></span>
+            			<span class="pull-right m-t-sm" ng-show="saler.number==0" style="width: 82px;"><span class="pull-right"><small class="text-muted">去分配<i class="fa  fa-angle-right " style="padding-left: 5px;"></i></small></span></span>
+	            		
+	            		<div class="media-body">
+                		<div class="text-black">{{saler.name}}</div>
+                		<small class="text-muted">电话：{{saler.tel}}</small>
+              			</div>
+            		</div>
+            		</a>
+            	</li>
+            </ul>
+        </div>   
+
+</div>    
+    
+</div>
+<div style="height:60px; line-height: 60px;" ng-show="vm.busy" class="text-center" >正在加载...</div>
+

@@ -1,0 +1,18 @@
+﻿<div class="show-hide-animation" >
+    <div class="panel hbox  no-border" style="border-bottom: 0px;margin-bottom: 8px;" >
+    <div class="panel-heading  b-b " style="background-color: #f5f5f5">
+        <span class=" pull-right text-info ">共计：{{ vm.users.length }}</span> 用户列表
+        </div>
+        <div class="list-group ">
+            <a data-ng-repeat="user in vm.users"  class="list-group-item">
+                {{user.name}}
+                <span class="pull-right">{{ user.login }}</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+
+
+

@@ -1,0 +1,119 @@
+﻿@charset "utf-8";
+
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td {
+  margin: 0;
+  padding: 0;
+}
+
+.card-box{width:100px;border-top:solid 1px #dedede;border-left:solid 1px #dedede;border-right:solid 1px #dedede;border-bottom:solid 1px #dedede;height:25px;}
+.card-box .btn {padding:2px 12px;;border:0px;box-shadow: 0 0px 0px rgba(90, 90, 90, 0.1);}
+.card-box .qty {height:25px;text-align: center;display: block;border:0px;border-left:solid 1px #dedede;border-right:solid 1px #dedede;}
+
+.list-group-item:hover, li.list-group-item:focus, li.list-group-item.hover {background-color: #f6f8f8;}
+.footermenu {position: fixed;bottom: 0;left: 0;right: 0;z-index: 900;}
+.footermenu ul {
+	border-top: 1px solid #f5f5f5;
+	position: fixed;
+	z-index: 900;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+	display: block;
+	width: 100%;
+	background: #FFFFFF;
+	height: 48px;
+	display: -webkit-box;
+	display: box;
+	-webkit-box-orient: horizontal;
+	box-shadow: 0 1px 0 #FFFFFF inset;
+}
+.footermenu ul li a img {
+	width: 24px;
+	height: 24px;
+}
+.footermenu ul li {
+	float: left;
+	width: 20%;
+	height: 100%;
+	position: static!important;
+	margin: 0;
+	border-radius: 0!important;
+	box-sizing: border-box;
+	box-shadow: none!important;
+	background: none;
+	list-style: none;
+}
+.footermenu ul li a {
+	position: relative;
+	height: 48px;
+	color: #b0b0b0;
+	font-size: 20px;
+	line-height: 20px;
+	text-align: center;
+	display: block;
+	text-decoration: none;
+	padding-top: 4px;
+	position: relative;
+	
+}
+.footermenu ul li.active a {
+	border-bottom: 0;
+	color:#23b7e5;
+}
+.footermenu ul li a p {
+	position: absolute;
+	width: 100%;
+	bottom: 4px;
+	margin: 2px 0 0 0;
+	font-size: 12px;
+	display: block !important;
+	line-height: 18px;
+	text-align: center;
+}
+
+.footermenu ul li a .num {
+	font-size: 10px;
+	position: absolute;
+	z-index: 9;
+	left: 55%;
+	top: -5px;
+	background-color: #eb3634;
+	color: #fff;
+	font-family: Verdana;
+	font-weight: normal;
+	line-height: 10px;
+	padding: 2px 4px;
+	box-shadow: 0 0 0 1px #FFFFFF, 0 1px 5px 3px rgba(0, 0, 0, 0.25);
+	border-radius: 15px;
+}
+
+.c_order {
+display: block;
+position: fixed;
+width: 100%;
+z-index: 99;
+bottom: 47px;
+
+
+height:46px;
+}
+
+.checkout{
+padding: 3px 0;
+color: #FFFFFF;
+cursor: pointer;
+background: #5cb85c;
+line-height: 32px;
+height:46px;
+text-align: center; 
+font-size: 16px; 
+overflow: hidden;
+}
+
+
+.overlayContainer { display: none;}
+.overlayBackground { top:0px; left:0px; position:absolute; z-index:1000;height: 50px;width: 50px;opacity:0.1;}
+.overlayContent { position:absolute; line-height:60px; border-radius: 30px;  background:#dedede; opacity:0.3; height: 50px;width: 50px;z-index:1000;text-align:center;}
+
+

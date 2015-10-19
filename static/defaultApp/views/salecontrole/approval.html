@@ -1,0 +1,40 @@
+<div class="show-hide-animation"  style="">
+	<div style="padding-bottom:20px;padding-top:20px">
+	<li class="list-group-item no-bg" style="background-color: white;">
+		<div class="form-group">
+                  <label class="text-black">批注</label>
+                  <textarea class="form-control" placeholder="请输入内容..." data-ng-model="vm.track.remark" rows="3" style="border-bottom-width: 0px;border-left-width:0px;border-right-width: 0px;"></textarea>
+                </div>
+	</li>
+	</div>
+
+    <div class="panel  no-border">
+        <ul class="list-group">
+            <li class="list-group-item no-bg" style="background-color: white;">
+                    <div class="text-black">
+                	{{vm.track.name}}
+                    </div>
+                    <div>
+                    <small>销售负责人： {{vm.track.saler}}</small>
+                    </div>
+                    <div>
+					<small>拜访时间： {{vm.track.time}}</small> 
+					</div>     
+					<div>             
+					<small>拜访结果： {{vm.track.result}}</small>     
+					</div> 
+					<div>             
+					<small>备注： {{vm.track.notes}}</small>
+					</div>                   
+					<div>             
+					<i class="fa fa-map-marker" style="padding-right: 5px;"></i><small>{{vm.track.address}}</small>
+					</div>                   
+            </li>
+        </ul>
+    </div>
+</div>
+ <div class="settings" style="width:100%;background-color:#f0f3f4;bottom: 0px;">
+    <p style="width:80%;margin:0 auto;padding-top: 10px;padding-bottom: 10px;">
+        <button type="submit" class="btn btn-info btn-lg btn-block" data-ng-click="vm.approval()"><i class="fa fa-check-square-o"></i>批注</button>
+      </p>
+ </div>

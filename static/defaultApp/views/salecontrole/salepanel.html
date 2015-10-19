@@ -1,0 +1,85 @@
+<div class="show-hide-animation"  style="">
+    <div class="panel b-t" style="margin-bottom: 0px;">
+        <div class="hbox text-center b-b b-light text-sm">
+            <a href="#/teamshop" class="col padder-v text-muted b-r b-light">
+                <div>团队负责商户</div>
+                <div class="h3 text-info font-thin">{{ vm.panel.shop_number }}</div>
+            </a>
+            <a href="#/successshop" class="col padder-v text-muted b-r b-light">
+                <span>已安装商户</span>
+                <div class="h3 text-info font-thin">{{ vm.panel.shop_success}}</div>
+            </a>
+            <a href="#/waitshop" class="col padder-v text-muted ">
+                <span>待拜访商户</span>
+                <div class="h3 text-info font-thin">{{ vm.panel.shop_wait}}</div>
+            </a>
+        </div>
+        <div class="hbox text-center b-b text-sm">
+            <a href="#/tracklist" class="col padder-v text-muted b-r b-light">
+                <span>拜访中商户</span>
+                <div class="h3 text-info font-thin">{{ vm.panel.shop_visiting}}</div>
+            </a>
+            <a href="#/nosalershop" class="col padder-v text-muted b-r b-light">
+                <span>未分配商户</span>
+                <div class="h3 text-info font-thin">{{ vm.panel.shop_nosaler}}</div>
+            </a>
+            <a href="#/havesalershop" class="col padder-v text-muted">
+                <span>已分配商户</span>
+                <div class="h3 text-info font-thin">{{ vm.panel.shop_saler}}</div>
+            </a>
+        </div>
+        <div class="hbox text-center text-sm">
+            <a href="#/allsalers" class="col padder-v text-muted b-r b-light">
+                <span>团队人员</span>
+                <div class="h3 text-info font-thin">{{ vm.panel.team_number}}</div>
+            </a>
+          <a href="" class="col padder-v text-muted b-r b-light">
+
+          </a>
+          <a href="" class="col padder-v text-muted">
+
+          </a>
+        </div>
+    </div>
+ <div class="" style="width:100%;background-color:#f0f3f4;bottom: 0px;">
+    <p style="width:80%;margin:0 auto;padding-top: 10px;padding-bottom: 10px;">
+        <a href="#/assignments" class="btn btn-info btn-lg btn-block" ><i class="fa fa-check-square-o"></i>分配任务</a>
+      </p>
+ </div>
+
+    <div class="panel no-border" style="padding-bottom: 50px;">
+        <div class="panel-heading b-t b-b">
+           拜访列表
+            <span class="pull-right text-info">{{vm.panel.track_number}}个</span>
+        </div>
+        <ul class="list-group">
+            <li data-ng-repeat="track in vm.panel.tracks" class="list-group-item">
+                <a href="#/approval/{{track.trackid}}">
+                    <div class="text-black">
+                	<span class="pull-right label" style="text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+                	color: #fb7c79;background-color: #FFFFFF;border: 1px solid #fb7c79;">待批注</span>
+                	{{track.name}}
+                    </div>
+                    <div>
+                    <small>类型： {{track.ways}}</small>
+                    </div>
+                    <div>
+                    <small>销售负责人： {{track.saler}}</small>
+                    </div>
+                    <div>
+					<small>拜访时间： {{track.time}}</small> 
+					</div>     
+					<div>             
+					<small>拜访结果： {{track.result}}</small>     
+					</div> 
+					<div>             
+					<small>备注： {{track.notes}}</small>
+					</div>                   
+					<div>             
+					<i class="fa fa-map-marker" style="padding-right: 5px;"></i><small>{{track.address}}</small>
+					</div>                   
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

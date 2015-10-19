@@ -1,0 +1,25 @@
+ <div class="show-hide-animation"  style="margin-bottom: 0px;padding-bottom: 0px;">
+    <div id="infinite" infinite-scroll='vm.getServices()' infinite-scroll-parent="true"
+                    infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+        <div class="panel no-border" style="margin-bottom: 0px;">
+            <ul class="alt">
+                <li ng-repeat="message in vm.messages" class="list-group-item" style="padding:0px;border-bottom: 0px;">
+                    <div class="media" style="padding:10px 10px;">
+                            <div class="media-body">
+                                <div>
+                                    <span class="pull-right" style="">{{message.create_date}}</span>
+                                    <span style="color:#000;font-size:15px;display: block;overflow: hidden;text-overflow: ellipsis;">{{ message.title }}</span>
+                                </div>
+                                <span class="clear">
+                                    <small  style="color: #999;" data-ng-show="message.content != ''" class="text-muted" style="">{{message.content}}</small>
+                                </span>
+                            </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div style="height:60px; line-height: 60px;" ng-show="vm.busy" class="text-center" >正在加载...</div>
+
+

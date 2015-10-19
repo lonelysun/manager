@@ -1,0 +1,22 @@
+.view-frame.ng-enter, .view-frame.ng-leave {
+background: white;
+position: relative;
+}
+.view-frame.ng-enter {
+	-webkit-animation: 1s fade-in ;
+	-moz-animation:1s  fade-in ;
+	animation: 1s fade-in  ;
+	z-index: 100;
+}
+@keyframes fade-in {
+from { opacity: 0; }
+to { opacity: 1; }
+}
+@-moz-keyframes fade-in {
+from { opacity: 0; }
+to { opacity: 1; }
+}
+@-webkit-keyframes fade-in {
+from { opacity: 0; }
+to { opacity: 1; }
+}

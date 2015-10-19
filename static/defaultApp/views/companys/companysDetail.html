@@ -1,0 +1,140 @@
+<div class="bg-auto ">
+
+    <div class="panel-heading" style="color: #999">
+        <div class="h4  " style="color: #000;">
+            {{ vm.company.name  }}
+        </div>
+        <div class="text-muted" style="margin:2px 0px;" >
+            {{vm.company.address}}
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="hbox text-center b-t b-b b-light text-sm">
+            <a href="#shops/{{ vm.company.id }}" class="col padder-v text-muted b-r b-light">
+                <div>门店</div>
+                <div class="h3 text-info font-thin">{{ vm.company.shop_count }}</div>
+            </a>
+            <a href="#licenses/{{ vm.company.id }}" class="col padder-v text-muted">
+                <span>终端设备</span>
+                <div class="h3 text-info font-thin">{{ vm.company.license_count }}</div>
+            </a>
+        </div>
+
+        <div class="hbox text-center  b-b  b-light text-sm">
+            <a href="" class="col padder-v text-muted b-r b-light">
+                <span>会员/卡</span>
+                <div class="h3 text-info font-thin">{{ vm.company.member_count }}/{{ vm.company.card_count }}</div>
+            </a>
+            <a href="#users/{{ vm.company.id }}" class="col padder-v text-muted">
+                <span>用户</span>
+                <div class="h3 text-info font-thin">{{ vm.company.users_count }}</div>
+            </a>
+        </div>
+        <div class="hbox text-center text-sm">
+            <a href="" class="col padder-v text-muted b-r b-light">
+                <span>现金</span>
+                <div class="h3 text-info font-thin">{{ vm.company.cash_total }}</div>
+            </a>
+            <a href="" class="col padder-v text-muted">
+                <span>消耗</span>
+                <div class="h3 text-info font-thin">{{ vm.company.consume_total }}</div>
+            </a>
+        </div>
+
+    </div>
+
+    <div class="panel panel-default  no-border" style="color:#000;border: 0px;">
+        <div class="panel-heading b-t" style="color: #999">
+            <span class="pull-right text-success">{{ vm.company.state_display }}</span>
+           公司基本信息
+        </div>
+
+        <ul class="list-group no-radius">
+            <li class="list-group-item" >
+                <span class="pull-right  " style="color:#999;">
+                    {{ vm.company.brand }}
+                </span>
+                 品牌
+            </li>
+            <li class="list-group-item">
+                <span class="pull-right" style="color:#999;">{{ vm.company.contact_name }}</span>
+                 联系人
+            </li>
+            <li class="list-group-item">
+                <span class="pull-right" style="color:#999;">{{ vm.company.phone }}</span>
+                 联系电话
+            </li>
+            <li class="list-group-item">
+                <span class="pull-right" style="color:#999;">{{ vm.company.create_date }} </span>
+                创建时间
+            </li>
+            <li class="list-group-item">
+                <span class="pull-right" style="color:#999;">{{ vm.company.approve_date }} </span>
+                审核时间
+            </li>
+
+            <li class="list-group-item" >
+                <span class="pull-right  " style="color:#999;">
+                    {{ vm.company.industry_category }}
+                </span>
+                经营行业
+            </li>
+        </ul>
+    </div>
+
+    <div class="panel panel-default " style="border: 0px; border-bottom: 0px;">
+        <div class="panel-heading b-t">
+          <span class="text-lt" style="color: #999;font-size: 14px;">销售/技术服务</span>
+        </div>
+        <ul  class="list-group no-radius">
+            <li class="list-group-item">
+                <span class="pull-right" style="color:#999;">{{ vm.company.employee_name }}</span>
+                 联系人
+            </li>
+            <li class="list-group-item">
+                <span class="pull-right" style="color:#999;">{{ vm.company.employee_phone }}</span>
+                 联系电话
+            </li>
+        </ul>
+    </div>
+
+    <div class="panel panel-default" style="border: 0px; border-bottom: 0px;">
+        <div class="panel-heading b-t">
+          <span class="text-lt" style="color: #999;font-size: 14px;">运行信息</span>
+        </div>
+        <ul  class="list-group no-radius">
+            <li class="list-group-item">
+                <span class="pull-right" style="color:#999;">{{ vm.company.last_consume_date }}</span>
+                 最后使用日期
+            </li>
+            <li class="list-group-item">
+                <span class="pull-right" style="color:#999;">{{ vm.company.use_dates }}天 </span>
+                已运行
+            </li>
+        </ul>
+    </div>
+
+    <div class="panel panel-default" style="border: 0px; border-bottom: 0px;">
+        <div class="panel-heading b-t">
+          <span class="text-lt" style="color: #999;font-size: 14px;">操作信息
+          <span class="pull-right"> {{ vm.company.total_operate_count }}单</span>
+          </span>
+        </div>
+        <ul class="list-group no-radius">
+            <li data-ng-repeat="operate in vm.company.operate_data"    class="list-group-item">
+                <span class="pull-right" style="color:#999;">{{ operate.total }}/{{operate.cnt}}</span>
+                {{ operate.type_display }}
+            </li>
+        </ul>
+    </div>
+
+    <div class="btn-group btn-group-justified m-t">
+        <a data-ng-show="vm.company.state=='draft'" data-ng-click="vm.updateCompany()" class="btn btn-lg btn-info">审核并开通帐套</a>
+    </div>
+</div>
+
+
+
+
+

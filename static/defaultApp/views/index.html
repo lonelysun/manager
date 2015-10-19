@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html ng-app="managerApp" >
+<head>
+    <title>${user.name}</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+    <link href="/born_manager/static/src/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/born_manager/static/src/css/font.css" rel="stylesheet" />
+    <link href="/born_manager/static/src/css/app.min.css" rel="stylesheet" />
+    <link href="/born_manager/static/src/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/born_manager/static/src/css/styles.css" rel="stylesheet" />
+    <link href="/born_manager/static/src/css/simple-line-icons.css" rel="stylesheet" />
+    <link href="/born_manager/static/src/css/toaster.min.css" rel="stylesheet" />
+    <link href="/born_manager/static/src/css/animations.css" rel="stylesheet" />
+
+</head>
+<body ng-cloak>
+
+    <div class="app-content ng-scope m-n">
+        <div class=" fade-in-up ng-scope"   >
+            <div ng-view style="position:relative;" id="ng-view" ></div>
+            <toaster-container toaster-options="{'position-class': 'toast-top-center', 'close-button':false}"></toaster-container>
+        </div>
+    </div>
+    <div class="app-footer navbar navbar-fixed-bottom " ng-controller="NavbarController as vm" ng-show="vm.getDisplayModel()=='block'" >
+		<div class="row ng-scope" >
+		    <nav>
+		         <div class="footermenu" data-collapse="isCollapsed" >
+		             <ul menu-highlighter highlight-class-name="active"  >
+                         <li style="width: 33.3%">
+                            <a href="#/menus"><i class="icon-home"></i><p>工作台</p></a>
+                         </li>
+                         <li style="width: 33.3%">
+                            <a href="#/messages"><i class="icon-bell"></i><p>消息</p></a>
+                         </li>
+                         <li style="width: 33.3%">
+                            <a href="#/settings"><i class="icon-settings"></i><p>设置</p></a>
+                         </li>
+		             </ul>
+		         </div>
+		     </nav>
+		</div>
+	</div>
+
+    <div wc-overlay wc-overlay-delay="30">
+        <i class="fa fa-spin fa-refresh fa-2x"></i>
+    </div>
+
+   <script src="/born_manager/static/src/js/jquery.js"></script>
+
+    <!-- 3rd party libraries -->
+    <script src="/born_manager/static/src/js/angular.min.1.46.js"></script>
+    <script src="/born_manager/static/src/js/angular-file-upload.js"></script>
+    <script src="/born_manager/static/src/js/angular-locale_zh.js"></script>
+
+    <script src="/born_manager/static/src/js/angular-route1.46.min.js"></script>
+    <script src="/born_manager/static/src/js/angular-animate1.46.min.js"></script>
+    <script src="/born_manager/static/src/js/ui-bootstrap-tpls-0.13.4.min.js"></script>
+    <script src="/born_manager/static/src/js/tweenMax.min.js"></script>
+    <script src="/born_manager/static/src/js/breeze.min.js"></script>
+    <script src="/born_manager/static/src/js/breeze.angular.js"></script>
+    <script src="/born_manager/static/src/js/sanitize.js"></script>
+    <script src="/born_manager/static/src/js/angular-touch.js"></script>
+
+
+    <script src="/born_manager/static/src/js/ng-infinite-scroll.min.js"></script>
+
+
+    <script src="/born_manager/static/defaultApp/wc.directives/directives/wcOverlay.js"></script>
+    <script src="/born_manager/static/defaultApp/wc.directives/directives/menuHighlighter.js"></script>
+    <script src="/born_manager/static/defaultApp/app.js"></script>
+    <script src="/born_manager/static/defaultApp/animations/listAnimations.js"></script>
+    <script src="/born_manager/static/defaultApp/directives/wcUnique.js"></script>
+    <script src="/born_manager/static/defaultApp/services/config.js"></script>
+    <script src="/born_manager/static/defaultApp/services/authService.js"></script>
+    <script src="/born_manager/static/defaultApp/services/httpInterceptors.js"></script>
+    <script src="/born_manager/static/defaultApp/services/dataService.js"></script>
+    <script src="/born_manager/static/defaultApp/services/modalService.js"></script>
+    <script src="/born_manager/static/defaultApp/services/shopService.js"></script>
+
+    <script src="/born_manager/static/defaultApp/controllers/messages/messageController.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/setting/settingController.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/panel/panelController.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/companys/companyController.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/companys/shopController.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/companys/licenseController.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/companys/userController.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/panel/cashController.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/menu/menuController.js"></script>
+
+    <script src="/born_manager/static/defaultApp/controllers/salecontrole/salepanelcontroller.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/salecontrole/tracklistcontroller.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/salecontrole/teamshopcontroller.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/salecontrole/assignmentscontroller.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/salecontrole/assignbusinesscontroller.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/salecontrole/assignshopcontroller.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/salecontrole/approvalcontroller.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/salecontrole/allsalerscontroller.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/salecontrole/salerdetailcontroller.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/salecontrole/shopdetailcontroller.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/salecontrole/salershopcontroller.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/salecontrole/allchangecontroller.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/salecontrole/changeshopsalercontroller.js"></script>
+
+
+    <script src="/born_manager/static/defaultApp/controllers/partners/partnerController.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/partners/partnerDetailController.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/partners/contactController.js"></script>
+
+    <script src="/born_manager/static/defaultApp/controllers/navbarController.js"></script>
+
+  	<script src="/born_manager/static/src/js/toaster.min.js"></script>
+</body>
+</html>
+
+
