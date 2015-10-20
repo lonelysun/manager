@@ -499,6 +499,8 @@ class born_manager_sale(http.Controller):
         vals['is_company'] = True
 
 
+
+
         # 跟踪记录
         track_vals ={}
 
@@ -528,11 +530,13 @@ class born_manager_sale(http.Controller):
         # 保存数据
         # 判断是新建还是更新
         if partner_id != 0:
+
             partner_obj.write(request.cr, SUPERUSER_ID, partner_id, vals, context=request.context)
 
         else:
-
+            vals['employee_id'] = hr_id
             partner_id = partner_obj.create(request.cr, SUPERUSER_ID,vals,context=request.context)
+
         data = {'partner_id':partner_id}
 
         return json.dumps(data,sort_keys=True)
