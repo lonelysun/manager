@@ -92,7 +92,6 @@
                 商圈<i ng-hide="vm.notNewPartner" class="fa fa-asterisk" style="font-size: 50%;color: rgba(255, 0, 0, 0.62);vertical-align: middle;margin-left:4px"></i>
             </li>
 
-
             <li class="list-group-item" style="height:50px ">
                 <span  style="color:#999;width: 100%">
                     <input type="text" style="width: 100%" placeholder="请输入详细街道" class="ng-scope ng-binding text-left editable editable-click no-border" data-ng-model="vm.partner.street">
@@ -101,17 +100,13 @@
 
             </li>
 
-
-
-
-
             <div collapse="isCollapsed" >
                 <li class="list-group-item">
                     <span class="pull-right" style="color:#999;">
                         <select ng-model="vm.partner.partner_employee_id" class="m-b"
                                  style="border:0;background:0 0;width :80px"
                                 ng-options="partner_employee_id_options.id as partner_employee_id_options.name for partner_employee_id_options in vm.partner.partner_employee_id_options">
-                            <option value="">选择人数</option>
+                            <option value="">请选择</option>
                             <i class="fa fa-fw fa-angle-right text"></i>
                         </select>
                     </span>
@@ -123,7 +118,7 @@
                         <select ng-model="vm.partner.partner_size_id" class="m-b"
                                  style="border:0;background:0 0;width :80px"
                                 ng-options="partner_size_id_options.id as partner_size_id_options.name for partner_size_id_options in vm.partner.partner_size_id_options">
-                            <option value="">选择规模</option>
+                            <option value="">请选择</option>
                             <i class="fa fa-fw fa-angle-right text"></i>
                         </select>
                     </span>
@@ -135,7 +130,7 @@
                         <select ng-model="vm.partner.partner_environment_id" class=" m-b"
                                  style="border:0;background:0 0;width :80px"
                                 ng-options="partner_environment_id_options.id as partner_environment_id_options.name for partner_environment_id_options in vm.partner.partner_environment_id_options">
-                            <option value="">选择环境</option>
+                            <option value="">请选择</option>
                             <i class="fa fa-fw fa-angle-right text"></i>
                         </select>
                     </span>
@@ -147,7 +142,7 @@
                         <select ng-model="vm.partner.partner_room_id" class=" m-b"
                                  style="border:0;background:0 0;width :80px"
                                 ng-options="partner_room_id_options.id as partner_room_id_options.name for partner_room_id_options in vm.partner.partner_room_id_options">
-                            <option value="">选择房间数</option>
+                            <option value="">请选择</option>
                         </select>
                     </span>
                     房间数
@@ -222,7 +217,7 @@
                     <select ng-model="vm.partner.track_ways" class=" m-b"
                             style="border:0;background:0 0;width :80px"
                             ng-options="track_ways.value as track_ways.display for track_ways in vm.partner.track_ways_options">
-                        <option value="">选择类型</option>
+                        <option value="">请选择</option>
                     </select>
                     <i class="fa fa-fw fa-angle-right text"></i>
                 </span>
@@ -235,14 +230,13 @@
                             style="border:0;background:0 0;width :80px"
                             ng-options="result_ids_options.id as result_ids_options.name for result_ids_options in vm.partner.result_ids_options"
                             multiple="multiple">
-                        <option value="">选择结果</option>
+                        <option value="">请选择</option>
                     </select>
                     <i class="fa fa-fw fa-angle-right text"></i>
                 </span>
 
                 拜访结果
             </li>
-
 
             <li class="list-group-item" >
                 <textarea class="form-control" style="border: 0;" ng-model="vm.partner.track_notes" rows="6" placeholder="请输入拜访记录.."></textarea>
@@ -268,29 +262,29 @@
                 <div class="media-body">
                     <div >
                         <div class="list-group-item" style="padding-left: 0;padding-top: 0">
-                        <div class="text-balck" style="font-size: 16px;">
-                        {{vm.partner.name }}
-                        </div>
+                            <div class="text-balck" style="font-size: 16px;">
+                            {{vm.partner.name }}
+                            </div>
 
-                        <div class="clear" style="color:#999;">
-                        类型：{{track.ways}}
-                        </div>
+                            <div class="clear" style="color:#999;">
+                            类型：{{track.ways}}
+                            </div>
 
-                        <div class="clear" style="color:#999;">
-                        销售负责人：{{track.employee_id}}
-                        </div>
+                            <div class="clear" style="color:#999;">
+                            销售负责人：{{track.employee_id}}
+                            </div>
 
-                        <div class="clear" style="color:#999;">
-                        拜访时间：{{track.track_time}}
-                        </div>
+                            <div class="clear" style="color:#999;">
+                            拜访时间：{{track.track_time}}
+                            </div>
 
-                        <div class="clear" style="color:#999;">
-                        拜访结果：{{track.result_name_string}}
-                        </div>
+                            <div class="clear" style="color:#999;">
+                            拜访结果：{{track.result_name_string}}
+                            </div>
 
-                        <div class="clear" style="color:#999;">
-                        拜访情况：{{track.notes}}
-                        </div>
+                            <div class="clear" style="color:#999;">
+                            拜访情况：{{track.notes}}
+                            </div>
                         </div>
 
 

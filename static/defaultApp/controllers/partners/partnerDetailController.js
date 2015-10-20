@@ -37,7 +37,6 @@
                             vm.getSubdivide();
                             if(vm.partner['subdivide_id']){
                                 vm.getBusiness();
-
                             }
                         }
                     }
@@ -72,38 +71,43 @@
             }
 
 
-            if (vm.partner.state_id =='' || vm.partner.state_id ==null){
-                toaster.pop('warning', "系统提示", "请选择省！");
-                return;
-            }
-            if (vm.partner.area_id =='' || vm.partner.area_id ==null){
-                toaster.pop('warning', "系统提示", "请选择市！");
-                return;
-            }
-            if (vm.partner.subdivide_id =='' || vm.partner.subdivide_id ==null){
-                toaster.pop('warning', "系统提示", "请选择区！");
-                return;
-            }
-            if (vm.partner.business_id =='' || vm.partner.business_id ==null){
-                toaster.pop('warning', "系统提示", "请选择商圈！");
-                return;
+            //新建商户时，省市区商圈都必填
+            if(partnerId == 0) {
+                if (vm.partner.state_id == '' || vm.partner.state_id == null) {
+                    toaster.pop('warning', "系统提示", "请选择省！");
+                    return;
+                }
+                if (vm.partner.area_id == '' || vm.partner.area_id == null) {
+                    toaster.pop('warning', "系统提示", "请选择市！");
+                    return;
+                }
+                if (vm.partner.subdivide_id == '' || vm.partner.subdivide_id == null) {
+                    toaster.pop('warning', "系统提示", "请选择区！");
+                    return;
+                }
+                if (vm.partner.business_id == '' || vm.partner.business_id == null) {
+                    toaster.pop('warning', "系统提示", "请选择商圈！");
+                    return;
+                }
             }
 
 
-            //当点击提交时，如果有拜访记录，则拜访类型必填
-            if (((vm.partner.track_result_ids != '' && vm.partner.track_result_ids != null)  && (vm.partner.track_ways =='' || vm.partner.track_ways == null)) || ((vm.partner.track_notes != '' && vm.partner.track_notes != null)&& (vm.partner.track_ways =='' || vm.partner.track_ways == null))){
-            //if ((vm.partner.track_result_ids != ''  && vm.partner.track_ways == '' ) || (vm.partner.track_notes != '' && vm.partner.track_ways == '' )){
-
+            //修改：拜访类型设为必填
+            if(!((vm.partner.track_result_ids == ''|| vm.partner.track_result_ids == null)&&(vm.partner.track_ways ==''|| vm.partner.track_ways ==null)&& (vm.partner.track_notes==''|| vm.partner.track_notes==null ))
+                && (vm.partner.track_ways ==''|| vm.partner.track_ways ==null)   ){
                 toaster.pop('warning', "系统提示", "请选择拜访类型！");
 
                 return;
             }
 
-            //处理post数据
-            //多选数据处理
-            if(vm.partner.track_result_ids){
-                vm.partner.track_result_ids = JSON.stringify(vm.partner.track_result_ids);
-                }
+            //修改：拜访结果设为必填
+            if(!((vm.partner.track_result_ids == ''|| vm.partner.track_result_ids == null)&&(vm.partner.track_ways ==''|| vm.partner.track_ways ==null)&& (vm.partner.track_notes==''||vm.partner.track_notes==null ))
+                && (vm.partner.track_result_ids ==''|| vm.partner.track_result_ids ==null)   ){
+                toaster.pop('warning', "系统提示", "请选择拜访结果！");
+                return;
+            }
+
+
 
 
             //去掉不需要的post数据
