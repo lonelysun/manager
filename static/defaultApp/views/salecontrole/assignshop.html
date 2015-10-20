@@ -10,7 +10,7 @@
                     </span>
                 </div>
             </div>  
-    	<div class="checkbox list-group-item" style="margin-top: 0px;" ng-repeat="shop in vm.shops">
+    	<div class="checkbox list-group-item no-bg" style="background-color:white;margin-top: 0px;" ng-repeat="shop in vm.shops">
               <label class="i-checks pull-left" style="padding-top: 20px;">
                 <input type="checkbox" id={{shop.id}} name="{{shop.name}}" data-ng-checked="vm.isSelected(shop.id)" data-ng-click="vm.updateSelection($event,shop.id)" >
                 <i></i>

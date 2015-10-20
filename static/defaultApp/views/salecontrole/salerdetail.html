@@ -5,13 +5,13 @@
         </small>
      </div>
      <ul class="list-group">
-     	<li class="list-group-item">
+     	<li class="list-group-item no-bg" style="background-color:white">
 	            <span class="pull-right ng-binding"><small style="padding-right:20px">{{vm.salerdetail.name}}</small></span>
 		            <div class="text-black ng-binding">
 		            	姓名：
 		            </div>
 	    </li>
-     	<li class="list-group-item">
+     	<li class="list-group-item no-bg" style="background-color:white">
 	            <span class="pull-right ng-binding"><small style="padding-right:20px">{{vm.salerdetail.tel}}</small></span>
 		            <div class="text-black ng-binding">
 		            	电话：
@@ -25,7 +25,7 @@
         </small>
      </div>
             <ul class="list-group">
-            	<div ng-repeat="region in vm.salerdetail.region_list" class="list-group-item" style="">
+            	<div ng-repeat="region in vm.salerdetail.region_list" class="list-group-item no-bg" style="background-color:white">
 	            	<div>
 	            		<a  ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">
 	            			<span class="pull-right" ><span class="pull-right">{{region.number}}<i class="fa  icon-arrow-right " ng-class="{'icon-arrow-down': !isCollapsed, 'icon-arrow-right': isCollapsed}" style="padding-left: 5px;"></i></span></span>

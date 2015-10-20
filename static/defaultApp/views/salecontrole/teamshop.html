@@ -15,8 +15,10 @@
                 <a href="#/shopdetail/{{shop.id}}">
                     <div class="text-black">
                     <span class="pull-right">
-                	<span class="pull-right label" style="text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+                	<span ng-if="shop.state != '拜访中'" class="pull-right label" style="text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
                 	color: #fb7c79;background-color: #FFFFFF;border: 1px solid #fb7c79;">{{shop.state}}</span>
+                	<span ng-if="shop.state == '拜访中'" class="pull-right label" style="text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);color: #10abfa;background-color: #FFFFFF;border: 1px solid #10abfa;">拜访中</span>
+                	
                 	<span class="pull-left label" style="text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
                 	color: #10abfa;background-color: #FFFFFF;border: 1px solid #10abfa;margin-right: 5px;">拜访{{shop.number}}</span>
                     </span>

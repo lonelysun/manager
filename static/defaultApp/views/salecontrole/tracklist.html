@@ -34,7 +34,7 @@
                         <div class="panel-heading text-black" >
                           商户：{{account.name}}<span class="pull-right">{{account.number}}</span>
                         </div>
-                        <div  class="list-group-item no-bg " ng-repeat="track in account.track_list">
+                        <div  class="list-group-item no-bg" style="background-color:white" ng-repeat="track in account.track_list">
                              <div class=" no-border " style="color:#58666e">
                              <small>
                                  类型：<span ng-if="track.ways=='call'">电话</span>
@@ -69,14 +69,14 @@
                                  地址：{{track.address}}
                                  </small>
                             </div>
-                            <div ng-show="track.remark!=null" class="list-group-item no-bg" style="color:#58666e;border-left-width: 0px;border-right-width: 0px;border-bottom-width: 0px;padding-left: 0px;padding-top: 7px;padding-right: 0px;padding-bottom: 0px;top: auto;margin-bottom: 0px;margin-top: 7px;">
+                            <div ng-show="track.remark!=null" class="list-group-item no-bg" style="background-color:white;color:#58666e;border-left-width: 0px;border-right-width: 0px;border-bottom-width: 0px;padding-left: 0px;padding-top: 7px;padding-right: 0px;padding-bottom: 0px;top: auto;margin-bottom: 0px;margin-top: 7px;">
                             <small>                     
                                  批注：{{track.remark}}
                                  </small>
                             </div>
                             <div ng-show="track.remark!=null" class="no-bg" style="color:#58666e;">
                             <small>                     
-                                 批注时间：{{track.write_date}}
+                                 批注时间：{{track.write_date|limitTo:19}}
                                  </small>
                             </div>
                         </div>

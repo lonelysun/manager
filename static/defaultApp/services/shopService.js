@@ -235,7 +235,7 @@
             });
         };
         //按商圈分配任务
-        factory.assign = function (assign,id,datas) {
+        factory.assign = function (assign,id) {
             return $http.post(serviceBase + 'assign/'+id, assign).then(function (status) {
                 return status.data;
             });

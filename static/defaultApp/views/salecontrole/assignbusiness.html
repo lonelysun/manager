@@ -7,7 +7,7 @@
             		{{city.city}}
             	</small>
             	</div>
-            	<div ng-repeat="region in city.region_list" class="list-group-item" style="" ng-show="region.number!=0">
+            	<div ng-repeat="region in city.region_list" class="list-group-item no-bg" style="background-color:white" ng-show="region.number!=0">
 	            	<div>
 	            		<a  ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">
 	            			<span class="pull-right" ><span class="pull-right">{{region.number}}<span class="text-info"><i class="fa  icon-arrow-right " ng-class="{'icon-arrow-down': !isCollapsed, 'icon-arrow-right': isCollapsed}" style="padding-left: 5px;"></i></span></span></span>
@@ -23,7 +23,7 @@
 			                <input type="checkbox" id={{business.businessid}} name="{{business.business}}" data-ng-checked="vm.isSelected(business.businessid)" data-ng-click="vm.updateSelection($event,business.businessid)" >
 			                <i></i>
 			              </label>
-			              <a href="#/assignments/{{vm.salerid}}/{{business.businessid}}"><span class="pull-right"><span class="pull-right"">{{business.number}}<i class="fa fa-angle-right" style="padding-left: 5px;"></i></span></span>
+			              <a href="#/assignments/{{vm.salerid}}/{{business.businessid}}"><span class="pull-right">{{business.number}}<i class="fa fa-angle-right" style="padding-left: 5px;"></i></span>
 			                <div class="media-body" style="padding-left: 10px;">
 			                <div class="text-black">
 			                {{business.business}}
