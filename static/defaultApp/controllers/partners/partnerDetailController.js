@@ -29,7 +29,6 @@
             .then(function (data) {
             vm.partner = data;
 
-
                     //初始化省市县
                     if (vm.partner['state_id']){
                         vm.getArea();
@@ -107,6 +106,12 @@
                 return;
             }
 
+            //处理多选的数据
+
+
+            if(vm.partner.track_result_ids){
+                vm.partner.track_result_ids_json = JSON.stringify(vm.partner.track_result_ids);
+            }
 
 
 
@@ -123,7 +128,6 @@
             delete vm.partner.contact_data_list;
             delete vm.partner.track_data_list;
             delete vm.partner.state;
-
 
 
 

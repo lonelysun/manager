@@ -108,9 +108,7 @@ class born_salermanager(http.Controller):
         business_ids = json.loads(post.get('assign'))
         partner_obj = request.registry.get('res.partner')
         partner_ids = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','in',business_ids)], context=request.context)
-        partners = partner_obj.browse(request.cr, SUPERUSER_ID, partner_ids, context=request.context)
-        for partner in partners:
-            partner_obj.write(request.cr,SUPERUSER_ID,partner.id,{'employee_id':employee_id})
+        partner_obj.write(request.cr,SUPERUSER_ID,partner_ids,{'employee_id':employee_id})
         
         return json.dumps(True,sort_keys=True)
 
@@ -131,8 +129,6 @@ class born_salermanager(http.Controller):
         partner_obj = request.registry.get('res.partner')
         data=[]
 #        为了得到符合格式的数据结构，通过循环得到数据
-        print team.subdivide_ids
-        print team.business_ids
         for city in team.city_ids:
             reg_list=[]
             city_number=0
@@ -244,9 +240,7 @@ class born_salermanager(http.Controller):
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
         partner_ids = json.loads(post.get('shop'))
         partner_obj = request.registry.get('res.partner')
-        partners = partner_obj.browse(request.cr, SUPERUSER_ID, partner_ids, context=request.context)
-        for partner in partners:
-            partner_obj.write(request.cr,SUPERUSER_ID,partner.id,{'employee_id':employee_id})
+        partner_obj.write(request.cr,SUPERUSER_ID,partner_ids,{'employee_id':employee_id})
         
         return json.dumps(True,sort_keys=True)
         

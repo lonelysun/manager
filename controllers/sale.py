@@ -508,12 +508,11 @@ class born_manager_sale(http.Controller):
             track_vals['ways'] = post.get('track_ways')
             track_vals['notes'] = post.get('track_notes')
 
-            track_vals['result_ids'] = post.get('track_result_ids')
 
             track_vals['employee_id'] = hr_id
 
-            if post.get('track_result_ids'):
-                result_ids = json.loads(post.get('track_result_ids'))
+            if post.get('track_result_ids_json'):
+                result_ids = json.loads(post.get('track_result_ids_json'))
                 result_ids_list = []
                 for each in result_ids:
                     result_ids_list.append((4,each))
