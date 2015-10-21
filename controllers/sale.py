@@ -170,7 +170,6 @@ class born_manager_sale(http.Controller):
             LEFT JOIN res_country_state tb2 ON tb2.id = tb1.state_id
             LEFT JOIN res_country_state_area tb5 ON tb5.id = tb1.area_id
             LEFT JOIN res_country_state_area_subdivide tb6 ON tb6.id = tb1.subdivide_id
-            LEFT JOIN res_partner tb3 on tb3.parent_id = tb1.id
             LEFT JOIN (select count(distinct id) as track_count ,track_id from born_partner_track tb4 group by track_id) as tb4 on tb4.track_id = tb1.id
             WHERE
                 tb1. ID > 1 and tb1.is_company='true' %s %s
@@ -579,8 +578,10 @@ class born_manager_sale(http.Controller):
 
 
         data={}
-        partner_obj = request.registry.get('res.partner')
-        contact_obj = partner_obj.browse(request.cr, SUPERUSER_ID,contact_id, context=request.context)
+        # 此处 contact obj　也是partner obj
+        obj = request.registry.get('res.partner')
+        contact_obj = obj.browse(request.cr, SUPERUSER_ID,contact_id, context=request.context)
+
         data = {
             'id':contact_obj.id,
             'name':contact_obj.name or '',

@@ -130,6 +130,7 @@
             dataService.submitPartner(partnerId,vm.partner)
             .then(function (data) {
 
+                    //点击添加联系人触发的提交
                     if (string == 'newcontact') {
 
                         var partner_id = data['partner_id'];
@@ -138,6 +139,7 @@
 
 
                     }
+                    //点击提交按钮触发的提交
                     else {
                         toaster.pop('success', "", "保存成功!");
                         //跳转到该partnerId详细页面下

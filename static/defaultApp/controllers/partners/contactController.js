@@ -50,9 +50,7 @@
         //初始化
         function init() {
             displayModel.displayModel='none';
-            if(contactId>0){
-               vm.getContact();
-            }
+           vm.getContact();
         }
 
 
