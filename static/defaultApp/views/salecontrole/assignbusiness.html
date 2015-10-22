@@ -16,7 +16,7 @@
 		            		</div>
 	            		</a>
 	            	</div>
-	            	 <div ng-repeat="business in region.business_list" collapse="isCollapsed" class="checkbox  panel-collapse collapse in" style="height: auto;padding-top: 15px;">
+	            	 <div ng-repeat="business in region.business_list" ng-show="business.number!=0" collapse="isCollapsed" class="checkbox  panel-collapse collapse in" style="height: auto;padding-top: 15px;">
 			              
 			              
 			              <label class="i-checks pull-left" style="">
