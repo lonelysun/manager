@@ -2,9 +2,6 @@
     <div id="infinite" infinite-scroll='vm.getPartners()' infinite-scroll-parent="true"
                     infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
         <div class="panel b-a" style="margin-bottom: 0px;">
-
-
-
             <div class="panel-heading" style="margin: 0px 0px; border-color:#ddd">
                 <div class="input-group">
                     <input type="text" name="keyword" ng-model='vm.keyword' class="form-control input-sm bg-light no-border rounded padder ng-pristine ng-untouched ng-valid" placeholder="请输入关键字进行搜索..."  tabindex="0" aria-invalid="false">
@@ -13,44 +10,35 @@
                     </span>
                 </div>
             </div>
-
             <ul class="list-group">
-
                 <li ng-repeat="partner in vm.partners " class="list-group-item" ng-style="{'background-color':partner.bgcolor}">
                     <a ng-href="{{partner.href}}" >
                         <div class="media-body" >
                             <div ng-class="{'text-black' : partner.my_customer =='yes'}">
                                 <span>{{ partner.name | limitTo: 10}}{{partner.name.length > 10 ? '...' : ''}}
-
                                     <span ng-if="partner.state == 'tovisit'" class="pull-right label" style="text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);color: #fb7c79;background-color: #FFFFFF;border: 1px solid #fb7c79;">待拜访</span>
                                     <span ng-if="partner.state == 'lost'" class="pull-right label" style="text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);color: #fb7c79;background-color: #FFFFFF;border: 1px solid #fb7c79;">已丢失</span>
                                     <span ng-if="partner.state == 'installed'" class="pull-right label" style="text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);color: #10abfa;background-color: #FFFFFF;border: 1px solid #10abfa;">已安装</span>
                                     <span ng-if="partner.state == 'visiting'" class="pull-right label" style="text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);color: #10abfa;background-color: #FFFFFF;border: 1px solid #10abfa;">拜访中</span>
                                     <span class="pull-right label" style="text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);color: #10abfa;background-color: #FFFFFF;border: 1px solid #10abfa;margin-right: 5px;">拜访 {{partner.track_count}}</span>
-
                                 </span>
                             </div>
-
                             <div ng-class="{'text-black' : partner.my_customer =='yes'}">
                                 <small>联系电话：
                                     <span ng-show="partner.phone">{{partner.phone}}</span>
                                     <span ng-if="partner.phone=='' && partner.mobile">{{partner.mobile}}</span>
                                 </small>
                             </div>
-
                             <div>
                                 <i class="fa fa-map-marker" style="padding-right: 5px;"></i>
                                 <small style="color:#999;">地址：{{partner.address}}</small>
                             </div>
-
                         </div>
                     </a>
                 </li>
             </ul>
         </div>
     </div>
-
-
 </div>
 <div style="height:66px; padding-bottom: 66px;line-height: 66px;"  ng-show="vm.busy" class="text-center" >正在加载...</div>
 

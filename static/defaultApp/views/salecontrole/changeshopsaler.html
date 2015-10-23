@@ -1,24 +1,24 @@
 <div class="show-hide-animation" style="padding-bottom:66px">
-<div id="infinite" infinite-scroll='vm.getShop()' infinite-scroll-parent="true"
+	<div id="infinite" infinite-scroll='vm.getShop()' infinite-scroll-parent="true"
                     infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
 
-	<div class="form-group">
-		<div class="radio list-group-item" ng-repeat="saler in vm.salers">
-              <label class="i-checks" style="width:100%">
-                <input type="radio" checked name="saler" value="{{saler.id}}" ng-model="vm.salerid" >
-                <i></i>
-                {{saler.name}}
-                <small>{{saler.tel}}</small>
-              </label>
+		<div class="form-group">
+			<div class="radio list-group-item" ng-repeat="saler in vm.salers">
+            	<label class="i-checks" style="width:100%">
+                	<input type="radio" checked name="saler" value="{{saler.id}}" ng-model="vm.salerid" >
+                	<i></i>
+                	{{saler.name}}
+                	<small>{{saler.tel}}</small>
+              	</label>
             </div>
-	
+		</div>
 	</div>
+ 	<div class="settings" style="width:100%;background-color:#f0f3f4;bottom: 0px;">
+    	<p style="width:80%;margin:0 auto;padding-top: 10px;padding-bottom: 10px;">
+        	<button type="submit" class="btn btn-info btn-lg btn-block" data-ng-click="vm.assign()"><i class="fa fa-check-square-o"></i>确认分配</button>
+      	</p>
+ 	</div>
 </div>
- <div class="settings" style="width:100%;background-color:#f0f3f4;bottom: 0px;">
-    <p style="width:80%;margin:0 auto;padding-top: 10px;padding-bottom: 10px;">
-        <button type="submit" class="btn btn-info btn-lg btn-block" data-ng-click="vm.assign()"><i class="fa fa-check-square-o"></i>确认分配</button>
-      </p>
- </div>
 <div style="height:60px; line-height: 60px;" ng-show="vm.busy" class="text-center" >正在加载...</div>
 
 

@@ -19,33 +19,28 @@
         vm.subdivides = [];
         vm.businesses = [];
 
-
-
-
-
         //获取客户明细
         function getPartnerDetail() {
             dataService.getPartnerDetail(partnerId)
             .then(function (data) {
             vm.partner = data;
 
-                    //初始化省市县
-                    if (vm.partner['state_id']){
-                        vm.getArea();
-                        if(vm.partner['area_id']){
-                            vm.getSubdivide();
-                            if(vm.partner['subdivide_id']){
-                                vm.getBusiness();
-                            }
-                        }
+            //初始化省市县
+            if (vm.partner['state_id']){
+                vm.getArea();
+                if(vm.partner['area_id']){
+                    vm.getSubdivide();
+                    if(vm.partner['subdivide_id']){
+                        vm.getBusiness();
                     }
+                }
+            }
 
-
+            // 判断是否是新建商户
             if(partnerId != 0){
                 vm.notNewPartner = true;
 
             }
-
 
             $timeout(function () {
                 }, 1000);
@@ -55,8 +50,7 @@
         }
 
 
-
-        //保存partner
+        //保存商户
         vm.submitPartner = function(string){
 
             if(vm.partner.name==""){
@@ -107,13 +101,9 @@
             }
 
             //处理多选的数据
-
-
             if(vm.partner.track_result_ids){
                 vm.partner.track_result_ids_json = JSON.stringify(vm.partner.track_result_ids);
             }
-
-
 
             //去掉不需要的post数据
             delete vm.partner.business_id_options;
@@ -129,8 +119,6 @@
             delete vm.partner.track_data_list;
             delete vm.partner.state;
 
-
-
             dataService.submitPartner(partnerId,vm.partner)
             .then(function (data) {
 
@@ -139,8 +127,6 @@
 
                         var partner_id = data['partner_id'];
                         $location.path('/partners/' + partner_id + '/newContact');
-
-
 
                     }
                     //点击提交按钮触发的提交
@@ -163,19 +149,12 @@
             });
         };
 
-
-
-
-
-
         //从服务器获得省
         vm.getState = function(){
             dataService.getState()
             .then(function (data)
             {
-
                 vm.states = data;
-
                 $timeout(function () {
                 }, 1000);
             },
@@ -198,10 +177,7 @@
             dataService.getArea(vm.partner.state_id)
             .then(function (data)
             {
-
                 vm.areas = data;
-
-
                 $timeout(function () {
                 }, 1000);
             },
@@ -223,9 +199,7 @@
             dataService.getSubdivide(vm.partner.area_id)
             .then(function (data)
             {
-
                 vm.subdivides = data;
-
                 $timeout(function () {
                 }, 1000);
             },
@@ -234,7 +208,6 @@
             });
 
         };
-
 
         //从服务器获商区
         vm.getBusiness = function(){
@@ -247,9 +220,7 @@
             dataService.getBusiness(vm.partner.subdivide_id)
             .then(function (data)
             {
-
                 vm.businesses = data;
-
                 $timeout(function () {
                 }, 1000);
             },
@@ -260,12 +231,9 @@
         };
 
 
-
-
         //初始化
         function init() {
             displayModel.displayModel='none';
-
             getPartnerDetail();
             vm.getState();
         }

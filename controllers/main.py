@@ -76,6 +76,50 @@ class born_manager(http.Controller):
         
         return serve_template('index.html',user=user)
 
+
+
+
+    #获取可显示权限
+    @http.route('/manager/menu', type='http', auth="none",)
+    def menu(self, **post):
+        
+        uid=request.session.uid
+        if not uid:
+            werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
+        team_obj = request.registry.get('commission.team')
+        tid = team_obj.search(request.cr, SUPERUSER_ID,[], context=request.context)
+        teams = team_obj.browse(request.cr, SUPERUSER_ID, tid, context=request.context)
+        hr_obj = request.registry.get('hr.employee')
+        hr_id= hr_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+        
+        ismanager = False
+        sql = """
+            select a.user_id from resource_resource a join hr_employee b on a.id=b.resource_id
+             join res_users c on c.id = a.user_id
+             join commission_team_employee_rel d on d.uid = b.id
+        """
+        request.cr.execute(sql)
+        business_ids=request.cr.fetchall()
+        issaler = False
+        for bus in business_ids:
+            if uid in bus:
+                issaler = True
+                break
+            pass
+        users_obj = request.registry.get('res.users')
+        user=users_obj.browse(request.cr, SUPERUSER_ID, uid)
+        for team in teams:
+            if team.manager_id.id == hr_id[0]:
+                ismanager = True
+                break
+            pass
+        val = {
+               'ismanager' : ismanager,
+               'issaler' : issaler,
+               'option':user.role_option,
+        }
+        return json.dumps(val,sort_keys=True)
+    
     #获取消息信息
     @http.route('/manager/messages', type='http', auth="none",)
     def messages(self, **post):

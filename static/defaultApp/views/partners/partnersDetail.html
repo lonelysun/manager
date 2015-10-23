@@ -1,5 +1,4 @@
 <div class="bg-auto " style="padding-bottom:66px">
-
     <div class="panel panel-default  no-border" style="color:#000;border: 0px;">
         <div class="panel-heading b-t" style="color: #999">
            <span ng-if="vm.partner.state == 'tovisit'" class="pull-right label"
@@ -14,13 +13,10 @@
         </div>
 
         <ul class="list-group no-radius no-bg" >
-
-
             <li class="list-group-item ">
                 <span class="pull-right" style="color:#999;width:75%">
                     <i class="pull-right fa fa-fw fa-angle-right text"></i>
                     <input type="text" style="width:85%" class="pull-right ng-scope ng-binding text-right editable editable-click no-border" data-ng-model="vm.partner.name ">
-
                 </span>
                 商户名称<i class="fa fa-asterisk" style="font-size: 50%;color: rgba(255, 0, 0, 0.62);vertical-align: middle;margin-left:4px"></i>
             </li>
@@ -49,39 +45,31 @@
                 </span>
                 经营类型<i class="fa fa-asterisk" style="font-size: 50%;color: rgba(255, 0, 0, 0.62);vertical-align: middle;margin-left:4px"></i>
             </li>
-
-
-
             <li class="list-group-item" style="height:50px ">
-                    <span class="" style="color:#999;">
-                        <select ng-model="vm.partner.state_id" class="m-b" ng-change="vm.getArea()" style="border:0;background:0 0;width :30%"
-                                ng-options="state.id as state.name for state in vm.states"
-                                ng-disabled="vm.notNewPartner">
-                            <option value="">省</option>
-                        </select>
-                    </span>
-                    <span class="" style="color:#999;">
-                        <select ng-model="vm.partner.area_id" class=" m-b" ng-change="vm.getSubdivide()" style="border:0;background:0 0;width :30%"
-                                ng-options="area.id as area.name for area in vm.areas"
-                                ng-disabled="vm.notNewPartner">
-                            <option value="">市</option>
-                        </select>
-                    </span>
-                    <span class="" style="color:#999;">
-                        <select ng-model="vm.partner.subdivide_id" class=" m-b" ng-change="vm.getBusiness()" style="width :80px;border:0;background:0 0;width :30%"
-                                ng-options="subdivide.id as subdivide.name for subdivide in vm.subdivides"
-                                ng-disabled="vm.notNewPartner">
-                            <option value="">区</option>
-                        </select>
-                    </span>
-
+                <span class="" style="color:#999;">
+                    <select ng-model="vm.partner.state_id" class="m-b" ng-change="vm.getArea()" style="border:0;background:0 0;width :30%"
+                            ng-options="state.id as state.name for state in vm.states"
+                            ng-disabled="vm.notNewPartner">
+                        <option value="">省</option>
+                    </select>
+                </span>
+                <span class="" style="color:#999;">
+                    <select ng-model="vm.partner.area_id" class=" m-b" ng-change="vm.getSubdivide()" style="border:0;background:0 0;width :30%"
+                            ng-options="area.id as area.name for area in vm.areas"
+                            ng-disabled="vm.notNewPartner">
+                        <option value="">市</option>
+                    </select>
+                </span>
+                <span class="" style="color:#999;">
+                    <select ng-model="vm.partner.subdivide_id" class=" m-b" ng-change="vm.getBusiness()" style="width :80px;border:0;background:0 0;width :30%"
+                            ng-options="subdivide.id as subdivide.name for subdivide in vm.subdivides"
+                            ng-disabled="vm.notNewPartner">
+                        <option value="">区</option>
+                    </select>
+                </span>
             </li>
-
             <li class="list-group-item">
-
-
                 <span class="pull-right" style="color:#999;">
-
                     <select ng-model="vm.partner.business_id" class=" m-b"
                             style="border:0;background:0 0;width :80px"
                             ng-options="business.id as business.name for business in vm.businesses"
@@ -91,17 +79,12 @@
                 </span>
                 商圈<i ng-hide="vm.notNewPartner" class="fa fa-asterisk" style="font-size: 50%;color: rgba(255, 0, 0, 0.62);vertical-align: middle;margin-left:4px"></i>
             </li>
-
             <li class="list-group-item" style="height:50px ">
                 <span  style="color:#999;width: 100%">
                     <input type="text" style="width: 100%" placeholder="请输入详细街道" class="ng-scope ng-binding text-left editable editable-click no-border" data-ng-model="vm.partner.street">
 
                 </span>
-
             </li>
-
-
-
             <div collapse="isCollapsed" >
                 <li class="list-group-item">
                     <span class="pull-right" style="color:#999;">
@@ -114,7 +97,6 @@
                     </span>
                     员工人数
                 </li>
-
                 <li class="list-group-item">
                     <span class="pull-right" style="color:#999;">
                         <select ng-model="vm.partner.partner_size_id" class="m-b"
@@ -126,7 +108,6 @@
                     </span>
                     规模
                 </li>
-
                 <li class="list-group-item">
                     <span class="pull-right" style="color:#999;">
                         <select ng-model="vm.partner.partner_environment_id" class=" m-b"
@@ -138,7 +119,6 @@
                     </span>
                     环境
                 </li>
-
                 <li class="list-group-item">
                     <span class="pull-right" style="color:#999;">
                         <select ng-model="vm.partner.partner_room_id" class=" m-b"
@@ -149,7 +129,6 @@
                     </span>
                     房间数
                 </li>
-
                 <li class="list-group-item ">
                     <span class="pull-right" style="color:#999;">
                         <input type="text" class="ng-scope ng-binding text-right editable editable-click no-border" data-ng-model="vm.partner.comment ">
@@ -157,18 +136,12 @@
                     </span>
                     备注
                 </li>
-                
-                </div>
-
-
-
-            <div  class="list-group-item accordion-toggle ng-click-active" style=" color:#999;text-align:center;">
+            </div>
+            <div class="list-group-item accordion-toggle ng-click-active" style=" color:#999;text-align:center;">
                 <a ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">
                     <p ng-show="isCollapsed">展开<i class="fa fa-angle-double-down" style="color:#10abfa;padding-left:10px"></i></p>
                     <p ng-hide="isCollapsed">收起<i class="fa fa-angle-double-up" style="color:#10abfa;padding-left:10px"></i></p>
-
                 </a>
-
             </div>
         </ul>
     </div>
@@ -178,7 +151,6 @@
         <div class="panel-heading b-t">
             <span class="text-lt" style="color: #999;font-size: 14px;">商户联系人</span>
         </div>
-
         <ul class="list-group no-radius no-bg">
             <li ng-repeat="contact in vm.partner.contact_data_list" class="list-group-item" >
                 <a href="#/partners/{{vm.partner.id}}/{{contact.id}}">
@@ -188,11 +160,9 @@
                             {{contact.mobile}}
                                 <i class="fa fa-fw fa-angle-right text"></i>
                             </span>
-
                             <span sclass="pull-right" tyle="font-size: 16px; ">
                             姓名 : {{ contact.name }}
                             </span>
-
                         </div>
                     </div>
                 </a>
@@ -202,17 +172,9 @@
                     <button type="submit" style="background:#ffffff;border:0"data-ng-click="vm.submitPartner('newcontact')"><i class="icon-plus" style="padding-right:10px; color:#10abfa"></i>添加联系人</button>
                 </p>
             </li>
-
         </ul>
     </div>
-
-
-
-
-
-
     <div class="panel panel-default " style="border: 0px; border-bottom: 0px;">
-
         <ul class="list-group no-radius no-bg">
             <li class="list-group-item">
                 <span class="pull-right" style="color:#999;">
@@ -225,7 +187,6 @@
                 </span>
                 拜访类型<i class="fa fa-asterisk" style="font-size: 50%;color: rgba(255, 0, 0, 0.62);vertical-align: middle;margin-left:4px"></i>
             </li>
-
             <li class="list-group-item">
                 <span class="pull-right" style="color:#999;">
                     <select name="track_results" ng-model="vm.partner.track_result_ids" class=" m-b"
@@ -239,59 +200,41 @@
 
                 拜访结果<i class="fa fa-asterisk" style="font-size: 50%;color: rgba(255, 0, 0, 0.62);vertical-align: middle;margin-left:4px"></i>
             </li>
-
             <li class="list-group-item" >
                 <textarea class="form-control" style="border: 0;" ng-model="vm.partner.track_notes" rows="6" placeholder="请输入拜访记录.."></textarea>
             </li>
-
-
         </ul>
-
-
     </div>
-
-
     <!--之前的跟踪记录-->
     <div ng-show="vm.partner.id" class="panel panel-default " style="border: 0px; border-bottom: 0px;">
         <div class="panel-heading b-t">
             <span class="text-lt" style="color: #999;font-size: 14px;">拜访列表</span>
             <span class="pull-right" style="color:#0aa3f1;">共计 : {{vm.partner.track_data_list.length}}  </span>
         </div>
-
-
-
         <ul class="list-group no-radius">
             <li ng-repeat="track in vm.partner.track_data_list | orderBy : 'id' : true " class="list-group-item" >
-
                 <div class="media-body">
                     <div >
                         <div class="list-group-item" style="padding-left: 0;padding-top: 0">
                             <div class="text-balck" style="font-size: 16px;">
-                            {{vm.partner.name }}
+                                {{vm.partner.name }}
                             </div>
-
                             <div class="clear" style="color:#999;">
-                            类型：{{track.ways}}
+                                类型：{{track.ways}}
                             </div>
-
                             <div class="clear" style="color:#999;">
-                            销售负责人：{{track.employee_id}}
+                                销售负责人：{{track.employee_id}}
                             </div>
-
                             <div class="clear" style="color:#999;">
-                            拜访时间：{{track.track_time}}
+                                拜访时间：{{track.track_time}}
                             </div>
-
                             <div class="clear" style="color:#999;">
-                            拜访结果：{{track.result_name_string}}
+                                拜访结果：{{track.result_name_string}}
                             </div>
-
                             <div class="clear" style="color:#999;">
-                            拜访情况：{{track.notes}}
+                                拜访情况：{{track.notes}}
                             </div>
                         </div>
-
-
                         <div ng-show="track.remark" class="list-group-item" style="padding-left: 0;padding-bottom: 0">
                             <div class="clear" style="color:#999;">
                             主管批注：{{track.remark}}
@@ -301,15 +244,11 @@
                             批注时间：{{track.remark_time}}
                             </div>
                         </div>
-
                     </div>
                 </div>
             </li>
         </ul>
     </div>
-
-
-
 </div>
 <div class="settings" style="width:100%;background-color:#f0f3f4;bottom: 0px;">
     <p style="width:80%;margin:0 auto;padding-top: 10px;padding-bottom: 10px;">

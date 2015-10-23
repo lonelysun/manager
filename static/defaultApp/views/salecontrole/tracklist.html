@@ -1,88 +1,85 @@
 <div class="show-hide-animation"  style=" padding-bottom: 50px;">
-        <div class="panel no-border text-center " style="padding-top:15px;margin-bottom: 0px;background-color: #FFFFFF;">
-            <div class="btn-group  ng-scope">
-                <button ng-class="{day: 'menu-active'}[vm.account.display]" ng-click="vm.setDisplay('day')" class="btn  bg-white text-info no-border"  style="  border:solid 1px #10abfa;padding: 6px 22px;">日</button>
-                <button ng-class="{week: 'menu-active'}[vm.account.display]" ng-click="vm.setDisplay('week')" class="btn  bg-white text-info no-border" style=" border:solid 1px #10abfa;padding: 6px 22px;" >周</button>
-                <button ng-class="{month: 'menu-active'}[vm.account.display]" ng-click="vm.setDisplay('month')" class="btn   bg-white text-info no-border" style=" border:solid 1px #10abfa;padding: 6px 22px;" >月</button>
-                <button ng-class="{year: 'menu-active'}[vm.account.display]" ng-click="vm.setDisplay('year')" class="btn   bg-white text-info no-border" style=" border:solid 1px #10abfa;padding: 6px 22px;" >年</button>
-            </div>
-        </div>
-        <div ng-show="vm.account.display!='date'" class="panel" style="  margin-bottom: 0px;background-color: #FFFFFF;">
-            <div class="hbox text-center  b-light text-sm " style="padding: 10px  10px;" >
-                <a  ng-click="vm.setPage(-1)" class="col text-left" style="width:30px;padding: 0px;">
-                    <span   class=" bg-light no-shadow  btn btn-default no-border" style=";border-radius:50px 0px 0px 50px;   "  >
-                        <i class="fa fa-angle-left "></i>
-                    </span>
-                </a>
-                <a class="col bg-light" style=" padding: 5px 0px; ">
-                    <span class="bg-light" style="font-size: 14px;color:#58666e;">{{ vm.account.display_current }}</span>
-                </a>
-                 <a ng-click="vm.setPage(1)" class="col text-right" style="width:30px;padding: 0px;">
-                    <span class="bg-light no-shadow  btn btn-default no-border " style="border:0px;border-radius:0px 50px 50px 0px; " >
-                        <i class="fa fa-angle-right"></i>
-                    </span>
-                </a>
-            </div>
-        </div>
-
- 
-        <div class="panel no-border" style="margin-top:0px;margin-bottom: 0px;">
-
-            <ul>
-                <li ng-repeat="account in vm.account.accounts" class="list-group-item no-bg" style="padding:0px;border-bottom: 0px;">
-                    <div class="panel panel-default" style="margin-bottom:0px;color:#000;border-bottom: 0px;border-top:0px;">
-                        <div class="panel-heading text-black" >
-                          商户：{{account.name}}<span class="pull-right">{{account.number}}</span>
-                        </div>
-                        <div  class="list-group-item no-bg" style="background-color:white" ng-repeat="track in account.track_list">
-                             <div class=" no-border " style="color:#58666e">
+	<div class="panel no-border text-center " style="padding-top:15px;margin-bottom: 0px;background-color: #FFFFFF;">
+    	<div class="btn-group  ng-scope">
+        	<button ng-class="{day: 'menu-active'}[vm.account.display]" ng-click="vm.setDisplay('day')" class="btn  bg-white text-info no-border"  style="  border:solid 1px #10abfa;padding: 6px 22px;">日</button>
+        	<button ng-class="{week: 'menu-active'}[vm.account.display]" ng-click="vm.setDisplay('week')" class="btn  bg-white text-info no-border" style=" border:solid 1px #10abfa;padding: 6px 22px;" >周</button>
+        	<button ng-class="{month: 'menu-active'}[vm.account.display]" ng-click="vm.setDisplay('month')" class="btn   bg-white text-info no-border" style=" border:solid 1px #10abfa;padding: 6px 22px;" >月</button>
+        	<button ng-class="{year: 'menu-active'}[vm.account.display]" ng-click="vm.setDisplay('year')" class="btn   bg-white text-info no-border" style=" border:solid 1px #10abfa;padding: 6px 22px;" >年</button>
+    	</div>
+	</div>
+	<div ng-show="vm.account.display!='date'" class="panel" style="  margin-bottom: 0px;background-color: #FFFFFF;">
+    	<div class="hbox text-center  b-light text-sm " style="padding: 10px  10px;" >
+        	<a  ng-click="vm.setPage(-1)" class="col text-left" style="width:30px;padding: 0px;">
+            	<span   class=" bg-light no-shadow  btn btn-default no-border" style=";border-radius:50px 0px 0px 50px;   "  >
+                	<i class="fa fa-angle-left "></i>
+            	</span>
+       		</a>
+        	<a class="col bg-light" style=" padding: 5px 0px; ">
+           		<span class="bg-light" style="font-size: 14px;color:#58666e;">{{ vm.account.display_current }}</span>
+        	</a>
+        	<a ng-click="vm.setPage(1)" class="col text-right" style="width:30px;padding: 0px;">
+            	<span class="bg-light no-shadow  btn btn-default no-border " style="border:0px;border-radius:0px 50px 50px 0px; " >
+           			<i class="fa fa-angle-right"></i>
+             	</span>
+        	</a>
+     	</div>
+  	</div>
+    <div class="panel no-border" style="margin-top:0px;margin-bottom: 0px;">
+        <ul>
+            <li ng-repeat="account in vm.account.accounts" class="list-group-item no-bg" style="padding:0px;border-bottom: 0px;">
+                <div class="panel panel-default" style="margin-bottom:0px;color:#000;border-bottom: 0px;border-top:0px;">
+                    <div class="panel-heading text-black" >
+                         	 商户：{{account.name}}<span class="pull-right">{{account.number}}</span>
+                    </div>
+                    <div  class="list-group-item no-bg" style="background-color:white" ng-repeat="track in account.track_list">
+                        <div class=" no-border " style="color:#58666e">
                              <small>
-                                 类型：<span ng-if="track.ways=='call'">电话</span>
-               <span ng-if="track.ways=='visit'">上门拜访</span>
-               <span ng-if="track.ways=='message'">信息</span>
-               <span ng-if="track.ways=='video'">视频</span>
-               <span ng-if="track.ways=='other'">其他</span>
+					                                 类型：<span ng-if="track.ways=='call'">电话</span>
+					               <span ng-if="track.ways=='visit'">上门拜访</span>
+					               <span ng-if="track.ways=='message'">信息</span>
+					               <span ng-if="track.ways=='video'">视频</span>
+					               <span ng-if="track.ways=='other'">其他</span>
                              </small>
-                            </div>
-                            <div class=" no-border " style="color:#58666e">
+                        </div>
+                        <div class=" no-border " style="color:#58666e">
                             <small>
                                  销售负责人：{{track.saler}}
                                  </small>
-                            </div>
-                            <div class=" no-border " style="color:#58666e">
+                        </div>
+                        <div class=" no-border " style="color:#58666e">
                             <small>
                                  销售结果：{{track.results}}
                                  </small>
-                            </div>
-                            <div class=" no-border " style="color:#58666e">
+                        </div>
+                        <div class=" no-border " style="color:#58666e">
                             <small>
                                  拜访时间：{{track.time}}
                                  </small>
-                            </div>
-                            <div ng-show="track.notes!=''" style="color:#58666e" class="no-border " >
+                        </div>
+                        <div ng-show="track.notes!=''" style="color:#58666e" class="no-border " >
                             <small>                     
                                  备注：{{track.notes}}
                                  </small>
-                            </div>
-                            <div ng-show="track.address!=null" class=" no-border " style="color:#58666e">
+                        </div>
+                        <div ng-show="track.address!=null" class=" no-border " style="color:#58666e">
                             <small>                      
                                  地址：{{track.address}}
                                  </small>
-                            </div>
-                            <div ng-show="track.remark!=null" class="list-group-item no-bg" style="background-color:white;color:#58666e;border-left-width: 0px;border-right-width: 0px;border-bottom-width: 0px;padding-left: 0px;padding-top: 7px;padding-right: 0px;padding-bottom: 0px;top: auto;margin-bottom: 0px;margin-top: 7px;">
+                        </div>
+                        <div ng-show="track.remark!=null" class="list-group-item no-bg" style="background-color:white;color:#58666e;border-left-width: 0px;border-right-width: 0px;border-bottom-width: 0px;padding-left: 0px;padding-top: 7px;padding-right: 0px;padding-bottom: 0px;top: auto;margin-bottom: 0px;margin-top: 7px;">
                             <small>                     
                                  批注：{{track.remark}}
                                  </small>
-                            </div>
-                            <div ng-show="track.remark!=null" class="no-bg" style="color:#58666e;">
+                        </div>
+                        <div ng-show="track.remark!=null" class="no-bg" style="color:#58666e;">
                             <small>                     
                                  批注时间：{{track.write_date|limitTo:19}}
                                  </small>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
+                    	</div>
+            		</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
 

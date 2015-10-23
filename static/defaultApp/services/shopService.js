@@ -338,6 +338,12 @@
                 return results.data;
             });
         };
+        //获取商户详细信息
+        factory.getMenu = function (id) {
+        	return $http.get(serviceBase + 'menu').then(function (results) {
+        		return results.data;
+        	});
+        };
 
         return factory;
     };

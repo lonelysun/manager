@@ -28,7 +28,7 @@
             }, function (error) {
              toaster.pop('warning', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
             });
-        }
+        };
 
         //获取联系人
         vm.getContact = function(){
@@ -41,18 +41,13 @@
             }, function (error) {
                 toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
             });
-        }
-
-
-
-
+        };
 
         //初始化
         function init() {
             displayModel.displayModel='none';
            vm.getContact();
         }
-
 
         init();
     };

@@ -7,17 +7,20 @@
                                            $timeout, config, dataService,toaster,displayModel) {
         var vm = this;
         vm.panel = {};
-
+        vm.second = false;
+        
         function init() {
             displayModel.displayModel='block';
-            //getPanel();
+            getPanel();
         }
 
-        //获取一个预约的详细信息
+        //页面初始化获取用户显示权限
         function getPanel() {
-            dataService.getPanel()
+            dataService.getMenu()
             .then(function (data) {
             	vm.panel = data;
+            	if (vm.panel.issaler|vm.panel.ismanager)
+            		vm.second = true;
                 $timeout(function () {
                 }, 1000);
             }, function (error) {

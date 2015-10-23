@@ -56,27 +56,27 @@
             <li data-ng-repeat="track in vm.panel.tracks" class="list-group-item">
                 <a href="#/approval/{{track.trackid}}">
                     <div class="text-black">
-                	<span class="pull-right label" style="text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
-                	color: #fb7c79;background-color: #FFFFFF;border: 1px solid #fb7c79;">待批注</span>
-                	{{track.name}}
+	                	<span class="pull-right label" style="text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+	                	color: #fb7c79;background-color: #FFFFFF;border: 1px solid #fb7c79;">待批注</span>
+	                	{{track.name}}
                     </div>
                     <div>
-                    <small>类型： {{track.ways}}</small>
+                    	<small>类型： {{track.ways}}</small>
                     </div>
                     <div>
-                    <small>销售负责人： {{track.saler}}</small>
+                    	<small>销售负责人： {{track.saler}}</small>
                     </div>
                     <div>
-					<small>拜访时间： {{track.time}}</small> 
+						<small>拜访时间： {{track.time}}</small> 
 					</div>     
 					<div>             
-					<small>拜访结果： {{track.result}}</small>     
+						<small>拜访结果： {{track.result}}</small>     
 					</div> 
 					<div>             
-					<small>备注： {{track.notes}}</small>
+						<small>备注： {{track.notes}}</small>
 					</div>                   
 					<div>             
-					<i class="fa fa-map-marker" style="padding-right: 5px;"></i><small>{{track.address}}</small>
+						<i class="fa fa-map-marker" style="padding-right: 5px;"></i><small>{{track.address}}</small>
 					</div>                   
                 </a>
             </li>

@@ -77,7 +77,6 @@ class born_manager_sale(http.Controller):
         return serve_template('index.html',user=user)
 
 
-
     #获取partner列表信息
     @http.route('/manager/partners', type='http', auth="none",)
     def partners(self, **post):
@@ -94,17 +93,12 @@ class born_manager_sale(http.Controller):
         hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
         hr_id = hr_id_list[0] or ''
 
-
-        #here is a bug to search all with '%'
-        #and How to prevent sql injection
         if keyword == '':
             where = "and tb1.employee_id=%s" % (hr_id)
         else:
-
-
             where = " and (tb1.name like '%%%s%%'  or tb1.phone like '%%%s%%' or tb1.street like '%%%s%%') " %(keyword,keyword,keyword)
 
-            #折衷方法，如果搜索的字符串包含% 或者 以_开头则不返回内容
+            #如果搜索的字符串包含% 或者 以_开头则不返回内容
             if keyword.find('%') != -1 or keyword.find('_') == 0:
                 where = 'and false '
 
@@ -115,11 +109,8 @@ class born_manager_sale(http.Controller):
         else:
             where2 = "and true"
 
-
         data = {}
         partner_list = []
-
-
 
         sql=u""" select count(id) as cnt  from res_partner
             where res_partner.employee_id=%s""" % (hr_id)
@@ -127,13 +118,11 @@ class born_manager_sale(http.Controller):
         res_count=request.cr.fetchall()
         partner_count= int(res_count and res_count[0][0] or 0)
 
-
         sql=u""" select count(id) as cnt  from res_partner
             where state='tovisit'  and res_partner.employee_id=%s""" % (hr_id)
         request.cr.execute(sql)
         res_count=request.cr.fetchall()
         tovisit_count= int(res_count and res_count[0][0] or 0)
-
 
         sql=u""" select count(id) as cnt  from res_partner
             where state='visiting'  and res_partner.employee_id=%s""" % (hr_id)
@@ -147,7 +136,6 @@ class born_manager_sale(http.Controller):
         res_count=request.cr.fetchall()
         installed_count= int(res_count and res_count[0][0] or 0)
 
-
         sql=u"""SELECT
                 tb1. ID,
                 tb1. NAME,
@@ -159,12 +147,9 @@ class born_manager_sale(http.Controller):
                 COALESCE (tb2.name, '') address_state,
                 COALESCE (tb5.name, '') address_city,
                 COALESCE (tb6.name, '') address_subdivide,
-
                 tb1.street,
                 tb1.street2,
-                
                 COALESCE(tb4.track_count,0) as track_count
-
             FROM
                 res_partner tb1
             LEFT JOIN res_country_state tb2 ON tb2.id = tb1.state_id
@@ -173,9 +158,6 @@ class born_manager_sale(http.Controller):
             LEFT JOIN (select count(distinct id) as track_count ,track_id from born_partner_track tb4 group by track_id) as tb4 on tb4.track_id = tb1.id
             WHERE
                 tb1. ID > 1 and tb1.is_company='true' %s %s
-
-
-
             order by tb1.id desc
             limit 10 offset %s
                 ;
@@ -183,9 +165,6 @@ class born_manager_sale(http.Controller):
             """ % (where,where2,page_index)
 
         request.cr.execute(sql)
-
-
-
 
         partners = request.cr.dictfetchall()
         for partner in partners:
@@ -218,7 +197,6 @@ class born_manager_sale(http.Controller):
             'partner_count':partner_count
         }
 
-
         return json.dumps(data,sort_keys=True)
 
 
@@ -226,30 +204,22 @@ class born_manager_sale(http.Controller):
     @http.route('/manager/partners/<int:partner_id>', type='http', auth="none")
     def getPartner(self, partner_id):
 
-
         # 有权访问判定
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
-
         hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
         hr_id = hr_id_list[0] or ''
-
-
-
 
         data={}
         partner_obj = request.registry.get('res.partner')
         partner = partner_obj.browse(request.cr, SUPERUSER_ID,partner_id, context=request.context)
 
-
         # 如果访问不属于自己的商户（而且是通过url中拼写id直接访问）,则跳到指定页面
         # 增加判定，如果partner id 为0 则也可以
         if partner_id != 0 and partner.employee_id.id != hr_id:
             return
-
-
 
         # 跟踪方式选项options,
         track_ways_options = [{'value':'call','display':u'电话'},
@@ -290,9 +260,6 @@ class born_manager_sale(http.Controller):
         ids = obj.search(request.cr, SUPERUSER_ID,[],context=request.context)
         partner_room_id_options = obj.read(request.cr,SUPERUSER_ID,ids,fields=['name'],context=request.context)
 
-
-
-
         # 判断是否为新建partner
         if partner_id == 0:
             data = {
@@ -317,16 +284,11 @@ class born_manager_sale(http.Controller):
                 'area_id':'',
                 'subdivide_id':'',
                 'business_id':'',
-
-
             }
 
             return json.dumps(data,sort_keys=True)
 
-
-
         # 以下为选中联系人的详细数据
-        # 联系人
         contact_data_list = []
         for contact in partner.child_ids:
             contact_data = {
@@ -389,8 +351,6 @@ class born_manager_sale(http.Controller):
         # 该partner选定的房间数
         partner_room_id = partner.partner_room_id.id or ''
 
-
-
         data = {
             'id': partner.id,
             'name': partner.name or '',
@@ -399,13 +359,11 @@ class born_manager_sale(http.Controller):
             'shop_brand':partner.shop_brand or '',
             # 地址数据
             'street': partner.street or '',
-
+            #省市县商圈
             'state_id':partner.state_id.id or '',
             'area_id':partner.area_id.id or '',
             'subdivide_id':partner.subdivide_id.id or '',
             'business_id':partner.business_id.id or '',
-
-
             # 经营类型/类别下拉框
             'categorys_id':categorys_id,
             'categorys_id_options':categorys_id_options,
@@ -421,11 +379,8 @@ class born_manager_sale(http.Controller):
             # 房间数下拉框
             'partner_room_id':partner_room_id,
             'partner_room_id_options':partner_room_id_options,
-
-
             # 备注
             'comment':partner.comment or '',
-
             # 联系人
             'contact_data_list': contact_data_list,
 
@@ -441,7 +396,6 @@ class born_manager_sale(http.Controller):
             'track_ways': '',
             'track_result_ids': '',
             'track_notes': ''
-
         }
 
         return json.dumps(data,sort_keys=True)
@@ -465,20 +419,11 @@ class born_manager_sale(http.Controller):
         vals['phone'] = post.get('phone','')
         vals['street'] = post.get('street','')
 
-
-
-
-
         # 处理省市县数据
         vals['state_id'] = post.get('state_id','')
         vals['area_id'] = post.get('area_id','')
         vals['subdivide_id'] = post.get('subdivide_id','')
         vals['business_id'] = post.get('business_id','')
-
-
-
-
-
 
         if post.get('partner_employee_id'):
             vals['partner_employee_id'] = int(post.get('partner_employee_id'))
@@ -497,9 +442,6 @@ class born_manager_sale(http.Controller):
 
         vals['is_company'] = True
 
-
-
-
         # 跟踪记录
         track_vals ={}
 
@@ -507,7 +449,6 @@ class born_manager_sale(http.Controller):
 
             track_vals['ways'] = post.get('track_ways')
             track_vals['notes'] = post.get('track_notes')
-
 
             track_vals['employee_id'] = hr_id
 
@@ -523,12 +464,9 @@ class born_manager_sale(http.Controller):
             #如果有拜访记录，将状态改为拜访中
             vals['state'] = 'visiting'
 
-
-
         # 保存数据
         # 判断是新建还是更新
         if partner_id != 0:
-
             partner_obj.write(request.cr, SUPERUSER_ID, partner_id, vals, context=request.context)
 
         else:
@@ -538,8 +476,6 @@ class born_manager_sale(http.Controller):
         data = {'partner_id':partner_id}
 
         return json.dumps(data,sort_keys=True)
-
-
 
 
     #更新联系人信息
@@ -553,9 +489,7 @@ class born_manager_sale(http.Controller):
         partner_obj = request.registry.get('res.partner')
         partner = partner_obj.browse(request.cr, SUPERUSER_ID,partner_id, context=request.context)
 
-
         vals = dict((key, post.get(key,'')) for key in ('name', 'mobile', 'function','phone','qq','wechat','use_parent_address'))
-
 
         if contact_id == 0:
             partner.write({'child_ids':[(0,0,vals)]})
@@ -565,16 +499,13 @@ class born_manager_sale(http.Controller):
         return json.dumps(True,sort_keys=True)
 
 
-
     #获取联系人信息
     @http.route('/manager/partners/<int:partner_id>/<int:contact_id>', type='http', auth="none",)
     def getcontact(self, partner_id, contact_id, **post):
 
-
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
-
 
         data={}
         # 此处 contact obj　也是partner obj
@@ -589,24 +520,19 @@ class born_manager_sale(http.Controller):
             'phone':contact_obj.phone or '',
         }
 
-
         return json.dumps(data,sort_keys=True)
 
     #获取所有省
     @http.route('/manager/partners/getstate', type='http', auth="none",)
     def getstate(self):
 
-
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
-
         state_obj = request.registry.get('res.country.state')
         state_ids = state_obj.search(request.cr, SUPERUSER_ID,[], context=request.context)
         data = state_obj.read(request.cr, SUPERUSER_ID,state_ids,fields=['name'], context=request.context)
-
-
 
         return json.dumps(data,sort_keys=True)
 
@@ -614,11 +540,9 @@ class born_manager_sale(http.Controller):
     @http.route('/manager/partners/getarea/bystateid/<int:state_id>', type='http', auth="none",)
     def getarea(self,state_id):
 
-
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
-
 
         state_id = int(state_id)
 
@@ -631,7 +555,6 @@ class born_manager_sale(http.Controller):
     #获取城市
     @http.route('/manager/partners/getsubdivide/byareaid/<int:area_id>', type='http', auth="none",)
     def getsubdivide(self,area_id):
-
 
         uid=request.session.uid
         if not uid:
@@ -651,11 +574,9 @@ class born_manager_sale(http.Controller):
     @http.route('/manager/partners/getbusiness/bysubdivideid/<int:subdivide_id>', type='http', auth="none",)
     def getbusiness(self,subdivide_id):
 
-
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
-
 
         subdivide_id = int(subdivide_id)
 

@@ -24,35 +24,32 @@
 			分配的任务
         </small>
      </div>
-            <ul class="list-group">
-            	<div ng-repeat="region in vm.salerdetail.region_list" class="list-group-item no-bg" style="background-color:white">
-	            	<div>
-	            		<a  ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">
-	            			<span class="pull-right" ><span class="pull-right">{{region.number}}<i class="fa  icon-arrow-right " ng-class="{'icon-arrow-down': !isCollapsed, 'icon-arrow-right': isCollapsed}" style="padding-left: 5px;"></i></span></span>
-		            		<div class="text-black">
+     	<ul class="list-group">
+        	<div ng-repeat="region in vm.salerdetail.region_list" class="list-group-item no-bg" style="background-color:white">
+	        	<div>
+	            	<a  ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">
+	            		<span class="pull-right" ><span class="pull-right">{{region.number}}<i class="fa  icon-arrow-right " ng-class="{'icon-arrow-down': !isCollapsed, 'icon-arrow-right': isCollapsed}" style="padding-left: 5px;"></i></span></span>
+		            	<div class="text-black">
 		            		{{region.name}}
-		            		</div>
-	            		</a>
-	            	</div>
-	            	
-	            	 <div ng-repeat="business in region.business_list" collapse="isCollapsed" class="checkbox  panel-collapse collapse in" style="height: auto;padding-top: 15px;">
-
-			              <a href="#/allsalers/{{vm.salerid}}/{{business.id}}">
-							<span class="pull-right"><span class="pull-right"">{{business.number}}<i class="fa fa-angle-right" style="padding-left: 5px;"></i></span></span>
-			                <div class="media-body" style="padding-left: 10px;">
-			                <div class="text-black">
-			                {{business.name}}
-			                </div>
-			                </div>	          			
-			              </a>
-	        		</div>
-            	</div>
-            </ul>
-
- <div class="settings" style="width:100%;background-color:#f0f3f4;bottom: 0px;">
-    <p style="width:80%;margin:0 auto;padding-top: 10px;padding-bottom: 10px;">
-		<a href="#/allchange/{{vm.salerdetail.id}}" class="btn btn-lg btn-info" style="width: 49%;">全部移交</a>
-		<button class="btn  btn-lg btn-danger" ng-click="vm.allcancel()" style="width: 49%;">全部取消</button>
-      </p>
- </div>
+		            	</div>
+	            	</a>
+	            </div>
+	           	<div ng-repeat="business in region.business_list" collapse="isCollapsed" class="checkbox  panel-collapse collapse in" style="height: auto;padding-top: 15px;">
+			    	<a href="#/allsalers/{{vm.salerid}}/{{business.id}}">
+						<span class="pull-right"><span class="pull-right"">{{business.number}}<i class="fa fa-angle-right" style="padding-left: 5px;"></i></span></span>
+			        	<div class="media-body" style="padding-left: 10px;">
+				         	<div class="text-black">
+				                {{business.name}}
+				         	</div>
+			            </div>	          			
+			    	</a>
+	       		</div>
+			</div>
+    	</ul>
+	<div class="settings" style="width:100%;background-color:#f0f3f4;bottom: 0px;">
+    	<p style="width:80%;margin:0 auto;padding-top: 10px;padding-bottom: 10px;">
+			<a href="#/allchange/{{vm.salerdetail.id}}" class="btn btn-lg btn-info" style="width: 49%;">全部移交</a>
+			<button class="btn  btn-lg btn-danger" ng-click="vm.allcancel()" style="width: 49%;">全部取消</button>
+      	</p>
+ 	</div>
 </div>

@@ -1,7 +1,7 @@
 <div class="show-hide-animation" style="padding-bottom:66px">
-<div id="infinite" infinite-scroll='vm.getShop()' infinite-scroll-parent="true"
+	<div id="infinite" infinite-scroll='vm.getShop()' infinite-scroll-parent="true"
                     infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
-	<div class="panel b-a" style="margin-bottom: 0px;">
+		<div class="panel b-a" style="margin-bottom: 0px;">
             <div class="panel-heading" style="border-color:#ddd">
                 <div class="input-group">
                     <input type="text" name="keyword" ng-model='vm.keyword' class="form-control input-sm bg-light no-border rounded padder ng-pristine ng-untouched ng-valid" placeholder="请输入关键字进行搜索..."  tabindex="0" aria-invalid="false">
@@ -10,23 +10,23 @@
                     </span>
                 </div>
             </div>  
-    	<div class="checkbox list-group-item no-bg" style="background-color:white;margin-top: 0px;" ng-repeat="shop in vm.shops">
-              <label class="i-checks pull-left" style="padding-top: 20px;">
-                <input type="checkbox" id={{shop.id}} name="{{shop.name}}" data-ng-checked="vm.isSelected(shop.id)" data-ng-click="vm.updateSelection($event,shop.id)" >
-                <i></i>
-              </label>
+    		<div class="checkbox list-group-item no-bg" style="background-color:white;margin-top: 0px;" ng-repeat="shop in vm.shops">
+            	<label class="i-checks pull-left" style="padding-top: 20px;">
+                	<input type="checkbox" id={{shop.id}} name="{{shop.name}}" data-ng-checked="vm.isSelected(shop.id)" data-ng-click="vm.updateSelection($event,shop.id)" >
+                	<i></i>
+              	</label>
                 <div class="media-body" style="padding-left: 10px;">
-                <div class="text-black">
-                {{shop.name}}
-                </div>
-                <div>
-                <small>联系电话:{{shop.tel}}</small>
-                </div>
-                <small>地址:{{shop.street}}</small>
+                	<div class="text-black">
+                		{{shop.name}}
+                	</div>
+                	<div>
+                		<small>联系电话:{{shop.tel}}</small>
+                	</div>
+                	<small>地址:{{shop.street}}</small>
                 </div>
             </div>      
         </div>   
-</div>
+	</div>
 </div>
  <div class="settings" style="width:100%;background-color:#f0f3f4;bottom: 0px;">
     <p style="width:80%;margin:0 auto;padding-top: 10px;padding-bottom: 10px;">

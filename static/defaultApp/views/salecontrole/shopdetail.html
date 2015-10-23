@@ -1,126 +1,123 @@
 <div class="show-hide-animation"  style="">
 	<div style="background-color:white">
-	<div style="background-color:#f9f9f9;padding-top: 5px;margin-top: 15px;padding-bottom: 5px;">
-        <span class="pull-right label" style="text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
-                	color: #fb7c79;background-color: #FFFFFF;border: 1px solid #fb7c79;margin-right: 15px;">{{vm.shop.state}}</span>
-        <small class="text-muted ng-binding" style="padding-left: 15px;">
-			商户信息
-        </small>
-     </div>
-     <ul class="list-group no-bg">
-     	<li class="list-group-item">
-	            <span class="pull-right ng-binding"><small style="">{{vm.shop.name}}</small></span>
-		            <div class="text-black ng-binding">
-		            	商户名称：
-		            </div>
-	    </li>
-     	<li class="list-group-item" >
-	            <span class="pull-right ng-binding"><small style="">{{vm.shop.type}}</small></span>
-		            <div class="text-black ng-binding">
-		            	经营类型：
-		            </div>
-	    </li>
-     	<li class="list-group-item" >
-	            <span class="pull-right ng-binding"><small style="">{{vm.shop.business}}</small></span>
-		            <div class="text-black ng-binding">
-		            	商圈：
-		            </div>
-	    </li>
-     	<li class="list-group-item" ng-show="vm.shop.employee_number!=''">
-	            <span class="pull-right ng-binding"><small style="">{{vm.shop.employee_number}}</small></span>
-		            <div class="text-black ng-binding">
-		            	员工人数：
-		            </div>
-	    </li>
-     	<li class="list-group-item" ng-show="vm.shop.size!=''">
-	            <span class="pull-right ng-binding"><small style="">{{vm.shop.size}}</small></span>
-		            <div class="text-black ng-binding">
-		            	规模：
-		            </div>
-	    </li>
-     	<li class="list-group-item" ng-show="vm.shop.environment!=''">
-	            <span class="pull-right ng-binding"><small style="">{{vm.shop.environment}}</small></span>
-		            <div class="text-black ng-binding">
-		            	环境：
-		            </div>
-	    </li>
-     	<li class="list-group-item" ng-show="vm.shop.room!=''" >
-	            <span class="pull-right ng-binding"><small style="">{{vm.shop.room}}</small></span>
-		            <div class="text-black ng-binding">
-		            	房间数：
-		            </div>
-	    </li>
-	    <li class="list-group-item" data-ng-repeat="child in vm.shop.child_list">
-	            <span class="pull-right ng-binding"><small style="">{{child.name}}{{child.tel}}</small></span>
-		            <div class="text-black ng-binding">
-		            	联系人：
-		            </div>	    	
-	    </li>
-     	<li class="list-group-item" ng-show="vm.shop.comment!=''">
-	            <span class="pull-right ng-binding"><small style="">{{vm.shop.comment}}</small></span>
-		            <div class="text-black ng-binding">
-		            	备注：
-		            </div>
-
-     	<li class="list-group-item">
-					<div >             
+		<div style="background-color:#f9f9f9;padding-top: 5px;margin-top: 15px;padding-bottom: 5px;">
+	        <span class="pull-right label" style="text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+	                	color: #fb7c79;background-color: #FFFFFF;border: 1px solid #fb7c79;margin-right: 15px;">{{vm.shop.state}}</span>
+	        <small class="text-muted ng-binding" style="padding-left: 15px;">
+				商户信息
+	        </small>
+	     </div>
+	     <ul class="list-group no-bg">
+	     	<li class="list-group-item">
+		    	<span class="pull-right ng-binding"><small style="">{{vm.shop.name}}</small></span>
+				<div class="text-black ng-binding">
+			    	商户名称：
+				</div>
+		    </li>
+	     	<li class="list-group-item" >
+		    	<span class="pull-right ng-binding"><small style="">{{vm.shop.type}}</small></span>
+				<div class="text-black ng-binding">
+			    	经营类型：
+				</div>
+		    </li>
+	     	<li class="list-group-item" >
+		    	<span class="pull-right ng-binding"><small style="">{{vm.shop.business}}</small></span>
+				<div class="text-black ng-binding">
+			    	商圈：
+				</div>
+		    </li>
+	     	<li class="list-group-item" ng-show="vm.shop.employee_number!=''">
+		        <span class="pull-right ng-binding"><small style="">{{vm.shop.employee_number}}</small></span>
+			    <div class="text-black ng-binding">
+			           	员工人数：
+			    </div>
+		    </li>
+	     	<li class="list-group-item" ng-show="vm.shop.size!=''">
+		        <span class="pull-right ng-binding"><small style="">{{vm.shop.size}}</small></span>
+			    <div class="text-black ng-binding">
+						规模：
+			    </div>
+		    </li>
+	     	<li class="list-group-item" ng-show="vm.shop.environment!=''">
+		        <span class="pull-right ng-binding"><small style="">{{vm.shop.environment}}</small></span>
+			    <div class="text-black ng-binding">
+			            	环境：
+			    </div>
+		    </li>
+	     	<li class="list-group-item" ng-show="vm.shop.room!=''" >
+		        <span class="pull-right ng-binding"><small style="">{{vm.shop.room}}</small></span>
+			    <div class="text-black ng-binding">
+			            	房间数：
+			    </div>
+		    </li>
+		    <li class="list-group-item" data-ng-repeat="child in vm.shop.child_list">
+		        <span class="pull-right ng-binding"><small style="">{{child.name}}{{child.tel}}</small></span>
+			    <div class="text-black ng-binding">
+			            	联系人：
+			    </div>	    	
+		    </li>
+	     	<li class="list-group-item" ng-show="vm.shop.comment!=''">
+		        <span class="pull-right ng-binding"><small style="">{{vm.shop.comment}}</small></span>
+			    <div class="text-black ng-binding">
+			            	备注：
+			    </div>
+		    </li>
+	     	<li class="list-group-item">
+				<div >             
 					<small class="ng-binding" style="color:#58666e">{{vm.shop.address}}</small>
-					</div> 
-	    </li>
-	    </li>
-     </ul>
+				</div> 
+		    </li>
+	     </ul>
 	</div>
-     
-     
     <div style="background-color:white">
-	<div style="background-color:#f9f9f9;padding-top: 5px;margin-top: 15px;padding-bottom: 5px;">
-        <small class="text-muted ng-binding" style="padding-left: 15px;">
-			市场跟进
-        </small>
-     </div>
-     <ul class="list-group no-bg">
-	    <a href="#/changeshopsaler/{{vm.shop.id}}" class="list-group-item" >
-	            <span class="pull-right ng-binding"><small style="">{{vm.shop.employee}}<i class="fa fa-angle-right"style="padding-left: 15px;"></i></small></span>
-		            <div class="text-black ng-binding">
-		            	市场跟进人：
-		            </div>	    	
-	    </a>
-     </ul>
+		<div style="background-color:#f9f9f9;padding-top: 5px;margin-top: 15px;padding-bottom: 5px;">
+	        <small class="text-muted ng-binding" style="padding-left: 15px;">
+				市场跟进
+	        </small>
+	     </div>
+	     <ul class="list-group no-bg">
+		    <a href="#/changeshopsaler/{{vm.shop.id}}" class="list-group-item" >
+		    	<span class="pull-right ng-binding"><small style="">{{vm.shop.employee}}<i class="fa fa-angle-right"style="padding-left: 15px;"></i></small></span>
+				<div class="text-black ng-binding">
+			    	市场跟进人：
+				</div>	    	
+		    </a>
+	     </ul>
     </div>
     <div style="background-color:white">
-	<div style="background-color:#f9f9f9;padding-top: 5px;margin-top: 15px;padding-bottom: 5px;">
-        <span class="pull-right text-info ng-binding"><small style="padding-right:20px">共计：{{vm.shop.number}}</small></span>
-        <small class="text-muted ng-binding" style="padding-left: 15px;">
-			拜访列表
-        </small>
-     </div>
-        <ul class="list-group">
-            <li data-ng-repeat="track in vm.shop.track_list" class="list-group-item">
-                    <div class="text-black">
-                	{{track.name}}
-                    </div>
-                    <div>
-                    <small>类型： {{track.ways}}</small>
-                    </div>
-                    <div>
-                    <small>销售负责人： {{track.saler}}</small>
-                    </div>
-                    <div>
+		<div style="background-color:#f9f9f9;padding-top: 5px;margin-top: 15px;padding-bottom: 5px;">
+	        <span class="pull-right text-info ng-binding"><small style="padding-right:20px">共计：{{vm.shop.number}}</small></span>
+	        <small class="text-muted ng-binding" style="padding-left: 15px;">
+				拜访列表
+	        </small>
+	    </div>
+		<ul class="list-group">
+	    	<li data-ng-repeat="track in vm.shop.track_list" class="list-group-item">
+	        	<div class="text-black">
+	            	{{track.name}}
+	        	</div>
+	        	<div>
+	            	<small>类型： {{track.ways}}</small>
+	        	</div>
+	            <div>
+	                <small>销售负责人： {{track.saler}}</small>
+	            </div>
+	            <div>
 					<small>拜访时间： {{track.time}}</small> 
-					</div>     
-					<div>             
+				</div>     
+				<div>             
 					<small>拜访结果： {{track.result}}</small>     
-					</div> 
-					<div>             
+				</div> 
+				<div>             
 					<small>备注： {{track.notes}}</small>
-					</div>                   
-					<div ng-show="track.remark!=''">             
+				</div>                   
+				<div ng-show="track.remark!=''">             
 					<small>批注： {{track.remark}}</small>
-					</div>                   
-					<div>             
+				</div>                   
+				<div>             
 					<i class="fa fa-map-marker" style="padding-right: 5px;"></i><small>{{track.address}}</small>
-					</div>                   
-            </li>
-        </ul>
+				</div>                   
+	        </li>
+	    </ul>
     </div> 
 </div>

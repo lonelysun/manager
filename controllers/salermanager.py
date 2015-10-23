@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #  COMPANY: BORN
-#  AUTHOR: KIWI
+#  AUTHOR: LIUHAO
 #  EMAIL: arborous@gmail.com
-#  VERSION : 1.0   NEW  2014/07/21
+#  VERSION : 1.0   NEW  2015/10/22
 #  UPDATE : NONE
 #  Copyright (C) 2011-2014 www.wevip.com All Rights Reserved
 ##############################################################################
@@ -58,7 +58,7 @@ def serve_template(templatename, **kwargs):
     except:
         return exceptions.html_error_template().render()
 
-#服务
+
 class born_salermanager(http.Controller):
     
     @http.route('/except_manager', type='http', auth="none",)
@@ -77,6 +77,7 @@ class born_salermanager(http.Controller):
         
         return serve_template('index.html',user=user)
 
+#获取销售人员列表
     @http.route('/manager/salers',type="http",auth="none")
     def salers(self,**post):
         uid=request.session.uid
@@ -99,7 +100,8 @@ class born_salermanager(http.Controller):
             }
             data.append(val)
         return json.dumps(data,sort_keys=True)
-    
+
+#按商圈分配任务    
     @http.route('/manager/assign/<int:employee_id>',type="http",auth="none")
     def assignbybusiness(self,employee_id,**post):
         uid=request.session.uid
@@ -109,11 +111,9 @@ class born_salermanager(http.Controller):
         partner_obj = request.registry.get('res.partner')
         partner_ids = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','in',business_ids)], context=request.context)
         partner_obj.write(request.cr,SUPERUSER_ID,partner_ids,{'employee_id':employee_id})
-        
         return json.dumps(True,sort_keys=True)
 
-            
-            
+#获取按商圈分配任务页面数据
     @http.route('/manager/assignarea',type="http",auth="none")
     def assignarea(self,**post):
         uid=request.session.uid
@@ -129,7 +129,7 @@ class born_salermanager(http.Controller):
         partner_obj = request.registry.get('res.partner')
         data=[]
         
-        #简化
+        #简化-获取符合格式的数据
         subdivide_ids = request.session.subdivide_ids
         business_ids = request.session.businessids
         for city in team.city_ids:
@@ -171,7 +171,7 @@ class born_salermanager(http.Controller):
             
         return json.dumps(data,sort_keys=True)
     
-    
+#获取按商户分配任务页面数据   
     @http.route('/manager/assignarea/<int:business_id>',type="http",auth="none")
     def assignpartner(self,business_id,**post):
         uid=request.session.uid
@@ -199,7 +199,7 @@ class born_salermanager(http.Controller):
             data.append(val)
         return json.dumps(data,sort_keys=True)
        
-        
+#按商户分配任务       
     @http.route('/manager/assignshop/<int:employee_id>',type="http",auth="none")
     def assignbyshop(self,employee_id,**post):
         uid=request.session.uid
@@ -210,7 +210,8 @@ class born_salermanager(http.Controller):
         partner_obj.write(request.cr,SUPERUSER_ID,partner_ids,{'employee_id':employee_id})
         
         return json.dumps(True,sort_keys=True)
-        
+
+#获取销售管理首页数据        
     @http.route('/manager/salepanel',type="http",auth="none")
     def salepanel(self,**post):
         uid=request.session.uid
@@ -224,7 +225,8 @@ class born_salermanager(http.Controller):
         business_obj = request.registry.get('born.business')
         region_obj = request.registry.get('res.country.state.area.subdivide')
         partner_obj = request.registry.get('res.partner')
-        #改进获取负责范围内商圈id
+        
+        #获取团队负责的所有商圈id，行政区id
         c_ids = set([city.id for city in team.city_ids])
         s_ids = set([subdivide.id for subdivide in team.subdivide_ids])
         country_ids = set([subdivide.country_id.id for subdivide in team.subdivide_ids])
@@ -291,7 +293,8 @@ class born_salermanager(http.Controller):
                'shop_visiting' : len(shop_visiting),
         }
         return json.dumps(val,sort_keys=True)
-        
+
+#获取单条拜访记录详情        
     @http.route('/manager/track/<int:track_id>',type="http",auth="none")
     def track(self,track_id,**post):        
         uid=request.session.uid
@@ -314,7 +317,8 @@ class born_salermanager(http.Controller):
             }
         
         return json.dumps(track_val,sort_keys=True)
-        
+
+#销售经理批注        
     @http.route('/manager/approval',type="http",auth="none")
     def approval(self,**post):         
         uid=request.session.uid
@@ -324,7 +328,8 @@ class born_salermanager(http.Controller):
         track_obj = request.registry.get('born.partner.track')
         track_obj.write(request.cr,SUPERUSER_ID,id,{'remark':post.get('remark')})
         return json.dumps(True,sort_keys=True)
-        
+
+#获取商户列表（团队负责商户，已安装，待拜访，未分配，已分配）        
     @http.route('/manager/teamshop',type="http",auth="none")
     def teamshop(self,**post):   
         
@@ -392,7 +397,7 @@ class born_salermanager(http.Controller):
             data.append(val)
         return json.dumps(data,sort_keys=True)
         
-    #获取saler信息
+#获取分配任务内的销售人员信息
     @http.route('/manager/salerdetail/<int:saler_id>', type='http', auth="none",)
     def salerdetail(self,saler_id, **post):
         uid=request.session.uid
@@ -402,7 +407,6 @@ class born_salermanager(http.Controller):
         employee = employee_obj.browse(request.cr, SUPERUSER_ID, saler_id, context=request.context)   
         partner_obj = request.registry.get('res.partner') 
         business_obj = request.registry.get('born.business')
-        region_obj = request.registry.get('res.country.state.area.subdivide')
         
         sql = u""" select business_id from res_partner 
         where business_id is not null and employee_id=%s group by business_id 
@@ -432,9 +436,9 @@ class born_salermanager(http.Controller):
             business_newdata = []
             for val in business_data:
                 if(val["region_id"]==area_id):
-                   business_newdata.append(val)
-                   name = val["region_name"] 
-                   number+=val["number"]
+                    business_newdata.append(val)
+                    name = val["region_name"] 
+                    number+=val["number"]
             region_val = {
                    'name' : name,
                    'number' : number,
@@ -453,7 +457,7 @@ class born_salermanager(http.Controller):
         
         return json.dumps(data,sort_keys=True)
          
-    #获取saler的shop信息
+#获取销售人员的负责商户信息
     @http.route('/manager/salershop/<int:saler_id>/<int:business_id>', type='http', auth="none",)
     def salershop(self,saler_id,business_id, **post):
         uid=request.session.uid
@@ -493,7 +497,7 @@ class born_salermanager(http.Controller):
             data.append(val)
         return json.dumps(data,sort_keys=True)
     
-    #获取商户详细信息
+#获取商户详细信息
     @http.route('/manager/shopdetail/<int:shop_id>', type='http', auth="none",)
     def shopdetail(self,shop_id, **post):
         uid=request.session.uid
@@ -574,7 +578,7 @@ class born_salermanager(http.Controller):
         }
         return json.dumps(val,sort_keys=True)
 
-    #更改商户负责人
+#更改商户负责人
     @http.route('/manager/changesaler/<int:shopid>/<int:salerid>', type='http', auth="none",)
     def changesaler(self,shopid,salerid ,**post):
         uid=request.session.uid
@@ -584,7 +588,7 @@ class born_salermanager(http.Controller):
         partner_obj.write(request.cr,SUPERUSER_ID,shopid,{'employee_id':salerid})
         return json.dumps(True,sort_keys=True)
   
-    #全部移交
+#移交销售人员的全部负责商户
     @http.route('/manager/allchangesaler/<int:ysalerid>/<int:salerid>', type='http', auth="none",)
     def allchangesaler(self,ysalerid,salerid ,**post):
         uid=request.session.uid
@@ -595,7 +599,7 @@ class born_salermanager(http.Controller):
         partner_obj.write(request.cr,SUPERUSER_ID,partner_ids,{'employee_id':salerid})
         return json.dumps(True,sort_keys=True)
   
-    #全部取消
+#取消销售人员的全部负责商户
     @http.route('/manager/cancel/<int:salerid>', type='http', auth="none",)
     def cancel(self,salerid ,**post):
         uid=request.session.uid
@@ -606,7 +610,7 @@ class born_salermanager(http.Controller):
         partner_obj.write(request.cr,SUPERUSER_ID,partner_ids,{'employee_id':''})
         return json.dumps(True,sort_keys=True)
 
-    #跟踪记录列表
+#拜访中商户及跟踪记录列表
     @http.route('/manager/accounts', type='http', auth="none",)
     def track_list(self ,**post):
         uid=request.session.uid
@@ -616,7 +620,6 @@ class born_salermanager(http.Controller):
         partner_obj = request.registry.get('res.partner')
   
         display_type = post.get('display','day')
-        index = post.get('index',0)
         current_date = post.get('current_date',False)
         current_week = post.get('current_week',False)
         current_year = post.get('current_year',False)
@@ -626,7 +629,6 @@ class born_salermanager(http.Controller):
         date_from = post.get('date_from',current_date)
         date_to = post.get('date_to',current_date)
         keyword = post.get('keyword','')
-        shop_id = post.get('shop_id','')
   
         #计算当前的时间
         if not current_date or current_date=='':
@@ -639,7 +641,6 @@ class born_salermanager(http.Controller):
         display_current=current_date
         filter_week_year=current_week.split(' ')[0]
         filter_week=current_week.split(' ')[1]
-        shop_name=''
   
         if direction=='1':
             if display_type =='day':
@@ -704,7 +705,6 @@ class born_salermanager(http.Controller):
             if date_to != '' and date_to!='NaN-NaN-NaN':
                 where += " and TO_CHAR(bpt.track_time,'YYYY-MM-DD') <= '%s' " % (date_to)
         
-        track_obj = request.registry.get('born.partner.track')
         data = []
         for partner in partners:
             sql = """

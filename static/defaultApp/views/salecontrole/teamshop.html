@@ -1,50 +1,48 @@
 <div class="show-hide-animation" style="padding-bottom:66px">
-<div id="infinite" infinite-scroll='vm.getShop()' infinite-scroll-parent="true"
-                    infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
-	<div class="panel b-a" style="margin-bottom: 0px;">
-            <div class="panel-heading" style="border-color:#ddd">
-                <div class="input-group">
-                    <input type="text" ng-focus="vm.focus=false" ng-blur="vm.focus=true" name="keyword" ng-model='vm.keyword' class="form-control input-sm bg-light no-border rounded padder ng-pristine ng-untouched ng-valid" placeholder="请输入关键字进行搜索..."  tabindex="0" aria-invalid="false">
-                    <span class="input-group-btn">
-                        <a data-ng-click="vm.getKeyword()" type="button" class="btn btn-sm bg-light rounded"><i class="fa fa-search"></i></a>
-                    </span>
-                </div>
-            </div>    
-        <ul class="list-group">
-            <li data-ng-repeat="shop in vm.shops" class="list-group-item">
-                <a href="#/shopdetail/{{shop.id}}">
-                    <div class="text-black">
-                    <span class="pull-right">
-                	<span ng-if="shop.state != '拜访中'" class="pull-right label" style="text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
-                	color: #fb7c79;background-color: #FFFFFF;border: 1px solid #fb7c79;">{{shop.state}}</span>
-                	<span ng-if="shop.state == '拜访中'" class="pull-right label" style="text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);color: #10abfa;background-color: #FFFFFF;border: 1px solid #10abfa;">拜访中</span>
-                	
-                	<span class="pull-left label" style="text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
-                	color: #10abfa;background-color: #FFFFFF;border: 1px solid #10abfa;margin-right: 5px;">拜访{{shop.number}}</span>
-                    </span>
-                	
-                	{{shop.name}}
-                    </div>
-                    <div class="text-black">
-					<small>联系电话： {{shop.tel}}</small> 
-					</div>                      
-					<div>             
-					<i class="fa fa-map-marker" style="padding-right: 5px;"></i><small>地址：{{shop.address}}</small>
-					</div>                   
-                </a>
-            </li>
-        </ul>
-   
-        </div>   
+	<div id="infinite" infinite-scroll='vm.getShop()' infinite-scroll-parent="true"
+	                    infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+		<div class="panel b-a" style="margin-bottom: 0px;">
+	            <div class="panel-heading" style="border-color:#ddd">
+	                <div class="input-group">
+	                    <input type="text" ng-focus="vm.focus=false" ng-blur="vm.focus=true" name="keyword" ng-model='vm.keyword' class="form-control input-sm bg-light no-border rounded padder ng-pristine ng-untouched ng-valid" placeholder="请输入关键字进行搜索..."  tabindex="0" aria-invalid="false">
+	                    <span class="input-group-btn">
+	                        <a data-ng-click="vm.getKeyword()" type="button" class="btn btn-sm bg-light rounded"><i class="fa fa-search"></i></a>
+	                    </span>
+	                </div>
+	            </div>    
+	        <ul class="list-group">
+	            <li data-ng-repeat="shop in vm.shops" class="list-group-item">
+	                <a href="#/shopdetail/{{shop.id}}">
+	                    <div class="text-black">
+	                    <span class="pull-right">
+	                	<span ng-if="shop.state != '拜访中'" class="pull-right label" style="text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+	                	color: #fb7c79;background-color: #FFFFFF;border: 1px solid #fb7c79;">{{shop.state}}</span>
+	                	<span ng-if="shop.state == '拜访中'" class="pull-right label" style="text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);color: #10abfa;background-color: #FFFFFF;border: 1px solid #10abfa;">拜访中</span>
+	                	
+	                	<span class="pull-left label" style="text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+	                	color: #10abfa;background-color: #FFFFFF;border: 1px solid #10abfa;margin-right: 5px;">拜访{{shop.number}}</span>
+	                    </span>
+	                	
+	                	{{shop.name}}
+	                    </div>
+	                    <div class="text-black">
+						<small>联系电话： {{shop.tel}}</small> 
+						</div>                      
+						<div>             
+						<i class="fa fa-map-marker" style="padding-right: 5px;"></i><small>地址：{{shop.address}}</small>
+						</div>                   
+	                </a>
+	            </li>
+	        </ul>
+	    </div>   
+	</div>
 </div>
-</div>
- <div class="settings" ng-show="vm.focus" style="width:100%;background-color:#f0f3f4;bottom: 0px;">
+<div class="settings" ng-show="vm.focus" style="width:100%;background-color:#f0f3f4;bottom: 0px;">
     <p style="width:80%;margin:0 auto;padding-top: 10px;padding-bottom: 10px;">
         <a href="#/assignments" class="btn btn-info btn-lg btn-block" data-ng-click="vm.assign()"><i class="fa fa-check-square-o"></i>分配任务</a>
       </p>
- </div>
+</div>
 <div style="height:66px; padding-bottom: 126px; line-height: 66px;"  ng-show="vm.busy" class="text-center" >正在加载...</div>
- 	
 <div  style="height:66px; padding-bottom: 66px; line-height: 66px;"></div >
 
 

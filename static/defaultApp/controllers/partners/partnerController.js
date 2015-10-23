@@ -24,7 +24,6 @@
             if(vm.busy)return;
             vm.busy=true;
 
-
             //根据url筛选查看的是所有负责的还是待拜访、或已拜访或成功使用的
             if (url.indexOf("tovisit") >= 0){
             vm.stateFilter = 'tovisit';
@@ -66,7 +65,6 @@
 
                     }
 
-
                 vm.isLoad=true;
                 $timeout(function () {
                     vm.busy=false;
@@ -78,12 +76,12 @@
 
 
 
-
         //关键词搜索
         vm.getPartnersKeyword= function () {
 
             if(vm.busy)return;
             vm.busy=true;
+
             //根据url筛选查看的是所有负责的还是待拜访、或已拜访或成功使用的
             if (url.indexOf("tovisit") >= 0){
             vm.stateFilter = 'tovisit';
