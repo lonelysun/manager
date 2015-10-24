@@ -83,9 +83,10 @@ class born_salermanager(http.Controller):
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
-        manager_id=uid
+        hr_obj = request.registry.get('hr.employee')
+        hr_id= hr_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
         saleteam_obj = request.registry.get('commission.team')
-        domain=[('manager_id','=',manager_id)]
+        domain=[('manager_id','=',hr_id)]
         tid = saleteam_obj.search(request.cr, SUPERUSER_ID, domain, context=request.context)
         team = saleteam_obj.browse(request.cr, SUPERUSER_ID, tid, context=request.context)
         partner_obj = request.registry.get('res.partner')
@@ -119,7 +120,9 @@ class born_salermanager(http.Controller):
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
-        manager_id=uid
+        hr_obj = request.registry.get('hr.employee')
+        hr_id= hr_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+        manager_id=hr_id
         saleteam_obj = request.registry.get('commission.team')
         domain=[('manager_id','=',manager_id)]
         tid = saleteam_obj.search(request.cr, SUPERUSER_ID, domain, context=request.context)
@@ -178,7 +181,6 @@ class born_salermanager(http.Controller):
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
         indexPage = post.get('index',0)
-        manager_id=uid
         keyword = post.get('keyword','')
         if keyword == '':
             domain = [('business_id','=',business_id),('employee_id','=',False)]
@@ -217,7 +219,9 @@ class born_salermanager(http.Controller):
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
-        manager_id=uid
+        hr_obj = request.registry.get('hr.employee')
+        hr_id= hr_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+        manager_id=hr_id
         saleteam_obj = request.registry.get('commission.team')
         domain=[('manager_id','=',manager_id)]
         tid = saleteam_obj.search(request.cr, SUPERUSER_ID, domain, context=request.context)
@@ -339,8 +343,6 @@ class born_salermanager(http.Controller):
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
             
         partner_obj = request.registry.get('res.partner')
-        businesses_ids = []
-
         businesses_ids = request.session.businessids
         if(post.get('states')=="all"):
             states = ['tovisit','visiting','installed']
@@ -662,7 +664,7 @@ class born_salermanager(http.Controller):
                     filter_week=1
                     filter_week_year=int(filter_week_year)+1
                 current_week='%s %s' % (filter_week_year,filter_week)
-  
+
         elif direction=='-1':
             if display_type=='day':
                 today=datetime.datetime.strptime(current_date,'%Y-%m-%d')

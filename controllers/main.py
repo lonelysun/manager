@@ -91,7 +91,6 @@ class born_manager(http.Controller):
         teams = team_obj.browse(request.cr, SUPERUSER_ID, tid, context=request.context)
         hr_obj = request.registry.get('hr.employee')
         hr_id= hr_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-        
         ismanager = False
         sql = """
             select a.user_id from resource_resource a join hr_employee b on a.id=b.resource_id
@@ -113,6 +112,19 @@ class born_manager(http.Controller):
                 ismanager = True
                 break
             pass
+        today = datetime.date.today()
+        print today
+        print (int(today)-1)
+        company_obj = request.registry.get('res.company')
+        company_ids = company_obj.search(request.cr, SUPERUSER_ID,[('approve_date','>','2015-10-10')], context=request.context)
+        companys = company_obj.browse(request.cr,SUPERUSER_ID,company_ids)
+        for company in companys:
+            print company.name
+            company_val = {
+                           'name' : company.name,
+                           
+            }
+        
         val = {
                'ismanager' : ismanager,
                'issaler' : issaler,
