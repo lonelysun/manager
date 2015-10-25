@@ -112,19 +112,19 @@ class born_manager(http.Controller):
                 ismanager = True
                 break
             pass
-        today = datetime.date.today()
-        print today
-        print (int(today)-1)
-        company_obj = request.registry.get('res.company')
-        company_ids = company_obj.search(request.cr, SUPERUSER_ID,[('approve_date','>','2015-10-10')], context=request.context)
-        companys = company_obj.browse(request.cr,SUPERUSER_ID,company_ids)
-        for company in companys:
-            print company.name
-            company_val = {
-                           'name' : company.name,
-                           
-            }
-        
+#         today = datetime.date.today()
+#         print today
+#         print (int(today)-1)
+#         company_obj = request.registry.get('res.company')
+#         company_ids = company_obj.search(request.cr, SUPERUSER_ID,[('approve_date','>','2015-10-10')], context=request.context)
+#         companys = company_obj.browse(request.cr,SUPERUSER_ID,company_ids)
+#         for company in companys:
+#             print company.name
+#             company_val = {
+#                            'name' : company.name,
+#                            
+#             }
+#         
         val = {
                'ismanager' : ismanager,
                'issaler' : issaler,
