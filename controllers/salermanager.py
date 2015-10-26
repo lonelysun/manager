@@ -243,7 +243,7 @@ class born_salermanager(http.Controller):
         exits_business = business_obj.search(request.cr, SUPERUSER_ID,[('area_id','in',all_business)], context=request.context)
         b_ids = b_ids | set(exits_business)
         businesses_ids = [id for id in b_ids]
-        subdivide_ids = [id for id in all_business]
+        subdivide_ids = [id for id in s_ids]
 
         request.session.businessids = businesses_ids
         request.session.subdivide_ids = subdivide_ids
