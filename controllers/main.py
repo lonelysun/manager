@@ -112,23 +112,28 @@ class born_manager(http.Controller):
                 ismanager = True
                 break
             pass
-#         today = datetime.date.today()
-#         print today
-#         print (int(today)-1)
-#         company_obj = request.registry.get('res.company')
-#         company_ids = company_obj.search(request.cr, SUPERUSER_ID,[('approve_date','>','2015-10-10')], context=request.context)
-#         companys = company_obj.browse(request.cr,SUPERUSER_ID,company_ids)
-#         for company in companys:
-#             print company.name
-#             company_val = {
-#                            'name' : company.name,
-#                            
-#             }
-#         
+        day = (datetime.datetime.now() - datetime.timedelta(days = 7)).strftime("%Y-%m-%d") 
+        company_obj = request.registry.get('res.company')
+        company_ids = company_obj.search(request.cr, SUPERUSER_ID,[('approve_date','>',day)],order="approve_date desc", context=request.context)
+        companys = company_obj.browse(request.cr,SUPERUSER_ID,company_ids)
+        data = []
+        for company in companys:
+            company_val = {
+                           'name' : company.name,
+                           'approve_date' : company.approve_date,
+                           'contact_name' : company.contact_name or '',
+                           'create_date' : company.create_date,
+                           'saler' : company.sale_employee_id.name or '无',
+                           'employee' : company.employee_id.name or '无',
+                           'address' : company.street or ''
+            }
+            data.append(company_val)
+            
         val = {
                'ismanager' : ismanager,
                'issaler' : issaler,
                'option':user.role_option,
+               'companys' : data,
         }
         return json.dumps(val,sort_keys=True)
     
