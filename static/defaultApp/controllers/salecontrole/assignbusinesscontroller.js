@@ -12,6 +12,7 @@
         vm.busy=false;
         vm.isLoad=false;
         vm.salerid = salerid;
+        
         vm.selected = [];
         vm.selectedTags = [];
         vm.assign = function(){

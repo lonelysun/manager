@@ -35,26 +35,22 @@
           </a>
         </div>
     </div>
-    <div class="panel no-border" style="padding-bottom: 50px;">
+    <div class="panel no-border" style="">
         <ul class="list-group">
             <li data-ng-repeat="company in vm.panel.companys" class="list-group-item no-bg" style="background-color:white">
                     <div class="text-black">
 	                	{{company.name}}
                     </div>
                     <div>
-                    	<small>注册日期： {{company.create_date|limitTo:10}}</small>
+                    	<small>注册日期： {{company.create_date}}</small>
                     </div>
                     <div>
                     	<small>审核日期： {{company.approve_date}}</small>
-                    </div>
-                    <div>
-						<small>商户联系人： {{company.contact_name}}</small> 
-					</div>     
-					<div style="color:blue">             
-						<small >销售负责人： {{company.saler}}</small>     
+						<small class="pull-right">商户联系人： {{company.contact_name}}</small> 
 					</div> 
 					<div>             
 						<small>技术支持： {{company.employee}}</small>     
+						<small  class="pull-right" style="color:#10ABFA">销售负责人： {{company.saler}}</small>     
 					</div> 
 					<div>             
 						<i class="fa fa-map-marker" style="padding-right: 5px;"></i><small>{{company.address}}</small>

@@ -132,7 +132,7 @@ class born_manager(http.Controller):
         val = {
                'ismanager' : ismanager,
                'issaler' : issaler,
-               'option':user.role_option,
+#                'option':user.role_option,
                'companys' : data,
         }
         return json.dumps(val,sort_keys=True)
@@ -692,23 +692,45 @@ class born_manager(http.Controller):
         return json.dumps(ret,sort_keys=True)
 
 
-    #获取设置内信息
+    #获取用户基本信息
     @http.route('/manager/user',type="http",auth="none")
-    def user(self,**post):
+    def user_info(self,**post):
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
         user_obj = request.registry.get('res.users')
+        hr_obj = request.registry.get('hr.employee')
         user = user_obj.browse(request.cr, SUPERUSER_ID,uid, context=request.context)
+
+        manager_name=''
+        team_name=''
+        #查找销售团队和销售经理
+        hr_ids = hr_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',user.id)], context=request.context)
+        if hr_ids:
+            if len(hr_ids)>1:
+                where=" and rel.uid in %s " % (tuple(hr_ids),)
+            else:
+                where=" and rel.uid = %s " % (hr_ids[0])
+            sql=u""" select team.name as team_name,emp.name_related as manager_name from commission_team_employee_rel rel join commission_team  team on team.id=rel.tid
+                join hr_employee emp on emp.id=team.manager_id
+                where 1=1 %s limit 1
+             """ % ( where,)
+            request.cr.execute(sql)
+            team_name,manager_name = request.cr.fetchone()
+            print(team_name,manager_name)
+
         val={
             'name':user.name or '',
             'tel' :user.login or '',
             'email' :user.email or '',
-            'image' :user.image,
+            'image' :user.image or '',
+            'team_name':team_name,
+            'manager_name':manager_name,
         }
         return json.dumps(val,sort_keys=True)
-    
+
+    #修改用户基本信息
     @http.route('/manager/regiest',type="http",auth="none")
     def regiest(self,**post):
         uid=request.session.uid
