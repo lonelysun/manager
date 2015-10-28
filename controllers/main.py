@@ -132,7 +132,7 @@ class born_manager(http.Controller):
         val = {
                'ismanager' : ismanager,
                'issaler' : issaler,
-#                'option':user.role_option,
+               'option':user.role_option,
                'companys' : data,
         }
         return json.dumps(val,sort_keys=True)

@@ -12,7 +12,8 @@
             displayModel.displayModel='block';
             getSetting();
         }
-        
+
+        //修改个人信息
         vm.regiest = function(){
             if(vm.settings.email==''){
                 toaster.pop('warning', "系统提示", "请填写邮箱！");
@@ -28,7 +29,7 @@
             }
             dataService.regiest(vm.settings)
             .then(function (data) {
-         	   toaster.pop('success', "", "修改成功!");
+         	   toaster.pop('success', "", "个人信息保存成功!");
             }, function (error) {
              toaster.pop('warning', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
             });
