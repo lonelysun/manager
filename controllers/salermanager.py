@@ -86,7 +86,7 @@ class born_salermanager(http.Controller):
         hr_obj = request.registry.get('hr.employee')
         hr_id= hr_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
         saleteam_obj = request.registry.get('commission.team')
-        domain=[('manager_id','=',hr_id)]
+        domain=[('manager_id','in',hr_id)]
         tid = saleteam_obj.search(request.cr, SUPERUSER_ID, domain, context=request.context)
         team = saleteam_obj.browse(request.cr, SUPERUSER_ID, tid, context=request.context)
         partner_obj = request.registry.get('res.partner')
@@ -124,7 +124,7 @@ class born_salermanager(http.Controller):
         hr_id= hr_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
         manager_id=hr_id
         saleteam_obj = request.registry.get('commission.team')
-        domain=[('manager_id','=',manager_id)]
+        domain=[('manager_id','in',manager_id)]
         tid = saleteam_obj.search(request.cr, SUPERUSER_ID, domain, context=request.context)
         team = saleteam_obj.browse(request.cr, SUPERUSER_ID, tid, context=request.context)
         business_obj = request.registry.get('born.business')
@@ -223,7 +223,7 @@ class born_salermanager(http.Controller):
         hr_id= hr_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
         manager_id=hr_id
         saleteam_obj = request.registry.get('commission.team')
-        domain=[('manager_id','=',manager_id)]
+        domain=[('manager_id','in',manager_id)]
         tid = saleteam_obj.search(request.cr, SUPERUSER_ID, domain, context=request.context)
         team = saleteam_obj.browse(request.cr, SUPERUSER_ID, tid, context=request.context)
         business_obj = request.registry.get('born.business')
@@ -247,12 +247,12 @@ class born_salermanager(http.Controller):
 
         request.session.businessids = businesses_ids
         request.session.subdivide_ids = subdivide_ids
-        shops = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','=',businesses_ids)], context=request.context)
-        shop_success = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','=',businesses_ids),('state','=','installed')], context=request.context)
-        shop_wait = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','=',businesses_ids),('state','=','tovisit',)], context=request.context)
-        shop_visiting = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','=',businesses_ids),('state','=','visiting')], context=request.context)
-        shop_nosaler = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','=',businesses_ids),('employee_id','=',False)], context=request.context)
-        shop_saler = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','=',businesses_ids),('employee_id','!=',False)], context=request.context)
+        shops = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','in',businesses_ids)], context=request.context)
+        shop_success = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','in',businesses_ids),('state','=','installed')], context=request.context)
+        shop_wait = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','in',businesses_ids),('state','=','tovisit',)], context=request.context)
+        shop_visiting = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','in',businesses_ids),('state','=','visiting')], context=request.context)
+        shop_nosaler = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','in',businesses_ids),('employee_id','=',False)], context=request.context)
+        shop_saler = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','in',businesses_ids),('employee_id','!=',False)], context=request.context)
         
         track_obj = request.registry.get('born.partner.track')
         track_ids = track_obj.search(request.cr, SUPERUSER_ID,[('track_id','in',shops),('remark','=',False)], context=request.context)

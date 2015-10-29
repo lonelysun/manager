@@ -22,14 +22,11 @@
             </li>
             <li class="list-group-item ">
                 <span class="pull-right" style="color:#999;">
-                    <span ng-show="vm.partner.phone">
+                    <span ng-show="vm.partner.phone || (vm.partner.phone=='' && vm.partner.mobile=='')">
                         <input type="text" class="ng-scope ng-binding text-right editable editable-click no-border" data-ng-model="vm.partner.phone ">
                     </span>
-                    <span ng-if="vm.partner.phone=='' && vm.partner.mobile">
+                    <span ng-show="vm.partner.phone=='' && vm.partner.mobile">
                         <input type="text" class="ng-scope ng-binding text-right editable editable-click no-border" data-ng-model="vm.partner.mobile">
-                    </span>
-                    <span ng-if="vm.partner.phone=='' && vm.partner.mobile==''">
-                        <input type="text" class="ng-scope ng-binding text-right editable editable-click no-border" data-ng-model="vm.partner.phone">
                     </span>
                     <i class="fa fa-fw fa-angle-right text"></i>
                 </span>
