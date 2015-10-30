@@ -72,12 +72,20 @@
         };
 
         //获取终端数据
-        factory.getLicensesPages = function (companyId,pageIndex) {
+        factory.getLicensesPages = function (companyId,display,index,current_date,current_week,current_year,current_month,direction,date_from,date_to) {
 
             return $http.get(serviceBase + 'licenses', {
      			params : {
                     company_id:companyId,
-                    index:pageIndex,
+                    display:display,
+                    index:index,
+                    current_date:current_date,
+                    current_week:current_week,
+                    current_year:current_year,
+                    current_month:current_month,
+                    direction:direction,
+                    date_from:date_from,
+                    date_to:date_to,
      			}
      			}).then(function(results) {
      				return results.data;

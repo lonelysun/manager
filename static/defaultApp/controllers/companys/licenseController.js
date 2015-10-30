@@ -7,22 +7,44 @@
                                            $timeout, config,modalService, dataService,toaster,displayModel) {
         var vm = this,
     	companyId = ($routeParams.companyId) ? parseInt($routeParams.companyId) : 0;
-        vm.licenses = [];
         vm.busy=false;
         vm.isLoad=false;
 
-        //滚动翻页
-        vm.getLicenses= function () {
+        vm.licenses={
+                display:'day',
+                accounts:[],
+                current_date:'',
+                current_week:'',
+                current_year:'',
+                current_month:'',
+                display_current:'',
+                date_from:'',
+                date_to:'',
+                total_amount:0,
+                cnt:0,
+            };
+
+        vm.setPage= function (direction) {
+        	getLicenses(direction);
+        };
+
+        vm.setDisplay= function (display) {
+            vm.licenses.display=display;
+            getLicenses(0);
+
+        };
+        
+        
+        function getLicenses(direction) {
 
             if(vm.busy)return;
             vm.busy=true;
 
-            dataService.getLicensesPages(companyId,vm.licenses.length)
+            dataService.getLicensesPages(companyId,vm.licenses.display,0,
+                    vm.licenses.current_date, vm.licenses.current_week, vm.licenses.current_year, vm.licenses.current_month,
+                    direction,vm.licenses.date_from,vm.licenses.date_to)
             .then(function (data) {
-                for (var i = 0; i < data.length; i++) {
-                    vm.licenses.push(data[i]);
-                }
-                vm.isLoad=true;
+            	vm.licenses = data;
                 vm.isLoad=true;
                 $timeout(function () {
                     vm.busy=false;
@@ -36,7 +58,7 @@
         //取消预约单
         vm.updateLicense = function ($index) {
 
-            var detail=vm.licenses[$index];
+            var detail=vm.licenses.account[$index];
 
         	var modalOptions = {
                 closeButtonText: '取消',
@@ -50,8 +72,8 @@
                 	dataService.updateLicense(detail.id)
                     .then(function (data) {
                         toaster.pop('success', "审核该设备处理成功！");
-                        vm.licenses[$index].state='confirm';
-                        vm.licenses[$index].state_display='已激活';
+                        vm.licenses.account[$index].state='confirm';
+                        vm.licenses.account[$index].state_display='已激活';
                     }, function (error) {
                     	toaster.pop('warning', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
                     });
@@ -63,6 +85,7 @@
         //初始化
         function init() {
             displayModel.displayModel='none';
+            getLicenses(0);
         }
 
         init();

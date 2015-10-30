@@ -535,7 +535,6 @@ class born_manager(http.Controller):
     @http.route('/manager/licenses', type='http', auth="none",)
     def licenses(self, **post):
 
-        page_index=post.get('index',0)
 
         uid=request.session.uid
         if not uid:
@@ -543,34 +542,115 @@ class born_manager(http.Controller):
 
         data = []
         company_id=int(post.get('company_id',0))
+  
+        display_type = post.get('display','day')
+        current_date = post.get('current_date',False)
+        current_week = post.get('current_week',False)
+        current_year = post.get('current_year',False)
+        current_month = post.get('current_month',False)
+        direction = post.get('direction',0)
+  
+        date_from = post.get('date_from',current_date)
+        date_to = post.get('date_to',current_date)
+  
+        #计算当前的时间
+        if not current_date or current_date=='':
+            today = datetime.date.today()
+            current_date=today.strftime("%Y-%m-%d")
+            current_month=today.strftime("%Y-%m")
+            current_year=today.strftime("%Y")
+            current_week='%s %s' % (current_year,int(today.strftime("%W"))+1)
+  
+        display_current=current_date
+        filter_week_year=current_week.split(' ')[0]
+        filter_week=current_week.split(' ')[1]
+  
+        if direction=='1':
+            if display_type =='day':
+                today=datetime.datetime.strptime(current_date,'%Y-%m-%d')
+                current_date= today + datetime.timedelta(days=1)
+                current_date=current_date.strftime("%Y-%m-%d")
+            elif display_type == 'month':
+                today=datetime.datetime.strptime(current_month+'-01','%Y-%m-01')
+                current_month=today.replace(month=(today.month + 1 - 1) % 12 + 1, year=today.year if today.month < 12 else today.year + 1)
+                current_month=current_month.strftime("%Y-%m")
+            elif display_type=='year':
+                current_year=int(current_year)+1
+            elif display_type=='week':
+                filter_week=int(filter_week)+1
+                new_date = datetime.date(int(filter_week_year)+1,01,01)
+                new_date = new_date + datetime.timedelta(days=-1)
+                max_filter_week = new_date.strftime("%W")
+                if int(filter_week) > int(max_filter_week):
+                    filter_week=1
+                    filter_week_year=int(filter_week_year)+1
+                current_week='%s %s' % (filter_week_year,filter_week)
+
+        elif direction=='-1':
+            if display_type=='day':
+                today=datetime.datetime.strptime(current_date,'%Y-%m-%d')
+                current_date= today + datetime.timedelta(days=-1)
+                current_date=current_date.strftime("%Y-%m-%d")
+            elif display_type=='month':
+                today=datetime.datetime.strptime(current_month+'-01','%Y-%m-01')
+                current_month= today + datetime.timedelta(days=-1)
+                current_month=current_month.strftime("%Y-%m")
+            elif display_type=='year':
+                current_year=int(current_year)-1
+            elif display_type=='week':
+                filter_week=int(filter_week)-1
+                #前一年的最后一周
+                if filter_week <= 0:
+                    new_date = datetime.date(int(filter_week_year),01,01)
+                    new_date = new_date + datetime.timedelta(days=-1)
+                    filter_week = new_date.strftime("%W")
+                    filter_week_year = int(filter_week_year)-1
+                current_week='%s %s' % (filter_week_year,filter_week)
+  
+        where = ""
         if company_id<=0:
-            domain=[]
+            where +="where 1=1" 
         else:
-            domain=[('company_id','=',int(company_id))]
-
-        license_obj = request.registry.get('born.license')
-        license_ids = license_obj.search(request.cr, SUPERUSER_ID, domain,int(page_index),20,order="state desc ,id desc", context=request.context)
-        for license in license_obj.browse(request.cr, SUPERUSER_ID,license_ids, context=request.context):
-
-            if license.state == 'draft':
-                state_display=u'待审核'
-            elif license.state == 'confirm' or license.state == 'confirm' :
-                state_display=u'已激活'
-            else:
-                state_display=u'无效'
-            val={
-                'mac': license.mac or '',
-                'company_name': license.company_id.name or '',
-                'version' : license.version,
-                'state':license.state,
-                'check_date':license.check_date,
-                'note':license.note or '',
-                'state_display':state_display,
-                'id': license.id,
-            }
-            data.append(val)
-
-        return json.dumps(data,sort_keys=True)
+            where +="where bl.company_id='%s' "
+        if display_type=='day':
+            display_current=current_date
+            where +="  and TO_CHAR(bl.check_date,'YYYY-MM-DD') = '%s' " % (current_date)
+        elif display_type=='month':
+            display_current=current_month
+            where += "  and TO_CHAR(bl.check_date,'YYYY-MM') = '%s' " % (current_month)
+        elif display_type=='year':
+            display_current=current_year
+            where += "  and TO_CHAR(bl.check_date,'YYYY') = '%s' " % (current_year)
+        elif display_type=='week':
+            display_current= current_week
+            where += "  and TO_CHAR(bl.check_date,'YYYY') = '%s' and extract('week' from bl.check_date)::varchar = '%s' " % (filter_week_year,filter_week)
+        elif display_type =='date':
+            if date_from != '' and date_from!='NaN-NaN-NaN':
+                where += "and TO_CHAR(bl.check_date,'YYYY-MM-DD') >= '%s'  " % (date_from)
+            if date_to != '' and date_to!='NaN-NaN-NaN':
+                where += " and TO_CHAR(bl.check_date,'YYYY-MM-DD') <= '%s' " % (date_to)
+            
+            
+        sql = u"""
+        select bl.mac,bl.version,bl.state,bl.check_date,bl.note,bl.id,rc.name as company_name from born_license bl
+    join res_company rc on rc.id = bl.company_id %s order by bl.check_date desc
+        """ %(where)
+        request.cr.execute(sql)
+        operates = request.cr.dictfetchall()
+        val = {
+            'display':display_type,
+            'accounts':operates,
+            'current_date':current_date,
+            'current_month':current_month,
+            'current_year':current_year,
+            'current_week':current_week,
+            'display_current':display_current,
+            'date_to':date_to,
+            'date_from':date_from,
+        }        
+        
+        
+        return json.dumps(val,sort_keys=True)
 
 
     #获取公司的门店列表

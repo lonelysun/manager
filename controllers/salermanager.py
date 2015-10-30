@@ -195,7 +195,7 @@ class born_salermanager(http.Controller):
                    'id' : partner.id,
                    'name' : partner.name,
                    'street' : partner.street or '无',
-                   'person' : partner.child_ids.name or '无',
+#                    'person' : partner.child_ids.name or '无',
                    'tel' : partner.phone or partner.mobile or '无',
             }
             data.append(val)
