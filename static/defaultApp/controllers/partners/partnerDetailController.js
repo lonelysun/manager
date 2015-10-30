@@ -58,6 +58,12 @@
                 return;
             }
 
+
+            if(vm.partner.phone=="" && vm.partner.mobile == ''){
+                toaster.pop('warning', "系统提示", "请填写电话！");
+                return;
+            }
+
             if(vm.partner.categorys_id=="" || vm.partner.categorys_id==null){
                 toaster.pop('warning', "系统提示", "请选择经营类型！");
                 return;
@@ -126,6 +132,7 @@
                     if (string == 'newcontact') {
 
                         var partner_id = data['partner_id'];
+
                         $location.path('/partners/' + partner_id + '/newContact');
 
                     }
@@ -169,8 +176,11 @@
 
             if(vm.partner.state_id==null){
                 vm.partner.area_id=null;
+                vm.areas = null;
                 vm.partner.subdivide_id=null;
+                vm.subdivides=null;
                 vm.partner.business_id=null;
+                vm.businesses=null;
                 return;
             }
 
@@ -192,7 +202,9 @@
 
             if(vm.partner.area_id==null){
                 vm.partner.subdivide_id=null;
+                vm.subdivides=null;
                 vm.partner.business_id=null;
+                vm.businesses=null;
                 return;
             }
 
@@ -214,6 +226,7 @@
 
             if(vm.partner.subdivide_id==null){
                 vm.partner.business_id=null;
+                vm.businesses=null;
                 return;
             }
 

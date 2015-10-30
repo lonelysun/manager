@@ -464,6 +464,13 @@ class born_manager_sale(http.Controller):
             #如果有拜访记录，将状态改为拜访中
             vals['state'] = 'visiting'
 
+
+        #改变company_id 为创建者的所属公司id
+        company_id = request.registry.get('res.users').browse(request.cr, SUPERUSER_ID, uid, context=request.context).company_id.id
+        if company_id:
+            vals['company_id'] = company_id
+
+
         # 保存数据
         # 判断是新建还是更新
         if partner_id != 0:
