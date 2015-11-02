@@ -746,8 +746,69 @@ class born_salermanager(http.Controller):
             'keyword':keyword,
         }
         return json.dumps(val,sort_keys=True)
-         
 
+
+
+#获取未分配商户列表        
+    @http.route('/manager/nosalershop',type="http",auth="none")
+    def teamshop(self,**post):   
+        
+        indexPage = post.get('index',0)
+        uid=request.session.uid
+        if not uid:
+            werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
+        keyword = post.get('keyword','')
+
+
+
+        where = ""
+        if keyword == "":
+            pass
+        elif keyword != "%":
+            where+ = "rp.name like %s or rp.street like '%%%s%% " %(keyword,keyword)
+            #如果搜索的字符串包含% 或者 以_开头则不返回内容
+            if keyword.find('%') != -1 or keyword.find('_') == 0:
+                where = 'and false '
+
+
+
+
+        sql = u"""
+            select rp.name,rp.phone as tel,rp.street as address,rp.id,
+            rp.state,
+                (
+                    CASE
+                    WHEN rp.state = 'tovisit' THEN
+                        '待拜访'
+                    WHEN rp.state = 'visiting' THEN
+                        '拜访中'
+                    WHEN rp.state = 'lost' THEN
+                        '已丢失'
+                    WHEN rp.state = 'installed' THEN
+                        '已安装'
+                    ELSE
+                        '无'
+                    END
+             ) AS state_display,
+            ( select count(*) as number from born_partner_track where track_id = rp.id)
+             from res_partner rp LIMIT 10 OFFSET %s where rp.is_company=True %s
+        """ %(indexPage,where)
+        request.cr.execute(sql)
+        operates = request.cr.dictfetchall()
+        categorys_obj = request.registry.get('born.partner.categorys')
+        categorys_ids = categorys_obj.search(request.cr, SUPERUSER_ID,[], context=request.context)
+        categoryses = categorys_obj.browse(request.cr, SUPERUSER_ID, categorys_ids,context=request.context)
+        for categorys in categoryses:
+
+
+
+
+
+        return json.dumps(operates,sort_keys=True)
+
+
+
+          
 
 
 
