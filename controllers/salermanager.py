@@ -394,7 +394,8 @@ class born_salermanager(http.Controller):
                    'address' : shop.street or '',
                    'state' : state_display,
                    'id' : shop.id,
-                   'number' : len(track_ids) or 0
+                   'number' : len(track_ids) or 0,
+                   'saler' : shop.employee_id.name or ''
             }
             data.append(val)
         return json.dumps(data,sort_keys=True)
@@ -481,7 +482,7 @@ class born_salermanager(http.Controller):
             if shop.state == 'tovisit':
                 state_display=u'待拜访'
             elif shop.state == 'visiting':
-                state_display=u'拜访跟进中'
+                state_display=u'拜访中'
             elif shop.state == 'lost':
                 state_display=u'已丢失'
             elif shop.state == 'installed':
