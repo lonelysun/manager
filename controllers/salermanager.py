@@ -749,6 +749,19 @@ class born_salermanager(http.Controller):
 
 
 
+#获取商户类型
+    @http.route('/manager/gettype',type="http",auth="none")
+    def gettype(self,**post):
+        uid=request.session.uid
+        if not uid:
+            werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
+        categorys_obj = request.registry.get('born.partner.categorys')
+        categorys_ids = categorys_obj.search(request.cr, SUPERUSER_ID,[], context=request.context)
+        data = business_obj.read(request.cr, SUPERUSER_ID,categorys_ids,fields=['name'], context=request.context)
+
+        return json.dumps(data,sort_keys=True)
+
+
 #获取未分配商户列表        
     @http.route('/manager/nosalershop',type="http",auth="none")
     def teamshop(self,**post):   
@@ -764,14 +777,11 @@ class born_salermanager(http.Controller):
         where = ""
         if keyword == "":
             pass
-        elif keyword != "%":
-            where+ = "rp.name like %s or rp.street like '%%%s%% " %(keyword,keyword)
+        else:
+            where += " and rp.name like '%%%s%%' or rp.street like '%%%s%%' " %(keyword,keyword)
             #如果搜索的字符串包含% 或者 以_开头则不返回内容
             if keyword.find('%') != -1 or keyword.find('_') == 0:
                 where = 'and false '
-
-
-
 
         sql = u"""
             select rp.name,rp.phone as tel,rp.street as address,rp.id,
@@ -791,14 +801,11 @@ class born_salermanager(http.Controller):
                     END
              ) AS state_display,
             ( select count(*) as number from born_partner_track where track_id = rp.id)
-             from res_partner rp LIMIT 10 OFFSET %s where rp.is_company=True %s
-        """ %(indexPage,where)
+             from res_partner rp  where rp.is_company=True %s LIMIT 10 OFFSET %s
+        """ %(where,indexPage)
         request.cr.execute(sql)
         operates = request.cr.dictfetchall()
-        categorys_obj = request.registry.get('born.partner.categorys')
-        categorys_ids = categorys_obj.search(request.cr, SUPERUSER_ID,[], context=request.context)
-        categoryses = categorys_obj.browse(request.cr, SUPERUSER_ID, categorys_ids,context=request.context)
-        for categorys in categoryses:
+
 
 
 
@@ -807,6 +814,20 @@ class born_salermanager(http.Controller):
         return json.dumps(operates,sort_keys=True)
 
 
+
+#获取未分配商户列表        
+    @http.route('/manager/uploadFile',type="http",auth="none")
+    def uploadFile(self,**post):   
+        
+        uid=request.session.uid
+        if not uid:
+            werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
+
+        print(post)
+
+
+
+        return True
 
           
 

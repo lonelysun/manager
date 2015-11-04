@@ -115,6 +115,7 @@ class born_manager(http.Controller):
             elif hr_id == []:
                 isall = False
             pass
+
         day = (datetime.datetime.now() - datetime.timedelta(days = 7)).strftime("%Y-%m-%d") 
         company_obj = request.registry.get('res.company')
         company_ids = company_obj.search(request.cr, SUPERUSER_ID,[('approve_date','>',day)],order="approve_date desc", context=request.context)
@@ -131,7 +132,7 @@ class born_manager(http.Controller):
                            'address' : company.street or ''
             }
             data.append(company_val)
-            
+
         val = {
                'isall' : isall,
                'ismanager' : ismanager,

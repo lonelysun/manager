@@ -352,6 +352,14 @@
         		return results.data;
         	});
         };
+
+        //获取商户分类
+        factory.gettype = function (){
+            return $http.get(serviceBase + 'gettype').then(function (results) {
+                return results.data;
+            });
+        };
+
         //获取未分配的商户列表
         factory.getnosalershop = function (id,pageIndex,keyword) {
             return $http.get(serviceBase + 'nosalershop',{
@@ -363,8 +371,18 @@
                 return results.data;
             });
         };
+
+        //图片上传
+        factory.uploadFile = function (file) {
+            return $http.post(serviceBase + 'uploadFile', file).then(function (status) {
+                return status.data;
+            });
+        };
+
         return factory;
     };
+
+
 
     productsFactory.$inject = injectParams;
 

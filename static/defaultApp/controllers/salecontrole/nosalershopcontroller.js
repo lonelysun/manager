@@ -61,7 +61,6 @@
             
         }
 
-        //获取用户掌管分区信息
         vm.getShop = function(){
         	
         	if(vm.busy)return;
@@ -97,6 +96,19 @@
         	});
         }
 
+        vm.getType = function (){
+            dataService.gettype()
+            .then(function (data)
+            {
+                vm.states = data;
+                $timeout(function () {
+                }, 1000);
+            },
+            function (error) {
+                toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
+            });
+
+        };
 
 
 
