@@ -21,6 +21,10 @@ from mako.lookup import TemplateLookup
 import base64
 import os
 import werkzeug.utils
+import hashlib
+from io import BytesIO
+import boto3,os
+
 
 _logger = logging.getLogger(__name__)
 
@@ -284,6 +288,9 @@ class born_manager_sale(http.Controller):
                 'area_id':'',
                 'subdivide_id':'',
                 'business_id':'',
+
+                # 相关图片列表
+                'file':[],
             }
 
             return json.dumps(data,sort_keys=True)
@@ -470,6 +477,11 @@ class born_manager_sale(http.Controller):
         if company_id:
             vals['company_id'] = company_id
 
+        #营业执照，身份证照片上传s3
+        vals['cardPos_img']=self.upLoadS3(post.get('cardPos_img',''))
+        vals['cardNeg_img']=self.upLoadS3(post.get('cardNeg_img',''))
+        vals['busLicense_img']=self.upLoadS3(post.get('busLicense_img',''))
+
 
         # 保存数据
         # 判断是新建还是更新
@@ -595,7 +607,21 @@ class born_manager_sale(http.Controller):
         return json.dumps(data,sort_keys=True)
 
 
-
+    def upLoadS3(self,base64):
+        if base64=='':
+            return ''
+        permision = "public-read"
+        suffix = base64[base64.find(',')+1:]#只取出base64
+        sha = hashlib.sha1(suffix).hexdigest()# 文件hash值
+        f = BytesIO()
+        f.write(base64.b64decode(str(suffix)))
+        f.seek(0)
+        uploadfile="res_partner/images/"+sha.strip()+".jpg"# 图片文件使用hash值
+        ob=self.__s3.Object(self.__bucketname, uploadfile)
+        result=ob.put(Body=f,ServerSideEncryption='AES256',StorageClass='STANDARD',ACL=permision)
+        print( 'https://s3.cn-north-1.amazonaws.com.cn/'+self.__bucketname+'/'+uploadfile)
+        url =  'https://s3.cn-north-1.amazonaws.com.cn/'+self.__bucketname+'/'+uploadfile
+        return url
 
 
 
