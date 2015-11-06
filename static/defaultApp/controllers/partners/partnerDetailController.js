@@ -243,6 +243,41 @@
 
         };
 
+        //上传图片，图片存入vm.partner
+        $scope.getFile= function ($index) {
+            var file = $scope.myFile;
+            var yfile = $scope.yFile;
+            var sfile = $scope.sFile;
+            if (sfile){
+                var reader1 = new FileReader();
+                reader1.readAsDataURL(sfile);
+                reader1.onload = (function(){
+                    vm.partner.busLicense_img = reader1.result;
+                    $timeout(function () {
+                    }, 500);
+                });
+            }
+            if (file){
+                var reader2 = new FileReader();
+                reader2.readAsDataURL(file);
+                reader2.onload = (function(){
+                    vm.partner.cardPos_img = reader2.result;
+                    $timeout(function () {
+                    }, 1000);
+                });
+            }
+            if(yfile){
+                var reader3 = new FileReader();
+                reader3.readAsDataURL(yfile);
+                reader3.onload = (function(){
+                    vm.partner.cardNeg_img = reader3.result;
+                    $timeout(function () {
+                    }, 1000);
+                });
+            }
+
+         };
+
 
         //初始化
         function init() {
@@ -258,3 +293,12 @@
     angular.module('managerApp').controller('PartnerDetailController', partnerDetailController);
 
 }());
+function busLicien(){
+    return  $("#File2").click();
+}
+function cardPos(){
+    return  $("#File").click();
+}
+function cardNeg(){
+    return  $("#File1").click();
+}

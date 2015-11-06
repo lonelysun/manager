@@ -139,6 +139,37 @@
                     </span>
                     备注
                 </li>
+                <li class="list-group-item ">
+                    上传身份证（正面）
+                    <div>
+                    <input ng-show="false" id="File" type="file" file-model="myFile" style="" />
+
+                    <img  ng-if="vm.partner.cardPos_img" ng-src="{{vm.partner.cardPos_img}}" onclick="cardPos()"  style="max-width:150px;max-height:150px;margin:0 auto;padding-left:15px;padding-bottom:15px;padding-top:10px" />
+                    <!--<img ng-if="img.url!=''" ng-src="{{vm.partner.busLicense_img}}" style="max-width:150px;max-height:150px;margin:0 auto;padding-left:10px;padding-bottom:15px" />-->
+                    <!--<img ng-repeat="img in vm.partner.file"  ng-src="{{img.data}}" style="max-width:128px;margin:0 auto;padding-left:10px;padding-bottom:15px;padding-top:10px;" />-->
+                    <img ng-hide="vm.partner.cardPos_img"  src="/born_manager/static/src/img/upload.png" name="upload" onclick="cardPos()" style="padding-left:15px;padding-top:10px;padding-bottom:10px;width:108px;height:108px">
+                    </div>
+                </li>
+                <li class="list-group-item ">
+                    上传身份证（反面）
+                    <div>
+                    <input ng-show="false" id="File1" type="file" file-model="yFile"style="" />
+                    <img  ng-if="vm.partner.cardNeg_img" ng-src="{{vm.partner.cardNeg_img}}" onclick="cardNeg()" style="max-width:150px;max-height:150px;margin:0 auto;padding-left:15px;padding-bottom:15px;padding-top:10px" />
+                    <!--<img ng-if="img.url!=''" ng-src="{{vm.partner.cardPos_img}}" style="max-width:150px;max-height:150px;margin:0 auto;padding-left:10px;padding-bottom:15px" />-->
+                    <!--<img ng-repeat="img in vm.partner.file"  ng-src="{{img.data}}" style="max-width:128px;margin:0 auto;padding-left:10px;padding-bottom:15px;padding-top:10px;" />-->
+                    <img ng-hide="vm.partner.cardNeg_img" src="/born_manager/static/src/img/upload.png" name="upload" onclick="cardNeg()" style="padding-left:15px;padding-top:10px;padding-bottom:10px;width:108px;height:108px">
+                    </div>
+                </li>
+                <li class="list-group-item ">
+                    上传营业执照
+                    <div>
+                    <input ng-show="false" id="File2" type="file" file-model="sFile"style="" />
+                    <img  ng-if="vm.partner.busLicense_img" ng-src="{{vm.partner.busLicense_img}}" onclick="busLicien()" style="max-width:150px;max-height:150px;margin:0 auto;padding-left:15px;padding-bottom:15px;padding-top:10px" />
+                    <!--<img ng-if="img.url!=''" ng-src="{{vm.partner.cardPos_img}}" style="max-width:150px;max-height:150px;margin:0 auto;padding-left:10px;padding-bottom:15px" />-->
+                    <!--<img ng-repeat="img in vm.partner.file"  ng-src="{{img.data}}" style="max-width:128px;margin:0 auto;padding-left:10px;padding-bottom:15px;padding-top:10px;" />-->
+                    <img ng-hide="vm.partner.busLicense_img" src="/born_manager/static/src/img/upload.png" name="upload" onclick="busLicien()" style="padding-left:15px;padding-top:10px;padding-bottom:10px;width:108px;height:108px">
+                    </div>
+                </li>
             </div>
             <div class="list-group-item accordion-toggle ng-click-active" style=" color:#999;text-align:center;">
                 <a ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">
