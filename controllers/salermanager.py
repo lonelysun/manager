@@ -21,9 +21,7 @@ from mako.lookup import TemplateLookup
 import base64
 import os
 import werkzeug.utils
-import hashlib
-from io import BytesIO
-import boto3,os
+
 
 _logger = logging.getLogger(__name__)
 
@@ -63,17 +61,6 @@ def serve_template(templatename, **kwargs):
 
 class born_salermanager(http.Controller):
 
-    def __init__(self):
-
-        self.__bucketname = openerp.tools.config['s3_bucketname']
-        self.__region = openerp.tools.config['s3_region']
-        self.__aws_access_key_id = openerp.tools.config['s3_access_key_id']
-        self.__aws_secret_access_key = openerp.tools.config['s3_secret_access_key']
-        self.__session = boto3.Session(aws_access_key_id=self.__aws_access_key_id,
-                                  aws_secret_access_key=self.__aws_secret_access_key,
-                                  region_name=self.__region)
-        self.__s3 = self.__session.resource('s3')
-    
     @http.route('/except_manager', type='http', auth="none",)
     def Exception(self, **post):
         return serve_template('except.html')
@@ -820,54 +807,4 @@ class born_salermanager(http.Controller):
         operates = request.cr.dictfetchall()
 
         return json.dumps(operates,sort_keys=True)
-
-
-
-#上传商户相关照片
-    @http.route('/manager/uploadFile',type="http",auth="none")
-    def uploadFile(self,**post):   
-        
-        uid=request.session.uid
-        if not uid:
-            werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
-        permision=post.get('permision')
-        if(permision not in ("public-read","private","bucket-owner-read")):
-            werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
-
-        ufile = post.get('data')
-        suffix = ufile[ufile.find(',')+1:]#只取出base64
-        sha = hashlib.sha1(suffix).hexdigest()# 文件hash值
-        f = BytesIO()
-        f.write(base64.b64decode(str(suffix)))
-        f.seek(0)
-        # 图片文件使用hash值
-        uploadfile="res_partner/images/"+sha.strip()+".jpg"
-        ob=self.__s3.Object(self.__bucketname, uploadfile)
-        result=ob.put(Body=f,ServerSideEncryption='AES256',StorageClass='STANDARD',ACL=permision)
-        print( 'https://s3.cn-north-1.amazonaws.com.cn/'+self.__bucketname+'/'+uploadfile)
-        Model = request.registry.get('born.partner.img')
-        attachment_id = Model.create({
-             'img_id': post.get('id'),
-             'size': post.get('size'),
-             'url' : 'https://s3.cn-north-1.amazonaws.com.cn/'+self.__bucketname+'/'+uploadfile,
-             's3target' : 's3image',
-             'type' : post.get('type'),
-         }, context=None)
-
-
-
-        return json.dumps(val,sort_keys=True)
-
-          
-
-
-
-
-
-
-
-
-
-
-
 

@@ -64,6 +64,17 @@ def serve_template(templatename, **kwargs):
 #服务
 class born_manager_sale(http.Controller):
 
+    def __init__(self):
+
+        self.__bucketname = openerp.tools.config['s3_bucketname']
+        self.__region = openerp.tools.config['s3_region']
+        self.__aws_access_key_id = openerp.tools.config['s3_access_key_id']
+        self.__aws_secret_access_key = openerp.tools.config['s3_secret_access_key']
+        self.__session = boto3.Session(aws_access_key_id=self.__aws_access_key_id,
+                                  aws_secret_access_key=self.__aws_secret_access_key,
+                                  region_name=self.__region)
+        self.__s3 = self.__session.resource('s3')
+
     @http.route('/except_manager', type='http', auth="none",)
     def Exception(self, **post):
         return serve_template('except.html')
@@ -620,7 +631,7 @@ class born_manager_sale(http.Controller):
         ob=self.__s3.Object(self.__bucketname, uploadfile)
         result=ob.put(Body=f,ServerSideEncryption='AES256',StorageClass='STANDARD',ACL=permision)
         print( 'https://s3.cn-north-1.amazonaws.com.cn/'+self.__bucketname+'/'+uploadfile)
-        url =  'https://s3.cn-north-1.amazonaws.com.cn/'+self.__bucketname+'/'+uploadfile
+        url = 'https://s3.cn-north-1.amazonaws.com.cn/'+self.__bucketname+'/'+uploadfile
         return url
 
 

@@ -372,13 +372,6 @@
             });
         };
 
-        //图片上传
-        factory.uploadFile = function (file) {
-            return $http.post(serviceBase + 'uploadFile', file).then(function (status) {
-                return status.data;
-            });
-        };
-
         return factory;
     };
 
