@@ -300,8 +300,10 @@ class born_manager_sale(http.Controller):
                 'subdivide_id':'',
                 'business_id':'',
 
-                # 相关图片列表
-                'file':[],
+                # 身份证，营业执照等照片
+                'cardPos_img' : '',
+                'cardNeg_img' : '',
+                'busLicense_img' : '',
             }
 
             return json.dumps(data,sort_keys=True)
@@ -413,7 +415,11 @@ class born_manager_sale(http.Controller):
             # 拜访记录必填
             'track_ways': '',
             'track_result_ids': '',
-            'track_notes': ''
+            'track_notes': '',
+            # 身份证，营业执照等照片
+            'cardPos_img' : partner.cardPos_img or '',
+            'cardNeg_img' : partner.cardNeg_img or '',
+            'busLicense_img' : partner.busLicense_img or '',
         }
 
         return json.dumps(data,sort_keys=True)
@@ -618,11 +624,11 @@ class born_manager_sale(http.Controller):
         return json.dumps(data,sort_keys=True)
 
 
-    def upLoadS3(self,base64):
-        if base64=='':
+    def upLoadS3(self,base_64):
+        if base_64=='':
             return ''
         permision = "public-read"
-        suffix = base64[base64.find(',')+1:]#只取出base64
+        suffix = base_64[base_64.find(',')+1:]#只取出base64
         sha = hashlib.sha1(suffix).hexdigest()# 文件hash值
         f = BytesIO()
         f.write(base64.b64decode(str(suffix)))
@@ -630,7 +636,6 @@ class born_manager_sale(http.Controller):
         uploadfile="res_partner/images/"+sha.strip()+".jpg"# 图片文件使用hash值
         ob=self.__s3.Object(self.__bucketname, uploadfile)
         result=ob.put(Body=f,ServerSideEncryption='AES256',StorageClass='STANDARD',ACL=permision)
-        print( 'https://s3.cn-north-1.amazonaws.com.cn/'+self.__bucketname+'/'+uploadfile)
         url = 'https://s3.cn-north-1.amazonaws.com.cn/'+self.__bucketname+'/'+uploadfile
         return url
 
