@@ -353,29 +353,8 @@
         	});
         };
 
-        //获取商户分类
-        factory.gettype = function (){
-            return $http.get(serviceBase + 'gettype').then(function (results) {
-                return results.data;
-            });
-        };
-
-        //获取未分配的商户列表
-        factory.getnosalershop = function (id,pageIndex,keyword) {
-            return $http.get(serviceBase + 'nosalershop',{
-                params : {
-                index:pageIndex,
-                keyword:keyword
-            }
-            }).then(function(results) {
-                return results.data;
-            });
-        };
-
         return factory;
     };
-
-
 
     productsFactory.$inject = injectParams;
 

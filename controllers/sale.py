@@ -25,7 +25,6 @@ import hashlib
 from io import BytesIO
 import boto3,os
 
-
 _logger = logging.getLogger(__name__)
 
 #MAKO
@@ -64,6 +63,7 @@ def serve_template(templatename, **kwargs):
 #服务
 class born_manager_sale(http.Controller):
 
+
     def __init__(self):
 
         self.__bucketname = openerp.tools.config['s3_bucketname']
@@ -74,6 +74,7 @@ class born_manager_sale(http.Controller):
                                   aws_secret_access_key=self.__aws_secret_access_key,
                                   region_name=self.__region)
         self.__s3 = self.__session.resource('s3')
+    
 
     @http.route('/except_manager', type='http', auth="none",)
     def Exception(self, **post):
@@ -231,9 +232,32 @@ class born_manager_sale(http.Controller):
         partner_obj = request.registry.get('res.partner')
         partner = partner_obj.browse(request.cr, SUPERUSER_ID,partner_id, context=request.context)
 
+
+
+        # 销售负责人选项
+        ismanager = False
+        employee_id = partner.employee_id.id or ''
+
+        team_obj = request.registry.get('commission.team')
+        tid = team_obj.search(request.cr, SUPERUSER_ID,[], context=request.context)
+        teams = team_obj.browse(request.cr, SUPERUSER_ID, tid, context=request.context)
+        employee_ids_options = []
+        for team in teams:
+            if hr_id and team.manager_id.id == hr_id:
+                ismanager = True
+                for each in team.employee_ids:
+                    saler = {
+                        'name' : each.name,
+                        'id' : each.id,
+                    }
+                    employee_ids_options.append(saler)
+                break
+
+
         # 如果访问不属于自己的商户（而且是通过url中拼写id直接访问）,则跳到指定页面
         # 增加判定，如果partner id 为0 则也可以
-        if partner_id != 0 and partner.employee_id.id != hr_id:
+        #增加判定， 如果是销售经理，则也可以
+        if ismanager == False and partner_id != 0 and partner.employee_id.id != hr_id:
             return
 
         # 跟踪方式选项options,
@@ -275,6 +299,9 @@ class born_manager_sale(http.Controller):
         ids = obj.search(request.cr, SUPERUSER_ID,[],context=request.context)
         partner_room_id_options = obj.read(request.cr,SUPERUSER_ID,ids,fields=['name'],context=request.context)
 
+
+
+
         # 判断是否为新建partner
         if partner_id == 0:
             data = {
@@ -288,7 +315,10 @@ class born_manager_sale(http.Controller):
                 'partner_room_id_options':partner_room_id_options,
                 'track_ways_options':track_ways_options,
                 'result_ids_options': result_ids_options,
-
+                # 销售负责人
+                'employee_ids_options':employee_ids_options,
+                'employee_id':'',
+                'ismanager':ismanager,
                 # 拜访记录必填
                 'track_ways': '',
                 'track_result_ids': '',
@@ -404,6 +434,11 @@ class born_manager_sale(http.Controller):
             # 联系人
             'contact_data_list': contact_data_list,
 
+            # 销售负责人
+            'employee_ids_options':employee_ids_options,
+            'employee_id':employee_id,
+            'ismanager':ismanager,
+
             'state': partner.state or '',
             'phone': partner.phone or '',
             'mobile': partner.mobile or '',
@@ -466,6 +501,14 @@ class born_manager_sale(http.Controller):
 
         vals['is_company'] = True
 
+
+        #营业执照，身份证照片上传s3
+        vals['cardPos_img']=self.upLoadS3(post.get('cardPos_img',''))
+        vals['cardNeg_img']=self.upLoadS3(post.get('cardNeg_img',''))
+        vals['busLicense_img']=self.upLoadS3(post.get('busLicense_img',''))
+
+
+
         # 跟踪记录
         track_vals ={}
 
@@ -494,10 +537,14 @@ class born_manager_sale(http.Controller):
         if company_id:
             vals['company_id'] = company_id
 
-        #营业执照，身份证照片上传s3
-        vals['cardPos_img']=self.upLoadS3(post.get('cardPos_img',''))
-        vals['cardNeg_img']=self.upLoadS3(post.get('cardNeg_img',''))
-        vals['busLicense_img']=self.upLoadS3(post.get('busLicense_img',''))
+
+        if post.get('ismanager') == 'true':
+            if post.get('employee_id'):
+                vals['employee_id'] = int(post.get('employee_id'))
+            else:
+                vals['employee_id'] = ''
+        else:
+            vals['employee_id'] = hr_id
 
 
         # 保存数据
@@ -506,7 +553,7 @@ class born_manager_sale(http.Controller):
             partner_obj.write(request.cr, SUPERUSER_ID, partner_id, vals, context=request.context)
 
         else:
-            vals['employee_id'] = hr_id
+
             partner_id = partner_obj.create(request.cr, SUPERUSER_ID,vals,context=request.context)
 
         data = {'partner_id':partner_id}
@@ -624,11 +671,12 @@ class born_manager_sale(http.Controller):
         return json.dumps(data,sort_keys=True)
 
 
-    def upLoadS3(self,base_64):
-        if base_64=='':
+    #图片上传S3，返回url
+    def upLoadS3(self,base64):
+        if base64=='':
             return ''
         permision = "public-read"
-        suffix = base_64[base_64.find(',')+1:]#只取出base64
+        suffix = base64[base64.find(',')+1:]#只取出base64
         sha = hashlib.sha1(suffix).hexdigest()# 文件hash值
         f = BytesIO()
         f.write(base64.b64decode(str(suffix)))
@@ -638,6 +686,8 @@ class born_manager_sale(http.Controller):
         result=ob.put(Body=f,ServerSideEncryption='AES256',StorageClass='STANDARD',ACL=permision)
         url = 'https://s3.cn-north-1.amazonaws.com.cn/'+self.__bucketname+'/'+uploadfile
         return url
+
+
 
 
 

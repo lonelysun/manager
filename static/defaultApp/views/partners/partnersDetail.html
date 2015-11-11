@@ -145,8 +145,6 @@
                     <input ng-show="false" id="File" type="file" file-model="myFile" style="" />
 
                     <img  ng-if="vm.partner.cardPos_img" ng-src="{{vm.partner.cardPos_img}}" onclick="cardPos()"  style="max-width:150px;max-height:150px;margin:0 auto;padding-left:15px;padding-bottom:15px;padding-top:10px" />
-                    <!--<img ng-if="img.url!=''" ng-src="{{vm.partner.busLicense_img}}" style="max-width:150px;max-height:150px;margin:0 auto;padding-left:10px;padding-bottom:15px" />-->
-                    <!--<img ng-repeat="img in vm.partner.file"  ng-src="{{img.data}}" style="max-width:128px;margin:0 auto;padding-left:10px;padding-bottom:15px;padding-top:10px;" />-->
                     <img ng-hide="vm.partner.cardPos_img"  src="/born_manager/static/src/img/upload.png" name="upload" onclick="cardPos()" style="padding-left:15px;padding-top:10px;padding-bottom:10px;width:108px;height:108px">
                     </div>
                 </li>
@@ -155,8 +153,6 @@
                     <div>
                     <input ng-show="false" id="File1" type="file" file-model="yFile"style="" />
                     <img  ng-if="vm.partner.cardNeg_img" ng-src="{{vm.partner.cardNeg_img}}" onclick="cardNeg()" style="max-width:150px;max-height:150px;margin:0 auto;padding-left:15px;padding-bottom:15px;padding-top:10px" />
-                    <!--<img ng-if="img.url!=''" ng-src="{{vm.partner.cardPos_img}}" style="max-width:150px;max-height:150px;margin:0 auto;padding-left:10px;padding-bottom:15px" />-->
-                    <!--<img ng-repeat="img in vm.partner.file"  ng-src="{{img.data}}" style="max-width:128px;margin:0 auto;padding-left:10px;padding-bottom:15px;padding-top:10px;" />-->
                     <img ng-hide="vm.partner.cardNeg_img" src="/born_manager/static/src/img/upload.png" name="upload" onclick="cardNeg()" style="padding-left:15px;padding-top:10px;padding-bottom:10px;width:108px;height:108px">
                     </div>
                 </li>
@@ -165,8 +161,6 @@
                     <div>
                     <input ng-show="false" id="File2" type="file" file-model="sFile"style="" />
                     <img  ng-if="vm.partner.busLicense_img" ng-src="{{vm.partner.busLicense_img}}" onclick="busLicien()" style="max-width:150px;max-height:150px;margin:0 auto;padding-left:15px;padding-bottom:15px;padding-top:10px" />
-                    <!--<img ng-if="img.url!=''" ng-src="{{vm.partner.cardPos_img}}" style="max-width:150px;max-height:150px;margin:0 auto;padding-left:10px;padding-bottom:15px" />-->
-                    <!--<img ng-repeat="img in vm.partner.file"  ng-src="{{img.data}}" style="max-width:128px;margin:0 auto;padding-left:10px;padding-bottom:15px;padding-top:10px;" />-->
                     <img ng-hide="vm.partner.busLicense_img" src="/born_manager/static/src/img/upload.png" name="upload" onclick="busLicien()" style="padding-left:15px;padding-top:10px;padding-bottom:10px;width:108px;height:108px">
                     </div>
                 </li>
@@ -179,6 +173,28 @@
             </div>
         </ul>
     </div>
+
+    <!--销售负责人-->
+    <div ng-show="vm.partner.ismanager" class="panel panel-default " style="border: 0px; border-bottom: 0px;">
+        <div class="panel-heading b-t">
+            <span class="text-lt" style="color: #999;font-size: 14px;">销售负责人</span>
+        </div>
+        <ul class="list-group no-radius no-bg">
+             <li class="list-group-item">
+                <span class="pull-right" style="color:#999;">
+                    <select ng-model="vm.partner.employee_id" class=" m-b"
+                             style="border:0;background:0 0;width :80px"
+                            ng-options="employee_id_options.id as employee_id_options.name for employee_id_options in vm.partner.employee_ids_options">
+                        <option value="">请选择</option>
+                    </select>
+                    <i class="fa fa-fw fa-angle-right text"></i>
+                </span>
+                跟进人
+            </li>
+        </ul>
+    </div>
+
+
 
     <!--联系人部分-->
     <div class="panel panel-default " style="border: 0px; border-bottom: 0px;">
@@ -213,7 +229,7 @@
             <li class="list-group-item">
                 <span class="pull-right" style="color:#999;">
                     <select ng-model="vm.partner.track_ways" class=" m-b"
-                            style="border:0;background:0 0;width :auto"
+                            style="border:0;background:0 0;width :80px"
                             ng-options="track_ways.value as track_ways.display for track_ways in vm.partner.track_ways_options">
                         <option value="">请选择</option>
                     </select>

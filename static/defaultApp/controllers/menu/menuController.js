@@ -19,12 +19,8 @@
             dataService.getMenu()
             .then(function (data) {
             	vm.panel = data;
-            	console.info(vm.panel);
             	if (vm.panel.issaler|vm.panel.ismanager)
             		vm.second = true;
-            	if(!vm.panel.isall){
-                	toaster.pop('error', "没有权限", "没有任何显示权限，请联系管理员");
-            	}
                 $timeout(function () {
                 }, 1000);
             }, function (error) {

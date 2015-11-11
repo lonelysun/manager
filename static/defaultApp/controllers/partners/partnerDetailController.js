@@ -124,6 +124,7 @@
             delete vm.partner.contact_data_list;
             delete vm.partner.track_data_list;
             delete vm.partner.state;
+            delete vm.partner.employee_ids_options;
 
             dataService.submitPartner(partnerId,vm.partner)
             .then(function (data) {
@@ -277,6 +278,7 @@
             }
 
          };
+
 
 
         //初始化

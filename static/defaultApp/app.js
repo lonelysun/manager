@@ -237,8 +237,8 @@
 	        	controllerAs: 'vm'
 	        })
 	        .when('/nosalershop', {
-	        	controller: 'NosalershopController',
-	        	templateUrl: viewBase + 'salecontrole/nosalershop.html',
+	        	controller: 'TeamshopController',
+	        	templateUrl: viewBase + 'salecontrole/teamshop.html',
 	        	controllerAs: 'vm'
 	        })
 	        .when('/havesalershop', {

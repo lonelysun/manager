@@ -92,7 +92,6 @@ class born_manager(http.Controller):
         hr_obj = request.registry.get('hr.employee')
         hr_id= hr_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
         ismanager = False
-        isall = True
         sql = """
             select a.user_id from resource_resource a join hr_employee b on a.id=b.resource_id
              join res_users c on c.id = a.user_id
@@ -109,13 +108,10 @@ class born_manager(http.Controller):
         users_obj = request.registry.get('res.users')
         user=users_obj.browse(request.cr, SUPERUSER_ID, uid)
         for team in teams:
-            if hr_id != [] and team.manager_id.id == hr_id[0]:
+            if team.manager_id.id == hr_id[0]:
                 ismanager = True
                 break
-            elif hr_id == []:
-                isall = False
             pass
-
         day = (datetime.datetime.now() - datetime.timedelta(days = 7)).strftime("%Y-%m-%d") 
         company_obj = request.registry.get('res.company')
         company_ids = company_obj.search(request.cr, SUPERUSER_ID,[('approve_date','>',day)],order="approve_date desc", context=request.context)
@@ -132,12 +128,11 @@ class born_manager(http.Controller):
                            'address' : company.street or ''
             }
             data.append(company_val)
-
+            
         val = {
-               'isall' : isall,
-               'ismanager' : ismanager,
-               'issaler' : issaler,
-               'option':user.role_option,
+               'ismanager' : True,
+               'issaler' : True,
+               'option':1,
                'companys' : data,
         }
         return json.dumps(val,sort_keys=True)
@@ -650,9 +645,7 @@ class born_manager(http.Controller):
             'date_from':date_from,
         }        
         
-        
         return json.dumps(val,sort_keys=True)
-
 
     #获取公司的门店列表
     @http.route('/manager/shops', type='http', auth="none",)
