@@ -21,6 +21,9 @@ from mako.lookup import TemplateLookup
 import base64
 import os
 import werkzeug.utils
+import hashlib
+from io import BytesIO
+import boto3,os
 
 _logger = logging.getLogger(__name__)
 
@@ -796,16 +799,16 @@ class born_manager(http.Controller):
              """ % ( where,)
             request.cr.execute(sql)
             team_name,manager_name = request.cr.fetchone()
-            print(team_name,manager_name)
 
         val={
             'name':user.name or '',
             'tel' :user.login or '',
             'email' :user.email or '',
-            'image' :user.image or '',
+            'image' :str(user.image) or '',
             'team_name':team_name,
             'manager_name':manager_name,
         }
+        print(val)
         return json.dumps(val,sort_keys=True)
 
     #修改用户基本信息
@@ -818,6 +821,29 @@ class born_manager(http.Controller):
         values = dict((key, post.get(key)) for key in ('email', 'name'))
         if(post.get('password')):
             values['password_crypt']=post.get('password')
+        # values['image']=self.upLoadS3(post.get('image',''))
+        base_64=post.get('image','')
+        suffix = base_64[base_64.find(',')+1:]
+        values['image']=suffix
 
         user_obj.write(request.cr,SUPERUSER_ID,uid,values)
         return json.dumps(values,sort_keys=True)
+
+
+    #图片上传S3，返回url
+    def upLoadS3(self,base64):
+        if base64=='':
+            return ''
+        permision = "public-read"
+        suffix = base64[base64.find(',')+1:]#只取出base64
+        sha = hashlib.sha1(suffix).hexdigest()# 文件hash值
+        f = BytesIO()
+        f.write(base64.b64decode(str(suffix)))
+        f.seek(0)
+        uploadfile="res_partner/images/"+sha.strip()+".jpg"# 图片文件使用hash值
+        ob=self.__s3.Object(self.__bucketname, uploadfile)
+        result=ob.put(Body=f,ServerSideEncryption='AES256',StorageClass='STANDARD',ACL=permision)
+        url = 'https://s3.cn-north-1.amazonaws.com.cn/'+self.__bucketname+'/'+uploadfile
+        return url
+
+

@@ -1,0 +1,36 @@
+.bm-item{
+    background-color:white;
+    border-bottom: solid 1px #f6f6f5;
+    margin-left: 35px;
+    margin-right: 35px;
+    padding-bottom:12px;
+    padding-top:20px;
+}
+.bm-main{
+    padding-top:5px;
+    font-size:17px;
+    color:#4a4a4a;
+}
+.bm-top{
+    font-size:12px;
+    color:#A0A0A0;
+}
+/*liuhao*/
+.bm-left-font{
+    font-size:17px;
+    color:#A0A0A0;
+}
+.bm-right-font{
+    font-size:17px;
+    color:#4a4a4a;
+    padding-left:24px;
+}
+.bm-img-back{
+    width: 66px;
+    height: 47px;
+    padding-left: 23px;
+    padding-right: 23px;
+}
+
+/*liuhao end*/
+

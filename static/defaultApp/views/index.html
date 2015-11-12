@@ -14,17 +14,38 @@
     <link href="/born_manager/static/src/css/simple-line-icons.css" rel="stylesheet" />
     <link href="/born_manager/static/src/css/toaster.min.css" rel="stylesheet" />
     <link href="/born_manager/static/src/css/animations.css" rel="stylesheet" />
+    <link href="/born_manager/static/src/css/born-manager.css" rel="stylesheet" />
 
 </head>
 <body ng-cloak>
+<div ng-controller="NavbarController as vm" class="h2 app-header navbar">
+            <!-- navbar header -->
+            <div class="navbar-header bm-navbar-header text-center" style="line-height:50px">
+                <button ng-show="vm.getEditModel()=='1'" data-ng-click="vm.headerEdit()" class="pull-right visible-xs dk" style="color:#ff4848">
+                  编辑
+                </button>
 
-    <div class="app-content ng-scope m-n">
-        <div class="app-content-body app-content-full fade-in-up ng-scope" style="bottom: 50px;"  >
+                <button ng-show="vm.getSaveModel()=='1'" data-ng-click="vm.headerSave()" class="pull-right visible-xs dk" style="color:#ff4848">
+                  保存
+                </button>
+                <img ng-show="vm.getSearchModel()=='1'"  data-ng-click="vm.headerSearch()" class="btn pull-right bm-img-back"  src="/born_manager/static/src/img/search.png">
+                      {{vm.title}}
+                <img ng-show="vm.getBackModel()=='1'" data-ng-click="vm.headerBack()" class="btn pull-left no-border bm-img-back"  src="/born_manager/static/src/img/back.png">
+                <button ng-show="vm.getSaveModel()=='1'" data-ng-click="vm.headerCancel()" class="pull-left visible-xs dk" style="color:#ff4848">
+                  取消
+                </button>
+            </div>
+            <!-- / navbar header -->
+
+    </div>
+
+    <div class="app-content ng-scope m-n" style="background-color:white">
+        <div class="app-content-body fade-in-up ng-scope" style="padding-bottom: 0px;"  >
             <div ng-view style="position:relative;" id="ng-view" ></div>
             <toaster-container toaster-options="{'position-class': 'toast-top-center', 'close-button':false}"></toaster-container>
         </div>
     </div>
-    <div class="app-footer navbar navbar-fixed-bottom  ng-scope m-n" ui-view="footer" >
+    <div class="app-footer navbar navbar-fixed-bottom  ng-scope m-n" ui-view="footer"  ng-controller="NavbarController as vm" ng-show="vm.getDisplayModel()=='block'" >
 		<div class="row ng-scope" >
 		    <nav>
 		         <div class="footermenu" data-collapse="isCollapsed" >

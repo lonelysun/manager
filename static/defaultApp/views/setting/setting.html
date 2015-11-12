@@ -1,57 +1,105 @@
 <div class="show-hide-animation" >
 
-    <div class="panel hbox panel-default no-border" style="margin-bottom: 0px;">
+    <div ng-hide="vm.edit()=='edit'" class="panel hbox panel-default no-border" style="margin-bottom: 0px;">
         <div class="panel-body text-center" style="padding: 20px;">
-            <div class="  avatar m-r">
-                <img data-ng-show="vm.settings.image==''" style="width:100px; text-align:center;" src="/born_manager/static/src/img/default_employee.png" class="img">
-                <img data-ng-show="vm.settings.image!=''" style="width:100px;text-align:center;" ng-src="data:image/png;base64,{{vm.settings.image}}" class="img">
+            <div class="avatar m-r">
+                <img data-ng-show="vm.settings.image==''" style="width:95px; text-align:center;" src="/born_manager/static/src/img/default_employee.png" class="img">
+                <img data-ng-show="vm.settings.image!=''" style="width:95px;text-align:center;" ng-src="data:image/png;base64,{{vm.settings.image}}" class="img">
            </div>
         </div>
-        <div class="panel-body" style=" border-top: solid 1px #f6f6f5;">
-            <div class="pull-right">
-                <input editable-text="user.name" class="editable editable-click no-border text-right" data-ng-model="vm.settings.name"/>
-                <i class="fa fa-angle-right" style="margin-left: 10px;"></i>
-            </div>
-            姓名
-        </div>
 
-        <div class="panel-body" style="border-top: solid 1px #f6f6f5;">
-            <div class="pull-right">
-                <input editable-text="user.email" class="editable editable-click no-border text-right" data-ng-model="vm.settings.email"/>
-                <i class="fa fa-angle-right" style="margin-left: 10px;"></i>
-            </div>
-            邮箱
-        </div>
 
-        <div class="panel-body  " style="border-top: solid 1px #f6f6f5;">
-            <div class="pull-right">
-                {{ vm.settings.tel }}
-             </div>
-            手机号
-        </div>
-        <div class="panel-body  " style="border-top: solid 1px #f6f6f5;">
-            <div class="pull-right">
-                {{ vm.settings.team_name }}
-             </div>
-            销售团队
-        </div>
-        <div class="panel-body  " style="border-top: solid 1px #f6f6f5;">
-            <div class="pull-right">
-                {{ vm.settings.manager_name }}
-             </div>
-            销售经理
-        </div>
-
-        <div class="panel-body " style="border-top: solid 1px #f6f6f5;">
-            <div class="pull-right">
-                <input type="password" editable-text="user.email" class="editable editable-click no-border text-right" placeholder="输入新密码" data-ng-model="vm.settings.password"/>
-                <i class="fa fa-angle-right" style="margin-left: 10px;"></i>
+        <div class="no-bg bm-item" >
+            <div class="bm-top" >
+                姓名
+                <img src="/born_manager/static/src/img/details.png" class="pull-right" style="width:25px;">
             </div>
-            修改密码
+            <div class="bm-main" >
+                {{vm.settings.name}}
+            </div>
+        </div>
+        <div class="no-bg bm-item" >
+            <div class="bm-top" >
+                密码
+                <img src="/born_manager/static/src/img/password.png" class="pull-right" style="width:25px;">
+            </div>
+            <div class="bm-main" >
+                ················
+            </div>
+        </div>
+        <div class="no-bg bm-item" >
+            <div class="bm-top">
+                邮箱
+                <img src="/born_manager/static/src/img/email.png" class="pull-right" style="width:25px;">
+            </div>
+            <div class="bm-main" >
+                {{vm.settings.email}}
+            </div>
+        </div>
+        <div class=" no-bg bm-item">
+            <div class="bm-top" >
+                手机
+                <img src="/born_manager/static/src/img/phone.png" class="pull-right" style="width:25px;">
+            </div>
+            <div class="bm-main" >
+                {{vm.settings.tel}}
+            </div>
+        </div>
+        <div class="no-bg bm-item">
+            <div class="bm-top">
+                销售团队
+                <img src="/born_manager/static/src/img/groups.png" class="pull-right" style="width:25px;">
+            </div>
+            <div class="bm-main">
+                {{vm.settings.team_name}}
+            </div>
+        </div>
+        <div class="no-bg bm-item">
+            <div class="bm-top">
+                销售主管
+                <img src="/born_manager/static/src/img/men.png" class="pull-right" style="width:25px;">
+            </div>
+            <div class="bm-main">
+                {{vm.settings.manager_name}}
+            </div>
         </div>
     </div>
-    <div style="margin-top: 20px;background:#f6f8f8">
-        <button type="submit" class="btn btn-info btn-lg btn-block no-border no-shadow "   data-ng-click="vm.regiest()">保存</button>
+
+    <div ng-show="vm.edit()=='edit'" class="panel hbox panel-default no-border" style="margin-bottom: 0px;">
+        <div class="panel-body text-center" style="padding: 20px;">
+            <div class="  avatar m-r">
+                <input ng-show="false" id="File" type="file" file-model="myFile"style="" />
+                <img data-ng-show="vm.reset.image==''"  onclick="changeimg()"  style="width:95px; text-align:center;" src="/born_manager/static/src/img/default_employee.png" class="img">
+                <img data-ng-show="vm.reset.image!=''"  onclick="changeimg()"  style="width:95px; text-align:center;" ng-src="{{vm.reset.image}}" class="img">
+           </div>
+        </div>
+
+        <div class="no-bg bm-item" >
+            <div class="bm-left-font">
+                姓名
+                <input editable-text="user.name" class="editable editable-click no-border text-left bm-right-font"  placeholder="输入新姓名"  data-ng-model="vm.reset.name"/>
+                <i class="fa-times-circle fa pull-right btn" data-ng-click="vm.clear('name')"></i>
+            </div>
+        </div>
+        <div class="no-bg bm-item" >
+            <div class="bm-left-font" >
+                密码
+                <input type="password" editable-text="user.email" class="editable editable-click no-border text-left bm-right-font" placeholder="输入新密码" data-ng-model="vm.reset.password"/>
+                <i class="fa-times-circle fa pull-right btn" data-ng-click="vm.clear('password')"></i>
+            </div>
+        </div>
+        <div class="no-bg bm-item" >
+            <div class="bm-left-font">
+                邮箱
+                <input editable-text="user.name" type="email" class="editable editable-click no-border text-left bm-right-font"  placeholder="输入新邮箱" data-ng-model="vm.reset.email"/>
+                <i class="fa-times-circle fa pull-right btn" data-ng-click="vm.clear('email')"></i>
+            </div>
+        </div>
+         <div class="settings" style="width:100%;background-color:#f0f3f4;bottom: 0px;">
+    <p style="width:80%;margin:0 auto;padding-top: 10px;padding-bottom: 10px;">
+        <button type="submit" class="btn btn-info btn-lg btn-block" data-ng-click="vm.regiest()"><i class="fa fa-check-square-o"></i>确认分配</button>
+      </p>
+ </div>
+
     </div>
 </div>
-
