@@ -3,11 +3,7 @@
     var injectParams = ['$scope', '$location', 'config','displayModel'];
     var NavbarController = function ($scope, $location, config,displayModel) {
         var vm = this;
-        vm.showheaderEdit = false;
-        vm.showheaderSave = false;
-        vm.showheaderSearch = false;
-        vm.showheaderBack = false;
-        vm.showheaderCancel = false;
+
         vm.headerSave = null;
         vm.headerSearch = null;
         vm.headerBack = null;
@@ -32,7 +28,7 @@
             displayModel.displayTop = 'edit';
         }
         vm.getDisplayModel = function(){
-        	return  displayModel.displayModel;
+            return  displayModel.displayModel;
         }
 
         vm.getEditModel = function(){

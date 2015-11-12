@@ -1,20 +1,66 @@
 .bm-item{
     background-color:white;
     border-bottom: solid 1px #f6f6f5;
-    margin-left: 35px;
-    margin-right: 35px;
-    padding-bottom:12px;
+    margin-left: 30px;
+    margin-right: 30px;
+    padding-bottom:20px;
     padding-top:20px;
 }
 .bm-main{
     padding-top:5px;
-    font-size:17px;
+    font-size:18px;
     color:#4a4a4a;
 }
 .bm-top{
-    font-size:12px;
+    font-size:10px;
     color:#A0A0A0;
 }
+
+/*start nisen*/
+.bm-button {
+    width: 100%;
+    /*height:55px;*/
+}
+.bm-navbar-header {
+    background-color:white;
+    text-align:center;
+    border-bottom: solid 2px #f6f6f5;
+}
+.bm-i-clock {
+    margin-right: 10px;
+}
+
+.bm-three-col {
+    border: solid 1px #f6f6f5;
+}
+
+.bm-three-col-up-font {
+    font-size: 40px;
+    color: rgba(0, 0, 0, 0.74);
+}
+.bm-wrapper{
+    background-color: rgba(242, 242, 242, 0.93);
+}
+
+.bm-timeline {
+    margin-left: 35%;
+    border-width: 0 0 0 2px;
+    border-color: #b2b1af;
+
+
+
+
+}
+.bt-timeline-left{
+    width:8em;
+    text-align: left;
+    margin-left: -12em;
+    font-size: 10px;
+}
+.bm-timeline-right{
+    margin-left:20px;
+}
+/*end nisen*/
 /*liuhao*/
 .bm-left-font{
     font-size:17px;
@@ -33,4 +79,3 @@
 }
 
 /*liuhao end*/
-

@@ -1,0 +1,59 @@
+<div class="panel">
+    <div class="no-bg bm-item">
+        <div class="bm-top">
+            品牌
+            <img class="pull-right" src="/born_manager/static/src/img/details.png">
+        </div>
+        <div class="bm-main">
+            {{ vm.company.brand }}
+        </div>
+    </div>
+    <div class="no-bg bm-item">
+        <div class="bm-top">
+            公司
+            <img class="pull-right" src="/born_manager/static/src/img/company.png">
+        </div>
+        <div class="bm-main">
+            {{ vm.company.name  }}
+        </div>
+    </div>
+    <div class="no-bg bm-item">
+        <div class="bm-top">
+            行业
+            <img class="pull-right" src="/born_manager/static/src/img/groups.png">
+        </div>
+        <div class="bm-main">
+            {{ vm.company.industry_category }}
+        </div>
+    </div>
+    <div class="no-bg bm-item">
+        <div class="bm-top">
+            地址
+            <img class="pull-right" src="/born_manager/static/src/img/address.png">
+        </div>
+        <div class="bm-main">
+            {{vm.company.address}}
+        </div>
+    </div>
+    <div class="no-bg bm-item">
+        <div class="bm-top">
+            联系人
+            <img class="pull-right" src="/born_manager/static/src/img/name.png">
+        </div>
+        <div class="bm-main">
+            {{ vm.company.contact_name }}
+        </div>
+    </div>
+    <div class="no-bg bm-item">
+        <div class="bm-top">
+            手机
+            <img class="pull-right" src="/born_manager/static/src/img/phone.png">
+        </div>
+        <div class="bm-main">
+            {{ vm.company.phone }}
+        </div>
+    </div>
+    <div class="bm-item">
+        <a data-ng-click="vm.updateCompany()" class="btn no-radius btn-lg btn-danger bm-button">审 核 通 过 并 开 通 帐 套</a>
+    </div>
+</div>

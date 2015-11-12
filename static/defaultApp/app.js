@@ -71,6 +71,20 @@
 	            templateUrl: viewBase + 'companys/companys.html',
 	            controllerAs: 'vm'
 	        })
+			//test
+			.when('/company/notupdated/:companyId', {
+	            controller: 'CompanyControllerNotUpdated',
+	            templateUrl: viewBase + 'companys/companyDetailNotUpdated.html',
+	            controllerAs: 'vm'
+	        })
+
+			.when('/company/updated/:companyId', {
+	            controller: 'CompanyControllerUpdated',
+	            templateUrl: viewBase + 'companys/companyDetailUpdated.html',
+	            controllerAs: 'vm'
+	        })
+
+			//end test
 			.when('/companys/:companyId', {
 	            controller: 'CompanyController',
 	            templateUrl: viewBase + 'companys/companysDetail.html',

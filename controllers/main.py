@@ -21,9 +21,6 @@ from mako.lookup import TemplateLookup
 import base64
 import os
 import werkzeug.utils
-import hashlib
-from io import BytesIO
-import boto3,os
 
 _logger = logging.getLogger(__name__)
 
@@ -133,9 +130,9 @@ class born_manager(http.Controller):
             data.append(company_val)
             
         val = {
-               'ismanager' : True,
-               'issaler' : True,
-               'option':1,
+               'ismanager' : ismanager,
+               'issaler' : issaler,
+               'option':user.role_option,
                'companys' : data,
         }
         return json.dumps(val,sort_keys=True)
@@ -526,9 +523,219 @@ class born_manager(http.Controller):
                 'total_operate_count':total_operate_count,
                 'cash_total':'{0:,}'.format(cash_total),
                 'consume_total':'{0:,}'.format(consume_total),
+
             }
 
         return json.dumps(data,sort_keys=True)
+
+
+
+    #获取已激活公司的详细信息
+    @http.route('/manager/company/updated/<int:company_id>', type='http', auth="none",)
+    def company_updated(self, company_id, **post):
+
+        data={}
+        company_obj = request.registry.get('res.company')
+        for company in company_obj.browse(request.cr, SUPERUSER_ID,company_id, context=request.context):
+
+            sql=u""" select count(id) as cnt  from born_license where company_id=%s  """ % (company_id)
+            request.cr.execute(sql)
+            res_count=request.cr.fetchall()
+            license_count= int(res_count and res_count[0][0] or 0)
+
+            sql=u""" select count(id) as cnt  from res_users where company_id=%s  """ % (company_id)
+            request.cr.execute(sql)
+            res_count=request.cr.fetchall()
+            users_count= int(res_count and res_count[0][0] or 0)
+
+            sql=u""" select count(id) as cnt  from born_shop where company_id=%s  """ % (company_id)
+            request.cr.execute(sql)
+            res_count=request.cr.fetchall()
+            shop_count= int(res_count and res_count[0][0] or 0)
+
+            sql=u""" select count(id) as cnt  from born_member_sync where company_id=%s  """ % (company_id)
+            request.cr.execute(sql)
+            res_count=request.cr.fetchall()
+            member_count= int(res_count and res_count[0][0] or 0)
+
+            sql=u""" select count(id) as cnt  from born_card_sync where company_id=%s  """ % (company_id)
+            request.cr.execute(sql)
+            res_count=request.cr.fetchall()
+            card_count= int(res_count and res_count[0][0] or 0)
+
+            sql=u""" select count(id) as cnt  from res_users where company_id=%s  """ % (company_id)
+            request.cr.execute(sql)
+            res_count=request.cr.fetchall()
+            res_users_count= int(res_count and res_count[0][0] or 0)
+
+
+
+            #现金
+            sql=u""" SELECT  sum(
+              case when type in ('card','recharge','active','lost','upgrade','refund') then now_amount
+              when type in ('repayment') then now_card_amount
+              when type in ('buy','consume') then now_amount+now_card_amount else 0 end) as xianjin
+              from born_operate_sync where company_id=%s """ % (company_id)
+            request.cr.execute(sql)
+            res_count = request.cr.fetchall()
+            cash_total= int(res_count and res_count[0][0] or 0)
+
+            #卡消耗
+            sql=u""" SELECT  sum(abs(now_card_amount)) +sum(consume_amount) as xiaohao
+                 from born_operate_sync where company_id=%s and type in ('buy','consume'); """  % (company_id)
+            request.cr.execute(sql)
+            res_count = request.cr.fetchall()
+            consume_total= int(res_count and res_count[0][0] or 0)
+
+
+            sql=u""" SELECT
+                tb1. ID,
+                date_part('days', now() - tb1.approve_date) AS use_dates,
+                COALESCE (
+                    to_char(
+                        MAX (tb4.create_date),
+                        'yyyy-mm-dd'
+                    ),
+                    ''
+                ) AS last_consume_date
+            FROM
+                res_company tb1
+            LEFT JOIN born_operate_sync tb4 ON tb4.company_id = tb1. ID where tb1.id=%s
+            GROUP BY
+                tb1. ID,
+                tb1.approve_date """ % (company_id)
+
+            request.cr.execute(sql)
+            infos = request.cr.dictfetchall()
+            use_dates=0
+            last_consume_date=company.create_date
+            for info in infos:
+                use_dates=info['use_dates']
+                last_consume_date=info['last_consume_date']
+
+            #业务列表
+            total_operate_count=0
+            sql=u""" select type, SUM(now_amount+consume_amount) as total,count(id) as cnt  from  born_operate_sync where company_id=%s  group by type  """ % (company_id)
+            request.cr.execute(sql)
+            operates = request.cr.dictfetchall()
+            operate_data=[]
+            for operate in operates:
+
+                type=operate['type']
+                type_display=type
+                if type=='upgrade':
+                    type_display='卡升级'
+                elif type=='refund':
+                    type_display='退款'
+                elif type=='retreat':
+                    type_display='退货'
+                elif type=='consume':
+                    type_display='消费'
+                elif type=='card':
+                    type_display='开卡'
+                elif type=='lost':
+                    type_display='挂失'
+                elif type=='active':
+                    type_display='激活'
+                elif type=='exchange':
+                    type_display='退换'
+                elif type=='merger':
+                    type_display='并卡'
+                elif type=='buy':
+                    type_display='消费'
+                elif type=='replacement':
+                    type_display='换卡'
+                elif type=='repayment':
+                    type_display='还款'
+                elif type=='recharge':
+                    type_display='充值'
+
+                operate_data.append({
+                    'type':operate['type'],
+                    'total':'{0:,}'.format(operate['total']),
+                    'cnt':operate['cnt'],
+                    'type_display':type_display,
+                })
+
+                total_operate_count+=int(operate['cnt'])
+
+            address='%s%s%s%s%s' % (company.state_id.name or '',
+                                         company.area_id.name or '',
+                company.subdivide_id.name or '',
+                company.street or '', company.street2 or '')
+
+            if company.state == 'draft':
+                state_display=u'待审核'
+            elif company.state == 'done':
+                state_display=u'运行中'
+            elif company.state == 'cancel':
+                state_display=u'已停止'
+            elif company.state == 'review':
+                state_display=u'提交申请'
+            elif company.state == 'sent':
+                state_display=u'发送邮件'
+            else:
+                state_display=u''
+
+            data={
+                'id': company.id,
+                'name': company.name,
+                'create_date':company.create_date,
+                'approve_date':company.approve_date or '',
+                'state_display':state_display,
+                'state': company.state,
+                'address':address,
+                'contact_name':company.contact_name or '',
+                'phone':company.phone or '',
+                'employee_name':company.employee_id and company.employee_id.name or '',
+                # add by nisen
+                'sale_employee_name':company.sale_employee_id and company.sale_employee_id.name or '',
+                'logo':company.logo or '',
+                # end add
+                'employee_phone':company.employee_id and company.employee_id.mobile_phone or '',
+                'brand':company.brand or '',
+                'industry_category': company.industry_id.name or '',
+                'use_dates':use_dates,
+                'last_consume_date':last_consume_date or '',
+                'users_count':users_count,
+                'license_count':license_count,
+                'shop_count':shop_count,
+                'member_count':member_count,
+                'card_count':card_count,
+                'res_users_count':res_users_count,
+                'operate_data':operate_data,
+                'total_operate_count':total_operate_count,
+                'cash_total':'{0:,}'.format(cash_total),
+                'consume_total':'{0:,}'.format(consume_total),
+
+            }
+
+        return json.dumps(data,sort_keys=True)
+
+    #获取未激活公司
+    @http.route('/manager/company/notupdated/<int:company_id>', type='http', auth="none",)
+    def company_notupdated(self, company_id, **post):
+        company_obj = request.registry.get('res.company')
+        company = company_obj.browse(request.cr, SUPERUSER_ID,company_id, context=request.context)
+
+        address='%s%s%s%s%s' % (company.state_id.name or '',
+                                         company.area_id.name or '',
+                company.subdivide_id.name or '',
+                company.street or '', company.street2 or '')
+
+        data = {
+            'id': company.id,
+            'name': company.name,
+            'address':address,
+            'contact_name':company.contact_name or '',
+            'phone':company.phone or '',
+            'brand':company.brand or '',
+            'industry_category': company.industry_id.name or '',
+        }
+        return json.dumps(data,sort_keys=True)
+
+
+
 
     #获取终端列表
     @http.route('/manager/licenses', type='http', auth="none",)
@@ -799,16 +1006,16 @@ class born_manager(http.Controller):
              """ % ( where,)
             request.cr.execute(sql)
             team_name,manager_name = request.cr.fetchone()
+            print(team_name,manager_name)
 
         val={
             'name':user.name or '',
             'tel' :user.login or '',
             'email' :user.email or '',
-            'image' :str(user.image) or '',
+            'image' :user.image or '',
             'team_name':team_name,
             'manager_name':manager_name,
         }
-        print(val)
         return json.dumps(val,sort_keys=True)
 
     #修改用户基本信息
@@ -828,22 +1035,3 @@ class born_manager(http.Controller):
 
         user_obj.write(request.cr,SUPERUSER_ID,uid,values)
         return json.dumps(values,sort_keys=True)
-
-
-    #图片上传S3，返回url
-    def upLoadS3(self,base64):
-        if base64=='':
-            return ''
-        permision = "public-read"
-        suffix = base64[base64.find(',')+1:]#只取出base64
-        sha = hashlib.sha1(suffix).hexdigest()# 文件hash值
-        f = BytesIO()
-        f.write(base64.b64decode(str(suffix)))
-        f.seek(0)
-        uploadfile="res_partner/images/"+sha.strip()+".jpg"# 图片文件使用hash值
-        ob=self.__s3.Object(self.__bucketname, uploadfile)
-        result=ob.put(Body=f,ServerSideEncryption='AES256',StorageClass='STANDARD',ACL=permision)
-        url = 'https://s3.cn-north-1.amazonaws.com.cn/'+self.__bucketname+'/'+uploadfile
-        return url
-
-

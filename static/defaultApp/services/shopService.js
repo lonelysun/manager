@@ -59,6 +59,20 @@
         	});
         };
 
+        //获取已激活公司详细信息
+        factory.getCompanyDetailUpdated = function (id) {
+        	return $http.get(serviceBase + 'company/updated' + id).then(function(results) {
+        		return results.data;
+        	});
+        };
+
+        //获取未激活公司详细信息
+        factory.getCompanyDetailNotUpdated = function (id) {
+        	return $http.get(serviceBase + 'company/notupdated/' + id).then(function(results) {
+        		return results.data;
+        	});
+        };
+
         //获取最新动态列表
         factory.getShops = function (companyId) {
 
