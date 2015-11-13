@@ -17,9 +17,11 @@
 
         //获取公司明细
         function getCompanyDetail() {
-            dataService.getCompanyDetail(companyId)
+            dataService.getCompanyDetailUpdated(companyId)
             .then(function (data) {
             	vm.company = data;
+                    console.info('get here');
+                    console.info(vm.company);
                 $timeout(function () {
                 }, 1000);
             }, function (error) {

@@ -14,12 +14,18 @@
         vm.isLoad=false;
         vm.keyword='';
 
+        //vm.showheaderEdit = true;
+        //vm.showheaderSave = true;
+        //vm.showheaderSearch = true;
+        //vm.showheaderBack = true;
+        //vm.showheaderCancel = true;
 
         //获取公司明细
         function getCompanyDetail() {
             dataService.getCompanyDetailNotUpdated(companyId)
             .then(function (data) {
             	vm.company = data;
+
                 $timeout(function () {
                 }, 1000);
             }, function (error) {

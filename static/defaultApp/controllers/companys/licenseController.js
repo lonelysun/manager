@@ -10,9 +10,11 @@
         vm.busy=false;
         vm.isLoad=false;
 
+
         vm.licenses={
                 display:'day',
-                accounts:[],
+                accounts_one:[],
+                accounts_two:[],
                 current_date:'',
                 current_week:'',
                 current_year:'',
@@ -33,8 +35,11 @@
             getLicenses(0);
 
         };
-        
-        
+
+        vm.showset = function(flag){
+            vm.show = flag;
+        }
+
         function getLicenses(direction) {
 
             if(vm.busy)return;
@@ -85,6 +90,11 @@
         //初始化
         function init() {
             displayModel.displayModel='none';
+            displayModel.displayEdit = '0';
+            displayModel.displaySave = '0';
+            displayModel.displaySearch = '0';
+            displayModel.displayBack = '1';
+            vm.show='1';
             getLicenses(0);
         }
 

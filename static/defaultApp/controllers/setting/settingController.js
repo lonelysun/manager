@@ -47,16 +47,16 @@
                 return;
             }
             if(vm.reset.password&&vm.reset.password.length<6){
-            	toaster.pop('warning', "系统提示", "请输入六位以上密码！");
+                toaster.pop('warning', "系统提示", "请输入六位以上密码！");
                 return;
             }
             dataService.regiest(vm.reset)
             .then(function (data) {
-         	   toaster.pop('success', "", "个人信息保存成功!");
+               toaster.pop('success', "", "个人信息保存成功!");
                $timeout(function () {
                     $route.reload();
                },500);
-         	   $route.reload();
+               $route.reload();
             }, function (error) {
              toaster.pop('warning', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
             });
@@ -78,9 +78,7 @@
             dataService.getSetting()
             .then(function (data) {
                 vm.settings = data;
-                console.info(data);
                 vm.reset = JSON.parse(JSON.stringify(data));
-                console.info(vm.reset);
                 vm.reset.image = '';
                 $timeout(function () {
                 }, 1000);

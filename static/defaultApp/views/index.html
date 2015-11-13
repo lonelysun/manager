@@ -46,24 +46,24 @@
         </div>
     </div>
     <div class="app-footer navbar navbar-fixed-bottom  ng-scope m-n" ui-view="footer"  ng-controller="NavbarController as vm" ng-show="vm.getDisplayModel()=='block'" >
-		<div class="row ng-scope" >
-		    <nav>
-		         <div class="footermenu" data-collapse="isCollapsed" >
-		             <ul menu-highlighter highlight-class-name="active"  >
-		                 <li style="width: 30%" >
-		                 	<a href="#/menus"><i class="fa icon-calendar"></i><p>工作台</p></a>
-		                 </li>
-		                 <li style="width: 40%" >
-		                 	<a href="#/messages"><i class="fa icon-plus"></i><p>消息</p></a>
-		                 </li>
-		                 <li style="width: 30%" >
-		                 	<a href="#/settings" ><i class="fa icon-list"></i><p>设置</p></a>
-		                 </li>
-		             </ul>
-		         </div>
-		     </nav>
-		</div>
-	</div>
+        <div class="row ng-scope" >
+            <nav>
+                 <div class="footermenu" data-collapse="isCollapsed" >
+                     <ul menu-highlighter highlight-class-name="active"  >
+                         <li style="width: 30%" >
+                            <a href="#/menus"><i class="fa icon-calendar"></i><p>工作台</p></a>
+                         </li>
+                         <li style="width: 40%" >
+                            <a href="#/messages"><i class="fa icon-plus"></i><p>消息</p></a>
+                         </li>
+                         <li style="width: 30%" >
+                            <a href="#/settings" ><i class="fa icon-list"></i><p>设置</p></a>
+                         </li>
+                     </ul>
+                 </div>
+             </nav>
+        </div>
+    </div>
 
     <div wc-overlay wc-overlay-delay="30">
         <i class="fa fa-spin fa-refresh fa-2x"></i>
@@ -130,7 +130,7 @@
 
     <script src="/born_manager/static/defaultApp/controllers/navbarController.js"></script>
 
-  	<script src="/born_manager/static/src/js/toaster.min.js"></script>
+    <script src="/born_manager/static/src/js/toaster.min.js"></script>
     <script src="/born_manager/static/defaultApp/wc.directives/directives/fileModel.js"></script>
 
 </body>

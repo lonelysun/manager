@@ -4,12 +4,17 @@
     var NavbarController = function ($scope, $location, config,displayModel) {
         var vm = this;
 
+        ////定义顶部导航栏
+        //vm.showheaderEdit = null;
+        //vm.showheaderSave = null;
+        //vm.showheaderSearch = null;
+        //vm.showheaderBack = null;
+        //vm.showheaderCancel = null;
+        //vm.headerEdit = null;
         vm.headerSave = null;
         vm.headerSearch = null;
         vm.headerBack = null;
         vm.headerCancel = null;
-
-
 
         vm.headerEdit = function(){
             displayModel.flag = 'edit';
@@ -32,6 +37,7 @@
         }
 
         vm.getEditModel = function(){
+            vm.title = displayModel.title;
             return displayModel.displayEdit;
         }
 
@@ -41,6 +47,7 @@
         }
 
         vm.getSearchModel = function(){
+            vm.title = displayModel.title;
             return displayModel.displaySearch;
         }
 
@@ -48,14 +55,12 @@
             vm.title = displayModel.title;
             return displayModel.displayBack;
         }
-
+        
         vm.isCollapsed = false;
         vm.highlight = function (path) {
             return $location.path().substr(0, path.length) === path;
         };
-
     };
-
 
     NavbarController.$inject = injectParams;
 

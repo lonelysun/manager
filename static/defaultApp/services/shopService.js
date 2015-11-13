@@ -61,7 +61,7 @@
 
         //获取已激活公司详细信息
         factory.getCompanyDetailUpdated = function (id) {
-        	return $http.get(serviceBase + 'company/updated' + id).then(function(results) {
+        	return $http.get(serviceBase + 'company/updated/' + id).then(function(results) {
         		return results.data;
         	});
         };

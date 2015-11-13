@@ -130,9 +130,9 @@ class born_manager(http.Controller):
             data.append(company_val)
             
         val = {
-               'ismanager' : ismanager,
-               'issaler' : issaler,
-               'option':user.role_option,
+               'ismanager' : True,
+               'issaler' : True,
+               'option':1,
                'companys' : data,
         }
         return json.dumps(val,sort_keys=True)
@@ -680,7 +680,7 @@ class born_manager(http.Controller):
             data={
                 'id': company.id,
                 'name': company.name,
-                'create_date':company.create_date,
+                'create_date':company.create_date or '',
                 'approve_date':company.approve_date or '',
                 'state_display':state_display,
                 'state': company.state,
@@ -695,7 +695,7 @@ class born_manager(http.Controller):
                 'employee_phone':company.employee_id and company.employee_id.mobile_phone or '',
                 'brand':company.brand or '',
                 'industry_category': company.industry_id.name or '',
-                'use_dates':use_dates,
+                'use_dates':use_dates or 0,
                 'last_consume_date':last_consume_date or '',
                 'users_count':users_count,
                 'license_count':license_count,
@@ -780,8 +780,6 @@ class born_manager(http.Controller):
                 today=datetime.datetime.strptime(current_month+'-01','%Y-%m-01')
                 current_month=today.replace(month=(today.month + 1 - 1) % 12 + 1, year=today.year if today.month < 12 else today.year + 1)
                 current_month=current_month.strftime("%Y-%m")
-            elif display_type=='year':
-                current_year=int(current_year)+1
             elif display_type=='week':
                 filter_week=int(filter_week)+1
                 new_date = datetime.date(int(filter_week_year)+1,01,01)
@@ -801,8 +799,6 @@ class born_manager(http.Controller):
                 today=datetime.datetime.strptime(current_month+'-01','%Y-%m-01')
                 current_month= today + datetime.timedelta(days=-1)
                 current_month=current_month.strftime("%Y-%m")
-            elif display_type=='year':
-                current_year=int(current_year)-1
             elif display_type=='week':
                 filter_week=int(filter_week)-1
                 #前一年的最后一周
@@ -815,37 +811,55 @@ class born_manager(http.Controller):
   
         where = ""
         if company_id<=0:
-            where +="where 1=1" 
+            pass
         else:
-            where +="where bl.company_id='%s' "
+            where +="and bl.company_id='%s' "
         if display_type=='day':
             display_current=current_date
             where +="  and TO_CHAR(bl.check_date,'YYYY-MM-DD') = '%s' " % (current_date)
         elif display_type=='month':
             display_current=current_month
             where += "  and TO_CHAR(bl.check_date,'YYYY-MM') = '%s' " % (current_month)
-        elif display_type=='year':
-            display_current=current_year
-            where += "  and TO_CHAR(bl.check_date,'YYYY') = '%s' " % (current_year)
         elif display_type=='week':
             display_current= current_week
             where += "  and TO_CHAR(bl.check_date,'YYYY') = '%s' and extract('week' from bl.check_date)::varchar = '%s' " % (filter_week_year,filter_week)
-        elif display_type =='date':
-            if date_from != '' and date_from!='NaN-NaN-NaN':
-                where += "and TO_CHAR(bl.check_date,'YYYY-MM-DD') >= '%s'  " % (date_from)
-            if date_to != '' and date_to!='NaN-NaN-NaN':
-                where += " and TO_CHAR(bl.check_date,'YYYY-MM-DD') <= '%s' " % (date_to)
-            
-            
-        sql = u"""
-        select bl.mac,bl.version,bl.state,bl.check_date,bl.note,bl.id,rc.name as company_name from born_license bl
-    join res_company rc on rc.id = bl.company_id %s order by bl.check_date desc
-        """ %(where)
-        request.cr.execute(sql)
-        operates = request.cr.dictfetchall()
+
+
+        sql_one = u"""
+            select bl.company_id ,  count(bl.id) ,rc.name from born_license bl
+	        join res_company rc on bl.company_id = rc.id
+                 where  bl.state in ('confirm','active') %s group by bl.company_id,rc.name HAVING count(bl.id) >0
+            """ %(where)
+        request.cr.execute(sql_one)
+        operates_one = request.cr.dictfetchall()
+
+        sql_two = u"""
+            select bl.company_id ,  count(bl.id) ,rc.name from born_license bl
+	        join res_company rc on bl.company_id = rc.id
+                 where  bl.state = 'draft' %s group by bl.company_id,rc.name HAVING count(bl.id) >0
+            """ %(where)
+        request.cr.execute(sql_two)
+        operates_two = request.cr.dictfetchall()
+
+        sql_number_one = u"""
+            select count(*) from born_license bl where state in ('confirm','active') %s
+        """%(where)
+        request.cr.execute(sql_number_one)
+        number_one = request.cr.dictfetchall()
+
+        sql_number_two = u"""
+            select count(*) from born_license bl where state = 'draft' %s
+        """%(where)
+        request.cr.execute(sql_number_two)
+        number_two = request.cr.dictfetchall()
+
+
         val = {
             'display':display_type,
-            'accounts':operates,
+            'accountone':operates_one,
+            'accounttwo':operates_two,
+            'number_one' : number_one,
+            'number_two' : number_two,
             'current_date':current_date,
             'current_month':current_month,
             'current_year':current_year,
@@ -855,6 +869,24 @@ class born_manager(http.Controller):
             'date_from':date_from,
         }        
         
+    #     sql = u"""
+    #     select bl.mac,bl.version,bl.state,bl.check_date,bl.note,bl.id,rc.name as company_name from born_license bl
+    # join res_company rc on rc.id = bl.company_id %s order by bl.check_date desc
+    #     """ %(where)
+    #     request.cr.execute(sql)
+    #     operates = request.cr.dictfetchall()
+    #     val = {
+    #         'display':display_type,
+    #         'accounts':operates,
+    #         'current_date':current_date,
+    #         'current_month':current_month,
+    #         'current_year':current_year,
+    #         'current_week':current_week,
+    #         'display_current':display_current,
+    #         'date_to':date_to,
+    #         'date_from':date_from,
+    #     }
+    #
         return json.dumps(val,sort_keys=True)
 
     #获取公司的门店列表
