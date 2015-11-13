@@ -72,10 +72,12 @@
     padding-left:24px;
 }
 .bm-img-back{
-    width: 66px;
-    height: 47px;
-    padding-left: 23px;
-    padding-right: 23px;
+    padding-right: 42px;
+    padding-left: 10px;
+    padding-top: 13px;
+    padding-bottom: 13px;
+    width: 65px;
+    height: 49px;
 }
 
 /*liuhao end*/

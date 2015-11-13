@@ -78,10 +78,10 @@
             dataService.getSetting()
             .then(function (data) {
                 vm.settings = data;
-                console.info(vm.settings.image);
-                vm.reset = data;
-                vm.reset.image = '';
                 console.info(data);
+                vm.reset = JSON.parse(JSON.stringify(data));
+                console.info(vm.reset);
+                vm.reset.image = '';
                 $timeout(function () {
                 }, 1000);
             }, function (error) {

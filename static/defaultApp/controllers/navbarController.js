@@ -32,7 +32,6 @@
         }
 
         vm.getEditModel = function(){
-            vm.title = displayModel.title;
             return displayModel.displayEdit;
         }
 
@@ -42,7 +41,6 @@
         }
 
         vm.getSearchModel = function(){
-            vm.title = displayModel.title;
             return displayModel.displaySearch;
         }
 

@@ -18,20 +18,20 @@
 
 </head>
 <body ng-cloak>
-<div ng-controller="NavbarController as vm" class="h2 app-header navbar">
+<div ng-controller="NavbarController as vm" class="h3 app-header navbar" style="height: 64px;">
             <!-- navbar header -->
-            <div class="navbar-header bm-navbar-header text-center" style="line-height:50px">
-                <button ng-show="vm.getEditModel()=='1'" data-ng-click="vm.headerEdit()" class="pull-right visible-xs dk" style="color:#ff4848">
+            <div class="navbar-header bm-navbar-header text-center" style="line-height:44px;margin-top: 20px;">
+                <button ng-if="vm.getEditModel()=='1'" data-ng-click="vm.headerEdit()" class="pull-right visible-xs dk" style="color:#ff4848">
                   编辑
                 </button>
 
-                <button ng-show="vm.getSaveModel()=='1'" data-ng-click="vm.headerSave()" class="pull-right visible-xs dk" style="color:#ff4848">
+                <button ng-if="vm.getSaveModel()=='1'" data-ng-click="vm.headerSave()" class="pull-right visible-xs dk" style="color:#ff4848">
                   保存
                 </button>
-                <img ng-show="vm.getSearchModel()=='1'"  data-ng-click="vm.headerSearch()" class="btn pull-right bm-img-back"  src="/born_manager/static/src/img/search.png">
+                <img ng-if="vm.getSearchModel()=='1'"  data-ng-click="vm.headerSearch()" class="btn pull-right bm-img-back"  src="/born_manager/static/src/img/search.png">
                       {{vm.title}}
-                <img ng-show="vm.getBackModel()=='1'" data-ng-click="vm.headerBack()" class="btn pull-left no-border bm-img-back"  src="/born_manager/static/src/img/back.png">
-                <button ng-show="vm.getSaveModel()=='1'" data-ng-click="vm.headerCancel()" class="pull-left visible-xs dk" style="color:#ff4848">
+                <img ng-if="vm.getBackModel()=='1'" data-ng-click="vm.headerBack()" class="btn pull-left no-border bm-img-back"  src="/born_manager/static/src/img/back.png">
+                <button ng-if="vm.getSaveModel()=='1'" data-ng-click="vm.headerCancel()" class="pull-left visible-xs dk" style="color:#ff4848">
                   取消
                 </button>
             </div>
