@@ -3,23 +3,23 @@
     <div>
         <div class="panel-body text-center" style="padding: 20px;">
             <div class="avatar m-r">
-                <img  style="width:95px; text-align:center;" src="/born_manager/static/src/img/default_employee.png" class="img">
-                <!--<img data-ng-show="vm.settings.image!=''" style="width:95px;text-align:center;" ng-src="data:image/png;base64,{{vm.settings.image}}" class="img">-->
+                <img  data-ng-show="vm.company.logo ==''" style="width:95px; height:95px; text-align:center;" src="/born_manager/static/src/img/default_company.png" class="img">
+                <img data-ng-show="vm.company.logo !=''" style="width:95px;height:95px; text-align:center;" ng-src="data:image/png;base64,{{vm.company.logo}}" class="img">
            </div>
         </div>
     </div>
 
     <div>
         <div class="hbox text-center b-t b-b b-light text-sm bm-wrapper">
-            <div class="col padder-v text-muted b-r b-light bm-three-col">
+            <div class="col padder-v text-muted b-r b-light bm-three-col-left">
                 <div class="bm-three-col-up-font">{{ vm.company.license_count }}</div>
                 <div class="bm-top">设备数</div>
             </div>
-            <div class="col padder-v text-muted bm-three-col">
+            <div class="col padder-v text-muted bm-three-col-middle">
                 <div class="bm-three-col-up-font">{{ vm.company.use_dates }}</div>
                 <div class="bm-top">使用天数</div>
             </div>
-            <div class="col padder-v text-muted bm-three-col">
+            <div class="col padder-v text-muted bm-three-col-right">
                 <div class="bm-three-col-up-font">{{ vm.company.member_count }}</div>
                 <div class="bm-top">会员数</div>
             </div>
@@ -32,7 +32,7 @@
     <div class="no-bg bm-item">
         <div class="bm-top">
             品牌
-            <img class="pull-right" src="/born_manager/static/src/img/details.png">
+            <img class="pull-right bm-icon" src="/born_manager/static/src/img/name.png">
         </div>
         <div class="bm-main">
             {{ vm.company.brand }}
@@ -41,7 +41,7 @@
     <div class="no-bg bm-item">
         <div class="bm-top">
             公司
-            <img class="pull-right" src="/born_manager/static/src/img/company.png">
+            <img class="pull-right bm-icon" src="/born_manager/static/src/img/company.png">
         </div>
         <div class="bm-main">
             {{ vm.company.name  }}
@@ -50,7 +50,7 @@
     <div class="no-bg bm-item">
         <div class="bm-top">
             行业
-            <img class="pull-right" src="/born_manager/static/src/img/groups.png">
+            <img class="pull-right bm-icon" src="/born_manager/static/src/img/groups.png">
         </div>
         <div class="bm-main">
             {{ vm.company.industry_category }}
@@ -59,16 +59,18 @@
     <div class="no-bg bm-item">
         <div class="bm-top">
             地址
-            <img class="pull-right" src="/born_manager/static/src/img/address.png">
+            <img class="pull-right bm-icon" src="/born_manager/static/src/img/address.png">
         </div>
         <div class="bm-main">
+            <div class="btm-main-address">
             {{vm.company.address}}
+            </div>
         </div>
     </div>
     <div class="no-bg bm-item">
         <div class="bm-top">
             门店
-            <img class="pull-right" src="/born_manager/static/src/img/name.png">
+            <img class="pull-right bm-icon" src="/born_manager/static/src/img/store.png">
         </div>
         <div class="bm-main">
             {{ vm.company.shop_count }} 家
@@ -77,7 +79,7 @@
     <div class="no-bg bm-item">
         <div class="bm-top">
             员工
-            <img class="pull-right" src="/born_manager/static/src/img/phone.png">
+            <img class="pull-right bm-icon" src="/born_manager/static/src/img/employee.png">
         </div>
         <div class="bm-main">
             {{vm.company.res_users_count}} 人
@@ -86,7 +88,7 @@
     <div class="no-bg bm-item">
         <div class="bm-top">
             权益金 (营)
-            <img class="pull-right" src="/born_manager/static/src/img/phone.png">
+            <img class="pull-right bm-icon" src="/born_manager/static/src/img/data2.png">
         </div>
         <div class="bm-main">
             ￥ {{ vm.company.cash_total }}
@@ -95,7 +97,7 @@
     <div class="no-bg bm-item">
         <div class="bm-top">
             消耗额 (收)
-            <img class="pull-right" src="/born_manager/static/src/img/phone.png">
+            <img class="pull-right bm-icon" src="/born_manager/static/src/img/data1.png">
         </div>
         <div class="bm-main">
             ￥ {{ vm.company.consume_total }}
@@ -104,7 +106,7 @@
     <div class="no-bg bm-item">
         <div class="bm-top">
             联系人
-            <img class="pull-right" src="/born_manager/static/src/img/phone.png">
+            <img class="pull-right bm-icon" src="/born_manager/static/src/img/men.png">
         </div>
         <div class="bm-main">
             {{ vm.company.contact_name }}
@@ -113,7 +115,7 @@
     <div class="no-bg bm-item">
         <div class="bm-top">
             手机
-            <img class="pull-right" src="/born_manager/static/src/img/phone.png">
+            <img class="pull-right bm-icon" src="/born_manager/static/src/img/phone.png">
         </div>
         <div class="bm-main">
             {{ vm.company.phone }}

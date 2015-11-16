@@ -61,7 +61,12 @@
 	            templateUrl: viewBase + 'messages/messages.html',
 	            controllerAs: 'vm'
 	        })
-            .when('/panel', {
+            //.when('/panel', {
+	        //    controller: 'PanelController',
+	        //    templateUrl: viewBase + 'panel/panel.html',
+	        //    controllerAs: 'vm'
+	        //})
+			.when('/panel', {
 	            controller: 'PanelController',
 	            templateUrl: viewBase + 'panel/panel.html',
 	            controllerAs: 'vm'
@@ -98,11 +103,6 @@
 			.when('/licenses/:companyId', {
 	            controller: 'LicenseController',
 	            templateUrl: viewBase + 'companys/licenses.html',
-	            controllerAs: 'vm'
-	        })
-			.when('/licenses/deatil/:date/:companyId', {
-	            controller: 'LicenseDetailController',
-	            templateUrl: viewBase + 'companys/licensesDetail.html',
 	            controllerAs: 'vm'
 	        })
 			.when('/users/:companyId', {
@@ -269,6 +269,11 @@
 	        	controller: 'TracklistController',
 	        	templateUrl: viewBase + 'salecontrole/tracklist.html',
 	        	controllerAs: 'vm'
+	        })
+			.when('/licenses/deatil/:date/:companyId', {
+	            controller: 'LicenseDetailController',
+	            templateUrl: viewBase + 'companys/licensesDetail.html',
+	            controllerAs: 'vm'
 	        })
 			.otherwise({ redirectTo: '/menus' });
     }]);

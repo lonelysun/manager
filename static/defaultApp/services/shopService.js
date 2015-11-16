@@ -39,12 +39,13 @@
         };
 
         //获取公司列表
-        factory.getCompanys = function (pageIndex,keyword) {
+        factory.getCompanys = function (pageIndex,keyword,companysState) {
 
             return $http.get(serviceBase + 'companys', {
      			params : {
                     index:pageIndex,
-                    keyword:keyword
+                    keyword:keyword,
+                    companysState:companysState
      			}
      			}).then(function(results) {
      				return results.data;
@@ -100,20 +101,6 @@
                     direction:direction,
                     date_from:date_from,
                     date_to:date_to,
-     			}
-     			}).then(function(results) {
-     				return results.data;
-     			});
-        };
-        //获取终端数据
-        factory.getLicenses = function (date,companyId,pageIndex,keyword) {
-
-            return $http.get(serviceBase + 'licensesdetail', {
-     			params : {
-                    company_id:companyId,
-                    date:date,
-                    index:pageIndex,
-                    keyword:keyword,
      			}
      			}).then(function(results) {
      				return results.data;
@@ -379,6 +366,20 @@
         	return $http.get(serviceBase + 'menu').then(function (results) {
         		return results.data;
         	});
+        };
+         //获取终端数据
+        factory.getLicenses = function (date,companyId,pageIndex,keyword) {
+
+            return $http.get(serviceBase + 'licensesdetail', {
+                params : {
+                    company_id:companyId,
+                    date:date,
+                    index:pageIndex,
+                    keyword:keyword,
+                }
+                }).then(function(results) {
+                    return results.data;
+                });
         };
 
         return factory;

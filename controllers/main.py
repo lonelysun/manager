@@ -59,11 +59,11 @@ def serve_template(templatename, **kwargs):
 
 #服务
 class born_manager(http.Controller):
-
+    
     @http.route('/except_manager', type='http', auth="none",)
     def Exception(self, **post):
         return serve_template('except.html')
-
+    
     @http.route('/manager', type='http', auth="none")
     def manager_index(self,  **post):
 
@@ -73,7 +73,7 @@ class born_manager(http.Controller):
 
         users_obj = request.registry.get('res.users')
         user=users_obj.browse(request.cr, SUPERUSER_ID, uid)
-
+        
         return serve_template('index.html',user=user)
 
 
@@ -82,7 +82,7 @@ class born_manager(http.Controller):
     #获取可显示权限
     @http.route('/manager/menu', type='http', auth="none",)
     def menu(self, **post):
-
+        
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
@@ -112,31 +112,37 @@ class born_manager(http.Controller):
                 ismanager = True
                 break
             pass
-        day = (datetime.datetime.now() - datetime.timedelta(days = 7)).strftime("%Y-%m-%d")
+        day = (datetime.datetime.now() - datetime.timedelta(days = 7)).strftime("%Y-%m-%d") 
         company_obj = request.registry.get('res.company')
         company_ids = company_obj.search(request.cr, SUPERUSER_ID,[('approve_date','>',day)],order="approve_date desc", context=request.context)
         companys = company_obj.browse(request.cr,SUPERUSER_ID,company_ids)
         data = []
         for company in companys:
             company_val = {
-                'name' : company.name,
-                'approve_date' : company.approve_date,
-                'contact_name' : company.contact_name or '',
-                'create_date' : company.create_date,
-                'saler' : company.sale_employee_id.name or '无',
-                'employee' : company.employee_id.name or '无',
-                'address' : company.street or ''
+                           'name' : company.name,
+                           'approve_date' : company.approve_date,
+                           'contact_name' : company.contact_name or '',
+                           'create_date' : company.create_date,
+                           'saler' : company.sale_employee_id.name or '无',
+                           'employee' : company.employee_id.name or '无',
+                           'address' : company.street or ''
             }
             data.append(company_val)
-
+            
+        # val = {
+        #        'ismanager' : ismanager,
+        #        'issaler' : issaler,
+        #        'option':user.role_option,
+        #        'companys' : data,
+        # }
         val = {
-            'ismanager' : True,
-            'issaler' : True,
-            'option':1,
-            'companys' : data,
+               'ismanager' : True,
+               'issaler' : True,
+               'option':1,
+               'companys' : data,
         }
         return json.dumps(val,sort_keys=True)
-
+    
     #获取消息信息
     @http.route('/manager/messages', type='http', auth="none",)
     def messages(self, **post):
@@ -153,9 +159,9 @@ class born_manager(http.Controller):
         service_ids = push_obj.search(request.cr, SUPERUSER_ID, domain,int(page_index),10,order="id desc", context=request.context)
         for push in push_obj.browse(request.cr, SUPERUSER_ID,service_ids, context=request.context):
             val_message={
-                'title': push.title or '',
-                'content' : push.content or '',
-                'create_date' : push.create_date,
+                 'title': push.title or '',
+                 'content' : push.content or '',
+                 'create_date' : push.create_date,
             }
             data.append(val_message)
         return json.dumps(data,sort_keys=True)
@@ -261,102 +267,87 @@ class born_manager(http.Controller):
         page_index=post.get('index',0)
 
         keyword=post.get('keyword','')
+        companysState = post.get('companysState','')
+
+
         if keyword == '':
-            where = " and  tb1.state='draft' "
+            where = "and true"
         else:
             where = " and (tb1.name like '%%%s%%'  or tb1.contact_name like '%%%s%%' or tb1.phone like '%%%s%%' ) " % (keyword,keyword,keyword)
-        data = []
-        sql=u"""SELECT
-                tb1. ID,
-                tb1. NAME,
-            tb1.state,
-                (
-                    CASE
-                    WHEN tb1. STATE = 'draft' THEN
-                        '草稿'
-                    WHEN tb1. STATE = 'review' THEN
-                        '提交申请'
-                    WHEN tb1. STATE = 'done' THEN
-                        '运行中'
-                    WHEN tb1. STATE = 'sent' THEN
-                        '发送邮件'
-                    WHEN tb1. STATE = 'cancel' THEN
-                        '关闭'
-                    ELSE
-                        NULL
-                    END
-                ) AS STATE_name,
-                tb1.contact_name,
-                tb1.phone,
-                COALESCE (
-                    to_char(tb1.create_date, 'yyyy-mm-dd'),
-                    ''
-                ) as create_date,
-                date_part('days', now() - tb1.approve_date) use_dates,
-                COUNT (distinct tb2. ID) AS shop_count,
-                COUNT (distinct tb3. ID) AS license_count,
-                COALESCE (
-                    to_char(
-                        MAX (tb4.create_date),
-                        'yyyy-mm-dd'
-                    ),
-                    ''
-                ) AS last_consume_date,
-                COALESCE (
-                    to_char(tb1.approve_date, 'yyyy-mm-dd'),
-                    ''
-                ) approve_date,
-                COALESCE (tb5.name_related, '') employee_name,
-                COUNT (distinct
-                    CASE
-                    WHEN tb3. STATE = 'draft' THEN
-                        tb3. ID
-                    ELSE
-                        NULL
-                    END
-                ) AS draft_license_count
-            FROM
-                res_company tb1
-            LEFT JOIN born_shop tb2 ON tb2.company_id = tb1. ID
-            LEFT JOIN born_license tb3 ON tb3.company_id = tb1. ID
-            LEFT JOIN born_operate_sync tb4 ON tb4.company_id = tb1. ID
-            LEFT JOIN hr_employee tb5 ON tb1.employee_id = tb5. ID
-            WHERE
-                tb1. ID > 1   %s
-            GROUP BY
-                tb1. ID,
-                tb1. NAME,
-                tb1. STATE,
-                tb1.contact_name,
-                tb1.phone,
-                tb1.create_date,
-                tb5.name_related order by tb1.state desc,tb1.id desc limit 10 offset %s """ % (where,page_index)
+        data = {}
 
+        sql=u""" select count(id) as cnt  from res_company where state='done' """
         request.cr.execute(sql)
-        companys = request.cr.dictfetchall()
-        for company in companys:
+        res_count=request.cr.fetchall()
+        updated_company_count= int(res_count and res_count[0][0] or 0)
 
-            company_image_medium='/web/binary/image?model=res.company&id=%s&field=logo' % (company['id'])
+        sql=u""" select count(id) as cnt  from res_company where state='draft' """
+        request.cr.execute(sql)
+        res_count=request.cr.fetchall()
+        not_updated_company_count= int(res_count and res_count[0][0] or 0)
 
-            val = {
-                'id': company['id'],
-                'company_image_medium':company_image_medium,
-                'name': company['name'],
-                'state': company['state'],
-                'state_name': company['state_name'],
-                'contact_name':company['contact_name'],
-                'phone':company['phone'],
-                'create_date':company['create_date'],
-                'shop_count':company['shop_count'],
-                'use_dates':company['use_dates'],
-                'license_count':company['license_count'],
-                'last_consume_date':company['last_consume_date'],
-                'approve_date':company['approve_date'],
-                'employee_name':company['employee_name'],
-                'draft_license_count':company['draft_license_count'],
+
+
+        companys_data = []
+
+        if companysState == 'done':
+            # where2 = "and  tb1.state='done'"
+            where2 = "and  true"
+            sql=u"""SELECT
+                    tb1. ID,
+                    tb1. NAME,
+                    date_part('days', now() - tb1.approve_date) use_dates
+                FROM
+                    res_company tb1
+                WHERE
+                    tb1. ID > 1   %s %s
+                ORDER BY tb1.id DESC
+                LIMIT 10 OFFSET %s """ % (where,where2,page_index)
+            request.cr.execute(sql)
+            companys = request.cr.dictfetchall()
+            for company in companys:
+                val = {
+                    'id': company['id'],
+                    'name': company['name'],
+                    'use_dates':company['use_dates'],
+                }
+                companys_data.append(val)
+
+            data = {
+                'companys_data' : companys_data,
+                'updated_company_count': updated_company_count,
+                'not_updated_company_count': not_updated_company_count
             }
-            data.append(val)
-        return json.dumps(data,sort_keys=True)
+            return json.dumps(data,sort_keys=True)
+
+        elif companysState == 'draft':
+            where2 = "and  tb1.state='draft'"
+            # where2 = "and  true"
+            sql=u"""SELECT
+                    tb1. ID,
+                    tb1. NAME
+                FROM
+                    res_company tb1
+                WHERE
+                    tb1. ID > 1   %s %s
+                ORDER BY tb1.id DESC
+                LIMIT 10 OFFSET %s """ % (where,where2,page_index)
+
+
+            request.cr.execute(sql)
+            companys = request.cr.dictfetchall()
+            for company in companys:
+                val = {
+                    'id': company['id'],
+                    'name': company['name'],
+                }
+                companys_data.append(val)
+            data = {
+                'companys_data' : companys_data,
+                'updated_company_count': updated_company_count,
+                'not_updated_company_count': not_updated_company_count
+            }
+            return json.dumps(data,sort_keys=True)
 
     #获取公司的详细信息
     @http.route('/manager/company/<int:company_id>', type='http', auth="none",)
@@ -481,9 +472,9 @@ class born_manager(http.Controller):
                 total_operate_count+=int(operate['cnt'])
 
             address='%s%s%s%s%s' % (company.state_id.name or '',
-                                    company.area_id.name or '',
-                                    company.subdivide_id.name or '',
-                                    company.street or '', company.street2 or '')
+                                         company.area_id.name or '',
+                company.subdivide_id.name or '',
+                company.street or '', company.street2 or '')
 
             if company.state == 'draft':
                 state_display=u'待审核'
@@ -652,7 +643,8 @@ class born_manager(http.Controller):
 
                 operate_data.append({
                     'type':operate['type'],
-                    'total':'{0:,}'.format(operate['total']),
+                    # 'total':'{0:,}'.format(operate['total']),
+                    'total':operate['total'],
                     'cnt':operate['cnt'],
                     'type_display':type_display,
                 })
@@ -660,9 +652,9 @@ class born_manager(http.Controller):
                 total_operate_count+=int(operate['cnt'])
 
             address='%s%s%s%s%s' % (company.state_id.name or '',
-                                    company.area_id.name or '',
-                                    company.subdivide_id.name or '',
-                                    company.street or '', company.street2 or '')
+                                         company.area_id.name or '',
+                company.subdivide_id.name or '',
+                company.street or '', company.street2 or '')
 
             if company.state == 'draft':
                 state_display=u'待审核'
@@ -677,10 +669,12 @@ class born_manager(http.Controller):
             else:
                 state_display=u''
 
+            create_date = (company.create_date)[:10]
+
             data={
                 'id': company.id,
                 'name': company.name,
-                'create_date':company.create_date or '',
+                'create_date':create_date,
                 'approve_date':company.approve_date or '',
                 'state_display':state_display,
                 'state': company.state,
@@ -719,9 +713,9 @@ class born_manager(http.Controller):
         company = company_obj.browse(request.cr, SUPERUSER_ID,company_id, context=request.context)
 
         address='%s%s%s%s%s' % (company.state_id.name or '',
-                                company.area_id.name or '',
-                                company.subdivide_id.name or '',
-                                company.street or '', company.street2 or '')
+                                         company.area_id.name or '',
+                company.subdivide_id.name or '',
+                company.street or '', company.street2 or '')
 
         data = {
             'id': company.id,
@@ -824,7 +818,7 @@ class born_manager(http.Controller):
 
         sql_one = u"""
             select bl.company_id ,  count(bl.id) ,rc.name from born_license bl
-	        join res_company rc on bl.company_id = rc.id
+            join res_company rc on bl.company_id = rc.id
                  where  bl.state in ('confirm','active') %s group by bl.company_id,rc.name HAVING count(bl.id) >0
             """ %(where)
         request.cr.execute(sql_one)
@@ -832,7 +826,7 @@ class born_manager(http.Controller):
 
         sql_two = u"""
             select bl.company_id ,  count(bl.id) ,rc.name from born_license bl
-	        join res_company rc on bl.company_id = rc.id
+            join res_company rc on bl.company_id = rc.id
                  where  bl.state = 'draft' %s group by bl.company_id,rc.name HAVING count(bl.id) >0
             """ %(where)
         request.cr.execute(sql_two)
@@ -865,24 +859,6 @@ class born_manager(http.Controller):
             'filter_week':filter_week,
         }
 
-        #     sql = u"""
-        #     select bl.mac,bl.version,bl.state,bl.check_date,bl.note,bl.id,rc.name as company_name from born_license bl
-        # join res_company rc on rc.id = bl.company_id %s order by bl.check_date desc
-        #     """ %(where)
-        #     request.cr.execute(sql)
-        #     operates = request.cr.dictfetchall()
-        #     val = {
-        #         'display':display_type,
-        #         'accounts':operates,
-        #         'current_date':current_date,
-        #         'current_month':current_month,
-        #         'current_year':current_year,
-        #         'current_week':current_week,
-        #         'display_current':display_current,
-        #         'date_to':date_to,
-        #         'date_from':date_from,
-        #     }
-        #
         return json.dumps(val,sort_keys=True)
 
     #获取公司的终端列表

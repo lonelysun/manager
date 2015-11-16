@@ -11,7 +11,7 @@
     	vm.salerdetail = {};
         vm.busy=false;
         vm.isLoad=false;
-        vm.salerid = salerid;
+        vm.salerid = salerid
             
         
         function init() {
@@ -26,17 +26,9 @@
                 closeButtonText: '取消',
                 actionButtonText: '确认',
                 headerText: '系统提示',
-                bodyText: "您确认要取消该销售的全部商户?",
-                headerTextMin:'asdasdasda',
-                type:'1',
+                bodyText: "您确认要取消该销售的全部商户?"
             };
-//        	var modalOptions = {
-//                closeButtonText: '取消',
-//                actionButtonText: '确认',
-//                headerText: '系统提示',
-//                bodyText: "您确认要取消该销售的全部商户?",
-//            };
-
+        	
             modalService.showModal({}, modalOptions).then(function (result) {
                 if (result === 'ok') {
                 	dataService.cancel(salerid)

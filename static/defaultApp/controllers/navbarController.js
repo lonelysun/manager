@@ -1,4 +1,4 @@
-﻿(function () {
+﻿﻿(function () {
 
     var injectParams = ['$scope', '$location', 'config','displayModel'];
     var NavbarController = function ($scope, $location, config,displayModel) {

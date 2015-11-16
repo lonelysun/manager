@@ -25,6 +25,7 @@
             dataService.getCompanyDetailNotUpdated(companyId)
             .then(function (data) {
             	vm.company = data;
+                    displayModel.title = vm.company.name;
 
                 $timeout(function () {
                 }, 1000);
@@ -58,8 +59,15 @@
 
         //初始化
         function init() {
+            getCompanyDetail();
             displayModel.displayModel='none';
-               getCompanyDetail();
+            displayModel.displayModel='none';
+            displayModel.displayEdit = '0';
+            displayModel.displaySave = '0';
+            displayModel.displaySearch = '0';
+            displayModel.displayBack = '1';
+            displayModel.backpath='/companys';
+
         }
 
 

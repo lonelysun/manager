@@ -13,6 +13,7 @@
         vm.busy=false;
         vm.isLoad=false;
         vm.keyword='';
+        var headTitle = ''
 
 
         //获取公司明细
@@ -20,6 +21,8 @@
             dataService.getCompanyDetailUpdated(companyId)
             .then(function (data) {
             	vm.company = data;
+                    displayModel.title = vm.company.name;
+
                     console.info('get here');
                     console.info(vm.company);
                 $timeout(function () {
@@ -32,9 +35,15 @@
         //初始化
         function init() {
             displayModel.displayModel='none';
-            if(companyId>0){
-               getCompanyDetail();
-            }
+            getCompanyDetail();
+            displayModel.displayModel='none';
+            displayModel.displayModel='none';
+            displayModel.displayEdit = '0';
+            displayModel.displaySave = '0';
+            displayModel.displaySearch = '0';
+            displayModel.displayBack = '1';
+            displayModel.backpath='/companys';
+
         }
 
 

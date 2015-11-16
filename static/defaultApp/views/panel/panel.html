@@ -1,39 +1,31 @@
-<div class="show-hide-animation"  style="margin-bottom: 50px;padding-bottom: 0px;">
-    <div class="panel b-t">
-        <div class="hbox text-center b-b b-light text-sm">
-            <a ng-href="#/companys" class="col padder-v text-muted b-r b-light">
-                <div>注册公司</div>
-                <div class="h3 text-info font-thin">{{ vm.panel.company_count }}</div>
-            </a>
-            <a href="#/licenses/0" class="col padder-v text-muted">
-                <span>终端设备</span>
-                <div class="h3 text-info font-thin">{{ vm.panel.license_count }}</div>
-            </a>
-        </div>
-        <div class="hbox text-center text-sm">
-            <a href="#/cashs/cash" class="col padder-v text-muted b-r b-light">
-                <span>现金</span>
-                <div class="h3 text-info font-thin">{{ vm.panel.cash_total }}</div>
-            </a>
-            <a href="#/cashs/consume" class="col padder-v text-muted">
-                <span>消耗</span>
-                <div class="h3 text-info font-thin">{{ vm.panel.consume_total }}</div>
-            </a>
-        </div>
+<div class="show-hide-animation" >
+    <div class="panel no-border text-center " style="padding-top:15px;margin-bottom: 0px;background-color: #FFFFFF;">
+    	<div class="" style="width:100%">
+        	<button ng-class="{all: 'bm-active'}[vm.display]" ng-click="vm.setDisplay('all')" class=" bg-white  no-border bm-top-btn-two"  >总计</button>
+        	<button ng-class="{companys: 'bm-active'}[vm.display]" ng-click="vm.setDisplay('companys')" class="bg-white no-border bm-top-btn-two"  >公司</button>
+    	</div>
+	</div>
+
+
+
+
+    <div ng-if="vm.display=='all'">
+        总计图表
     </div>
 
-    <div class="panel  no-border" style="margin-top: 30px;">
-        <div class="panel-heading b-t">
-           业务列表
-            <span class="pull-right">总额/笔数</span>
+
+
+    <div ng-if="vm.display=='companys'" id="infinite2" infinite-scroll='vm.getCompanys("done")' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+        <div ng-repeat="company in vm.companys">
+            <a href="" >
+                <div class="no-bg bm-item">
+                    <span class="pull-right">
+                        <i class=" fa fa-fw fa-angle-right text"></i>
+                    </span>
+                    {{company.name}}
+                  </div>
+            </a>
         </div>
-        <ul class="list-group no-radius">
-            <li data-ng-repeat="operate in vm.panel.operate_data" class="list-group-item">
-                <a href="#/cashs/{{ operate.type }}">
-                    <span class="pull-right">{{ operate.total }}/{{operate.cnt}}</span>
-                    {{ operate.type_display }}
-                </a>
-            </li>
-        </ul>
     </div>
 </div>
+<div style="height:60px; line-height: 60px;" ng-show="vm.busy" class="text-center" >正在加载...</div>

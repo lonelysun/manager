@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html ng-app="managerApp" >
 <head>
     <title>${user.name}</title>
@@ -17,8 +17,8 @@
     <link href="/born_manager/static/src/css/born-manager.css" rel="stylesheet" />
 
 </head>
-<body ng-cloak>
-<div ng-controller="NavbarController as vm" class="h3 app-header navbar" style="height: 64px;">
+<body>
+    <div ng-controller="NavbarController as vm" class="h3 app-header navbar" style="height: 64px;">
             <!-- navbar header -->
             <div class="navbar-header bm-navbar-header text-center" style="line-height:44px;margin-top: 20px;">
                 <button ng-if="vm.getEditModel()=='1'" data-ng-click="vm.headerEdit()" class="pull-right visible-xs dk" style="color:#ff4848">
@@ -29,7 +29,7 @@
                   保存
                 </button>
                 <img ng-if="vm.getSearchModel()=='1'"  data-ng-click="vm.headerSearch()" class="pull-right bm-img-back"  src="/born_manager/static/src/img/search.png">
-                      {{vm.title}}
+                      {{vm.title | limitTo:6}}{{vm.title.length > 6 ? '...' : ''}}
                 <img ng-if="vm.getBackModel()=='1'" data-ng-click="vm.headerBack()" class=" pull-left no-border bm-img-back"  src="/born_manager/static/src/img/back.png">
                 <button ng-if="vm.getSaveModel()=='1'" data-ng-click="vm.headerCancel()" class="pull-left visible-xs dk" style="color:#ff4848">
                   取消
@@ -39,8 +39,22 @@
 
     </div>
 
+
+    <!-- content -->
+    <div class="app-content ng-scope m-n">
+        <div class="app-content-body fade-in-up ng-scope"  style="padding-bottom: 0px;" >
+            <div ng-view style="position:relative;" id="ng-view" ></div>
+            <toaster-container toaster-options="{'position-class': 'toast-top-center', 'close-button':false}"></toaster-container>
+        </div>
+    </div>
+
+    <div wc-overlay wc-overlay-delay="30">
+        <i class="fa fa-spin fa-refresh fa-2x"></i>
+    </div>
+
+<!--
     <div class="app-content ng-scope m-n" style="background-color:white">
-        <div class="app-content-body fade-in-up ng-scope" style="padding-bottom: 0px;"  >
+        <div class="fade-in-up ng-scope" style="padding-bottom: 0px;"  >
             <div ng-view style="position:relative;" id="ng-view" ></div>
             <toaster-container toaster-options="{'position-class': 'toast-top-center', 'close-button':false}"></toaster-container>
         </div>
@@ -68,6 +82,8 @@
     <div wc-overlay wc-overlay-delay="30">
         <i class="fa fa-spin fa-refresh fa-2x"></i>
     </div>
+
+    -->
 
     <script src="/born_manager/static/src/js/jquery.js"></script>
     <script src="/born_manager/static/src/js/angular.min.1.46.js"></script>
@@ -102,8 +118,11 @@
     <script src="/born_manager/static/defaultApp/controllers/messages/messageController.js"></script>
     <script src="/born_manager/static/defaultApp/controllers/setting/settingController.js"></script>
     <script src="/born_manager/static/defaultApp/controllers/panel/panelController.js"></script>
-    <script src="/born_manager/static/defaultApp/controllers/companys/companyController.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/companys/companysController.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/companys/companyControllerUpdated.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/companys/companyControllerNotUpdated.js"></script>
     <script src="/born_manager/static/defaultApp/controllers/companys/shopController.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/companys/licenseDetailController.js"></script>
     <script src="/born_manager/static/defaultApp/controllers/companys/licenseController.js"></script>
     <script src="/born_manager/static/defaultApp/controllers/companys/userController.js"></script>
     <script src="/born_manager/static/defaultApp/controllers/panel/cashController.js"></script>

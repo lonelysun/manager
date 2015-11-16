@@ -1,4 +1,4 @@
-﻿<div ng-show="modalOptions.type=='0'" class="modal-dialog">
+﻿<div class="modal-dialog">
     <div class="modal-header">
         <h3>{{modalOptions.headerText}}</h3>
     </div>
@@ -10,29 +10,3 @@
         <button class="btn btn-primary" data-ng-click="modalOptions.ok();">{{modalOptions.actionButtonText}}</button>
     </div>
 </div>
-<div data-ng-show="modalOptions.type=='1'" class="modal-dialog">
-    <div class="modal-header" style="">
-            <p class="text-center">{{modalOptions.headerText}}</p>
-            <p class="text-center">{{modalOptions.headerTextMin}}</p>
-    </div>
-    <div class="modal-body">
-        <p>{{modalOptions.bodyText}}</p>
-    </div>
-    <div class="modal-footer">
-        <a class="btn-default" data-ng-click="modalOptions.ok();">{{modalOptions.actionButtonText}}</a>
-    </div>
-</div>
-<!--<div ng-if="modalOption.type=='1'" class="modal-dialog">-->
-    <!--<div class="bm-model-main">-->
-        <!--<div class="bm-model-item">-->
-            <!--<p>{{modalOptions.headerText}}</p>-->
-            <!--<p>{{modalOptions.headerTextMin}}</p>-->
-        <!--</div>-->
-        <!--<div class="bm-model-item">-->
-            <!--<p>{{modalOptions.bodyText}}</p>-->
-        <!--</div>-->
-        <!--<div class="bm-model-item">-->
-            <!--<a data-ng-click="modalOptions.ok();">{{modalOptions.actionButtonText}}</a>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->

@@ -1,47 +1,55 @@
  <div class="show-hide-animation"  style="margin-bottom: 0px;padding-bottom: 0px;">
-    <div id="infinite" infinite-scroll='vm.getCompanys()' infinite-scroll-parent="true"
-                    infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
-        <div class="panel no-border" style="margin-bottom: 0px;">
-            <div class="panel-heading" style="margin: 10px 0px;">
-                <div class="input-group">
-                    <input type="text" name="keyword" ng-model='vm.keyword' class="form-control input-sm bg-light no-border rounded padder ng-pristine ng-untouched ng-valid" placeholder="请输入关键字进行搜索..."  tabindex="0" aria-invalid="false">
-                    <span class="input-group-btn">
-                        <a data-ng-click="vm.getCompanysKeyword()" type="button" class="btn btn-sm bg-light rounded"><i class="fa fa-search"></i></a>
-                    </span>
-                </div>
+    <div class="hbox text-center b-t b-b b-light text-sm bm-wrapper">
+        <div class="bm-two-col-left col padder-v text-muted b-r b-light ">
+            <a href ng-click="vm.click('done')">
+                <div ng-class="{1:'bm-two-col-up-font-hightlight', 2:'bm-two-col-up-font-default'}[vm.state]">{{vm.updated_company_count}}</div>
+                <div class="bm-top">公司数</div>
+            </a>
+
+        </div>
+        <div class="bm-two-col-right col padder-v text-muted ">
+            <a href ng-click="vm.click('draft')">
+                <div ng-class="{2:'bm-two-col-up-font-hightlight', 1:'bm-two-col-up-font-default'}[vm.state]">{{vm.not_updated_company_count}}</div>
+                <div class="bm-top">未审核数</div>
+            </a>
+        </div>
+
+    </div>
+    <div ng-if="vm.state==1" id="triangle-up1">&nbsp;</div>
+    <div ng-if="vm.state==2" id="triangle-up2">&nbsp;</div>
+    <!--<div style="width:5px;height:5px">-->
+
+    <!--</div>-->
+
+    <div ng-if="vm.state==1" id="infinite1" infinite-scroll='vm.getCompanys("done")' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+        <div>
+            <div ng-repeat="company in vm.companys">
+                <a href="#company/updated/{{company.id}}" >
+                    <div class="no-bg bm-item">
+                        <span class="pull-right">
+                            {{company.use_dates}}天
+                            <i class=" fa fa-fw fa-angle-right text"></i>
+                        </span>
+                        {{company.name}}
+                      </div>
+                </a>
             </div>
-            <ul class="alt">
-                <li ng-repeat="company in vm.companys" class="list-group-item" style="padding:0px;border-bottom: 0px;">
-                    <div class="media" style="padding:10px 10px;">
-                        <a href="#/company/notupdated/{{company.id}}">
-                            <div class="media-body">
-                                <div>
-                                    <span style="font-size: 16px;">{{ company.name }}
-                                        <span ng-class="{'done': 'text-success pull-right','draft': ' pull-right text-danger'}[company.state]" >{{ company.state_name }}</span>
-                                    </span>
-                                    <span class="clear" >
-                                       {{company.contact_name  }} &nbsp;&nbsp;{{company.phone  }}
-                                    </span>
-                                </div>
-                                <span class="clear" style="color:#999;">
-                                    注册时间：{{company.create_date}}
-                                    <span class="pull-right">已使用：{{ company.use_dates }}天</span>
-                                </span>
-                                <span class="clear" style="color:#999;">
-                                    门店数：{{company.shop_count}}家
-                                    <span class="pull-right">终端数：{{ company.draft_license_count }}/{{ company.license_count }}台</span>
-                                </span>
-                                <span class="clear" style="color:#999;">
-                                    最后使用时间：{{company.last_consume_date}}
-                                </span>
-                            </div>
-                        </a>
+        </div>
+    </div>
+
+    <div ng-if="vm.state==2" id="infinite2" infinite-scroll='vm.getCompanys("draft")' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+        <div >
+            <div ng-repeat="company in vm.companys">
+                <a href="#company/notupdated/{{company.id}}" >
+                    <div class="no-bg bm-item">
+                        <span class="pull-right">
+                            <i class=" fa fa-fw fa-angle-right text"></i>
+                        </span>
+                        {{company.name}}
                     </div>
-                </li>
-            </ul>
+                </a>
+            </div>
         </div>
     </div>
 </div>
 <div style="height:60px; line-height: 60px;" ng-show="vm.busy" class="text-center" >正在加载...</div>
-
-
