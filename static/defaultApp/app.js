@@ -100,6 +100,11 @@
 	            templateUrl: viewBase + 'companys/licenses.html',
 	            controllerAs: 'vm'
 	        })
+			.when('/licenses/deatil/:date/:companyId', {
+	            controller: 'LicenseDetailController',
+	            templateUrl: viewBase + 'companys/licensesDetail.html',
+	            controllerAs: 'vm'
+	        })
 			.when('/users/:companyId', {
 	            controller: 'UserController',
 	            templateUrl: viewBase + 'companys/users.html',

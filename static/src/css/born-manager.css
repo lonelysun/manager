@@ -1,8 +1,8 @@
 .bm-item{
     background-color:white;
     border-bottom: solid 1px #f6f6f5;
-    margin-left: 35px;
-    margin-right: 35px;
+    padding-left: 35px;
+    padding-right: 35px;
     padding-bottom:12px;
     padding-top:20px;
 }
@@ -112,7 +112,7 @@
     font-size:17px;
     color:#4a4a4a;
     padding-left:24px;
-    width: 170px;
+    width: 160px;
 }
 .bm-img-back{
     padding-right: 42px;
@@ -147,5 +147,7 @@
 .bm-btn-big:hover, .bm-btn-big:focus, .bm-btn-big.focus{
     color: #ff4848;
 }
-
+.bm-model-main{
+    border-radius: 8px;
+}
 /*liuhao end*/

@@ -1,0 +1,23 @@
+<div class="show-hide-animation" >
+    <div id="infinite" infinite-scroll='vm.getLicenses()' infinite-scroll-parent="true"
+                    infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+      <div class="panel hbox panel-default no-border" style="margin-bottom: 0px;">
+        <div class="bm-item" data-ng-repeat="license in vm.licenses">
+            <a>
+                <p class="h5" style="color:#A0A0A0;padding-bottom:5px">
+                    <span>{{ license.check_date }}</span>
+                    <span class="pull-right">版本：{{ license.version }}</span>
+                </p>
+                <p class="h5">
+                    <span>{{ license.mac }}</span>
+                    <span class="pull-right" style="color:red" ng-if="license.state == 'draft'">待审核</span>
+                    <span class="pull-right" style="color:red" ng-if="license.state == 'active'">已激活</span>
+                    <span class="pull-right" style="color:red" ng-if="license.state == 'confirm'">已激活</span>
+                    <span class="pull-right" style="color:red" ng-if="license.state == 'cancel'">失效</span>
+                </p>
+            </a>
+        </div>
+      </div>
+    </div>
+</div>
+<div style="height:60px; line-height: 60px;" ng-show="vm.busy" class="text-center" >正在加载...</div>

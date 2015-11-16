@@ -59,11 +59,11 @@ def serve_template(templatename, **kwargs):
 
 #服务
 class born_manager(http.Controller):
-    
+
     @http.route('/except_manager', type='http', auth="none",)
     def Exception(self, **post):
         return serve_template('except.html')
-    
+
     @http.route('/manager', type='http', auth="none")
     def manager_index(self,  **post):
 
@@ -73,7 +73,7 @@ class born_manager(http.Controller):
 
         users_obj = request.registry.get('res.users')
         user=users_obj.browse(request.cr, SUPERUSER_ID, uid)
-        
+
         return serve_template('index.html',user=user)
 
 
@@ -82,7 +82,7 @@ class born_manager(http.Controller):
     #获取可显示权限
     @http.route('/manager/menu', type='http', auth="none",)
     def menu(self, **post):
-        
+
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
@@ -112,31 +112,31 @@ class born_manager(http.Controller):
                 ismanager = True
                 break
             pass
-        day = (datetime.datetime.now() - datetime.timedelta(days = 7)).strftime("%Y-%m-%d") 
+        day = (datetime.datetime.now() - datetime.timedelta(days = 7)).strftime("%Y-%m-%d")
         company_obj = request.registry.get('res.company')
         company_ids = company_obj.search(request.cr, SUPERUSER_ID,[('approve_date','>',day)],order="approve_date desc", context=request.context)
         companys = company_obj.browse(request.cr,SUPERUSER_ID,company_ids)
         data = []
         for company in companys:
             company_val = {
-                           'name' : company.name,
-                           'approve_date' : company.approve_date,
-                           'contact_name' : company.contact_name or '',
-                           'create_date' : company.create_date,
-                           'saler' : company.sale_employee_id.name or '无',
-                           'employee' : company.employee_id.name or '无',
-                           'address' : company.street or ''
+                'name' : company.name,
+                'approve_date' : company.approve_date,
+                'contact_name' : company.contact_name or '',
+                'create_date' : company.create_date,
+                'saler' : company.sale_employee_id.name or '无',
+                'employee' : company.employee_id.name or '无',
+                'address' : company.street or ''
             }
             data.append(company_val)
-            
+
         val = {
-               'ismanager' : True,
-               'issaler' : True,
-               'option':1,
-               'companys' : data,
+            'ismanager' : True,
+            'issaler' : True,
+            'option':1,
+            'companys' : data,
         }
         return json.dumps(val,sort_keys=True)
-    
+
     #获取消息信息
     @http.route('/manager/messages', type='http', auth="none",)
     def messages(self, **post):
@@ -153,9 +153,9 @@ class born_manager(http.Controller):
         service_ids = push_obj.search(request.cr, SUPERUSER_ID, domain,int(page_index),10,order="id desc", context=request.context)
         for push in push_obj.browse(request.cr, SUPERUSER_ID,service_ids, context=request.context):
             val_message={
-                 'title': push.title or '',
-                 'content' : push.content or '',
-                 'create_date' : push.create_date,
+                'title': push.title or '',
+                'content' : push.content or '',
+                'create_date' : push.create_date,
             }
             data.append(val_message)
         return json.dumps(data,sort_keys=True)
@@ -481,9 +481,9 @@ class born_manager(http.Controller):
                 total_operate_count+=int(operate['cnt'])
 
             address='%s%s%s%s%s' % (company.state_id.name or '',
-                                         company.area_id.name or '',
-                company.subdivide_id.name or '',
-                company.street or '', company.street2 or '')
+                                    company.area_id.name or '',
+                                    company.subdivide_id.name or '',
+                                    company.street or '', company.street2 or '')
 
             if company.state == 'draft':
                 state_display=u'待审核'
@@ -660,9 +660,9 @@ class born_manager(http.Controller):
                 total_operate_count+=int(operate['cnt'])
 
             address='%s%s%s%s%s' % (company.state_id.name or '',
-                                         company.area_id.name or '',
-                company.subdivide_id.name or '',
-                company.street or '', company.street2 or '')
+                                    company.area_id.name or '',
+                                    company.subdivide_id.name or '',
+                                    company.street or '', company.street2 or '')
 
             if company.state == 'draft':
                 state_display=u'待审核'
@@ -719,9 +719,9 @@ class born_manager(http.Controller):
         company = company_obj.browse(request.cr, SUPERUSER_ID,company_id, context=request.context)
 
         address='%s%s%s%s%s' % (company.state_id.name or '',
-                                         company.area_id.name or '',
-                company.subdivide_id.name or '',
-                company.street or '', company.street2 or '')
+                                company.area_id.name or '',
+                                company.subdivide_id.name or '',
+                                company.street or '', company.street2 or '')
 
         data = {
             'id': company.id,
@@ -748,17 +748,15 @@ class born_manager(http.Controller):
 
         data = []
         company_id=int(post.get('company_id',0))
-  
+
         display_type = post.get('display','day')
         current_date = post.get('current_date',False)
         current_week = post.get('current_week',False)
         current_year = post.get('current_year',False)
         current_month = post.get('current_month',False)
         direction = post.get('direction',0)
-  
-        date_from = post.get('date_from',current_date)
-        date_to = post.get('date_to',current_date)
-  
+
+
         #计算当前的时间
         if not current_date or current_date=='':
             today = datetime.date.today()
@@ -766,11 +764,11 @@ class born_manager(http.Controller):
             current_month=today.strftime("%Y-%m")
             current_year=today.strftime("%Y")
             current_week='%s %s' % (current_year,int(today.strftime("%W"))+1)
-  
+
         display_current=current_date
         filter_week_year=current_week.split(' ')[0]
         filter_week=current_week.split(' ')[1]
-  
+
         if direction=='1':
             if display_type =='day':
                 today=datetime.datetime.strptime(current_date,'%Y-%m-%d')
@@ -789,7 +787,6 @@ class born_manager(http.Controller):
                     filter_week=1
                     filter_week_year=int(filter_week_year)+1
                 current_week='%s %s' % (filter_week_year,filter_week)
-
         elif direction=='-1':
             if display_type=='day':
                 today=datetime.datetime.strptime(current_date,'%Y-%m-%d')
@@ -808,7 +805,7 @@ class born_manager(http.Controller):
                     filter_week = new_date.strftime("%W")
                     filter_week_year = int(filter_week_year)-1
                 current_week='%s %s' % (filter_week_year,filter_week)
-  
+
         where = ""
         if company_id<=0:
             pass
@@ -853,7 +850,6 @@ class born_manager(http.Controller):
         request.cr.execute(sql_number_two)
         number_two = request.cr.dictfetchall()
 
-
         val = {
             'display':display_type,
             'accountone':operates_one,
@@ -865,29 +861,66 @@ class born_manager(http.Controller):
             'current_year':current_year,
             'current_week':current_week,
             'display_current':display_current,
-            'date_to':date_to,
-            'date_from':date_from,
-        }        
-        
-    #     sql = u"""
-    #     select bl.mac,bl.version,bl.state,bl.check_date,bl.note,bl.id,rc.name as company_name from born_license bl
-    # join res_company rc on rc.id = bl.company_id %s order by bl.check_date desc
-    #     """ %(where)
-    #     request.cr.execute(sql)
-    #     operates = request.cr.dictfetchall()
-    #     val = {
-    #         'display':display_type,
-    #         'accounts':operates,
-    #         'current_date':current_date,
-    #         'current_month':current_month,
-    #         'current_year':current_year,
-    #         'current_week':current_week,
-    #         'display_current':display_current,
-    #         'date_to':date_to,
-    #         'date_from':date_from,
-    #     }
-    #
+            'filter_week_year':filter_week_year,
+            'filter_week':filter_week,
+        }
+
+        #     sql = u"""
+        #     select bl.mac,bl.version,bl.state,bl.check_date,bl.note,bl.id,rc.name as company_name from born_license bl
+        # join res_company rc on rc.id = bl.company_id %s order by bl.check_date desc
+        #     """ %(where)
+        #     request.cr.execute(sql)
+        #     operates = request.cr.dictfetchall()
+        #     val = {
+        #         'display':display_type,
+        #         'accounts':operates,
+        #         'current_date':current_date,
+        #         'current_month':current_month,
+        #         'current_year':current_year,
+        #         'current_week':current_week,
+        #         'display_current':display_current,
+        #         'date_to':date_to,
+        #         'date_from':date_from,
+        #     }
+        #
         return json.dumps(val,sort_keys=True)
+
+    #获取公司的终端列表
+    @http.route('/manager/licensesdetail',type='http',auth="none")
+    def companyLicenses(self,**post):
+        uid = request.session.uid
+        if not uid:
+            werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
+
+        _logger.info(post)
+        page_index=post.get('index',0)
+        keyword=post.get('keyword','')
+        company_id=int(post.get('companyId',0))
+        date = post.get('date','')
+        datetype = date.split('+')
+
+
+        where = "where bl.company_id = %s "%(company_id)
+        if datetype[0]=='day':
+            where_date = datetype[1]
+            where +="  and TO_CHAR(bl.check_date,'YYYY-MM-DD') = '%s' " % (datetype[1])
+        elif datetype[0]=='month':
+            where += "  and TO_CHAR(bl.check_date,'YYYY-MM') = '%s' " % (datetype[1])
+        else:
+            where += "  and TO_CHAR(bl.check_date,'YYYY') = '%s' and extract('week' from bl.check_date)::varchar = '%s' " % (datetype[1],datetype[2])
+
+        _logger.info(where)
+        sql = u"""
+        select bl.mac,bl.version,bl.state,bl.check_date,bl.note,bl.id,rc.name as company_name from born_license bl
+    join res_company rc on rc.id = bl.company_id %s order by bl.check_date desc limit 20 offset %s
+        """ %(where,page_index)
+        request.cr.execute(sql)
+        operates = request.cr.dictfetchall()
+        _logger.info(operates)
+
+        return json.dumps(operates,sort_keys=True)
+
+
 
     #获取公司的门店列表
     @http.route('/manager/shops', type='http', auth="none",)

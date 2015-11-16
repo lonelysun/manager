@@ -15,7 +15,9 @@
             closeButtonText: 'Close',
             actionButtonText: 'OK',
             headerText: 'Proceed?',
-            bodyText: 'Perform this action?'
+            headerTextMin: 'Proceed?',
+            bodyText: 'Perform this action?',
+            type :'1',
         };
 
         this.showModal = function (customModalDefaults, customModalOptions) {

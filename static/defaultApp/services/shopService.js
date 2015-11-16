@@ -105,6 +105,20 @@
      				return results.data;
      			});
         };
+        //获取终端数据
+        factory.getLicenses = function (date,companyId,pageIndex,keyword) {
+
+            return $http.get(serviceBase + 'licensesdetail', {
+     			params : {
+                    company_id:companyId,
+                    date:date,
+                    index:pageIndex,
+                    keyword:keyword,
+     			}
+     			}).then(function(results) {
+     				return results.data;
+     			});
+        };
 
         //获取终端数据
         factory.getUsers = function (companyId) {

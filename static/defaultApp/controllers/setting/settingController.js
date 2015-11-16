@@ -17,6 +17,7 @@
             displayModel.displaySave = '0';
             displayModel.displaySearch = '0';
             displayModel.displayBack = '1';
+            displayModel.backpath='/menu';
             displayModel.flag = '';
             displayModel.title = '设置';
             getSetting();

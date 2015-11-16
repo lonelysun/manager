@@ -13,8 +13,11 @@
         //vm.headerEdit = null;
         vm.headerSave = null;
         vm.headerSearch = null;
-        vm.headerBack = null;
         vm.headerCancel = null;
+
+        vm.headerBack = function(){
+            $location.path(displayModel.backpath);
+        }
 
         vm.headerEdit = function(){
             displayModel.flag = 'edit';
@@ -32,6 +35,7 @@
             displayModel.displayBack = '1';
             displayModel.displayTop = 'edit';
         }
+
         vm.getDisplayModel = function(){
             return  displayModel.displayModel;
         }
