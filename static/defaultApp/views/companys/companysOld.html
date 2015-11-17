@@ -1,0 +1,47 @@
+ <div class="show-hide-animation"  style="margin-bottom: 0px;padding-bottom: 0px;">
+    <div id="infinite" infinite-scroll='vm.getCompanys()' infinite-scroll-parent="true"
+                    infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+        <div class="panel no-border" style="margin-bottom: 0px;">
+            <div class="panel-heading" style="margin: 10px 0px;">
+                <div class="input-group">
+                    <input type="text" name="keyword" ng-model='vm.keyword' class="form-control input-sm bg-light no-border rounded padder ng-pristine ng-untouched ng-valid" placeholder="请输入关键字进行搜索..."  tabindex="0" aria-invalid="false">
+                    <span class="input-group-btn">
+                        <a data-ng-click="vm.getCompanysKeyword()" type="button" class="btn btn-sm bg-light rounded"><i class="fa fa-search"></i></a>
+                    </span>
+                </div>
+            </div>
+            <ul class="alt">
+                <li ng-repeat="company in vm.companys" class="list-group-item" style="padding:0px;border-bottom: 0px;">
+                    <div class="media" style="padding:10px 10px;">
+                        <a href="#/company/notupdated/{{company.id}}">
+                            <div class="media-body">
+                                <div>
+                                    <span style="font-size: 16px;">{{ company.name }}
+                                        <span ng-class="{'done': 'text-success pull-right','draft': ' pull-right text-danger'}[company.state]" >{{ company.state_name }}</span>
+                                    </span>
+                                    <span class="clear" >
+                                       {{company.contact_name  }} &nbsp;&nbsp;{{company.phone  }}
+                                    </span>
+                                </div>
+                                <span class="clear" style="color:#999;">
+                                    注册时间：{{company.create_date}}
+                                    <span class="pull-right">已使用：{{ company.use_dates }}天</span>
+                                </span>
+                                <span class="clear" style="color:#999;">
+                                    门店数：{{company.shop_count}}家
+                                    <span class="pull-right">终端数：{{ company.draft_license_count }}/{{ company.license_count }}台</span>
+                                </span>
+                                <span class="clear" style="color:#999;">
+                                    最后使用时间：{{company.last_consume_date}}
+                                </span>
+                            </div>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div style="height:60px; line-height: 60px;" ng-show="vm.busy" class="text-center" >正在加载...</div>
+
+

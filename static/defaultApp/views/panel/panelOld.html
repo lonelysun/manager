@@ -1,0 +1,39 @@
+<div class="show-hide-animation"  style="margin-bottom: 50px;padding-bottom: 0px;">
+    <div class="panel b-t">
+        <div class="hbox text-center b-b b-light text-sm">
+            <a ng-href="#/companys" class="col padder-v text-muted b-r b-light">
+                <div>注册公司</div>
+                <div class="h3 text-info font-thin">{{ vm.panel.company_count }}</div>
+            </a>
+            <a href="#/licenses/0" class="col padder-v text-muted">
+                <span>终端设备</span>
+                <div class="h3 text-info font-thin">{{ vm.panel.license_count }}</div>
+            </a>
+        </div>
+        <div class="hbox text-center text-sm">
+            <a href="#/cashs/cash" class="col padder-v text-muted b-r b-light">
+                <span>现金</span>
+                <div class="h3 text-info font-thin">{{ vm.panel.cash_total }}</div>
+            </a>
+            <a href="#/cashs/consume" class="col padder-v text-muted">
+                <span>消耗</span>
+                <div class="h3 text-info font-thin">{{ vm.panel.consume_total }}</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="panel  no-border" style="margin-top: 30px;">
+        <div class="panel-heading b-t">
+           业务列表
+            <span class="pull-right">总额/笔数</span>
+        </div>
+        <ul class="list-group no-radius">
+            <li data-ng-repeat="operate in vm.panel.operate_data" class="list-group-item">
+                <a href="#/cashs/{{ operate.type }}">
+                    <span class="pull-right">{{ operate.total }}/{{operate.cnt}}</span>
+                    {{ operate.type_display }}
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
