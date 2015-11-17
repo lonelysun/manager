@@ -1,15 +1,24 @@
-    <div class="modal-dialog">
-        <div class="modal-header text-center h5" >
+    <div class="settings" style="width: 97%;background-color:white;margin-left: 5px;border-radius: 8px;bottom:70px">
+        <div ng-if="modalOptions.headerText!=''" class="modal-header text-center h5" >
             <p >{{modalOptions.headerText}}</p>
             <p style="color:#A0A0A0">{{modalOptions.headerTextmin}}</p>
         </div>
-        <div class="modal-header text-center">
+        <div ng-if="modalOptions.bodyText!=''" class="modal-header text-center">
             <h4>{{modalOptions.bodyText}}</h4>
         </div>
-        <div class="modal-header text-center" style="color:red">
-            <a data-ng-click="modalOptions.ok();">{{modalOptions.actionButtonText}}</a>
+        <div  ng-if="modalOptions.bodyTextmin!=''" class="modal-header text-center">
+            <h4>{{modalOptions.bodyTextmin}}</h4>
         </div>
-        <div class="modal-header text-center" style="color:red">
-            <a data-ng-click="modalOptions.close()">{{modalOptions.closeButtonText}}</a>
-        </div>
+        <a ng-if="modalOptions.actionButtonText!=''" data-ng-click="confirm('ok')">
+            <div class="modal-header text-center" style="color:red;border-bottom: 0px solid #edf1f2;">
+                {{modalOptions.actionButtonText}}
+            </div>
+        </a>
+    </div>
+    <div ng-if="modalOptions.closeButtonText!=''" class="settings" style="width:97%;background-color:white;margin-left:5px;margin-top:5px;border-radius:8px;bottom:10px" >
+        <a data-ng-click="closeThisDialog('canel')">
+            <div class="modal-header text-center" style="color:red;border-bottom: 0px solid #edf1f2;">
+                {{modalOptions.closeButtonText}}
+            </div>
+        </a>
     </div>

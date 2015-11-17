@@ -1,10 +1,10 @@
 (function () {
 
     var injectParams = ['$scope', '$location', '$routeParams',
-                        '$timeout', 'config', 'modalService','dataService','toaster','displayModel'];
+                        '$timeout', 'config', 'modalService','ngDialog','dataService','toaster','displayModel'];
 
     var licenseDetailController = function ($scope, $location, $routeParams,
-                                           $timeout, config,modalService, dataService,toaster,displayModel) {
+                                           $timeout, config,modalService,ngDialog ,dataService,toaster,displayModel) {
         var vm = this,
     	date = $routeParams.date;
     	companyId = ($routeParams.companyId) ? parseInt($routeParams.companyId) : 0;
@@ -42,15 +42,20 @@
             }
             var detail=vm.licenses[$index];
 
-        	var modalOptions = {
+        	$scope.modalOptions = {
                 closeButtonText: '取消',
                 actionButtonText: '确认激活',
                 headerText: detail.company_name,
                 headerTextmin: detail.version,
                 bodyText: detail.mac,
+                bodyTextmin: '',
             };
 
-            modalService.showModal({}, modalOptions).then(function (result) {
+            ngDialog.openConfirm({
+                template:'/born_manager/static/defaultApp/partials/modaldemo.html',
+                className: 'ngdialog',
+                scope:$scope //将scope传给test.html,以便显示地址详细信息
+            }).then(function (result) {
                 if (result === 'ok') {
                 	dataService.updateLicense(detail.id)
                     .then(function (data) {

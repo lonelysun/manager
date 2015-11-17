@@ -1,6 +1,6 @@
 ﻿(function () {
   
-    var app = angular.module('managerApp', ['ngRoute', 'ngSanitize','ngAnimate','ngTouch','wc.directives', 'ui.bootstrap', 'infinite-scroll','breeze.angular','toaster'],
+    var app = angular.module('managerApp', ['ngRoute', 'ngSanitize','ngAnimate','ngTouch','ngDialog','wc.directives', 'ui.bootstrap', 'infinite-scroll','breeze.angular','toaster'],
 	function($httpProvider) {
 	  // Use x-www-form-urlencoded Content-Type
 	  $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -52,21 +52,6 @@
     	    displayModel: 'block'
     	  }
 	});
-
-
-//	app.config(["ngDialogProvider", function (ngDialogProvider) {
-//		ngDialogProvider.setDefaults({
-//			className: "ngdialog-theme-default",
-//			plain: false,
-//			showClose: true,
-//			closeByDocument: true,
-//			closeByEscape: true,
-//			appendTo: false,
-//			preCloseCallback: function () {
-//				console.log("default pre-close callback");
-//			}
-//		});
-//	}]);
 
     app.config(['$routeProvider',  function ($routeProvider) {
         var viewBase = '/born_manager/static/defaultApp/views/';
