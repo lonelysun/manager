@@ -23,9 +23,9 @@
         	</a>
      	</div>
   	</div>
-    <div class="hbox text-center b-t b-b b-light text-sm bm-wrapper">
+    <div class="hbox text-center bm-b-t bm-b-b bm-b-light text-sm bm-wrapper">
 
-            <div class="col padder-v text-muted b-r b-light bm-two-col">
+            <div class="col padder-v text-muted bm-b-r bm-b-light bm-two-col">
                 <a href ng-click="vm.showset('1')" >
                     <div ng-class="{2:'bm-two-col-up-font-default',1:'bm-two-col-up-font-hightlight'}[vm.show]">{{vm.licenses.number_one[0].count}}</div>
                     <div class="bm-top">登录数（台）</div>
@@ -52,45 +52,15 @@
                   </div>
 
         <div ng-if="vm.show=='2'" class="no-bg bm-item" data-ng-repeat="license in vm.licenses.accounttwo">
+            <a href="#/licenses/deatil/{{vm.date}}/{{license.company_id}}">
                     <span class=" pull-right" style="color:#A0A0A0">
                         {{license.count}}
                         <i class=" fa fa-fw fa-angle-right text"></i>
                     </span>
                     {{license.name}}
-                  </div>
+            </a>
+        </div>
 
-    <!--<div class="panel hbox  no-border" style="border-bottom: 0px;margin-bottom: 8px;" >-->
-        <!--<div class="panel-heading  b-b " style="background-color: #f5f5f5">-->
-            <!--<span class=" pull-right text-info ">共计：{{ vm.licenses.accounts.length }}</span> 终端列表-->
-        <!--</div>-->
-        <!--<div data-ng-repeat="license in vm.licenses.accounts" class="list-group b-b" style="padding: 10px;">-->
-            <!--<div class="media-body" >-->
-                <!--<div>-->
-                    <!--<span style="color:#000;font-size:15px;display: block;overflow: hidden;text-overflow: ellipsis;">{{ license.company_name }}-->
-                    <!--<span class="pull-right" ng-if="license.state == 'draft'">待审核</span>-->
-                    <!--<span class="pull-right" ng-if="license.state == 'active'">已激活</span>-->
-                    <!--<span class="pull-right" ng-if="license.state == 'confirm'">已激活</span>-->
-                    <!--<span class="pull-right" ng-if="license.state == 'cancel'">失效</span>-->
-                    <!--</span>-->
-                <!--</div>-->
-                <!--<div>-->
-                    <!--<small>MAC地址：{{ license.mac }}</small>-->
-                <!--</div>-->
-                <!--<div>-->
-                    <!--<small>最后登录时间：{{ license.check_date }}</small>-->
-                <!--</div>-->
-                <!--<div>-->
-                    <!--<small >客户端版本：{{ license.version }}</small>-->
-                <!--</div>-->
-                <!--<span class="clear">-->
-                    <!--<small class="text-muted" style="">{{ license.note }}</small>-->
-                <!--</span>-->
-            <!--</div>-->
-            <!--<div class="btn-group btn-group-justified" style="margin-top: 5px;">-->
-                <!--<a ng-show="license.state=='draft'" data-ng-click="vm.updateLicense($index)" class="btn  btn-info">审核</a>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
 </div>
 <div style="height:60px; line-height: 60px;" ng-show="vm.busy" class="text-center" >正在加载...</div>
 

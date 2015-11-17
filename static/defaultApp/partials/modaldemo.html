@@ -1,0 +1,15 @@
+    <div class="modal-dialog">
+        <div class="modal-header text-center h5" >
+            <p >{{modalOptions.headerText}}</p>
+            <p style="color:#A0A0A0">{{modalOptions.headerTextmin}}</p>
+        </div>
+        <div class="modal-header text-center">
+            <h4>{{modalOptions.bodyText}}</h4>
+        </div>
+        <div class="modal-header text-center" style="color:red">
+            <a data-ng-click="modalOptions.ok();">{{modalOptions.actionButtonText}}</a>
+        </div>
+        <div class="modal-header text-center" style="color:red">
+            <a data-ng-click="modalOptions.close()">{{modalOptions.closeButtonText}}</a>
+        </div>
+    </div>

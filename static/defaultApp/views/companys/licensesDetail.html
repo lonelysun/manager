@@ -3,9 +3,9 @@
                     infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
       <div class="panel hbox panel-default no-border" style="margin-bottom: 0px;">
         <div class="bm-item" data-ng-repeat="license in vm.licenses">
-            <a>
+            <a data-ng-click="vm.updateLicense($index,license.state)">
                 <p class="h5" style="color:#A0A0A0;padding-bottom:5px">
-                    <span>{{ license.check_date }}</span>
+                    <span>{{ license.check_date|limitTo:19 }}</span>
                     <span class="pull-right">版本：{{ license.version }}</span>
                 </p>
                 <p class="h5">

@@ -32,8 +32,7 @@
 }
 
 .bm-wrapper{
-    background-color: rgba(242, 242, 242, 0.93);
-
+    background-color: #f2f2f2;
 }
 
 .bm-two-col-left {
@@ -175,5 +174,19 @@
 .bm-btn-big:hover, .bm-btn-big:focus, .bm-btn-big.focus{
     color: #ff4848;
 }
-
+.bm-b-b{
+    border-bottom: 1px solid #e0e0e0;
+}
+.bm-b-t{
+    border-top: 1px solid #e0e0e0;
+}
+.bm-b-r{
+    border-right: 1px solid #e0e0e0;
+}
+.bm-b-l{
+    border-left: 1px solid #e0e0e0;
+}
+.bm-b-light{
+    border-color: #e0e0e0;
+}
 /*liuhao end*/

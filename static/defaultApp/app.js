@@ -53,6 +53,21 @@
     	  }
 	});
 
+
+//	app.config(["ngDialogProvider", function (ngDialogProvider) {
+//		ngDialogProvider.setDefaults({
+//			className: "ngdialog-theme-default",
+//			plain: false,
+//			showClose: true,
+//			closeByDocument: true,
+//			closeByEscape: true,
+//			appendTo: false,
+//			preCloseCallback: function () {
+//				console.log("default pre-close callback");
+//			}
+//		});
+//	}]);
+
     app.config(['$routeProvider',  function ($routeProvider) {
         var viewBase = '/born_manager/static/defaultApp/views/';
         $routeProvider

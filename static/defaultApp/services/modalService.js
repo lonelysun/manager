@@ -8,7 +8,7 @@
             backdrop: true,
             keyboard: true,
             modalFade: true,
-            templateUrl: '/born_manager/static/defaultApp/partials/modal.html'
+            templateUrl: '/born_manager/static/defaultApp/partials/modaldemo.html'
         };
 
         var modalOptions = {

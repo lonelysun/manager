@@ -4,14 +4,14 @@
                         '$timeout','$route', 'config','modalService', 'dataService','toaster','displayModel'];
 
     var SalerdetailController = function ($scope, $location, $routeParams,
-                                           $timeout,$route, config,modalService, dataService,toaster,displayModel) {
+                                           $timeout,$route, config,modalService,dataService,toaster,displayModel) {
         
     	var vm = this;
     	salerid = ($routeParams.salerid) ? parseInt($routeParams.salerid) : 0;
     	vm.salerdetail = {};
         vm.busy=false;
         vm.isLoad=false;
-        vm.salerid = salerid
+        vm.salerid = salerid;
             
         
         function init() {
@@ -21,14 +21,15 @@
 
         
         vm.allcancel = function () {
-        	
+
         	var modalOptions = {
                 closeButtonText: '取消',
                 actionButtonText: '确认',
                 headerText: '系统提示',
+                headerTextmin: '系统提示asdasdasd',
                 bodyText: "您确认要取消该销售的全部商户?"
             };
-        	
+
             modalService.showModal({}, modalOptions).then(function (result) {
                 if (result === 'ok') {
                 	dataService.cancel(salerid)
@@ -44,7 +45,23 @@
                 }
             });
         };
-        
+
+
+        //ngDialog------Demo
+//        vm.allcancel = function () {
+//        	$scope.modalOptions = {
+//                closeButtonText: '取消',
+//                actionButtonText: '确认',
+//                headerText: '系统提示',
+//                bodyText: "您确认要取消该销售的全部商户?",
+//            };
+//            ngDialog.open({ template: '/born_manager/static/defaultApp/partials/modal.html',//模式对话框内容为test.html
+//                className: 'ngdialog-theme-plain',
+//                controller : 'SalerdetailController',
+//                scope:$scope //将scope传给test.html,以便显示地址详细信息
+//            });
+//        };
+
         function getsalerdetail() {
         	
         	if(vm.busy)return;
