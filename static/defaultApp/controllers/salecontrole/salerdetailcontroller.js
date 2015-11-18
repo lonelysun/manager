@@ -1,17 +1,17 @@
 (function () {
 
     var injectParams = ['$scope', '$location', '$routeParams',
-                        '$timeout','$route', 'config','modalService','ngDialog' ,'dataService','toaster','displayModel'];
+                        '$timeout','$route', 'config','modalService', 'dataService','toaster','displayModel'];
 
     var SalerdetailController = function ($scope, $location, $routeParams,
-                                           $timeout,$route, config,modalService,ngDialog,dataService,toaster,displayModel) {
+                                           $timeout,$route, config,modalService, dataService,toaster,displayModel) {
         
     	var vm = this;
     	salerid = ($routeParams.salerid) ? parseInt($routeParams.salerid) : 0;
     	vm.salerdetail = {};
         vm.busy=false;
         vm.isLoad=false;
-        vm.salerid = salerid;
+        vm.salerid = salerid
             
         
         function init() {
@@ -20,55 +20,31 @@
         }
 
         
-//        vm.allcancel = function () {
-//
-//        	var modalOptions = {
-//                closeButtonText: '取消',
-//                actionButtonText: '确认',
-//                headerText: '系统提示',
-//                headerTextmin: '系统提示asdasdasd',
-//                bodyText: "您确认要取消该销售的全部商户?"
-//            };
-//
-//            modalService.showModal({}, modalOptions).then(function (result) {
-//                if (result === 'ok') {
-//                	dataService.cancel(salerid)
-//                    .then(function (data) {
-//                  	    toaster.pop('info', "", "取消成功!");
-//                  	  $route.reload();
-//                    }, function (error) {
-//                    	toaster.pop('warning', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
-//                    });
-//                }else{
-//                	$route.reload();
-//                	return;
-//                }
-//            });
-//        };
-
-
-        //ngDialog------Demo
         vm.allcancel = function () {
-        	$scope.modalOptions = {
+        	
+        	var modalOptions = {
                 closeButtonText: '取消',
                 actionButtonText: '确认',
                 headerText: '系统提示',
-                bodyText: "您确认要取消该销售的全部商户?",
-                bodyTextmin:'',
+                bodyText: "您确认要取消该销售的全部商户?"
             };
-            $scope.confunction = function(){
-                console.info('confunction');
-            }
-            ngDialog.openConfirm({ template: '/born_manager/static/defaultApp/partials/modaldemo.html',//模式对话框内容为test.html
-                className: 'ngdialog',
-                scope:$scope //将scope传给test.html,以便显示地址详细信息
-            }).then(function(value){
-                console.info(value);
+        	
+            modalService.showModal({}, modalOptions).then(function (result) {
+                if (result === 'ok') {
+                	dataService.cancel(salerid)
+                    .then(function (data) {
+                  	    toaster.pop('info', "", "取消成功!");
+                  	  $route.reload();
+                    }, function (error) {
+                    	toaster.pop('warning', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
+                    });
+                }else{
+                	$route.reload();
+                	return;
+                }
             });
-
-
         };
-
+        
         function getsalerdetail() {
         	
         	if(vm.busy)return;

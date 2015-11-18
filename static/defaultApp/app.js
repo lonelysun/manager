@@ -89,6 +89,14 @@
 	            controllerAs: 'vm'
 	        })
 
+
+			.when('/saler', {
+	            controller: 'SalerController',
+	            templateUrl: viewBase + 'saler/saler.html',
+	            controllerAs: 'vm'
+	        })
+
+
 			//end test
 			.when('/companys/:companyId', {
 	            controller: 'CompanyController',

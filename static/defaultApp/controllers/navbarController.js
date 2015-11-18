@@ -41,29 +41,30 @@
         }
 
         vm.getEditModel = function(){
-            vm.title = displayModel.title;
             return displayModel.displayEdit;
         }
 
         vm.getSaveModel = function(){
-            vm.title = displayModel.title;
             return displayModel.displaySave;
         }
 
         vm.getSearchModel = function(){
-            vm.title = displayModel.title;
             return displayModel.displaySearch;
         }
 
         vm.getBackModel = function(){
-            vm.title = displayModel.title;
             return displayModel.displayBack;
         }
-        
+
         vm.isCollapsed = false;
         vm.highlight = function (path) {
             return $location.path().substr(0, path.length) === path;
         };
+
+        vm.showHeader(){
+            vm.title = displayModel.title;
+            return displayModel.showHeader;
+        }
     };
 
     NavbarController.$inject = injectParams;

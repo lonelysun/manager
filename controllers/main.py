@@ -129,18 +129,18 @@ class born_manager(http.Controller):
             }
             data.append(company_val)
             
-        # val = {
-        #        'ismanager' : ismanager,
-        #        'issaler' : issaler,
-        #        'option':user.role_option,
-        #        'companys' : data,
-        # }
         val = {
-               'ismanager' : True,
-               'issaler' : True,
-               'option':1,
+               'ismanager' : ismanager,
+               'issaler' : issaler,
+               'option':user.role_option,
                'companys' : data,
         }
+        # val = {
+        #        'ismanager' : True,
+        #        'issaler' : True,
+        #        'option':1,
+        #        'companys' : data,
+        # }
         return json.dumps(val,sort_keys=True)
     
     #获取消息信息
@@ -868,7 +868,6 @@ class born_manager(http.Controller):
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
-        _logger.info(post)
         page_index=post.get('index',0)
         keyword=post.get('keyword','')
         company_id=int(post.get('companyId',0))
@@ -885,14 +884,12 @@ class born_manager(http.Controller):
         else:
             where += "  and TO_CHAR(bl.check_date,'YYYY') = '%s' and extract('week' from bl.check_date)::varchar = '%s' " % (datetype[1],datetype[2])
 
-        _logger.info(where)
         sql = u"""
         select bl.mac,bl.version,bl.state,bl.check_date,bl.note,bl.id,rc.name as company_name from born_license bl
     join res_company rc on rc.id = bl.company_id %s order by bl.check_date desc limit 20 offset %s
         """ %(where,page_index)
         request.cr.execute(sql)
         operates = request.cr.dictfetchall()
-        _logger.info(operates)
 
         return json.dumps(operates,sort_keys=True)
 
