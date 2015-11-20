@@ -1,0 +1,109 @@
+<div>
+    <!--Head-->
+    <div class="bm-head">
+        <div class="bm-head-top">
+            <span class="bm-head-top-icon-left"><i class="fa fa-plus"></i></span>
+            <span class="pull-right">
+                <span class="bm-head-top-icon"><i class="fa fa-bars"></i></span>
+                <span class="bm-head-top-icon"><i class="icon-bell"></i></span>
+                <span class="bm-head-top-icon"><i class="fa fa-search"></i></span>
+            </span>
+        </div>
+
+        <div class="bm-head-down">
+            <div class="pull-left">
+                <img  class="bm-photo-round img" src="/born_manager/static/src/img/default_company.png">
+            </div>
+
+            <div class="pull-right">
+                <div class="pull-right bm-head-right-part">
+                    <div class="bm-head-int">47</div>
+                    <div class="bm-head-font">负责的商户</div>
+                </div>
+                <div class="pull-right bm-head-right-part">
+                    <div class="bm-head-int">9</div>
+                    <div class="bm-head-font">待处理任务</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!--Navbar-->
+    <div class="panel no-border text-center bm-mid-nav">
+    	<div>
+        	<button ng-class="{missions: 'bm-active'}[vm.display]" ng-click="vm.setDisplay('missions')" class="bg-white  no-border bm-top-btn-three">任务</button>
+        	<button ng-class="{partners: 'bm-active'}[vm.display]" ng-click="vm.setDisplay('partners')" class="bg-white no-border bm-top-btn-three">商户</button>
+        	<button ng-class="{companys: 'bm-active'}[vm.display]" ng-click="vm.setDisplay('companys')" class="bg-white no-border bm-top-btn-three">公司</button>
+    	</div>
+	</div>
+
+
+    <!--任务-->
+    <div>
+        <div ng-repeat="x in [1,2,3]" class="bm-main-three-line-wrapper">
+            <div class="bm-main-three-line">
+                <div class="bm-main-three-line-title">
+                    <span class="bm-main-three-line-title-tag"><i class="glyphicon glyphicon-pause"></i></span>
+                    <!--<span><i class="glyphicon glyphicon-play"></i></span>-->
+                    <!--<span><i class="fa fa-check"></i></span>-->
+                    <span class="bm-main-three-line-title-font">锤子科技有限公司</span>
+                    <span class="pull-right"><img class=" bm-main-three-line-img" src="/born_manager/static/src/img/three-points.png"></span>
+                </div>
+
+                <div class="bm-main-three-line-detail">
+                    <span class="bm-main-three-line-span"><img class=" bm-main-three-line-img" src="/born_manager/static/src/img/phone.png">15978967790</span>
+                    <span class="bm-main-three-line-span"><img class=" bm-main-three-line-img" src="/born_manager/static/src/img/men.png">美智子</span>
+                    <span class="bm-main-three-line-span"><i class="icon-clock bm-i-clock"></i>1月21日</span>
+                </div>
+
+                <div class="bm-main-three-line-detail">
+                    <span>
+                        <img class="bm-main-three-line-img" src="/born_manager/static/src/img/address.png">浦东新区金科路1288号
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bm-btn-add-more-wrapper">
+            <!--<button class="">10个已完成任务</button>-->
+            <button class="btn m-b-xs bm-btn-add-more">10个已完成任务</button>
+        </div>
+
+        <div ng-repeat="x in [1]" class="bm-main-three-line-wrapper">
+            <div class="bm-main-three-line">
+                <div class="bm-main-three-line-title">
+                    <span class="bm-main-three-line-title-tag-grey"><i class="fa fa-check"></i></span>
+                    <!--<span><i class="glyphicon glyphicon-play"></i></span>-->
+                    <span class="bm-main-three-line-title-font-grey">锤子科技有限公司</span>
+                    <span class="pull-right"><img class=" bm-main-three-line-img" src="/born_manager/static/src/img/three-points.png"></span>
+                </div>
+
+                <div class="bm-main-three-line-detail">
+                    <span class="bm-main-three-line-span-grey"><img class=" bm-main-three-line-img" src="/born_manager/static/src/img/phone.png">15978967790</span>
+                    <span class="bm-main-three-line-span-grey"><img class=" bm-main-three-line-img" src="/born_manager/static/src/img/men.png">美智子</span>
+                </div>
+
+                <div class="bm-main-three-line-detail">
+                    <span class="bm-main-three-line-span-grey">
+                        <img class="bm-main-three-line-img" src="/born_manager/static/src/img/address.png">浦东新区金科路1288号
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <!--商户-->
+    <div>
+
+    </div>
+
+    <!--公司-->
+    <div></div>
+
+</div>

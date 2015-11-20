@@ -21,7 +21,7 @@
 
 </head>
 <body ng-cloak>
-    <div ng-controller="NavbarController as vm" class="h3 app-header navbar" style="height: 64px;">
+    <div ng-controller="NavbarController as vm" class="h3 app-header navbar" ng-if="vm.showHeader()=='1'" style="height: 64px;">
             <!-- navbar header -->
             <div class="navbar-header bm-navbar-header text-center" style="line-height:44px;margin-top: 20px;">
                 <button ng-if="vm.getEditModel()=='1'" data-ng-click="vm.headerEdit()" class="pull-right visible-xs dk" style="color:#ff4848">

@@ -86,61 +86,16 @@ class born_manager(http.Controller):
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
-        team_obj = request.registry.get('commission.team')
-        tid = team_obj.search(request.cr, SUPERUSER_ID,[], context=request.context)
-        teams = team_obj.browse(request.cr, SUPERUSER_ID, tid, context=request.context)
-        hr_obj = request.registry.get('hr.employee')
-        hr_id= hr_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-        ismanager = False
-        sql = """
-            select a.user_id from resource_resource a join hr_employee b on a.id=b.resource_id
-             join res_users c on c.id = a.user_id
-             join commission_team_employee_rel d on d.uid = b.id
-        """
-        request.cr.execute(sql)
-        business_ids=request.cr.fetchall()
-        issaler = False
-        for bus in business_ids:
-            if uid in bus:
-                issaler = True
-                break
-            pass
         users_obj = request.registry.get('res.users')
         user=users_obj.browse(request.cr, SUPERUSER_ID, uid)
-        for team in teams:
-            if team.manager_id.id == hr_id[0]:
-                ismanager = True
-                break
-            pass
-        day = (datetime.datetime.now() - datetime.timedelta(days = 7)).strftime("%Y-%m-%d") 
-        company_obj = request.registry.get('res.company')
-        company_ids = company_obj.search(request.cr, SUPERUSER_ID,[('approve_date','>',day)],order="approve_date desc", context=request.context)
-        companys = company_obj.browse(request.cr,SUPERUSER_ID,company_ids)
-        data = []
-        for company in companys:
-            company_val = {
-                           'name' : company.name,
-                           'approve_date' : company.approve_date,
-                           'contact_name' : company.contact_name or '',
-                           'create_date' : company.create_date,
-                           'saler' : company.sale_employee_id.name or '无',
-                           'employee' : company.employee_id.name or '无',
-                           'address' : company.street or ''
-            }
-            data.append(company_val)
-            
-        val = {
-               'ismanager' : ismanager,
-               'issaler' : issaler,
-               'option':user.role_option,
-               'companys' : data,
-        }
         # val = {
-        #        'ismanager' : True,
-        #        'issaler' : True,
-        #        'option':1,
-        #        'companys' : data,
+        #        'option':user.role_option,
         # }
+        val = {
+               'ismanager' : True,
+               'issaler' : True,
+               'option':1,
+        }
         return json.dumps(val,sort_keys=True)
     
     #获取消息信息
@@ -870,11 +825,9 @@ class born_manager(http.Controller):
 
         page_index=post.get('index',0)
         keyword=post.get('keyword','')
-        company_id=int(post.get('companyId',0))
+        company_id=int(post.get('company_id',0))
         date = post.get('date','')
         datetype = date.split('+')
-
-
         where = "where bl.company_id = %s "%(company_id)
         if datetype[0]=='day':
             where_date = datetype[1]

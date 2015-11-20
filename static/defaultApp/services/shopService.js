@@ -342,25 +342,25 @@
             });
         };
         //拜访中列表
-        factory.gettracklist = function (display,index,current_date,current_week,current_year,current_month,direction,date_from,date_to,keyword, shop_id) {
-        	 return $http.get(serviceBase + 'accounts', {
-     			params : {
-                    display:display,
-                    index:index,
-                    current_date:current_date,
-                    current_week:current_week,
-                    current_year:current_year,
-                    current_month:current_month,
-                    direction:direction,
-                    date_from:date_from,
-                    date_to:date_to,
-                    keyword:keyword,
-                    shop_id:shop_id,
-                }
-            }).then(function(results) {
-                return results.data;
-            });
-        };
+//        factory.gettracklist = function (display,index,current_date,current_week,current_year,current_month,direction,date_from,date_to,keyword, shop_id) {
+//        	 return $http.get(serviceBase + 'accounts', {
+//     			params : {
+//                    display:display,
+//                    index:index,
+//                    current_date:current_date,
+//                    current_week:current_week,
+//                    current_year:current_year,
+//                    current_month:current_month,
+//                    direction:direction,
+//                    date_from:date_from,
+//                    date_to:date_to,
+//                    keyword:keyword,
+//                    shop_id:shop_id,
+//                }
+//            }).then(function(results) {
+//                return results.data;
+//            });
+//        };
         //获取商户详细信息
         factory.getMenu = function (id) {
         	return $http.get(serviceBase + 'menu').then(function (results) {
@@ -374,6 +374,31 @@
                 params : {
                     company_id:companyId,
                     date:date,
+                    index:pageIndex,
+                    keyword:keyword,
+                }
+                }).then(function(results) {
+                    return results.data;
+                });
+        };
+         //任务列表
+        factory.getFinishTracklist = function (pageIndex,keyword,state) {
+
+            return $http.get(serviceBase + 'finishtracklist', {
+                params : {
+                    index:pageIndex,
+                    keyword:keyword,
+                    state:state,
+                }
+                }).then(function(results) {
+                    return results.data;
+                });
+        };
+         //获取团队人员列表
+        factory.getTeamList = function (pageIndex,keyword) {
+
+            return $http.get(serviceBase + 'teamsaler', {
+                params : {
                     index:pageIndex,
                     keyword:keyword,
                 }

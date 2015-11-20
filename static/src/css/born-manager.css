@@ -1,8 +1,8 @@
 .bm-item{
     background-color:white;
     border-bottom: solid 1px #f6f6f5;
-    padding-left: 35px;
-    padding-right: 35px;
+    padding-left: 25px;
+    padding-right: 25px;
     padding-bottom:12px;
     padding-top:20px;
 }
@@ -165,7 +165,7 @@
     width:95px;
     height:95px;
     text-align:center;
-    margin-left:20px;
+    margin-left:10px;
 }
 .bm-head-int{
     color:white;
@@ -174,12 +174,12 @@
 .bm-head-font{
     color:rgba(246, 246, 246, 0.53);
     font-size: 10px;
-    width:30px;
+    width:40px;
     text-align: right;
 }
 .bm-head-right-part {
-    margin-left:20px;
-    margin-right:20px;
+    margin-left:10px;
+    margin-right:10px;
 }
 
 .bm-top-btn-three{
@@ -273,7 +273,10 @@
     color: rgba(221, 0, 0, 0.62)
 }
 
-
+.bm-head-top-img{
+    width:17px;
+    height:17px;
+}
 
 
 /*end nisen*/
@@ -343,5 +346,19 @@
 .bm-b-light{
     border-color: #e0e0e0;
 }
-
+.bm-head-img {
+    width:95px;
+    height:95px;
+    text-align:center;
+    margin-left:10px;
+}
+.bm-head-right-col {
+    margin-left:10px;
+    margin-right:10px;
+}
+.bm-head-right-num{
+    color: white;
+    font-size: 40px;
+    text-align: right;
+}
 /*liuhao end*/

@@ -64,7 +64,7 @@ class born_salermanager(http.Controller):
     @http.route('/except_manager', type='http', auth="none",)
     def Exception(self, **post):
         return serve_template('except.html')
-    
+
     @http.route('/manager', type='http', auth="none")
     def manager_index(self,  **post):
 
@@ -74,10 +74,10 @@ class born_salermanager(http.Controller):
 
         users_obj = request.registry.get('res.users')
         user=users_obj.browse(request.cr, SUPERUSER_ID, uid)
-        
+
         return serve_template('index.html',user=user)
 
-#获取销售人员列表
+    #获取销售人员列表
     @http.route('/manager/salers',type="http",auth="none")
     def salers(self,**post):
         uid=request.session.uid
@@ -94,15 +94,15 @@ class born_salermanager(http.Controller):
         for employee in team.employee_ids:
             partner_ids = partner_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',employee.id)], context=request.context)
             val = {
-                   'name' : employee.name,
-                   'tel' : employee.mobile_phone or employee.work_phone or '',
-                   'id' : employee.id,
-                   'number' : len(partner_ids),
+                'name' : employee.name,
+                'tel' : employee.mobile_phone or employee.work_phone or '',
+                'id' : employee.id,
+                'number' : len(partner_ids),
             }
             data.append(val)
         return json.dumps(data,sort_keys=True)
 
-#按商圈分配任务    
+    #按商圈分配任务
     @http.route('/manager/assign/<int:employee_id>',type="http",auth="none")
     def assignbybusiness(self,employee_id,**post):
         uid=request.session.uid
@@ -114,7 +114,7 @@ class born_salermanager(http.Controller):
         partner_obj.write(request.cr,SUPERUSER_ID,partner_ids,{'employee_id':employee_id})
         return json.dumps(True,sort_keys=True)
 
-#获取按商圈分配任务页面数据
+    #获取按商圈分配任务页面数据
     @http.route('/manager/assignarea',type="http",auth="none")
     def assignarea(self,**post):
         uid=request.session.uid
@@ -131,7 +131,7 @@ class born_salermanager(http.Controller):
         subdivide_obj = request.registry.get('res.country.state.area.subdivide')
         partner_obj = request.registry.get('res.partner')
         data=[]
-        
+
         #简化-获取符合格式的数据
         subdivide_ids = request.session.subdivide_ids
         business_ids = request.session.businessids
@@ -150,9 +150,9 @@ class born_salermanager(http.Controller):
                 for business in businesses:
                     bus_partners = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','=',business.id),('employee_id','=',False)], context=request.context)
                     bus_val = {
-                               'businessid' : business.id,
-                               'business' : business.name,
-                               'number' : len(bus_partners),
+                        'businessid' : business.id,
+                        'business' : business.name,
+                        'number' : len(bus_partners),
                     }
                     subdivide_number = subdivide_number+len(bus_partners)
                     bus_list.append(bus_val)
@@ -165,16 +165,16 @@ class born_salermanager(http.Controller):
                 sub_list.append(sub_val)
                 city_number = city_number+subdivide_number
             city_val = {
-                        'cityid' : city.id,
-                        'city':city.name,
-                        'region_list':sub_list,
-                        'number':city_number,
+                'cityid' : city.id,
+                'city':city.name,
+                'region_list':sub_list,
+                'number':city_number,
             }
             data.append(city_val)
-            
+
         return json.dumps(data,sort_keys=True)
-    
-#获取按商户分配任务页面数据   
+
+    #获取按商户分配任务页面数据
     @http.route('/manager/assignarea/<int:business_id>',type="http",auth="none")
     def assignpartner(self,business_id,**post):
         uid=request.session.uid
@@ -192,16 +192,16 @@ class born_salermanager(http.Controller):
         data = []
         for partner in partners:
             val = {
-                   'id' : partner.id,
-                   'name' : partner.name,
-                   'street' : partner.street or '无',
-#                    'person' : partner.child_ids.name or '无',
-                   'tel' : partner.phone or partner.mobile or '无',
+                'id' : partner.id,
+                'name' : partner.name,
+                'street' : partner.street or '无',
+                #                    'person' : partner.child_ids.name or '无',
+                'tel' : partner.phone or partner.mobile or '无',
             }
             data.append(val)
         return json.dumps(data,sort_keys=True)
-       
-#按商户分配任务       
+
+    #按商户分配任务
     @http.route('/manager/assignshop/<int:employee_id>',type="http",auth="none")
     def assignbyshop(self,employee_id,**post):
         uid=request.session.uid
@@ -210,15 +210,20 @@ class born_salermanager(http.Controller):
         partner_ids = json.loads(post.get('shop'))
         partner_obj = request.registry.get('res.partner')
         partner_obj.write(request.cr,SUPERUSER_ID,partner_ids,{'employee_id':employee_id})
-        
+
         return json.dumps(True,sort_keys=True)
 
-#获取销售管理首页数据        
+    #获取销售管理首页数据
     @http.route('/manager/salepanel',type="http",auth="none")
     def salepanel(self,**post):
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
+
+        track_obj = request.registry.get('born.partner.track')
+        domain = [('state','=','finished')]
+        track_ids = track_obj.search(request.cr, SUPERUSER_ID,domain,context=request.context)
+
         hr_obj = request.registry.get('hr.employee')
         hr_id= hr_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
         manager_id=hr_id
@@ -226,81 +231,105 @@ class born_salermanager(http.Controller):
         domain=[('manager_id','in',manager_id)]
         tid = saleteam_obj.search(request.cr, SUPERUSER_ID, domain, context=request.context)
         team = saleteam_obj.browse(request.cr, SUPERUSER_ID, tid, context=request.context)
-        business_obj = request.registry.get('born.business')
-        region_obj = request.registry.get('res.country.state.area.subdivide')
-        partner_obj = request.registry.get('res.partner')
-        
-        #获取团队负责的所有商圈id，行政区id
-        c_ids = set([city.id for city in team.city_ids])
-        s_ids = set([subdivide.id for subdivide in team.subdivide_ids])
-        country_ids = set([subdivide.country_id.id for subdivide in team.subdivide_ids])
-        b_ids = set([business.id for business in team.business_ids])
-        area_ids = set([business.area_id.id for business in team.business_ids])
-        all_cityids = [val for val in c_ids.difference(country_ids)]
-        exits_ids = region_obj.search(request.cr, SUPERUSER_ID,[('country_id','in',all_cityids)], context=request.context)
-        s_ids = s_ids | set(exits_ids)
-        all_business = [val for val in s_ids.difference(area_ids)]
-        exits_business = business_obj.search(request.cr, SUPERUSER_ID,[('area_id','in',all_business)], context=request.context)
-        b_ids = b_ids | set(exits_business)
-        businesses_ids = [id for id in b_ids]
-        subdivide_ids = [id for id in s_ids]
+        employee_ids = []
+        for employee in team.employee_ids:
+            employee_ids.append(employee.id)
+        request.session.employee_ids = employee_ids
+        user_obj = request.registry.get('res.users')
+        user = user_obj.browse(request.cr,SUPERUSER_ID,uid,context=request.context)
 
-        request.session.businessids = businesses_ids
-        request.session.subdivide_ids = subdivide_ids
-        shops = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','in',businesses_ids)], context=request.context)
-        shop_success = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','in',businesses_ids),('state','=','installed')], context=request.context)
-        shop_wait = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','in',businesses_ids),('state','=','tovisit',)], context=request.context)
-        shop_visiting = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','in',businesses_ids),('state','=','visiting')], context=request.context)
-        shop_nosaler = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','in',businesses_ids),('employee_id','=',False)], context=request.context)
-        shop_saler = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','in',businesses_ids),('employee_id','!=',False)], context=request.context)
-        
-        track_obj = request.registry.get('born.partner.track')
-        track_ids = track_obj.search(request.cr, SUPERUSER_ID,[('track_id','in',shops),('remark','=',False)], context=request.context)
-        tracks = track_obj.browse(request.cr, SUPERUSER_ID, track_ids, context=request.context)
-        data = []
-        for track in tracks:
-            if track.ways == 'call':
-                ways_display=u'电话'
-            elif track.ways == 'visit':
-                ways_display=u'上门拜访'
-            elif track.ways == 'message':
-                ways_display=u'信息'
-            elif track.ways == 'video':
-                ways_display=u'视频'
-            elif track.ways == 'other':
-                ways_display=u'其他'
-            else:
-                ways_display=u'无'
-            track_result = ''
-            for track_results in track.result_ids:
-                track_result = track_result+' '+track_results.name
-            track_val = {
-                         'trackid' : track.id,
-                         'time' : track.track_time or '',
-                         'saler' : track.employee_id.name or '',
-                         'name' : track.track_id.name,
-                         'ways' : ways_display or '',
-                         'result' : track_result,
-                         'notes' : track.notes or '',
-                         'address' : track.track_id.street or ''
-            }
-            data.append(track_val)
+        done_track_ids = track_obj.search(request.cr,SUPERUSER_ID,[('state','=','done'),('employee_id','in',employee_ids)])
+
         val = {
-               'team_number' : len(team.employee_ids),
-               'shop_number' : len(shops),
-               'shop_success' : len(shop_success),
-               'shop_wait' : len(shop_wait),
-               'tracks' : data,
-               'track_number' : len(tracks),
-               'shop_nosaler' : len(shop_nosaler),
-               'shop_saler' : len(shop_saler),
-               'shop_visiting' : len(shop_visiting),
+            'img': user.image or '',
+            'track_number': len(track_ids),
+            'team_number' : len(team.employee_ids),
+            'done_track' : len(done_track_ids)
         }
+
+
+        # hr_obj = request.registry.get('hr.employee')
+        # hr_id= hr_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+        # manager_id=hr_id
+        # saleteam_obj = request.registry.get('commission.team')
+        # domain=[('manager_id','in',manager_id)]
+        # tid = saleteam_obj.search(request.cr, SUPERUSER_ID, domain, context=request.context)
+        # team = saleteam_obj.browse(request.cr, SUPERUSER_ID, tid, context=request.context)
+        # business_obj = request.registry.get('born.business')
+        # region_obj = request.registry.get('res.country.state.area.subdivide')
+        # partner_obj = request.registry.get('res.partner')
+        #
+        # #获取团队负责的所有商圈id，行政区id
+        # c_ids = set([city.id for city in team.city_ids])
+        # s_ids = set([subdivide.id for subdivide in team.subdivide_ids])
+        # country_ids = set([subdivide.country_id.id for subdivide in team.subdivide_ids])
+        # b_ids = set([business.id for business in team.business_ids])
+        # area_ids = set([business.area_id.id for business in team.business_ids])
+        # all_cityids = [val for val in c_ids.difference(country_ids)]
+        # exits_ids = region_obj.search(request.cr, SUPERUSER_ID,[('country_id','in',all_cityids)], context=request.context)
+        # s_ids = s_ids | set(exits_ids)
+        # all_business = [val for val in s_ids.difference(area_ids)]
+        # exits_business = business_obj.search(request.cr, SUPERUSER_ID,[('area_id','in',all_business)], context=request.context)
+        # b_ids = b_ids | set(exits_business)
+        # businesses_ids = [id for id in b_ids]
+        # subdivide_ids = [id for id in s_ids]
+        #
+        # request.session.businessids = businesses_ids
+        # request.session.subdivide_ids = subdivide_ids
+        # shops = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','in',businesses_ids)], context=request.context)
+        # shop_success = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','in',businesses_ids),('state','=','installed')], context=request.context)
+        # shop_wait = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','in',businesses_ids),('state','=','tovisit',)], context=request.context)
+        # shop_visiting = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','in',businesses_ids),('state','=','visiting')], context=request.context)
+        # shop_nosaler = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','in',businesses_ids),('employee_id','=',False)], context=request.context)
+        # shop_saler = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','in',businesses_ids),('employee_id','!=',False)], context=request.context)
+        #
+        # track_obj = request.registry.get('born.partner.track')
+        # track_ids = track_obj.search(request.cr, SUPERUSER_ID,[('track_id','in',shops),('remark','=',False)], context=request.context)
+        # tracks = track_obj.browse(request.cr, SUPERUSER_ID, track_ids, context=request.context)
+        # data = []
+        # for track in tracks:
+        #     if track.ways == 'call':
+        #         ways_display=u'电话'
+        #     elif track.ways == 'visit':
+        #         ways_display=u'上门拜访'
+        #     elif track.ways == 'message':
+        #         ways_display=u'信息'
+        #     elif track.ways == 'video':
+        #         ways_display=u'视频'
+        #     elif track.ways == 'other':
+        #         ways_display=u'其他'
+        #     else:
+        #         ways_display=u'无'
+        #     track_result = ''
+        #     for track_results in track.result_ids:
+        #         track_result = track_result+' '+track_results.name
+        #     track_val = {
+        #                  'trackid' : track.id,
+        #                  'time' : track.track_time or '',
+        #                  'saler' : track.employee_id.name or '',
+        #                  'name' : track.track_id.name,
+        #                  'ways' : ways_display or '',
+        #                  'result' : track_result,
+        #                  'notes' : track.notes or '',
+        #                  'address' : track.track_id.street or ''
+        #     }
+        #     data.append(track_val)
+        # val = {
+        #        'team_number' : len(team.employee_ids),
+        #        'shop_number' : len(shops),
+        #        'shop_success' : len(shop_success),
+        #        'shop_wait' : len(shop_wait),
+        #        'tracks' : data,
+        #        'track_number' : len(tracks),
+        #        'shop_nosaler' : len(shop_nosaler),
+        #        'shop_saler' : len(shop_saler),
+        #        'shop_visiting' : len(shop_visiting),
+        # }
         return json.dumps(val,sort_keys=True)
 
-#获取单条拜访记录详情        
+#获取单条拜访记录详情
     @http.route('/manager/track/<int:track_id>',type="http",auth="none")
-    def track(self,track_id,**post):        
+    def track(self,track_id,**post):
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
@@ -319,12 +348,12 @@ class born_salermanager(http.Controller):
                          'address' : track.track_id.street,
                          'remark' : track.remark or ''
             }
-        
+
         return json.dumps(track_val,sort_keys=True)
 
-#销售经理批注        
+#销售经理批注
     @http.route('/manager/approval',type="http",auth="none")
-    def approval(self,**post):         
+    def approval(self,**post):
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
@@ -333,15 +362,15 @@ class born_salermanager(http.Controller):
         track_obj.write(request.cr,SUPERUSER_ID,id,{'remark':post.get('remark')})
         return json.dumps(True,sort_keys=True)
 
-#获取商户列表（团队负责商户，已安装，待拜访，未分配，已分配）        
+#获取商户列表（团队负责商户，已安装，待拜访，未分配，已分配）
     @http.route('/manager/teamshop',type="http",auth="none")
-    def teamshop(self,**post):   
-        
+    def teamshop(self,**post):
+
         indexPage = post.get('index',0)
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
-            
+
         partner_obj = request.registry.get('res.partner')
         businesses_ids = request.session.businessids
         if(post.get('states')=="all"):
@@ -354,7 +383,7 @@ class born_salermanager(http.Controller):
             states = ['visiting']
         else:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
-        
+
         keyword = post.get('keyword','')
         type = post.get('type','')
         if keyword == '':
@@ -371,8 +400,8 @@ class born_salermanager(http.Controller):
                 domain = [('business_id','in',businesses_ids),('state','in',states),('employee_id','=',False),'|',('name','like',keyword),('street','like',keyword)]
             else:
                 domain = [('business_id','in',businesses_ids),('state','in',states),('employee_id','!=',False),'|',('name','like',keyword),('street','like',keyword)]
-            
-        shop_ids = partner_obj.search(request.cr, SUPERUSER_ID,domain,int(indexPage),10, context=request.context)             
+
+        shop_ids = partner_obj.search(request.cr, SUPERUSER_ID,domain,int(indexPage),10, context=request.context)
         shops = partner_obj.browse(request.cr, SUPERUSER_ID, shop_ids, context=request.context)
         data = []
         track_obj = request.registry.get('born.partner.track')
@@ -386,8 +415,8 @@ class born_salermanager(http.Controller):
             elif shop.state == 'installed':
                 state_display=u'已安装'
             else:
-                state_display=u'无'     
-            track_ids = track_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',shop.id)], context=request.context)       
+                state_display=u'无'
+            track_ids = track_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',shop.id)], context=request.context)
             val = {
                    'name' : shop.name,
                    'tel' : shop.phone or shop.mobile or '',
@@ -399,7 +428,7 @@ class born_salermanager(http.Controller):
             }
             data.append(val)
         return json.dumps(data,sort_keys=True)
-        
+
 #获取分配任务内的销售人员信息
     @http.route('/manager/salerdetail/<int:saler_id>', type='http', auth="none",)
     def salerdetail(self,saler_id, **post):
@@ -407,16 +436,16 @@ class born_salermanager(http.Controller):
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
         employee_obj = request.registry.get('hr.employee')
-        employee = employee_obj.browse(request.cr, SUPERUSER_ID, saler_id, context=request.context)   
-        partner_obj = request.registry.get('res.partner') 
+        employee = employee_obj.browse(request.cr, SUPERUSER_ID, saler_id, context=request.context)
+        partner_obj = request.registry.get('res.partner')
         business_obj = request.registry.get('born.business')
-        
-        sql = u""" select business_id from res_partner 
-        where business_id is not null and employee_id=%s group by business_id 
+
+        sql = u""" select business_id from res_partner
+        where business_id is not null and employee_id=%s group by business_id
         """% saler_id
         request.cr.execute(sql)
         business_ids=request.cr.fetchall()
-        
+
         business_data = []
         business_list = []
         for business_id in business_ids:
@@ -440,16 +469,16 @@ class born_salermanager(http.Controller):
             for val in business_data:
                 if(val["region_id"]==area_id):
                     business_newdata.append(val)
-                    name = val["region_name"] 
+                    name = val["region_name"]
                     number+=val["number"]
             region_val = {
                    'name' : name,
                    'number' : number,
                    'business_list' : business_newdata,
-            } 
+            }
             all_number+=number
-            
-            region_data.append(region_val)   
+
+            region_data.append(region_val)
         data = {
                 'name' : employee.name,
                 'tel' : employee.work_phone or employee.mobile_phone or '',
@@ -457,9 +486,9 @@ class born_salermanager(http.Controller):
                 'number' : all_number,
                 'id' : saler_id
         }
-        
+
         return json.dumps(data,sort_keys=True)
-         
+
 #获取销售人员的负责商户信息
     @http.route('/manager/salershop/<int:saler_id>/<int:business_id>', type='http', auth="none",)
     def salershop(self,saler_id,business_id, **post):
@@ -467,18 +496,18 @@ class born_salermanager(http.Controller):
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
         indexPage = post.get('index',0)
-        partner_obj = request.registry.get('res.partner') 
+        partner_obj = request.registry.get('res.partner')
         keyword = post.get('keyword','')
         if keyword == '':
             domain = [('employee_id','=',saler_id),('business_id','=',business_id)]
-        else:    
+        else:
             domain = [('employee_id','=',saler_id),('business_id','=',business_id),'|',('name','like',keyword),('street','like',keyword)]
         partner_ids = partner_obj.search(request.cr, SUPERUSER_ID,domain,int(indexPage),10, context=request.context)
         partners = partner_obj.browse(request.cr, SUPERUSER_ID, partner_ids, context=request.context)
         track_obj = request.registry.get('born.partner.track')
         data=[]
         for shop in partners:
-            track_ids = track_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',shop.id)], context=request.context)       
+            track_ids = track_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',shop.id)], context=request.context)
             if shop.state == 'tovisit':
                 state_display=u'待拜访'
             elif shop.state == 'visiting':
@@ -488,7 +517,7 @@ class born_salermanager(http.Controller):
             elif shop.state == 'installed':
                 state_display=u'已安装'
             else:
-                state_display=u'无'    
+                state_display=u'无'
             val = {
                    'name' : shop.name,
                    'tel' : shop.phone or shop.mobile or '',
@@ -499,7 +528,7 @@ class born_salermanager(http.Controller):
             }
             data.append(val)
         return json.dumps(data,sort_keys=True)
-    
+
 #获取商户详细信息
     @http.route('/manager/shopdetail/<int:shop_id>', type='http', auth="none",)
     def shopdetail(self,shop_id, **post):
@@ -561,7 +590,7 @@ class born_salermanager(http.Controller):
         elif partner.state == 'installed':
             state_display=u'已安装'
         else:
-            state_display=''  
+            state_display=''
         val = {
                'id' : partner.id,
                'name' : partner.name,
@@ -590,7 +619,7 @@ class born_salermanager(http.Controller):
         partner_obj = request.registry.get('res.partner')
         partner_obj.write(request.cr,SUPERUSER_ID,shopid,{'employee_id':salerid})
         return json.dumps(True,sort_keys=True)
-  
+
 #移交销售人员的全部负责商户
     @http.route('/manager/allchangesaler/<int:ysalerid>/<int:salerid>', type='http', auth="none",)
     def allchangesaler(self,ysalerid,salerid ,**post):
@@ -601,7 +630,7 @@ class born_salermanager(http.Controller):
         partner_ids = partner_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',ysalerid)], context=request.context)
         partner_obj.write(request.cr,SUPERUSER_ID,partner_ids,{'employee_id':salerid})
         return json.dumps(True,sort_keys=True)
-  
+
 #取消销售人员的全部负责商户
     @http.route('/manager/cancel/<int:salerid>', type='http', auth="none",)
     def cancel(self,salerid ,**post):
@@ -621,18 +650,18 @@ class born_salermanager(http.Controller):
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
         business_ids = request.session.businessids
         partner_obj = request.registry.get('res.partner')
-  
+
         display_type = post.get('display','day')
         current_date = post.get('current_date',False)
         current_week = post.get('current_week',False)
         current_year = post.get('current_year',False)
         current_month = post.get('current_month',False)
         direction = post.get('direction',0)
-  
+
         date_from = post.get('date_from',current_date)
         date_to = post.get('date_to',current_date)
         keyword = post.get('keyword','')
-  
+
         #计算当前的时间
         if not current_date or current_date=='':
             today = datetime.date.today()
@@ -640,11 +669,11 @@ class born_salermanager(http.Controller):
             current_month=today.strftime("%Y-%m")
             current_year=today.strftime("%Y")
             current_week='%s %s' % (current_year,int(today.strftime("%W"))+1)
-  
+
         display_current=current_date
         filter_week_year=current_week.split(' ')[0]
         filter_week=current_week.split(' ')[1]
-  
+
         if direction=='1':
             if display_type =='day':
                 today=datetime.datetime.strptime(current_date,'%Y-%m-%d')
@@ -686,8 +715,8 @@ class born_salermanager(http.Controller):
                     filter_week = new_date.strftime("%W")
                     filter_week_year = int(filter_week_year)-1
                 current_week='%s %s' % (filter_week_year,filter_week)
-  
-        partner_ids = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','in',business_ids),('state','=','visiting')], context=request.context) 
+
+        partner_ids = partner_obj.search(request.cr, SUPERUSER_ID,[('business_id','in',business_ids),('state','=','visiting')], context=request.context)
         partners = partner_obj.browse(request.cr, SUPERUSER_ID, partner_ids)
         where = ""
         if display_type=='day':
@@ -707,7 +736,7 @@ class born_salermanager(http.Controller):
                 where += "and TO_CHAR(bpt.track_time,'YYYY-MM-DD') >= '%s'  " % (date_from)
             if date_to != '' and date_to!='NaN-NaN-NaN':
                 where += " and TO_CHAR(bpt.track_time,'YYYY-MM-DD') <= '%s' " % (date_to)
-        
+
         data = []
         for partner in partners:
             sql = """
@@ -719,9 +748,9 @@ class born_salermanager(http.Controller):
                 bpt.write_date,
                 b.street as address,
                 c.name_related as saler , string_agg( btr.name ,',' )  as results  from born_partner_track bpt join res_track_result_rel rtr on bpt.id = rtr.t_id
-                join born_track_result btr on rtr.rid = btr.id 
-                join hr_employee c on bpt.employee_id = c.id 
-                join res_partner b on bpt.track_id = b.id 
+                join born_track_result btr on rtr.rid = btr.id
+                join hr_employee c on bpt.employee_id = c.id
+                join res_partner b on bpt.track_id = b.id
                 where bpt.track_id = '%s' %s GROUP BY bpt.id ,b.street,c.name_related
             """ %(partner.id,where)
             request.cr.execute(sql)
@@ -746,3 +775,64 @@ class born_salermanager(http.Controller):
             'keyword':keyword,
         }
         return json.dumps(val,sort_keys=True)
+
+
+    #获取任务列表
+    @http.route('/manager/finishtracklist', type='http', auth="none",)
+    def getFinsihTracklist(self, **post):
+        uid=request.session.uid
+        if not uid:
+            werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
+        indexPage = post.get('index',0)
+        state = post.get('state')
+        employee_ids = request.session.employee_ids
+        track_obj = request.registry.get('born.partner.track')
+        domain = [('state','=',state),('employee_id','in',employee_ids)]
+        track_ids = track_obj.search(request.cr, SUPERUSER_ID,domain,int(indexPage),10,order="create_date desc",context=request.context)
+        tracks = track_obj.browse(request.cr, SUPERUSER_ID,track_ids,context=request.context)
+        data = []
+        user_obj = request.registry.get('res.users')
+        today = datetime.date.today()
+        current_date=today.strftime("%Y-%m-%d")
+        for track in tracks:
+            user = user_obj.browse(request.cr, SUPERUSER_ID,track.employee_id.user_id.id)
+            val = {
+                'company_name':track.track_id.name,
+                'id':track.id,
+                'employee':track.employee_id.name,
+                'time':track.create_date,
+                'name':track.name or '',
+                'user_img':user.image_small or '',
+            }
+            data.append(val)
+        return json.dumps(data,sort_keys=True)
+
+
+
+    #获取团队人员列表
+    @http.route('/manager/teamsaler', type='http', auth="none",)
+    def teamsaler(self,**post):
+        uid = request.session.uid
+        if not uid:
+            werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
+        employee_ids = request.session.employee_ids
+        hr_obj = request.registry.get('hr.employee')
+        hr_ids= hr_obj.browse(request.cr, SUPERUSER_ID,employee_ids)
+        user_obj = request.registry.get('res.users')
+        track_obj = request.registry.get('born.partner.track')
+        data = []
+        for hr_id in hr_ids:
+            user = user_obj.browse(request.cr, SUPERUSER_ID,hr_id.user_id.id)
+            track_id = track_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id.id)],0,1,order="create_date desc",context=request.context)
+            track = track_obj.browse(request.cr, SUPERUSER_ID,track_id,context=request.context)
+            val = {
+                'saler_name':user.name or hr_id.name,
+                'saler_img':user.image_small or '',
+                'track_name' : track.name or '',
+            }
+            data.append(val)
+        return json.dumps(data,sort_keys=True)
+
+
+
+

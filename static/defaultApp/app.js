@@ -203,11 +203,18 @@
 	        	templateUrl: viewBase + 'salecontrole/assignshop.html',
 	        	controllerAs: 'vm'
 	        })
+
 	        .when('/salepanel', {
 	        	controller: 'SalepanelController',
-	        	templateUrl: viewBase + 'salecontrole/salepanel.html',
+	        	templateUrl: viewBase + 'salermanager/salermanager.html',
 	        	controllerAs: 'vm'
 	        })
+//	        .when('/salepanel', {
+//	        	controller: 'SalepanelController',
+//	        	templateUrl: viewBase + 'salecontrole/salepanel.html',
+//	        	controllerAs: 'vm'
+//	        })
+
 	        .when('/approval/:trackid', {
 	        	controller: 'ApprovalController',
 	        	templateUrl: viewBase + 'salecontrole/approval.html',

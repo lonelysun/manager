@@ -1,0 +1,108 @@
+<div>
+    <!--Head-->
+    <div class="bm-head">
+        <div class="bm-head-top">
+            <span class="bm-head-top-icon-left"><img class="bm-head-top-img" src="/born_manager/static/src/img/saler/add.png" style="margin-left: 10px;"></span>
+            <span class="pull-right" style="">
+                <span class="bm-head-top-icon"><img class="bm-head-top-img" src="/born_manager/static/src/img/saler/rank.png"></span>
+                <span class="bm-head-top-icon"><img class="bm-head-top-img" src="/born_manager/static/src/img/saler/message.png"></span>
+                <span class="bm-head-top-icon"><img class="bm-head-top-img" src="/born_manager/static/src/img/saler/search.png"></span>
+            </span>
+        </div>
+
+        <div class="bm-head-down">
+            <div class="pull-left">
+                <img  class="bm-head-img img" ng-if="vm.panel.img ==''" src="/born_manager/static/src/img/default_company.png">
+                <img  class="bm-head-img img" ng-if="vm.panel.img !=''" ng-src="data:image/png;base64,{{vm.panel.img}}" >
+            </div>
+
+            <div class="pull-right">
+                <div class="pull-right bm-head-right-col">
+                    <div class="bm-head-right-num">{{vm.panel.team_number}}</div>
+                    <div class="bm-head-font">负责的团队成员</div>
+                </div>
+                <div class="pull-right bm-head-right-col">
+                    <div class="bm-head-right-num">{{vm.panel.track_number}}</div>
+                    <div class="bm-head-font">待审批商户</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!--Navbar-->
+    <div class="panel no-border text-center bm-mid-nav">
+    	<div>
+        	<button ng-class="{missions: 'bm-active'}[vm.display]" ng-click="vm.setDisplay('missions')" class="bg-white  no-border bm-top-btn-two">任务</button>
+        	<button ng-class="{team: 'bm-active'}[vm.display]" ng-click="vm.setDisplay('team')" class="bg-white no-border bm-top-btn-two">团队</button>
+    	</div>
+	</div>
+
+
+    <!--任务-->
+    <div ng-if="vm.display=='missions'">
+
+        <div>
+            <div  id="infinite1" infinite-scroll='vm.getFinishTrack()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+                <div class="bm-main-three-line-wrapper" style="padding-left: 25px;" data-ng-repeat="track in vm.tracklist">
+                    <div class="bm-main-three-line">
+                            <img ng-if="track.user_img==''" class="pull-right" style="width:30px;padding-top: 10px;" src="/born_manager/static/src/img/defaultlogo.png">
+                            <img ng-if="track.user_img!=''" class="pull-right" style="width:30px;padding-top: 10px;" ng-src="data:image/png;base64,{{track.user_img}}">
+                        <div style="width:90%;color:black">
+                            <img style="width:14px;height:12px" class="bm-main-three-line-title-tag" src="/born_manager/static/src/img/saler/done.png">
+                            {{track.employee}}完成任务：{{track.name}}
+                        </div>
+                        <div class="bm-main-three-line-detail"  style="width:90%;font-size:10px">
+                            <span class="bm-main-three-line-span"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/company.png">{{track.company_name}}</span>
+                            <span class="bm-main-three-line-span"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/time.png">{{track.time|limitTo:16}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="vm.showDone" class="bm-btn-add-more-wrapper">
+                <!--<button class="">10个已完成任务</button>-->
+            <button class="btn m-b-xs bm-btn-add-more" ng-click="vm.showDoneTrack()">{{vm.panel.done_track}}个已审批任务</button>
+        </div>
+
+        <div>
+            <div  ng-if="vm.DoneTrack" id="infinite1" infinite-scroll='vm.getDoneTrack()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+                <div class="bm-main-three-line-wrapper" style="padding-left: 25px;" data-ng-repeat="donetrack in vm.donetracklist">
+                    <div class="bm-main-three-line">
+                            <img class="pull-right" style="width:30px;padding-top: 10px;" src="/born_manager/static/src/img/defaultlogo.png">
+                            <img ng-if="donetrack.user_img!=''" class="pull-right" style="width:30px;padding-top: 10px;" ng-src="data:image/png;base64,{{donetrack.user_img}}">
+                        <div style="width:90%;color:black">
+                            <img style="width:14px;height:12px" class="bm-main-three-line-title-tag" src="/born_manager/static/src/img/saler/done.png">
+                            {{donetrack.employee}}完成任务：{{donetrack.name}}
+                        </div>
+                        <div class="bm-main-three-line-detail"  style="width:90%;font-size:10px">
+                            <span class="bm-main-three-line-span"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/company.png">{{donetrack.company_name}}</span>
+                            <span class="bm-main-three-line-span"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/time.png">{{donetrack.time|limitTo:16}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="vm.display=='team'">
+        <div>
+            <div id="infinite1" infinite-scroll='vm.getTeamList()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+                <div class="bm-main-three-line-wrapper" style="padding-left: 25px;" data-ng-repeat="saler in vm.salers">
+                    <div class="bm-main-three-line" style="padding-left: 30px;padding-bottom: 10px;">
+                            <img ng-if="saler.saler_img==''" class="pull-left" style="width: 30px;padding-top: 5px;margin-left: -30px;" src="/born_manager/static/src/img/defaultlogo.png">
+                            <img ng-if="saler.saler_img!=''" class="pull-left" style="width: 30px;padding-top: 5px;margin-left: -30px;" ng-src="data:image/png;base64,{{saler.saler_img}}">
+                            <i class="pull-right fa fa-angle-right" style="padding-top: 20px;"></i>
+                        <div style="width: 100%;color: black;padding-left: 10px;">
+                            {{saler.saler_name}}
+                        </div>
+                        <div class="bm-main-three-line-detail"  style="width:100%;font-size:10px;padding-left: 10px;margin-top: 0px;">
+                            完成任务：{{saler.track_name}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div style="height:60px; line-height: 60px;" ng-show="vm.busy" class="text-center" >正在加载...</div>

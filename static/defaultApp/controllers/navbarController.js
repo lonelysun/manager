@@ -14,6 +14,7 @@
         vm.headerSave = null;
         vm.headerSearch = null;
         vm.headerCancel = null;
+        displayModel.showHeader = '0';
 
         vm.headerBack = function(){
             $location.path(displayModel.backpath);
@@ -61,10 +62,10 @@
             return $location.path().substr(0, path.length) === path;
         };
 
-        vm.showHeader(){
+        vm.showHeader = function(){
             vm.title = displayModel.title;
             return displayModel.showHeader;
-        }
+        };
     };
 
     NavbarController.$inject = injectParams;
