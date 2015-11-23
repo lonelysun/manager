@@ -23,9 +23,13 @@
         function getPanel() {
             dataService.getMenu()
             .then(function (data) {
-            	vm.panel = data;
-            	if (vm.panel.issaler|vm.panel.ismanager)
-            		vm.second = true;
+
+                if(data.option=='7'){
+                    $location.path('/saler');
+                }else if(data.option=='8'){
+                    $location.path('/salepanel');
+                }
+
                 $timeout(function () {
                 }, 1000);
             }, function (error) {
