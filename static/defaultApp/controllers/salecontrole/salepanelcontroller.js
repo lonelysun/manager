@@ -1,9 +1,9 @@
 (function () {
     var injectParams = ['$scope', '$location', '$routeParams',
-                        '$timeout', 'config', 'dataService','toaster','displayModel'];
+                        '$timeout','ngDialog', 'config', 'dataService','toaster','displayModel'];
 
     var SalepanelController = function ($scope, $location, $routeParams,
-                                           $timeout, config, dataService,toaster,displayModel) {
+                                           $timeout, ngDialog,config, dataService,toaster,displayModel) {
         var vm = this;
         vm.panel = {};
         vm.display = 'missions';
@@ -36,7 +36,6 @@
                     vm.tracklist.push(data[i]);
                 }
                 if(vm.tracklist.length == vm.panel.track_number){
-                    console.info(vm.tracklist.length);
                     vm.showDone = true;
                 }
                 vm.isLoad=true;
@@ -78,6 +77,7 @@
             if(vm.busy)return;
             vm.busy=true;
             state = 'done';
+            console.info(vm.salers.length);
             dataService.getTeamList(vm.salers.length,vm.keyword)
             .then(function (data) {
                 for (var i = 0; i < data.length; i++) {
@@ -92,6 +92,25 @@
             	toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
             });
         }
+
+        //创建新任务
+        vm.createMission = function () {
+
+
+        	$scope.modalOptions = {
+                closeButtonText: '取消',
+                firstActionText:'新任务',
+                firstActionUrl:'#/newMisson',
+                secondActionText:'新商户',
+                secondUrl:'#/',
+            };
+
+            ngDialog.open({
+                template:'/born_manager/static/defaultApp/partials/modalBottomThree.html',
+                className: 'ngdialog',
+                scope:$scope //将scope传给test.html,以便显示地址详细信息
+            });
+        };
 
 
         //获取首页的详细信息

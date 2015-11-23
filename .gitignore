@@ -1,7 +1,3 @@
-
 *.py[cod]
 *$py.class
-static/defaultApp/views/tmp/index.html.py
-static/defaultApp/views/salecontrole/salecontrole.html
-static/defaultApp/views/salecontrole/salecontrole2.html
-static/defaultApp/views/salecontrole/waitshops.html
+/static/defaultApp/views/tmp

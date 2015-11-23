@@ -226,9 +226,8 @@ class born_salermanager(http.Controller):
 
         hr_obj = request.registry.get('hr.employee')
         hr_id= hr_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-        manager_id=hr_id
         saleteam_obj = request.registry.get('commission.team')
-        domain=[('manager_id','in',manager_id)]
+        domain=[('manager_id','in',hr_id)]
         tid = saleteam_obj.search(request.cr, SUPERUSER_ID, domain, context=request.context)
         team = saleteam_obj.browse(request.cr, SUPERUSER_ID, tid, context=request.context)
         employee_ids = []
@@ -785,7 +784,15 @@ class born_salermanager(http.Controller):
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
         indexPage = post.get('index',0)
         state = post.get('state')
-        employee_ids = request.session.employee_ids
+        hr_obj = request.registry.get('hr.employee')
+        hr_id= hr_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+        saleteam_obj = request.registry.get('commission.team')
+        domain=[('manager_id','in',hr_id)]
+        tid = saleteam_obj.search(request.cr, SUPERUSER_ID, domain, context=request.context)
+        team = saleteam_obj.browse(request.cr, SUPERUSER_ID, tid, context=request.context)
+        employee_ids = []
+        for employee in team.employee_ids:
+            employee_ids.append(employee.id)
         track_obj = request.registry.get('born.partner.track')
         domain = [('state','=',state),('employee_id','in',employee_ids)]
         track_ids = track_obj.search(request.cr, SUPERUSER_ID,domain,int(indexPage),10,order="create_date desc",context=request.context)
@@ -815,12 +822,15 @@ class born_salermanager(http.Controller):
         uid = request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
+        data = []
         employee_ids = request.session.employee_ids
+        indexPage = post.get('index')
+        if indexPage == str(len(employee_ids)):
+            return json.dumps(data,sort_keys=True)
         hr_obj = request.registry.get('hr.employee')
         hr_ids= hr_obj.browse(request.cr, SUPERUSER_ID,employee_ids)
         user_obj = request.registry.get('res.users')
         track_obj = request.registry.get('born.partner.track')
-        data = []
         for hr_id in hr_ids:
             user = user_obj.browse(request.cr, SUPERUSER_ID,hr_id.user_id.id)
             track_id = track_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id.id)],0,1,order="create_date desc",context=request.context)

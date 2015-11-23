@@ -2,7 +2,7 @@
     <!--Head-->
     <div class="bm-head">
         <div class="bm-head-top">
-            <span class="bm-head-top-icon-left"><img class="bm-head-top-img" src="/born_manager/static/src/img/saler/add.png" style="margin-left: 10px;"></span>
+            <span class="bm-head-top-icon-left"><img class="bm-head-top-img" src="/born_manager/static/src/img/saler/add.png" data-ng-click="vm.createMission()" style="margin-left: 10px;"></span>
             <span class="pull-right" style="">
                 <span class="bm-head-top-icon"><img class="bm-head-top-img" src="/born_manager/static/src/img/saler/rank.png"></span>
                 <span class="bm-head-top-icon"><img class="bm-head-top-img" src="/born_manager/static/src/img/saler/message.png"></span>
@@ -12,8 +12,10 @@
 
         <div class="bm-head-down">
             <div class="pull-left">
-                <img  class="bm-head-img img" ng-if="vm.panel.img ==''" src="/born_manager/static/src/img/default_company.png">
-                <img  class="bm-head-img img" ng-if="vm.panel.img !=''" ng-src="data:image/png;base64,{{vm.panel.img}}" >
+                <a href="#/settings">
+                    <img  class="bm-head-img img" ng-if="vm.panel.img ==''" src="/born_manager/static/src/img/default_company.png">
+                    <img  class="bm-head-img img" ng-if="vm.panel.img !=''" ng-src="data:image/png;base64,{{vm.panel.img}}" >
+                </a>
             </div>
 
             <div class="pull-right">
@@ -53,7 +55,7 @@
                             {{track.employee}}完成任务：{{track.name}}
                         </div>
                         <div class="bm-main-three-line-detail"  style="width:90%;font-size:10px">
-                            <span class="bm-main-three-line-span"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/company.png">{{track.company_name}}</span>
+                            <span class="bm-main-three-line-span"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/salermanager/company.png">{{track.company_name}}</span>
                             <span class="bm-main-three-line-span"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/time.png">{{track.time|limitTo:16}}</span>
                         </div>
                     </div>
@@ -62,7 +64,6 @@
         </div>
 
         <div ng-if="vm.showDone" class="bm-btn-add-more-wrapper">
-                <!--<button class="">10个已完成任务</button>-->
             <button class="btn m-b-xs bm-btn-add-more" ng-click="vm.showDoneTrack()">{{vm.panel.done_track}}个已审批任务</button>
         </div>
 

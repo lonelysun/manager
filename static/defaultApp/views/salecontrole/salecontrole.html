@@ -1,0 +1,19 @@
+<div class="show-hide-animation" >
+	<div class="panel panel-info no-border" style="margin-bottom: 0px;">
+            <ul class="list-group">
+            	<li ng-repeat="area in vm.area" class="list-group-item" style="">
+            		<a href="#/salecontrole/{{area.cityid}}">
+            		<div>
+            			<span class="pull-right" style="width: 52px;"><i class="fa fa-building-o" ></i><span class="pull-right">{{area.number}}<i class="fa  fa-angle-right " style="padding-left: 5px;"></span></i></span>
+	            		<div class="text-black">{{area.city}}</div>
+            		</div>
+            		</a>
+            	</li>
+            </ul>
+        </div>   
+
+    
+    
+</div>
+<div style="height:60px; line-height: 60px;" ng-show="vm.busy" class="text-center" >正在加载...</div>
+

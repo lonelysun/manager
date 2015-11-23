@@ -9,5 +9,6 @@
 ##############################################################################
 import main
 import sale
+import saler
 import salermanager
 

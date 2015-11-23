@@ -203,7 +203,6 @@
 	        	templateUrl: viewBase + 'salecontrole/assignshop.html',
 	        	controllerAs: 'vm'
 	        })
-
 	        .when('/salepanel', {
 	        	controller: 'SalepanelController',
 	        	templateUrl: viewBase + 'salermanager/salermanager.html',

@@ -154,20 +154,20 @@
         };
 
 
-		  //获取Partner列表
-        factory.getPartners = function (pageIndex,keyword,stateFilter) {
-
-            return $http.get(serviceBase + 'partners', {
-                params : {
-                    index:pageIndex,
-                    keyword:keyword,
-                    statefilter:stateFilter
-                }
-                }).then(function(results) {
-                    return results.data;
-                });
-
-        };
+		 // //获取Partner列表
+        //factory.getPartners = function (pageIndex,keyword,stateFilter) {
+        //
+        //    return $http.get(serviceBase + 'partners', {
+        //        params : {
+        //            index:pageIndex,
+        //            keyword:keyword,
+        //            statefilter:stateFilter
+        //        }
+        //        }).then(function(results) {
+        //            return results.data;
+        //        });
+        //
+        //};
 
         //获取Partner详细信息
         factory.getPartnerDetail = function (id) {
@@ -227,6 +227,63 @@
                 return results.data;
             });
         };
+
+
+        //Add by nisen, add new saler
+
+        factory.getCompanys = function (pageIndex,keyword) {
+
+            return $http.get(serviceBase + 'saler/companys', {
+     			params : {
+                    index:pageIndex,
+                    keyword:keyword
+     			}
+     			}).then(function(results) {
+     				return results.data;
+     			});
+
+        };
+
+        factory.getPartners = function (pageIndex,keyword) {
+
+            return $http.get(serviceBase + 'saler/partners', {
+     			params : {
+                    index:pageIndex,
+                    keyword:keyword,
+     			}
+     			}).then(function(results) {
+     				return results.data;
+     			});
+
+        };
+
+
+        factory.getMissions = function (pageIndex,keyword,mission_state) {
+
+            return $http.get(serviceBase + 'saler/missions', {
+     			params : {
+                    index:pageIndex,
+                    keyword:keyword,
+                    mission_state:mission_state
+     			}
+     			}).then(function(results) {
+     				return results.data;
+     			});
+
+        };
+
+        factory.getInitData = function () {
+
+            return $http.get(serviceBase + 'saler/initdata').then(function(results) {
+     				return results.data;
+     			});
+
+        };
+
+
+
+        //
+
 
         //获取组内销售人员数据
         factory.getSalers = function () {
@@ -342,25 +399,25 @@
             });
         };
         //拜访中列表
-//        factory.gettracklist = function (display,index,current_date,current_week,current_year,current_month,direction,date_from,date_to,keyword, shop_id) {
-//        	 return $http.get(serviceBase + 'accounts', {
-//     			params : {
-//                    display:display,
-//                    index:index,
-//                    current_date:current_date,
-//                    current_week:current_week,
-//                    current_year:current_year,
-//                    current_month:current_month,
-//                    direction:direction,
-//                    date_from:date_from,
-//                    date_to:date_to,
-//                    keyword:keyword,
-//                    shop_id:shop_id,
-//                }
-//            }).then(function(results) {
-//                return results.data;
-//            });
-//        };
+        factory.gettracklist = function (display,index,current_date,current_week,current_year,current_month,direction,date_from,date_to,keyword, shop_id) {
+        	 return $http.get(serviceBase + 'accounts', {
+     			params : {
+                    display:display,
+                    index:index,
+                    current_date:current_date,
+                    current_week:current_week,
+                    current_year:current_year,
+                    current_month:current_month,
+                    direction:direction,
+                    date_from:date_from,
+                    date_to:date_to,
+                    keyword:keyword,
+                    shop_id:shop_id,
+                }
+            }).then(function(results) {
+                return results.data;
+            });
+        };
         //获取商户详细信息
         factory.getMenu = function (id) {
         	return $http.get(serviceBase + 'menu').then(function (results) {

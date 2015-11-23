@@ -24,12 +24,8 @@
             dataService.getMenu()
             .then(function (data) {
             	vm.panel = data;
-            	if (vm.panel.option == 1 ){
-            		$location.path('/saler');
-            	}
-            	else if(vm.panel.option == 2 ){
-            	    $location.path('/salepanel');
-            	}
+            	if (vm.panel.issaler|vm.panel.ismanager)
+            		vm.second = true;
                 $timeout(function () {
                 }, 1000);
             }, function (error) {

@@ -1,0 +1,26 @@
+<div class="show-hide-animation" >
+	<div class="panel b-a no-border" style="margin-bottom: 0px;">
+            <ul class="list-group">
+            	<li ng-repeat="region in vm.areadetail" class="list-group-item" style="">
+            	<div>
+            		<a  ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">
+            			<span class="pull-right" style="width: 52px;"><i class="fa fa-building-o" ></i><span class="pull-right">{{region.number}}<i class="fa  fa-angle-right " ng-class="{'fa-angle-down': !isCollapsed, 'fa-angle-right': isCollapsed}" style="padding-left: 5px;"></span></i></span>
+	            		<div class="text-black">
+	            		{{region.region}}
+	            		</div>
+            		</a>
+            	</div>
+            	 <div ng-repeat="business in region.business_list" collapse="isCollapsed" class=" panel-collapse collapse in" style="height: auto;padding-top: 15px;">
+          			<span class="pull-right" style="width: 42px;"><i class="fa fa-building-o"></i><span class="pull-right"">{{business.number}}</span></span>
+	            		<div class="text-black">
+	            		{{business.business}}
+	            		</div>
+        		</div>
+            	</li>
+            </ul>
+        </div>   
+    
+</div>
+<div style="height:60px; line-height: 60px;" ng-show="vm.busy" class="text-center" >正在加载...</div>
+
+
