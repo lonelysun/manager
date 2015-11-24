@@ -9,20 +9,47 @@
         vm.settings={};
         vm.reset = {};
         vm.image = '';
-
+        vm.getEditModel = '1';
+        vm.getSaveModel = '0';
+        vm.getBackModel = '1';
+        vm.backurl='';
 
         function init() {
             displayModel.displayModel='none';
-            displayModel.displayEdit = '1';
-            displayModel.displaySave = '0';
-            displayModel.displaySearch = '0';
-            displayModel.displayBack = '1';
+            displayModel.showHeader = '0';
             displayModel.backpath='/menu';
             displayModel.flag = '';
-            displayModel.title = '设置';
             getSetting();
         }
 
+        vm.logout = function(){
+            window.location.href = 'bornhr://loginout';
+        }
+
+
+        vm.headerEdit = function(){
+            displayModel.flag = 'edit';
+            vm.getEditModel = '0';
+            vm.getSaveModel = '1';
+            vm.getBackModel = '0';
+            displayModel.displayTop = '';
+        }
+
+        vm.headerCancel = function(){
+            displayModel.flag = '';
+            vm.getEditModel = '1';
+            vm.getSaveModel = '0';
+            vm.getBackModel = '1';
+            displayModel.displayTop = 'edit';
+        }
+
+        vm.headerBack = function(){
+            if(vm.settings.option=='7'){
+                $location.path('/saler');
+            }else if(vm.settings.option=='8'){
+                $location.path('/salepanel');
+            }
+        }
         vm.edit = function(){
             return displayModel.flag;
         }
@@ -79,6 +106,11 @@
             dataService.getSetting()
             .then(function (data) {
                 vm.settings = data;
+                if(vm.settings.role_option=='7'){
+                    vm.backurl='#/saler';
+                }else if(vm.settings.role_option=='8'){
+                    vm.backurl='#/salepanel';
+                }
                 vm.reset = JSON.parse(JSON.stringify(data));
                 vm.reset.image = '';
                 $timeout(function () {

@@ -18,6 +18,7 @@
 
         function init() {
             displayModel.displayModel='block';
+            displayModel.showHeader = '0';
             getSalepanel();
         }
 
@@ -77,7 +78,6 @@
             if(vm.busy)return;
             vm.busy=true;
             state = 'done';
-            console.info(vm.salers.length);
             dataService.getTeamList(vm.salers.length,vm.keyword)
             .then(function (data) {
                 for (var i = 0; i < data.length; i++) {
@@ -100,7 +100,7 @@
         	$scope.modalOptions = {
                 closeButtonText: '取消',
                 firstActionText:'新任务',
-                firstActionUrl:'#/newMisson',
+                firstUrl:'#/createMission',
                 secondActionText:'新商户',
                 secondUrl:'#/',
             };
@@ -108,7 +108,7 @@
             ngDialog.open({
                 template:'/born_manager/static/defaultApp/partials/modalBottomThree.html',
                 className: 'ngdialog',
-                scope:$scope //将scope传给test.html,以便显示地址详细信息
+                scope:$scope
             });
         };
 

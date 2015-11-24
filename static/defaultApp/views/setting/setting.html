@@ -1,5 +1,25 @@
-<div class="show-hide-animation" >
 
+<div class="show-hide-animation" >
+    <div  class="h4 app-header navbar" style="min-height: 0px;">
+            <!-- navbar header -->
+            <div class="navbar-header bm-navbar-header text-center " style="line-height:44px;margin-top: 20px;">
+                <button ng-if="vm.getEditModel=='1'" data-ng-click="vm.headerEdit()" class="pull-right visible-xs dk" style="color:#ff4848">
+                  编辑
+                </button>
+                <button ng-if="vm.getSaveModel=='1'" data-ng-click="vm.regiest()" class="pull-right visible-xs dk" style="color:#ff4848">
+                  保存
+                </button>
+                      设置
+                <a href="{{vm.backurl}}">
+                    <img ng-if="vm.getBackModel=='1'" data-ng-click="vm.headerBack()" class=" pull-left no-border bm-img-back"  src="/born_manager/static/src/img/back.png">
+                </a>
+                <button ng-if="vm.getSaveModel=='1'" data-ng-click="vm.headerCancel()" class="pull-left visible-xs dk" style="color:#ff4848">
+                  取消
+                </button>
+            </div>
+            <!-- / navbar header -->
+
+    </div>
     <div ng-hide="vm.edit()=='edit'" class="panel hbox panel-default no-border" style="margin-bottom: 0px;">
         <div class="panel-body text-center" style="padding: 20px;">
             <div class="avatar m-r">
@@ -63,6 +83,11 @@
                 {{vm.settings.manager_name}}
             </div>
         </div>
+     <div class="" style="width:100%;bottom: 0px;">
+    <p style="width:80%;margin:0 auto;padding-top: 10px;padding-bottom: 10px;">
+        <button type="submit" class="btn btn-lg btn-block" data-ng-click="vm.logout()" style="color:white;background-color:#ffa69a;">退出登录</button>
+      </p>
+ </div>
     </div>
 
     <div ng-show="vm.edit()=='edit'" class="panel hbox panel-default no-border" style="margin-bottom: 0px;">
@@ -95,11 +120,5 @@
                 <i class="fa-times-circle fa pull-right btn" style="margin-left: 0px;"  data-ng-click="vm.clear('email')"></i>
             </div>
         </div>
-         <div class="settings" style="width:100%;background-color:#f0f3f4;bottom: 0px;">
-    <p style="width:80%;margin:0 auto;padding-top: 10px;padding-bottom: 10px;">
-        <button type="submit" class="btn btn-info btn-lg btn-block" data-ng-click="vm.regiest()"><i class="fa fa-check-square-o"></i>确认分配</button>
-      </p>
- </div>
-
     </div>
 </div>

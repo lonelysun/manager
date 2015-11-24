@@ -996,6 +996,9 @@ class born_manager(http.Controller):
         hr_obj = request.registry.get('hr.employee')
         user = user_obj.browse(request.cr, SUPERUSER_ID,uid, context=request.context)
 
+
+
+
         manager_name=''
         team_name=''
         #查找销售团队和销售经理
@@ -1010,14 +1013,17 @@ class born_manager(http.Controller):
                 where 1=1 %s limit 1
              """ % ( where,)
             request.cr.execute(sql)
-            team_name,manager_name = request.cr.fetchone()
-            print(team_name,manager_name)
+            row = request.cr.fetchone()
+            if row:
+                team_name= row[0]
+                manager_name=row[1]
 
         val={
+            'role_option':user.role_option,
             'name':user.name or '',
             'tel' :user.login or '',
             'email' :user.email or '',
-            'image' :user.image or '',
+            'image' :user.image_small or '',
             'team_name':team_name,
             'manager_name':manager_name,
         }

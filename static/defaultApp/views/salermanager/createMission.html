@@ -1,0 +1,60 @@
+<div>
+    <div class="bm-head" style="height:150px;">
+        <div class="h2 text-center">
+            <input class="editable editable-click no-border text-center" placeholder="添加任务标题" style="background-color: inherit;padding-top: 50px;" data-ng-model="vm.track.name">
+        </div>
+    </div>
+    <div class="bm-main-three-line-wrapper">
+        <a data-ng-click="vm.selectsaler()">
+            <div class="bm-main-three-line" style="font-size: 18px;padding-left: 0px;">
+                <i class="fa fa-angle-right pull-right" style="line-height: inherit;"></i>
+                <img ng-if="vm.track.img==''" class="pull-right" src="/born_manager/static/src/img/defaultlogo.png" style="width:30px;">
+                <img ng-if="vm.track.img!=''" class="pull-right" ng-src="data:image/png;base64,{{vm.track.img}}" style="width:30px;">
+                <span ng-if="vm.track.salername!=''" style="padding-left:10px">{{vm.track.salername}}</span>
+                <span ng-if="vm.track.salername==''" style="padding-left:10px">请选择</span>
+                <span class="pull-left bm-left-font" style="font-size: 18px;padding-right:18px">销售</span>
+            </div>
+        </a>
+    </div>
+    <div class="bm-main-three-line-wrapper">
+        <a data-ng-click="vm.selectpartner()">
+            <div class="bm-main-three-line" style="font-size: 18px;padding-left: 0px;">
+                <i class="fa fa-angle-right pull-right" style="line-height: inherit;"></i>
+                <span ng-if="vm.track.partnername==''" style="padding-left:10px">请选择</span>
+                <span ng-if="vm.track.partnername!=''" style="padding-left:10px">{{vm.track.partnername}}</span>
+                <span class="pull-left bm-left-font" style="font-size: 18px;padding-right:18px">商户</span>
+            </div>
+        </a>
+    </div>
+    <div class="bm-main-three-line-wrapper">
+        <div class="bm-main-three-line" style="font-size: 18px;padding-left: 0px;">
+            <span style="padding-left:10px">{{vm.track.street}}</span>
+            <span class="pull-left bm-left-font" style="font-size: 18px;padding-right:18px">地址</span>
+        </div>
+    </div>
+    <div class="bm-main-three-line-wrapper">
+        <a data-ng-click="vm.selectperson()">
+            <div class="bm-main-three-line" style="font-size: 18px;padding-left: 0px;">
+                <i class="fa fa-angle-right pull-right" style="line-height: inherit;"></i>
+                <span ng-if="vm.track.personname==''" style="padding-left:10px">请选择</span>
+                <span ng-if="vm.track.personname!=''" style="padding-left:10px">{{vm.track.personname}}</span>
+                <span class="pull-left bm-left-font" style="font-size: 18px;">联系人</span>
+            </div>
+        </a>
+    </div>
+    <div class="bm-main-three-line-wrapper">
+        <div class="bm-main-three-line" style="font-size: 18px;padding-left: 0px;">
+            <span style="padding-left:10px">{{vm.track.tel}}</span>
+            <span class="pull-left bm-left-font" style="font-size: 18px;padding-right:18px">手机</span>
+        </div>
+    </div>
+    <div class="bm-main-three-line-wrapper">
+        <div class="bm-main-three-line" style="font-size: 18px;padding-left: 0px;">
+            <i class="fa fa-angle-right pull-right" style="line-height: inherit;"></i>
+            <input  id="CalendarShow" readonly  class="no-border" style="margin-left: 10px;"
+                                  ng-model="vm.track.time" auto-close="true"
+                           format="yyyy-MM-dd"  type="text" max-view="date" min-view="date" date-time  ng-model="vm.track.time" >
+            <span class="pull-left bm-left-font" style="font-size: 18px;padding-right:18px">时间</span>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,6 @@
 ﻿(function () {
   
-    var app = angular.module('managerApp', ['ngRoute', 'ngSanitize','ngAnimate','ngTouch','ngDialog','wc.directives', 'ui.bootstrap', 'infinite-scroll','breeze.angular','toaster'],
+    var app = angular.module('managerApp', ['ngRoute', 'ngSanitize','ngAnimate','ngTouch','ngDialog','datePicker','wc.directives', 'ui.bootstrap', 'infinite-scroll','breeze.angular','toaster'],
 	function($httpProvider) {
 	  // Use x-www-form-urlencoded Content-Type
 	  $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -52,6 +52,12 @@
     	    displayModel: 'block'
     	  }
 	});
+
+	//缓存
+	app.factory('MyCache',function($cacheFactory){
+			return $cacheFactory('myCache');
+		}
+	);
 
     app.config(['$routeProvider',  function ($routeProvider) {
         var viewBase = '/born_manager/static/defaultApp/views/';
@@ -287,6 +293,21 @@
 			.when('/licenses/deatil/:date/:companyId', {
 	            controller: 'LicenseDetailController',
 	            templateUrl: viewBase + 'companys/licensesDetail.html',
+	            controllerAs: 'vm'
+	        })
+			.when('/createMission', {
+	            controller: 'CreateMissionController',
+	            templateUrl: viewBase + 'salermanager/createMission.html',
+	            controllerAs: 'vm'
+	        })
+			.when('/selectSaler', {
+	            controller: 'SelectSalerController',
+	            templateUrl: viewBase + 'salermanager/selectSaler.html',
+	            controllerAs: 'vm'
+	        })
+			.when('/createSuccess', {
+	            controller: 'CreateSuccessController',
+	            templateUrl: viewBase + 'salermanager/createSuccess.html',
 	            controllerAs: 'vm'
 	        })
 			.otherwise({ redirectTo: '/menus' });

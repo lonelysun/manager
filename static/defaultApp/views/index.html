@@ -1,4 +1,4 @@
-﻿﻿<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html ng-app="managerApp" >
 <head>
     <title>${user.name}</title>
@@ -18,28 +18,25 @@
     <link href="/born_manager/static/src/css/ngDialog.css" rel="stylesheet" />
     <link href="/born_manager/static/src/css/ngDialog-theme-default.css" rel="stylesheet" />
     <link href="/born_manager/static/src/css/ngDialog-theme-plain.css" rel="stylesheet" />
+    <link href="/born_manager/static/src/css/angular-datepicker.css" rel="stylesheet" />
 
 </head>
-<body ng-cloak>
-    <div ng-if="vm.showHeader()=='1'" ng-controller="NavbarController as vm" class="h3 app-header navbar" style="height: 64px;">
+<body ng-cloak style="background-color:white">
+    <div ng-controller="NavbarController as vm"  class="h4 app-header navbar" style="min-height: 0px;">
             <!-- navbar header -->
-            <div class="navbar-header bm-navbar-header text-center" style="line-height:44px;margin-top: 20px;">
-                <button ng-if="vm.getEditModel()=='1'" data-ng-click="vm.headerEdit()" class="pull-right visible-xs dk" style="color:#ff4848">
-                  编辑
-                </button>
+            <div class="navbar-header bm-navbar-header text-center" ng-if="vm.showHeader()=='1'" style="line-height:44px;margin-top: 20px;">
 
-                <button ng-if="vm.getSaveModel()=='1'" data-ng-click="vm.headerSave()" class="pull-right visible-xs dk" style="color:#ff4848">
+                <button ng-if="vm.getSaveModel()=='1'" data-ng-click="vm.save()" class="pull-right visible-xs dk" style="color:#ff4848">
                   保存
                 </button>
                 <img ng-if="vm.getSearchModel()=='1'"  data-ng-click="vm.headerSearch()" class="pull-right bm-img-back"  src="/born_manager/static/src/img/search.png">
                       {{vm.title | limitTo:6}}{{vm.title.length > 6 ? '...' : ''}}
                 <img ng-if="vm.getBackModel()=='1'" data-ng-click="vm.headerBack()" class=" pull-left no-border bm-img-back"  src="/born_manager/static/src/img/back.png">
-                <button ng-if="vm.getSaveModel()=='1'" data-ng-click="vm.headerCancel()" class="pull-left visible-xs dk" style="color:#ff4848">
+                <button ng-if="vm.getCanelModel()=='1'" data-ng-click="vm.headerCancel() " class="pull-left visible-xs dk" style="color:#ff4848">
                   取消
                 </button>
             </div>
             <!-- / navbar header -->
-
     </div>
 
 
@@ -102,7 +99,8 @@
     <script src="/born_manager/static/src/js/breeze.angular.js"></script>
     <script src="/born_manager/static/src/js/sanitize.js"></script>
     <script src="/born_manager/static/src/js/angular-touch.js"></script>
-
+    <script src="/born_manager/static/src/js/angular-moment.min.js"></script>
+    <script src="/born_manager/static/src/js/angular-datepicker.js"></script>
 
     <script src="/born_manager/static/src/js/ng-infinite-scroll.min.js"></script>
 
@@ -145,6 +143,9 @@
     <script src="/born_manager/static/defaultApp/controllers/salecontrole/salershopcontroller.js"></script>
     <script src="/born_manager/static/defaultApp/controllers/salecontrole/allchangecontroller.js"></script>
     <script src="/born_manager/static/defaultApp/controllers/salecontrole/changeshopsalercontroller.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/salecontrole/createMissioncontroller.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/salecontrole/selectSalercontroller.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/salecontrole/createSuccesscontroller.js"></script>
 
 
     <script src="/born_manager/static/defaultApp/controllers/partners/partnerController.js"></script>

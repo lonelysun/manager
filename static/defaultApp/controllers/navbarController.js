@@ -14,7 +14,7 @@
         vm.headerSave = null;
         vm.headerSearch = null;
         vm.headerCancel = null;
-        displayModel.showHeader = '0';
+
 
         vm.headerBack = function(){
             $location.path(displayModel.backpath);
@@ -22,7 +22,6 @@
 
         vm.headerEdit = function(){
             displayModel.flag = 'edit';
-            displayModel.displayEdit = '0';
             displayModel.displaySave = '1';
             displayModel.displayBack = '0';
             displayModel.displayTop = '';
@@ -30,7 +29,6 @@
 
         vm.headerCancel = function(){
             displayModel.flag = '';
-            displayModel.displayEdit = '1';
             displayModel.displaySave = '0';
             displayModel.displaySearch = '0';
             displayModel.displayBack = '1';
@@ -41,12 +39,12 @@
             return  displayModel.displayModel;
         }
 
-        vm.getEditModel = function(){
-            return displayModel.displayEdit;
-        }
-
         vm.getSaveModel = function(){
             return displayModel.displaySave;
+        }
+
+        vm.getCanelModel = function(){
+            return displayModel.displayCanel;
         }
 
         vm.getSearchModel = function(){
