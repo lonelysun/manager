@@ -8,7 +8,7 @@
 #  Copyright (C) 2011-2014 www.wevip.com All Rights Reserved
 ##############################################################################
 import main
-import sale
+import saleOld
 import saler
 import salermanager
 

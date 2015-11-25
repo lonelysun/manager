@@ -22,7 +22,6 @@
     	};
 
 
-
         vm.createTrack = function(){
 
         	if(vm.track.salerid==''){
@@ -44,7 +43,7 @@
 
             dataService.createMission()
             .then(function (data) {
-         	   $location.path('/menu');
+         	   $location.path('/createSuccess');
             }, function (error) {
              toaster.pop('warning', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
             });
@@ -57,16 +56,25 @@
             displayModel.displaySearch='0';
             displayModel.displayCanel='0';
             displayModel.title = '创建任务';
+            displayModel.backpath = '/menu';
             console.info(MyCache.get('salerid'));
             if(MyCache.get('salerid')){
                 vm.track.salerid = MyCache.get('salerid').id;
                 vm.track.salername = MyCache.get('salerid').saler_name;
                 vm.track.img = MyCache.get('salerid').saler_img;
             }
+            if(MyCache.get('track')){
+                vm.track = MyCache.get('track');
+            }
+            if(vm.track.salerid!=''){
+                vm.getPerson();
+            }
+
         }
 
         vm.selectsaler = function(){
             MyCache.put('track',vm.track);
+//            console.info(vm.track.time.toLocaleDateString());
             $location.path('/selectSaler');
         }
 
@@ -90,16 +98,18 @@
 //            	toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
 //            });
 //        }
-//        vm.getPerson = function(){
-//            dataService.getPartnerInfo(vm.track.personid)
-//            .then(function (data) {
-//                console.info(data);
-//                $timeout(function () {
-//                }, 1000);
-//            }, function (error) {
-//            	toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
-//            });
-//        }
+        vm.getPerson = function(){
+            dataService.getPartnerInfo(vm.track.partnerid)
+            .then(function (data) {
+                console.info(data);
+                vm.track.personname = data.name;
+                vm.track.personid = data.id;
+                $timeout(function () {
+                }, 1000);
+            }, function (error) {
+            	toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
+            });
+        }
         init();
     };
 

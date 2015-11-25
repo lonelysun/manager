@@ -1,6 +1,6 @@
 ﻿(function () {
   
-    var app = angular.module('managerApp', ['ngRoute', 'ngSanitize','ngAnimate','ngTouch','ngDialog','datePicker','wc.directives', 'ui.bootstrap', 'infinite-scroll','breeze.angular','toaster'],
+    var app = angular.module('managerApp', ['ngRoute', 'ngSanitize','ngAnimate','ngTouch','ngDialog','wc.directives', 'ui.bootstrap', 'infinite-scroll','breeze.angular','toaster'],
 	function($httpProvider) {
 	  // Use x-www-form-urlencoded Content-Type
 	  $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -53,12 +53,11 @@
     	  }
 	});
 
-	//缓存
 	app.factory('MyCache',function($cacheFactory){
 			return $cacheFactory('myCache');
 		}
 	);
-
+	
     app.config(['$routeProvider',  function ($routeProvider) {
         var viewBase = '/born_manager/static/defaultApp/views/';
         $routeProvider
@@ -99,6 +98,24 @@
 			.when('/saler', {
 	            controller: 'SalerController',
 	            templateUrl: viewBase + 'saler/saler.html',
+	            controllerAs: 'vm'
+	        })
+			
+			.when('/saler/partner/:partnerId', {
+	            controller: 'SalerPartnerController',
+	            templateUrl: viewBase + 'saler/salerPartner.html',
+	            controllerAs: 'vm'
+	        })
+
+			.when('/saler/partner/edit/:partnerId', {
+	            controller: 'EditPartnerController',
+	            templateUrl: viewBase + 'saler/editPartner.html',
+	            controllerAs: 'vm'
+	        })
+
+			.when('/saler/options/:option', {
+	            controller: 'OptionsController',
+	            templateUrl: viewBase + 'saler/options.html',
 	            controllerAs: 'vm'
 	        })
 
@@ -308,6 +325,11 @@
 			.when('/createSuccess', {
 	            controller: 'CreateSuccessController',
 	            templateUrl: viewBase + 'salermanager/createSuccess.html',
+	            controllerAs: 'vm'
+	        })
+			.when('/ranking', {
+	            controller: 'RankingController',
+	            templateUrl: viewBase + 'salermanager/ranking.html',
 	            controllerAs: 'vm'
 	        })
 			.otherwise({ redirectTo: '/menus' });

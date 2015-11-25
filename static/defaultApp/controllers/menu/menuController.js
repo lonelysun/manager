@@ -10,12 +10,10 @@
         vm.second = false;
         
         function init() {
-            displayModel.displayModel='block';
             displayModel.displayEdit = '0';
             displayModel.displaySave = '0';
             displayModel.displaySearch = '0';
             displayModel.displayBack = '0';
-            displayModel.title = '首页';
             getPanel();
         }
 

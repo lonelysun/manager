@@ -1046,3 +1046,40 @@ class born_manager(http.Controller):
 
         user_obj.write(request.cr,SUPERUSER_ID,uid,values)
         return json.dumps(values,sort_keys=True)
+
+    #获取排行榜数据
+    @http.route('/manager/ranking',type="http",auth="none")
+    def ranking(self,**post):
+        uid=request.session.uid
+        if not uid:
+            werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
+        today = datetime.date.today()
+        current_date=today.strftime("%Y-%m-%d")
+        current_month=today.strftime("%Y-%m")
+        print(current_month)
+        emplpoyee_ids = request.session.employee_ids
+        print(emplpoyee_ids)
+        where = "where saler_employee_id in %s"%(tuple(emplpoyee_ids))
+        where += "  and TO_CHAR(bl.check_date,'YYYY-MM') = '%s' " % (current_month)
+
+        sql_all = u"""
+            select id from res_company %s
+        """%(where)
+        request.cr.execute(sql_all)
+        operates = request.cr.dictfetchall()
+        print(len(operates))
+
+
+
+
+        return True
+
+
+
+
+
+
+
+
+
+

@@ -8,9 +8,8 @@
 
     	var vm = this;
     	vm.salers = [];
-        vm.salerid = {
-            id:'',
-        };
+        vm.salerid = {};
+
 
         vm.busy=false;
         vm.isLoad=false;
@@ -62,6 +61,7 @@
             displayModel.displaySave='1';
             displayModel.displaySearch='0';
             displayModel.displayCanel='0';
+            displayModel.backpath = '/createMission';
             displayModel.title = '选择销售';
 
         }
@@ -94,6 +94,7 @@
                 return '1';
             }
         }
+
         vm.save = function(){
             if(vm.salerid==''){
             	toaster.pop('warning', "", "未选择销售人员！");

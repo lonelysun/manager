@@ -1,0 +1,17 @@
+<!--类型选项-->
+<div>
+    <a
+    <div  ng-repeat="option in vm.options" class="no-bg bm-item">
+        <label style="display: block;">
+                <div>
+                    <input class="pull-right" type="radio"  value="{{option}}" data-ng-model="vm.selectOption" style="display:none">
+                    <img ng-if="vm.showImage(option)=='1'" src="/born_manager/static/src/img/saler/finished.png" class="pull-right" style="width:14px;height:12px">
+                    <i class="pull-right"></i>
+                    <div style="width: 100%;color: black;padding-left: 10px;">
+                        {{option.name}}
+                    </div>
+                </div>
+        </label>
+    </div>
+
+</div>

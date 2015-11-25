@@ -231,6 +231,7 @@
 
         //Add by nisen, add new saler
 
+        //销售首页公司
         factory.getCompanys = function (pageIndex,keyword) {
 
             return $http.get(serviceBase + 'saler/companys', {
@@ -244,6 +245,7 @@
 
         };
 
+        //销售首页商户
         factory.getPartners = function (pageIndex,keyword) {
 
             return $http.get(serviceBase + 'saler/partners', {
@@ -258,6 +260,7 @@
         };
 
 
+        //销售首页任务
         factory.getMissions = function (pageIndex,keyword,mission_state) {
 
             return $http.get(serviceBase + 'saler/missions', {
@@ -272,9 +275,65 @@
 
         };
 
+        //销售首页初始化数据
         factory.getInitData = function () {
 
             return $http.get(serviceBase + 'saler/initdata').then(function(results) {
+     				return results.data;
+     			});
+
+        };
+
+
+        //获取商户简介
+        factory.getPartnerInfo = function (partnerId) {
+
+            return $http.get(serviceBase + 'saler/partner/info/'+partnerId).then(function(results) {
+     				return results.data;
+     			});
+
+        };
+
+        //获取商户简介
+        //factory.getPartnerMission = function (pageIndex,keyword,partnerId) {
+        //
+        //    return $http.get(serviceBase + 'saler/partner/mission/'+partnerId).then(function(results) {
+     	//			return results.data;
+     	//		});
+        //
+        //};
+
+
+        factory.getPartnerMission = function (pageIndex,keyword,partnerId) {
+
+            return $http.get(serviceBase + 'saler/partner/mission/', {
+     			params : {
+                    index:pageIndex,
+                    keyword:keyword,
+                    partnerId:partnerId
+     			}
+     			}).then(function(results) {
+     				return results.data;
+     			});
+
+        };
+
+
+        factory.postPartnerInfo = function (partnerId,partner) {
+            return $http.post(serviceBase +'saler/partner/post/'+partnerId,partner).then(function(results) {
+                return results.data;
+            });
+        };
+
+
+
+        factory.getOptions = function (option, enviroment) {
+
+            return $http.get(serviceBase + 'saler/options/'+option, {
+     			params : {
+                    enviroment:enviroment
+     			}
+     			}).then(function(results) {
      				return results.data;
      			});
 
@@ -460,6 +519,13 @@
                     keyword:keyword,
                 }
                 }).then(function(results) {
+                    return results.data;
+                });
+        };
+         //获取排行榜数据
+        factory.getRanking = function () {
+
+            return $http.get(serviceBase + 'ranking').then(function(results) {
                     return results.data;
                 });
         };

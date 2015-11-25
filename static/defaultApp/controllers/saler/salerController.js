@@ -159,6 +159,7 @@
             displayModel.displayModel='none';
             vm.getInitData();
             vm.display = 'missions';
+            vm.showHeader='0';
 
 
         }

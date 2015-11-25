@@ -26,13 +26,13 @@
             </div>
         </a>
     </div>
-    <div class="bm-main-three-line-wrapper">
+    <div class="bm-main-three-line-wrapper" ng-if="vm.track.partnername!=''">
         <div class="bm-main-three-line" style="font-size: 18px;padding-left: 0px;">
             <span style="padding-left:10px">{{vm.track.street}}</span>
             <span class="pull-left bm-left-font" style="font-size: 18px;padding-right:18px">地址</span>
         </div>
     </div>
-    <div class="bm-main-three-line-wrapper">
+    <div class="bm-main-three-line-wrapper" ng-if="vm.track.partnername!=''">
         <a data-ng-click="vm.selectperson()">
             <div class="bm-main-three-line" style="font-size: 18px;padding-left: 0px;">
                 <i class="fa fa-angle-right pull-right" style="line-height: inherit;"></i>
@@ -42,7 +42,7 @@
             </div>
         </a>
     </div>
-    <div class="bm-main-three-line-wrapper">
+    <div class="bm-main-three-line-wrapper" ng-if="vm.track.partnername!=''">
         <div class="bm-main-three-line" style="font-size: 18px;padding-left: 0px;">
             <span style="padding-left:10px">{{vm.track.tel}}</span>
             <span class="pull-left bm-left-font" style="font-size: 18px;padding-right:18px">手机</span>
@@ -51,9 +51,13 @@
     <div class="bm-main-three-line-wrapper">
         <div class="bm-main-three-line" style="font-size: 18px;padding-left: 0px;">
             <i class="fa fa-angle-right pull-right" style="line-height: inherit;"></i>
-            <input  id="CalendarShow" readonly  class="no-border" style="margin-left: 10px;"
-                                  ng-model="vm.track.time" auto-close="true"
-                           format="yyyy-MM-dd"  type="text" max-view="date" min-view="date" date-time  ng-model="vm.track.time" >
+            <!--<input  id="CalendarShow" readonly  class="no-border" style="margin-left: 10px;"-->
+                                  <!--ng-model="vm.track.time" auto-close="true"-->
+                           <!--format="yyyy-MM-dd"  type="text" max-view="date" min-view="date" date-time  ng-model="vm.track.time" >-->
+            <label style="width: 50%;height: 10px;">
+                <input type="date" class="" style="background:0 0;border:1px inset;"  ng-model="vm.track.time">
+                {{vm.track.time}}
+            </label>
             <span class="pull-left bm-left-font" style="font-size: 18px;padding-right:18px">时间</span>
         </div>
     </div>

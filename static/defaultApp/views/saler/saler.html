@@ -12,7 +12,9 @@
 
         <div class="bm-head-down">
             <div class="pull-left">
-                <img  class="bm-photo-round img" src="/born_manager/static/src/img/default_company.png">
+                <a href="#/settings">
+                    <img  class="bm-photo-round img" src="/born_manager/static/src/img/default_company.png">
+                </a>
             </div>
 
             <div class="pull-right">
@@ -37,7 +39,6 @@
         	<button ng-class="{'companys': 'bm-active'}[vm.display]" ng-click="vm.setDisplay('companys')" class="bg-white no-border bm-top-btn-three">公司</button>
     	</div>
 	</div>
-
 
     <!--任务-->
     <div ng-if="vm.display=='missions'">
@@ -111,10 +112,12 @@
     <div>
         <div  ng-if="vm.display=='partners'" id="infinite1" infinite-scroll='vm.getPartners()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
 
-            <div ng-repeat="partner in vm.partners" class="no-bg bm-item">
+            <a ng-href="#saler/partner/{{partner.partner_id}}" ng-repeat="partner in vm.partners">
+            <div  class="no-bg bm-item">
                 <span class="bm-main-three-line-title-font">{{partner.partner_name}}</span>
                 <span class="pull-right bm-main-two-line-title-right-font-grey">共{{partner.missions_count}}任务<i class=" fa fa-fw fa-angle-right text"></i></span>
             </div>
+            </a>
         </div>
 
     </div>
@@ -128,7 +131,7 @@
                     <span class="pull-right bm-main-three-line-title-font-grey">{{company.use_days}}天<i class=" fa fa-fw fa-angle-right text"></i></span>
                 </div>
                 <div>
-                    <span class="bm-main-three-line-span">logo</span>
+                    <span class="bm-main-three-line-span"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/ticket.png"></span>
                     <span class="bm-main-three-line-span">共{{company.total_operate_number}}单.</span>
                     <span class="bm-main-three-line-span">今日{{company.today_operate_number}}单.</span>
                     <span class="bm-main-three-line-span">日均{{company.daily_average}}单.</span>
@@ -140,4 +143,4 @@
     </div>
 
 </div>
-<div style="height:60px; line-height: 60px;" ng-show="vm.busy" class="text-center" >正在加载...</div>
+<div ng-if="vm.display=='companys'" style="height:60px; line-height: 60px;" ng-show="vm.busy" class="text-center" >正在加载...</div>

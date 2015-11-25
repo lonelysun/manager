@@ -1,0 +1,17 @@
+        <div>
+            <div id="infinite1" infinite-scroll='vm.getPersonList()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+                <div class="bm-main-three-line-wrapper" style="padding-left: 25px;" data-ng-repeat="person in vm.persons">
+                    <label style="display: block;">
+                        <div class="bm-main-three-line h4" style="padding-left: 30px;padding-bottom: 20px;">
+                            <input class="pull-right" type="radio" value="{{person}}" data-ng-model="vm.salerid" style="display:none">
+                            <img ng-if="vm.selected(person)=='0'" src="/born_manager/static/src/img/salermanager/finish.png" class="pull-right" style="width:14px;height:12px">
+                            <i class="pull-right"></i>
+                            <div style="width: 100%;color: black;padding-left: 10px;">
+                                {{saler.saler_name}}
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+        </div>

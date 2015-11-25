@@ -1,0 +1,123 @@
+<div class="show-hide-animation" >
+    <div class="panel no-border text-center " style="padding-top:15px;margin-bottom: 0px;background-color: #FFFFFF;border-bottom:solid 1px #ececec; ">
+    	<div class="" style="width:100%">
+        	<button ng-class="{'info': 'bm-active'}[vm.display]" ng-click="vm.setDisplay('info')" class=" bg-white  no-border bm-nav-head-two"  >简介</button>
+        	<button ng-class="{'mission': 'bm-active'}[vm.display]" ng-click="vm.setDisplay('mission')" class="bg-white no-border bm-nav-head-two"  >任务</button>
+    	</div>
+	</div>
+
+
+    <div ng-if="vm.display=='info'">
+
+        <!--<div ng-repeat="x in [1,2,3]" class="no-bg bm-item">-->
+            <!--<span>商户</span>-->
+            <!--<span>{{}}</span>-->
+        <!--</div>-->
+
+
+        <div class="no-bg bm-item">
+            <span class="bm-one-line-left">商户</span>
+            <span>{{vm.partner.name}}</span>
+        </div>
+
+
+        <div class="no-bg bm-item">
+            <span class="bm-one-line-left">类别</span>
+            <span>{{vm.partner.category}}</span>
+        </div>
+
+        <div class="no-bg bm-item">
+            <span class="bm-one-line-left">商圈</span>
+            <span>{{vm.partner.bussiness}}</span>
+        </div>
+
+        <div class="no-bg bm-item">
+            <span class="bm-one-line-left">地址</span>
+            <span>{{vm.partner.address}}</span>
+        </div>
+
+        <div ng-repeat="contact in vm.partner.contacts" >
+            <div class="no-bg bm-item">
+                <span class="bm-one-line-left">联系人</span>
+                <span>{{contact.name}}</span>
+            </div>
+
+            <div class="no-bg bm-item">
+                <span class="bm-one-line-left">手机</span>
+                <span>{{contact.mobile}}</span>
+            </div>
+        </div>
+
+        <div class="no-bg bm-item">
+            <span class="bm-one-line-left">来源</span>
+            <span>{{vm.partner.source}}</span>
+        </div>
+
+        <div class="no-bg bm-item">
+            <span class="bm-one-line-left">规模</span>
+            <span>{{vm.partner.size}}</span>
+        </div>
+
+        <div class="no-bg bm-item">
+            <span class="bm-one-line-left">环境</span>
+            <span>{{vm.partner.environment}}</span>
+        </div>
+
+        <div class="no-bg bm-item">
+            <span class="bm-one-line-left">员工</span>
+            <span>{{vm.partner.employee}}</span>
+        </div>
+
+        <div class="no-bg bm-item">
+            <span class="bm-one-line-left">房间</span>
+            <span>{{vm.partner.room}}</span>
+        </div>
+
+        <div class="no-bg bm-item">
+            <span class="bm-one-line-left">备注</span>
+            <span>{{vm.partner.comment}}</span>
+        </div>
+
+
+    </div>
+
+
+
+
+
+    <div ng-if="vm.display=='mission'">
+        <div id="infinite1" infinite-scroll='vm.getPartnerMission()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+            <div ng-repeat="mission in vm.missions" class="bm-main-three-line-wrapper">
+                <div class="bm-main-three-line">
+                    <div class="bm-main-three-line-title">
+                        <span class="bm-main-three-line-title-tag-grey"><i class="fa fa-check"></i></span>
+                        <!--<span><i class="glyphicon glyphicon-play"></i></span>-->
+                        <span class="bm-main-three-line-title-font-grey">{{mission.mission_company_name}}</span>
+                        <span class="pull-right"><img class=" bm-main-three-line-img" src="/born_manager/static/src/img/three-points.png"></span>
+                    </div>
+
+                    <div class="bm-main-three-line-detail">
+                        <span class="bm-main-three-line-span-grey"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/phone.png">{{mission.mission_contacts_phone}}</span>
+                        <span class="bm-main-three-line-span-grey"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/bounds.png">{{mission.mission_contacts_name}}</span>
+                        <span class="bm-main-three-line-span-grey"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/time.png">{{mission.mission_date}}</span>
+                    </div>
+
+                    <div class="bm-main-three-line-detail">
+                        <span class="bm-main-three-line-span-grey">
+                            <img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/location-copy.png">{{mission.mission_address}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+<div ng-if="vm.display=='info'" class="bm-edit">
+    <a href="#/saler/partner/edit/{{vm.partner.id}}">
+        <img class="bt-edit-img" src="/born_manager/static/src/img/saler/edit.png">
+    </a>
+</div>
+<div style="height:60px; line-height: 60px;" ng-show="vm.busy" class="text-center" >正在加载...</div>

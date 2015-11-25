@@ -14,7 +14,7 @@
         vm.headerSave = null;
         vm.headerSearch = null;
         vm.headerCancel = null;
-
+        displayModel.showHeader = '0';
 
         vm.headerBack = function(){
             $location.path(displayModel.backpath);
