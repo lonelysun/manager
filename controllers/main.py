@@ -1054,25 +1054,41 @@ class born_manager(http.Controller):
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
         today = datetime.date.today()
-        current_date=today.strftime("%Y-%m-%d")
         current_month=today.strftime("%Y-%m")
-        print(current_month)
-        emplpoyee_ids = request.session.employee_ids
-        print(emplpoyee_ids)
-        where = "where saler_employee_id in %s"%(tuple(emplpoyee_ids))
-        where += "  and TO_CHAR(bl.check_date,'YYYY-MM') = '%s' " % (current_month)
+        where = "  and TO_CHAR(rc.create_date,'YYYY-MM') = '%s' " % (current_month)
 
         sql_all = u"""
-            select id from res_company %s
+            select id from res_company rc where rc.sale_employee_id is not null %s
         """%(where)
         request.cr.execute(sql_all)
         operates = request.cr.dictfetchall()
-        print(len(operates))
 
+        sql_number = u"""
+        select DISTINCT  sale_employee_id from res_company rc where rc.sale_employee_id is not null %s
+        """%(where)
+        request.cr.execute(sql_number)
+        number = request.cr.dictfetchall()
 
+        sql_detail = u"""
+            select
+                rr.name,
+                (select count(*) from res_company rc where rc.sale_employee_id = rr.id %s) as number
+            from res_users ru
+            join resource_resource rr on ru.id = rr.user_id
+            join res_partner rp on rp.id = ru.partner_id
+            order by number desc
+        """%(where)
+        request.cr.execute(sql_detail)
+        detail = request.cr.dictfetchall()
 
+        val = {
+            'all_number': len(operates),
+            'salers':detail,
+            'saler_number':len(number)
 
-        return True
+        }
+
+        return json.dumps(val,sort_keys=True)
 
 
 

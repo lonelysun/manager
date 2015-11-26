@@ -8,6 +8,7 @@
 
     	var vm = this;
         vm.ranking = {};
+        vm.max = '';
 
         function init() {
             getRanking();
@@ -19,6 +20,7 @@
             dataService.getRanking()
             .then(function (data) {
             	vm.ranking = data;
+            	vm.max = vm.ranking.salers[0].number;
                 $timeout(function () {
                 }, 1000);
             }, function (error) {

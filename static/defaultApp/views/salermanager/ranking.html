@@ -14,7 +14,7 @@
         <div style="margin-top:40px" class="bm-b-light bm-b-b">
             <div class="pull-left bm-b-r" style="width:50%;height: 100px;">
                 <div class="text-center" style="color: white;font-size: 40px;padding-top: 7px;">
-                    9
+                    {{vm.ranking.saler_number}}
                 </div>
                 <div class="text-center" style="color: rgba(246, 246, 246, 0.53);font-size: 10px">
                     贡献的员工数
@@ -22,7 +22,7 @@
             </div>
             <div class="pull-right" style="width:50%">
                 <div class="text-center" style="color: white;font-size: 40px;padding-top: 7px;">
-                    214
+                    {{vm.ranking.all_number}}
                 </div>
                 <div class="text-center" style="color: rgba(246, 246, 246, 0.53);font-size: 10px">
                     拓展的公司数
@@ -31,69 +31,18 @@
         </div>
     </div>
     <div>
-                <!--<div class="bm-main-three-line-wrapper" style="padding-left: 25px;" data-ng-repeat="saler in vm.salers">-->
-                <div class="bm-main-three-line-wrapper" style="padding-left: 25px;" >
+                <div class="bm-main-three-line-wrapper" style="padding-left: 25px;" data-ng-repeat="saler in vm.ranking.salers" ng-if="saler.number!=0">
                         <div class="bm-main-three-line h4" style="padding-left: 30px;padding-bottom: 20px;">
-                            <span class="pull-right">69</span>
-                            <img ng-if="saler.saler_img==''" class="pull-left bm-img-s-l" src="/born_manager/static/src/img/defaultlogo.png">
-                            <!--<img ng-if="saler.saler_img!=''" class="pull-left bm-img-s-l" ng-src="data:image/png;base64,{{saler.saler_img}}">-->
+                            <span class="pull-right">{{saler.number}}</span>
+                            <img ng-if="!saler.image_small" class="pull-left bm-img-s-l" src="/born_manager/static/src/img/defaultlogo.png">
+                            <img ng-if="saler.image_small" class="pull-left bm-img-s-l" ng-src="data:image/png;base64,{{saler.image_small}}">
                             <div style="width: 100%;padding-left: 10px;color:#a5a5a5">
-                                <!--{{saler.saler_name}}-->大白熊
+                                {{saler.name}}
                             </div>
                         </div>
                     <div>
-                        <uib-progressbar class="progress-striped" animate="false" max="69" value="69" type="danger" style="height:2px;margin-bottom:0px"></uib-progressbar>
+                        <uib-progressbar class="progress-striped" max="vm.max" value="saler.number" type="danger" style="height:2px;margin-bottom:0px"></uib-progressbar>
                     </div>
-                </div>
-                <!--<div class="bm-main-three-line-wrapper" style="padding-left: 25px;" data-ng-repeat="saler in vm.salers">-->
-                <div class="bm-main-three-line-wrapper" style="padding-left: 25px;" >
-                        <div class="bm-main-three-line h4" style="padding-left: 30px;padding-bottom: 20px;">
-                            <span class="pull-right">50</span>
-                            <img ng-if="saler.saler_img==''" class="pull-left bm-img-s-l" src="/born_manager/static/src/img/defaultlogo.png">
-                            <!--<img ng-if="saler.saler_img!=''" class="pull-left bm-img-s-l" ng-src="data:image/png;base64,{{saler.saler_img}}">-->
-                            <div style="width: 100%;padding-left: 10px;color:#a5a5a5">
-                                <!--{{saler.saler_name}}-->大白熊
-                            </div>
-                        </div>
-                        <div>
-                        <uib-progressbar class="progress-striped" max="69" value="50" type="danger" style="height:2px;margin-bottom:0px"></uib-progressbar>
-                        </div>
-                </div>
-                <!--<div class="bm-main-three-line-wrapper" style="padding-left: 25px;" data-ng-repeat="saler in vm.salers">-->
-                <div class="bm-main-three-line-wrapper" style="padding-left: 25px;" >
-                        <div class="bm-main-three-line h4" style="padding-left: 30px;padding-bottom: 20px;">
-                            <span class="pull-right">20</span>
-                            <img ng-if="saler.saler_img==''" class="pull-left bm-img-s-l" src="/born_manager/static/src/img/defaultlogo.png">
-                            <!--<img ng-if="saler.saler_img!=''" class="pull-left bm-img-s-l" ng-src="data:image/png;base64,{{saler.saler_img}}">-->
-                            <div style="width: 100%;padding-left: 10px;color:#a5a5a5">
-                                <!--{{saler.saler_name}}-->大白熊
-                            </div>
-                        </div>
-                        <div>
-                            <uib-progressbar class="progress-striped" max="69" value="20" type="danger" style="height:2px;margin-bottom:0px"></uib-progressbar>
-                        </div>
-                </div>
-                <!--<div class="bm-main-three-line-wrapper" style="padding-left: 25px;" data-ng-repeat="saler in vm.salers">-->
-                <div class="bm-main-three-line-wrapper" style="padding-left: 25px;" >
-                        <div class="bm-main-three-line h4" style="padding-left: 30px;padding-bottom: 20px;">
-                            <span class="pull-right">69</span>
-                            <img ng-if="saler.saler_img==''" class="pull-left bm-img-s-l" src="/born_manager/static/src/img/defaultlogo.png">
-                            <!--<img ng-if="saler.saler_img!=''" class="pull-left bm-img-s-l" ng-src="data:image/png;base64,{{saler.saler_img}}">-->
-                            <div style="width: 100%;padding-left: 10px;color:#a5a5a5">
-                                <!--{{saler.saler_name}}-->大白熊
-                            </div>
-                        </div>
-                </div>
-                <!--<div class="bm-main-three-line-wrapper" style="padding-left: 25px;" data-ng-repeat="saler in vm.salers">-->
-                <div class="bm-main-three-line-wrapper" style="padding-left: 25px;" >
-                        <div class="bm-main-three-line h4" style="padding-left: 30px;padding-bottom: 20px;">
-                            <span class="pull-right">69</span>
-                            <img ng-if="saler.saler_img==''" class="pull-left bm-img-s-l" src="/born_manager/static/src/img/defaultlogo.png">
-                            <!--<img ng-if="saler.saler_img!=''" class="pull-left bm-img-s-l" ng-src="data:image/png;base64,{{saler.saler_img}}">-->
-                            <div style="width: 100%;padding-left: 10px;color:#a5a5a5">
-                                <!--{{saler.saler_name}}-->大白熊
-                            </div>
-                        </div>
                 </div>
     </div>
 </div>
