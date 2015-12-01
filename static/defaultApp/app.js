@@ -140,6 +140,11 @@
 	            templateUrl: viewBase + 'saler/showFinishedMission.html',
 	            controllerAs: 'vm'
 	        })
+			.when('/saler/company/:companyId', {
+	            controller: 'SalerCompanyController',
+	            templateUrl: viewBase + 'saler/salerCompany.html',
+	            controllerAs: 'vm'
+	        })
 
 
 			//end test

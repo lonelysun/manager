@@ -45,7 +45,7 @@
             .then(function (data) {
                 if(mission_state=='unfinished'){
 
-                    if(data['missions_list'].length <10){
+                    if(data['missions_list'].length <3){
                         vm.showButton=true;
                     }
 
@@ -57,7 +57,7 @@
 
 
                     }
-                    console.info('in unfinished')
+                    //console.info('in unfinished')
                 }else{
                     for (var i = 0; i < data['missions_list'].length; i++) {
 
@@ -66,12 +66,12 @@
 
                     }
 
-                    console.info('in finished')
+                    //console.info('in finished')
                 }
 
-                console.info('getMissions');
-                console.info(vm.missionsUnfinished);
-                console.info(vm.missionsFinished);
+                //console.info('getMissions');
+                //console.info(vm.missionsUnfinished);
+                //console.info(vm.missionsFinished);
 
 
                 vm.missions_unfinished_numbers = data['missions_unfinished_numbers']
@@ -131,8 +131,6 @@
                     vm.companys.push(data['companys_list'][i]);
                 }
 
-                    console.info('getCompanys');
-                console.info(vm.companys);
 
                     vm.isLoad=true;
                 $timeout(function () {
@@ -187,8 +185,8 @@
 
         vm.changeMissionState = function(missionsUnfinished){
             //var missionObj = missionsUnfinished;
-            console.info('------missionsUnfinished---------');
-            console.info(missionsUnfinished);
+            //console.info('------missionsUnfinished---------');
+            //console.info(missionsUnfinished);
 
             var titleText,titleState,closeButtonText,
                 firstActionText,firstUrl,
@@ -200,29 +198,31 @@
 
             titleText = missionsUnfinished.mission_name;
             titleState = missionsUnfinished.mission_state_name;
+            var missionState = missionsUnfinished.mission_state;
+
 
             firstActionText = '开始';
             secondActionText = '暂停';
             thirdActionText = '完成' ;
 
-            switch (titleState)
+            switch (missionState)
             {
-                case '未开始':
+                case 'notstart':
                     showFirstText = true;
-                    showSecondText = true;
-                    showThirdText = true;
+                    showSecondText = false;
+                    showThirdText = false;
                     break;
-                case '暂停':
+                case 'pause':
                     showFirstText = true;
                     showSecondText = false;
                     showThirdText = true;
                     break;
-                case '开始':
+                case 'start':
                     showFirstText = false;
                     showSecondText = true;
                     showThirdText = true;
                     break;
-                case '完成':
+                case 'finished':
                     showFirstText = false;
                     showSecondText = false;
                     showThirdText = false;
@@ -250,9 +250,9 @@
                 className: 'ngdialog',
                 scope:$scope
             }).then(function(data){
-                console.info('----data----');
-                console.info(data);
-                console.info(missionsUnfinished);
+                //console.info('----data----');
+                //console.info(data);
+                //console.info(missionsUnfinished);
 
                 var mission_id = missionsUnfinished.mission_id;
                 var action = data;
@@ -261,10 +261,7 @@
 
                 missionsUnfinished.mission_state  = action;
 
-                if(action == 'finished'){
-                    //$location.path('/saler');
-                    $route.reload();
-                }
+
 
                 dataService.changeMissionState(changeData)
                 .then(function (data) {
@@ -278,7 +275,9 @@
                     toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
             });
 
-                //$location.path('/saler');
+                if(action == 'finished'){
+                    $location.path('/saler/finishMission/'+mission_id)
+                }
 
 
             });

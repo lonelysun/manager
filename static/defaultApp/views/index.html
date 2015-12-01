@@ -26,45 +26,47 @@
             <!-- navbar header -->
             <div class="navbar-header bm-navbar-header text-center" ng-if="vm.showHeader()=='1'" style="    line-height: 30px;margin-top: 15px;">
 
-                <button ng-if="vm.getSaveModel()=='1'" onclick="bm_save()" class="pull-right visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
+                <button ng-if="vm.getSaveModel()=='1'" data-ng-click="vm.save()" class="pull-right visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
                   保存
                 </button>
-                <button ng-if="vm.getCreateModel()=='1'" onclick="bm_create()" class="pull-right visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
+                <button ng-if="vm.getCreateModel()=='1'" data-ng-click="vm.create()" class="pull-right visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
                   创建
                 </button>
-                <button ng-if="vm.getConfirmModel()=='1'" onclick="bm_confirm()" class="pull-right visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
+                <button ng-if="vm.getConfirmModel()=='1'" data-ng-click="vm.confirm()" class="pull-right visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
                   确认
                 </button>
-                <button ng-if="vm.getSubmitModel()=='1'" onclick="bm_submit()" class="pull-right visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
+                <button ng-if="vm.getSubmitModel()=='1'" data-ng-click="vm.submit()" class="pull-right visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
                   提交
+                </button>
+                <button ng-if="vm.getPlaceholder()=='1'" class="pull-right visible-xs dk" style="adding-bottom: 0px;padding-left: 32px;padding-right: 32px;">
                 </button>
                 <img ng-if="vm.getSearchModel()=='1'"  data-ng-click="vm.headerSearch()" class="pull-right bm-img-back"  src="/born_manager/static/src/img/search.png">
                       {{vm.title | limitTo:6}}{{vm.title.length > 6 ? '...' : ''}}
                 <img ng-if="vm.getBackModel()=='1'" style="padding-top: 3px;padding-bottom: 3px;height: 29px;" data-ng-click="vm.headerBack()" class=" pull-left no-border bm-img-back"  src="/born_manager/static/src/img/back.png">
-                <button ng-if="vm.getCanelModel()=='1'" onclick="bm_canel" class="pull-left visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
+                <button ng-if="vm.getCanelModel()=='1'" data-ng-click="vm.headerBack()" class="pull-left visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
                   取消
                 </button>
             </div>
 
             <!-- / navbar header -->
     </div>
-    <script type="text/javascript">
-            bm_save = function(){
-                Window.born_save();
-            }
-            bm_create = function(){
-                Window.born_create();
-            }
-            bm_confirm = function(){
-                Window.born_confirm();
-            }
-            bm_submit = function(){
-                Window.born_submit();
-            }
-            bm_canel = function(){
-                Window.born_canel();
-            }
-        </script>
+    <!--<script type="text/javascript">-->
+            <!--bm_save = function(){-->
+                <!--Window.born_save();-->
+            <!--};-->
+            <!--bm_create = function(){-->
+                <!--Window.born_create();-->
+            <!--};-->
+            <!--bm_confirm = function(){-->
+                <!--Window.born_confirm();-->
+            <!--};-->
+            <!--bm_submit = function(){-->
+                <!--Window.born_submit();-->
+            <!--};-->
+            <!--bm_cancel = function(){-->
+                <!--Window.born_cancel();-->
+            <!--};-->
+        <!--</script>-->
 
 
     <!-- content -->
@@ -183,6 +185,7 @@
 
     <script src="/born_manager/static/defaultApp/controllers/saler/salerController.js"></script>
     <script src="/born_manager/static/defaultApp/controllers/saler/salerPartnerController.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/saler/salerCompanyController.js"></script>
     <script src="/born_manager/static/defaultApp/controllers/saler/editPartnerController.js"></script>
     <script src="/born_manager/static/defaultApp/controllers/saler/optionsController.js"></script>
     <script src="/born_manager/static/defaultApp/controllers/saler/finishMissionController.js"></script>

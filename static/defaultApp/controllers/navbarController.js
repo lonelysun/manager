@@ -18,9 +18,11 @@
         displayModel.displayCreate = '0';
         displayModel.displaySubmit = '0';
         displayModel.displayConfirm = '0';
+        displayModel.placeholder = '0';
 
         vm.headerBack = function(){
-            $location.path(displayModel.backpath);
+            displayModel.headerBack();
+//            $location.path(displayModel.backpath);
         }
 
         vm.headerEdit = function(){
@@ -36,6 +38,15 @@
             displayModel.displaySearch = '0';
             displayModel.displayBack = '1';
             displayModel.displayTop = 'edit';
+        }
+
+        vm.getPlaceholder = function(){
+            if(displayModel.displaySearch=='0'&&displayModel.displayCreate=='0'&&displayModel.displaySubmit=='0'&&displayModel.displayConfirm=='0'&&displayModel.displaySave=='0'){
+                displayModel.placeholder = '1';
+            }else{
+                displayModel.placeholder = '0';
+            }
+            return displayModel.placeholder;
         }
 
         vm.getDisplayModel = function(){
@@ -79,6 +90,19 @@
             vm.title = displayModel.title;
             return displayModel.showHeader;
         };
+
+        vm.save = function(){
+            displayModel.born_save();
+        }
+        vm.create = function(){
+            displayModel.born_create();
+        }
+        vm.confirm = function(){
+            displayModel.born_confirm();
+        }
+        vm.submit = function(){
+            displayModel.born_submit();
+        }
     };
 
     NavbarController.$inject = injectParams;

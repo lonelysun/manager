@@ -38,20 +38,20 @@
             });
         };
 
-        //获取公司列表
-        factory.getCompanys = function (pageIndex,keyword,companysState) {
-
-            return $http.get(serviceBase + 'companys', {
-     			params : {
-                    index:pageIndex,
-                    keyword:keyword,
-                    companysState:companysState
-     			}
-     			}).then(function(results) {
-     				return results.data;
-     			});
-
-        };
+        ////获取公司列表
+        //factory.getCompanys = function (pageIndex,keyword,companysState) {
+        //
+        //    return $http.get(serviceBase + 'companys', {
+     	//		params : {
+        //            index:pageIndex,
+        //            keyword:keyword,
+        //            companysState:companysState
+     	//		}
+     	//		}).then(function(results) {
+     	//			return results.data;
+     	//		});
+        //
+        //};
 
         //获取公司详细信息
         factory.getCompanyDetail = function (id) {
@@ -294,23 +294,16 @@
 
         };
 
-        //获取商户简介
-        //factory.getPartnerMission = function (pageIndex,keyword,partnerId) {
-        //
-        //    return $http.get(serviceBase + 'saler/partner/mission/'+partnerId).then(function(results) {
-     	//			return results.data;
-     	//		});
-        //
-        //};
 
 
-        factory.getPartnerMission = function (pageIndex,keyword,partnerId) {
+        factory.getPartnerMission = function (pageIndex,keyword,partnerId,mission_state) {
 
             return $http.get(serviceBase + 'saler/partner/mission/', {
      			params : {
                     index:pageIndex,
                     keyword:keyword,
-                    partnerId:partnerId
+                    partnerId:partnerId,
+                    mission_state:mission_state
      			}
      			}).then(function(results) {
      				return results.data;
@@ -369,6 +362,17 @@
             return $http.get(serviceBase +'saler/getFinishedMission/'+missionId).then(function(results) {
                 return results.data;
             });
+        };
+
+        factory.getCompanyMission = function (pageIndex,keyword,companyId) {
+            return $http.get(serviceBase + 'saler/company/mission/'+companyId,{
+                params : {
+                    pageIndex:pageIndex,
+                    keyword:keyword
+     			}
+            }).then(function(results) {
+     				return results.data;
+     			});
         };
 
 

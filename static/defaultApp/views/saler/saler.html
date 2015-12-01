@@ -128,20 +128,20 @@
     <!--公司-->
     <div>
         <div  ng-if="vm.display=='companys'" id="infinite2" infinite-scroll='vm.getCompanys()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
-            <div ng-repeat="company in vm.companys" class="no-bg bm-item">
-                <div>
-                    <span class="bm-main-three-line-title-font">{{company.company_name | limitTo:10}} {{company.company_name.length > 10 ? '...' : ''}}</span>
-                    <span class="pull-right bm-main-three-line-title-font-grey">{{company.use_days}}天<i class=" fa fa-fw fa-angle-right text"></i></span>
+            <a ng-href="#saler/company/{{company.company_id}}" ng-repeat="company in vm.companys">
+                <div  class="no-bg bm-item">
+                    <div>
+                        <span class="bm-main-three-line-title-font">{{company.company_name | limitTo:10}} {{company.company_name.length > 10 ? '...' : ''}}</span>
+                        <span class="pull-right bm-main-three-line-title-font-grey">{{company.use_days}}天<i class=" fa fa-fw fa-angle-right text"></i></span>
+                    </div>
+                    <div>
+                        <span class="bm-main-three-line-span"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/ticket.png"></span>
+                        <span class="bm-main-three-line-span">共{{company.total_operate_number}}单.</span>
+                        <span class="bm-main-three-line-span">今日{{company.today_operate_number}}单.</span>
+                        <span class="bm-main-three-line-span">日均{{company.daily_average}}单.</span>
+                    </div>
                 </div>
-                <div>
-                    <span class="bm-main-three-line-span"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/ticket.png"></span>
-                    <span class="bm-main-three-line-span">共{{company.total_operate_number}}单.</span>
-                    <span class="bm-main-three-line-span">今日{{company.today_operate_number}}单.</span>
-                    <span class="bm-main-three-line-span">日均{{company.daily_average}}单.</span>
-                </div>
-
-
-            </div>
+            </a>
         </div>
     </div>
 

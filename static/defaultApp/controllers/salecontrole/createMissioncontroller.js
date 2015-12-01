@@ -24,12 +24,7 @@
     	    option:vm.option,
     	};
 
-        Window.born_cancel = function(){
-            $location.path('/menu');
-        }
-
-        Window.born_create = function(){
-
+        vm.born_create = function(){
             if(vm.option==8){
                 if(vm.track.salerid==''){
                     toaster.pop('warning', "", "未选择销售人员！");
@@ -48,8 +43,12 @@
                 toaster.pop('warning', "", "未选择联系人！");
                 return true;
         	}
-        	var time_date = vm.track.time.getUTCFullYear()+'-'+vm.track.time.getUTCMonth()+'-'+vm.track.time.getUTCDate()
-        	vm.track.timevalue = time_date
+
+           var yyyy = vm.track.time.getFullYear().toString();
+           var mm = (vm.track.time.getMonth()+1).toString(); // getMonth() is zero-based
+           var dd  = vm.track.time.getDate().toString();
+           var time_date = yyyy +'-'+ (mm[1]?mm:"0"+mm[0]) +'-'+ (dd[1]?dd:"0"+dd[0]); // padding
+        	vm.track.timevalue = time_date;
             dataService.createMission(vm.track)
             .then(function (data) {
                 MyCache.remove('track');
@@ -62,6 +61,15 @@
             });
         }
 
+        vm.back =function(){
+                MyCache.remove('track');
+                MyCache.remove('salerid');
+                MyCache.remove('optionObj');
+                MyCache.remove('optionType');
+                displayModel.showHeader = '0';
+                $location.path('/menus');
+        }
+
         function init() {
             displayModel.showHeader='1';
             displayModel.displayBack='0';
@@ -71,6 +79,8 @@
             displayModel.displayCreate='1';
             displayModel.displaySubmit='0';
             displayModel.displayConfirm='0';
+            displayModel.headerBack=vm.back;
+            displayModel.born_create=vm.born_create;
             displayModel.title = '创建任务';
 
             if(MyCache.get('track')){

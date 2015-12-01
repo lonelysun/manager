@@ -24,6 +24,8 @@
         vm.missions = [];
 
 
+
+
          //由url解析
         var partnerId = ($routeParams.partnerId) ? parseInt($routeParams.partnerId) : 0;
         console.info(partnerId);
@@ -102,7 +104,7 @@
         };
 
         //修改通过导航调用---------刘浩
-        Window.born_save = function(){
+        vm.born_save = function(){
             vm.partner.contacts_json = angular.toJson(vm.partner.contacts);
 
             console.info('------postPartnerInfo------');
@@ -124,15 +126,20 @@
             });
 
             //MyCache.remove('partner')
-
         };
 
-        //添加取消，通过导航调用--------------刘浩
-        Window.born_cancel = function(){
+        //取消按钮-----------刘浩
+        vm.headerBack = function(){
             MyCache.remove('partner');
-            $location.path('/saler/partner/'+locationId);
+            if(MyCache.get('createNewPartner') == '1'){
+                MyCache.remove('partner');
+                $location.path('/saler/partner/'+partnerId);
+            }
+            else{
+                MyCache.remove('partner');
+                $location.path('/menus');
+            }
         }
-
 
 
         vm.jump = function(option){
@@ -190,6 +197,7 @@
 
 
         vm.createContact = function (){
+
             $scope.contactOptions = {
                 name:'',
                 mobile:'',
@@ -268,8 +276,20 @@
 
         //初始化
         function init() {
+            //添加传递参数---------刘浩
             displayModel.displayModel='none';
+            displayModel.showHeader='1';
+            displayModel.displayBack='0';
+            displayModel.displaySave='1';
+            displayModel.displaySearch='0';
+            displayModel.displayCanel='1';
+            displayModel.displayCreate='0';
+            displayModel.displaySubmit='0';
+            displayModel.displayConfirm='0';
+            displayModel.headerBack = vm.headerBack;
+            displayModel.born_save = vm.born_save;
 
+//            displayModel.backpath = '/menu';
 
             //改写新写法?当返回或者保存时清除partner缓存
             //只有当创建新商户时,没有从partner读取缓存
@@ -277,23 +297,21 @@
             if(MyCache.get('createNewPartner') == '1'){
                 MyCache.remove('partner');
                 vm.partner = {};
+                vm.partner['contacts'] = [];
                 MyCache.remove('createNewPartner');
+                displayModel.title = vm.partner.name;
             }
             else{
                 vm.getPartnerInfo();
+                displayModel.title = '新建商户';
+
             }
 
 
 
             //vm.display = 'info';
-            displayModel.showHeader = '1';
-            displayModel.displayModel='none';
-            displayModel.displayEdit = '0';
-            displayModel.displaySave = '0';
-            displayModel.displaySearch = '0';
-            displayModel.displayBack = '1';
 
-            displayModel.backpath='/saler/partner';
+
 
 
 

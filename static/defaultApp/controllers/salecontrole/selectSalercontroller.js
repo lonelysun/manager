@@ -8,7 +8,7 @@
 
     	var vm = this;
     	vm.salers = [];
-        vm.salerid = {};
+        vm.salerid ='';
         vm.role_option = MyCache.get('role_option');
 
         vm.busy=false;
@@ -24,7 +24,8 @@
             displayModel.displayCreate='0';
             displayModel.displaySubmit='0';
             displayModel.displayConfirm='1';
-            displayModel.backpath = '/createMission/8';
+            displayModel.born_confirm = vm.born_confirm;
+            displayModel.headerBack = vm.back;
             displayModel.title = '选择销售';
 
         }
@@ -58,7 +59,8 @@
             }
         }
 
-        Window.born_confirm = function(){
+        vm.born_confirm = function(){
+            console.info(vm.salerid);
             if(vm.salerid==''){
             	toaster.pop('warning', "", "未选择销售人员！");
                 return true;
@@ -68,6 +70,10 @@
             $timeout(function(){
                 $location.path('/createMission/'+vm.role_option);
             },500)
+        }
+
+        vm.back = function(){
+            $location.path('/createMission/8');
         }
 
 

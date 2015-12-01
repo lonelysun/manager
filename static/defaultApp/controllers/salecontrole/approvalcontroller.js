@@ -18,9 +18,14 @@
             displayModel.displayCreate='0';
             displayModel.displaySubmit='0';
             displayModel.displayConfirm='0';
-            displayModel.backpath = '/menus';
+            displayModel.headerBack = vm.back;
             displayModel.title = '任务汇报';
             gettrack();
+        }
+
+        vm.back = function(){
+            displayModel.showHeader = '0';
+            $location.path('/menus');
         }
 
         vm.approval = function(){

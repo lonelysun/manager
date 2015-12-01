@@ -153,8 +153,6 @@ class born_manager_sale(http.Controller):
         data = {
             'companys_list':companys_list
         }
-        _logger.info('-----------saler_companys------------')
-        _logger.info(data)
 
         return json.dumps(data,sort_keys=True)
 
@@ -200,7 +198,10 @@ class born_manager_sale(http.Controller):
             mission_name = each_obj.name
             mission_contacts_phone = each_obj.contacts_phone
             mission_contacts_name = each_obj.contacts_id.name
-            mission_date = (each_obj.mission_date)[5:10]
+            if each_obj.mission_date:
+                mission_date = (each_obj.mission_date)[5:10]
+            else:
+                mission_date = ''
             mission_address = each_obj.contacts_address
             mission_state = each_obj.state
 
@@ -229,16 +230,11 @@ class born_manager_sale(http.Controller):
         ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','=','finished')],context=request.context)
         missions_unfinished_numbers = len(ids)
 
-        _logger.info('----------missions_unfinished_numbers--------------------')
-        _logger.info(missions_unfinished_numbers)
-
 
         data = {
             'missions_list':missions_list,
             'missions_unfinished_numbers':missions_unfinished_numbers
         }
-        _logger.info('----------misssion--------------------')
-        _logger.info(data)
         return json.dumps(data,sort_keys=True)
 
 
@@ -273,7 +269,7 @@ class born_manager_sale(http.Controller):
                     COUNT (tb2.id) AS cnt
                 FROM
                     res_partner tb1
-                RIGHT JOIN
+                LEFT JOIN
                     born_partner_track tb2
                 ON
                     tb1.id = tb2.track_id
@@ -390,8 +386,6 @@ class born_manager_sale(http.Controller):
             'partner_number':partner_number
         }
 
-        _logger.info('----------initdata--------------------')
-        _logger.info(data)
         return json.dumps(data,sort_keys=True)
 
 
@@ -481,23 +475,26 @@ class born_manager_sale(http.Controller):
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
 
-        hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-        hr_id = hr_id_list[0] or ''
+        # hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+        # hr_id = hr_id_list[0] or ''
 
         mission_obj = request.registry['born.partner.track']
 
         partner_id = int(post.get('partnerId'))
         page_index=post.get('index',0)
+        require_mission_state = post.get('mission_state')
+
+        if require_mission_state == 'finished':
+            ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',int(partner_id)),('state','=','finished')],int(page_index),5, context=request.context)
+        elif require_mission_state == 'unfinished':
+            ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',int(partner_id)),('state','!=','finished')],int(page_index),5, context=request.context)
 
 
-        _logger.info('-----------saler_partner_mission  partner_id ------------')
-        _logger.info(partner_id)
-
-        ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',int(partner_id)),('state','=','finished')],int(page_index),3, context=request.context)
-        # ids = mission_obj.search(request.cr, SUPERUSER_ID,[], context=request.context)
-
-        _logger.info('-----------saler_partner_mission  ids ------------')
-        _logger.info(ids)
+        # _logger.info('-----------saler_partner_mission  partner_id ------------')
+        # _logger.info(partner_id)
+        #
+        # ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',int(partner_id)),('state','=','finished')],int(page_index),3, context=request.context)
+        # # ids = mission_obj.search(request.cr, SUPERUSER_ID,[], context=request.context)
 
         objs = mission_obj.browse(request.cr, SUPERUSER_ID,ids, context=request.context)
 
@@ -507,17 +504,25 @@ class born_manager_sale(http.Controller):
             mission_id = each_obj.id
             company_id = each_obj.track_id.id
             mission_company_name = each_obj.track_id.name
+            mission_name = each_obj.name
             mission_contacts_phone = each_obj.contacts_phone
             mission_contacts_name = each_obj.contacts_id.name
-            mission_date = (each_obj.mission_date)[5:10]
+            if each_obj.mission_date:
+                mission_date = (each_obj.mission_date)[5:10]
+            else:
+                mission_date = ''
             mission_address = each_obj.contacts_address
             mission_state = each_obj.state
 
+            state_name_dict = {'start':u'开始','pause':u'暂停','finished':u'完成','notstart':u'未开始'}
 
+            mission_state_name = state_name_dict.get(mission_state)
 
             vals = {
                 'mission_id':mission_id,
                 'company_id':company_id,
+                'mission_name':mission_name,
+                'mission_state_name':mission_state_name,
                 'mission_company_name':mission_company_name,
                 'mission_contacts_phone':mission_contacts_phone,
                 'mission_contacts_name':mission_contacts_name,
@@ -527,12 +532,17 @@ class born_manager_sale(http.Controller):
             }
             missions_list.append(vals)
 
+
+
+        ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',partner_id),('state','=','finished')],context=request.context)
+        missions_unfinished_numbers = len(ids)
+
+
         data = {
             'missions_list':missions_list,
+            'missions_unfinished_numbers':missions_unfinished_numbers
         }
 
-        _logger.info('-----------saler_partner_mission------------')
-        _logger.info(data)
 
         return json.dumps(data,sort_keys=True)
 
@@ -691,33 +701,6 @@ class born_manager_sale(http.Controller):
             data = obj.read(request.cr, SUPERUSER_ID,ids,fields=['name','mobile'], context=request.context)
 
 
-            # instance_obj = obj.browse(request.cr, SUPERUSER_ID,partner_id, context=request.context)
-            # _logger.info('-----------elif option ==:---------')
-            # _logger.info(instance_obj)
-            #
-            # len_contact_objs = len(instance_obj.child_ids.ids)
-            # if page_index == 0:
-            #     ids = instance_obj.child_ids.ids[0:record_limit-1]
-            # else:
-            #     ids = instance_obj.child_ids.ids[record_limit:record_limit*2 -1]
-            #
-            #
-            # _logger.info(contact_objs)
-            #
-            # # data = []
-            # for each_contact in contact_objs:
-            #     val = {
-            #         'id':each_contact.id,
-            #         'name':each_contact.name,
-            #         'mobile':each_contact.mobile
-            #     }
-            #     data.append(val)
-
-
-
-
-
-
         elif option == 'sources1':
             if page_index < 2:
                 data = [{'id':'mark','name':u'市场部'},{'id':'sale','name':u'销售部'}]
@@ -827,11 +810,6 @@ class born_manager_sale(http.Controller):
                         'street':each_partner.street or ''
                     }
                     data.append(vals)
-
-
-        # data is a list of dictionaies,need to be a dictionary?
-        _logger.info('----------data--------------------')
-        _logger.info(data)
         return json.dumps(data,sort_keys=True)
 
 
@@ -851,47 +829,6 @@ class born_manager_sale(http.Controller):
         url = 'https://s3.cn-north-1.amazonaws.com.cn/'+self.__bucketname+'/'+uploadfile
         return url
 
-    # @http.route('/manager/saler/mission/post/<int:mission>', type='http', auth="none",)
-    # def saler_partner_post(self, mission, **post):
-    #     uid=request.session.uid
-    #     if not uid:
-    #         werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
-    #
-    #
-    #     hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-    #     hr_id = hr_id_list[0] or ''
-    #
-    #     vals = {}
-    #     vals['result_title'] = post.get('result_title','')
-    #     #结果,多选
-    #
-    #     #
-    #
-    #     vals['notes'] = post.get('notes','')
-    #     vals['image'] = self.upLoadS3(post.get('mission_img',''))
-    #
-    #     #need finish
-    #
-    #
-    #     return json.dumps(True,sort_keys=True)
-
-
-        # hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-        # hr_id = hr_id_list[0] or ''
-        # 
-        # vals = {}
-        # vals['result_title'] = post.get('result_title','')
-        # #结果,多选
-        # 
-        # #
-        # 
-        # vals['notes'] = post.get('notes','')
-        # vals['image'] = self.upLoadS3(post.get('mission_img',''))
-        # 
-        # #need finish
-        # 
-        # 
-        # return json.dumps(True,sort_keys=True)
 
 
 
@@ -914,16 +851,12 @@ class born_manager_sale(http.Controller):
         ids = obj.search(request.cr, SUPERUSER_ID,[], page_index,record_limit,context=request.context)
         data = obj.read(request.cr, SUPERUSER_ID,ids,fields=['name'], context=request.context)
 
-        _logger.info('----------data-results--------------------')
-        _logger.info(data)
         return json.dumps(data,sort_keys=True)
 
 
 
     @http.route('/manager/saler/finishMission/post', type='http', auth="none",)
     def saler_finish_mission_post(self, **post):
-        print '---post----'
-        print post
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
@@ -953,9 +886,6 @@ class born_manager_sale(http.Controller):
             vals['image_url'] = self.upLoadS3(post.get('mission_img'))
 
         vals['state'] = 'finished'
-
-        _logger.info('----------vals--------------------')
-        _logger.info(vals)
 
         request.registry['born.partner.track'].write(request.cr, SUPERUSER_ID,mission_id,vals,context=request.context)
 
@@ -995,6 +925,65 @@ class born_manager_sale(http.Controller):
             'notes':obj.notes or '',
             'image_url':obj.image_url or '',
             'remark':obj.remark or ''
+        }
+
+        return json.dumps(data,sort_keys=True)
+
+    @http.route('/manager/saler/company/mission/<int:company_id>', type='http', auth="none",)
+    def saler_get_company_mission(self, company_id, **post):
+        uid=request.session.uid
+        if not uid:
+            werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
+
+        company_id = int(company_id)
+
+        mission_obj = request.registry['born.partner.track']
+        company_obj = request.registry['res.company']
+
+        page_index=post.get('index',0)
+
+
+
+        # 由company_id 获得对对应的partner_id
+        instance_of_company = company_obj.browse(request.cr, SUPERUSER_ID,company_id,context=request.context)
+        partner_id = instance_of_company.partner_id.id
+
+        ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',partner_id),('state','=','finished')],int(page_index),5, context=request.context)
+
+
+        objs = mission_obj.browse(request.cr, SUPERUSER_ID,ids, context=request.context)
+
+        missions_list = []
+
+        for each_obj in objs:
+            mission_id = each_obj.id
+            company_id = each_obj.track_id.id
+            mission_company_name = each_obj.track_id.name
+            mission_name = each_obj.name
+            mission_contacts_phone = each_obj.contacts_phone
+            mission_contacts_name = each_obj.contacts_id.name
+            if each_obj.mission_date:
+                mission_date = (each_obj.mission_date)[5:10]
+            else:
+                mission_date = ''
+            mission_address = each_obj.contacts_address
+            mission_state = each_obj.state
+
+            vals = {
+                'mission_id':mission_id,
+                'company_id':company_id,
+                'mission_name':mission_name,
+                'mission_company_name':mission_company_name,
+                'mission_contacts_phone':mission_contacts_phone,
+                'mission_contacts_name':mission_contacts_name,
+                'mission_date':mission_date,
+                'mission_address':mission_address,
+                'mission_state':mission_state
+            }
+            missions_list.append(vals)
+
+        data = {
+            'missions_list':missions_list,
         }
 
         return json.dumps(data,sort_keys=True)
