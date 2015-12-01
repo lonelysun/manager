@@ -1,10 +1,10 @@
 (function () {
 
     var injectParams = ['$scope', '$location', '$routeParams',
-                        '$timeout', 'config', 'dataService','toaster','displayModel'];
+                        '$timeout', 'config', 'dataService','toaster','displayModel','MyCache'];
 
     var menuController = function ($scope, $location, $routeParams,
-                                           $timeout, config, dataService,toaster,displayModel) {
+                                           $timeout, config, dataService,toaster,displayModel,MyCache) {
         var vm = this;
         vm.panel = {};
         vm.second = false;
@@ -21,7 +21,7 @@
         function getPanel() {
             dataService.getMenu()
             .then(function (data) {
-
+                MyCache.put('role_option',data.option)
                 if(data.option=='7'){
                     $location.path('/saler');
                 }else if(data.option=='8'){

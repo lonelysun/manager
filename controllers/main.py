@@ -99,8 +99,8 @@ class born_manager(http.Controller):
         request.session.employee_ids = employee_ids
         users_obj = request.registry.get('res.users')
         user=users_obj.browse(request.cr, SUPERUSER_ID, uid)
-       
-            
+        request.session.option = user.role_option
+
         val = {
                'option':user.role_option,
         }

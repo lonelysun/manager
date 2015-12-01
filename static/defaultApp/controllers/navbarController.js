@@ -11,10 +11,13 @@
         //vm.showheaderBack = null;
         //vm.showheaderCancel = null;
         //vm.headerEdit = null;
-        vm.headerSave = null;
-        vm.headerSearch = null;
-        vm.headerCancel = null;
         displayModel.showHeader = '0';
+        displayModel.displaySave = '0';
+        displayModel.displaySearch = '0';
+        displayModel.displayBack = '0';
+        displayModel.displayCreate = '0';
+        displayModel.displaySubmit = '0';
+        displayModel.displayConfirm = '0';
 
         vm.headerBack = function(){
             $location.path(displayModel.backpath);
@@ -53,6 +56,18 @@
 
         vm.getBackModel = function(){
             return displayModel.displayBack;
+        }
+
+        vm.getConfirmModel = function(){
+            return displayModel.displayConfirm;
+        }
+
+        vm.getSubmitModel = function(){
+            return displayModel.displaySubmit;
+        }
+
+        vm.getCreateModel = function(){
+            return displayModel.displayCreate;
         }
 
         vm.isCollapsed = false;

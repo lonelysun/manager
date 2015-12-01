@@ -1,6 +1,6 @@
 ﻿(function () {
   
-    var app = angular.module('managerApp', ['ngRoute', 'ngSanitize','ngAnimate','ngTouch','ngDialog','wc.directives', 'ui.bootstrap', 'infinite-scroll','breeze.angular','toaster'],
+    var app = angular.module('managerApp', ['ngRoute', 'ngSanitize','ngAnimate','ngTouch','ngDialog','wc.directives','datePicker', 'ui.bootstrap', 'infinite-scroll','breeze.angular','toaster'],
 	function($httpProvider) {
 	  // Use x-www-form-urlencoded Content-Type
 	  $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -113,14 +113,39 @@
 	            controllerAs: 'vm'
 	        })
 
-			.when('/saler/options/:option', {
+            .when('/saler/options/:option', {
 	            controller: 'OptionsController',
 	            templateUrl: viewBase + 'saler/options.html',
 	            controllerAs: 'vm'
 	        })
 
+            //.when('/createPartner', {
+	        //    controller: 'EditPartnerController',
+	        //    templateUrl: viewBase + 'saler/editPartner.html',
+	        //    controllerAs: 'vm'
+	        //})
+			.when('/saler/selectResults/:missionId', {
+	            controller: 'ResultsOptionController',
+	            templateUrl: viewBase + 'saler/resultsOption.html',
+	            controllerAs: 'vm'
+	        })
+
+			.when('/saler/finishMission/:missionId', {
+	            controller: 'FinishMissionController',
+	            templateUrl: viewBase + 'saler/finishMission.html',
+	            controllerAs: 'vm'
+	        })
+			.when('/saler/finishedMission/:missionId', {
+	            controller: 'ShowFinishedMissionController',
+	            templateUrl: viewBase + 'saler/showFinishedMission.html',
+	            controllerAs: 'vm'
+	        })
+
 
 			//end test
+
+
+
 			.when('/companys/:companyId', {
 	            controller: 'CompanyController',
 	            templateUrl: viewBase + 'companys/companysDetail.html',
@@ -239,7 +264,7 @@
 
 	        .when('/approval/:trackid', {
 	        	controller: 'ApprovalController',
-	        	templateUrl: viewBase + 'salecontrole/approval.html',
+	        	templateUrl: viewBase + 'salermanager/approval.html',
 	        	controllerAs: 'vm'
 	        })
 	        .when('/teamshop', {
@@ -312,7 +337,7 @@
 	            templateUrl: viewBase + 'companys/licensesDetail.html',
 	            controllerAs: 'vm'
 	        })
-			.when('/createMission', {
+			.when('/createMission/:option', {
 	            controller: 'CreateMissionController',
 	            templateUrl: viewBase + 'salermanager/createMission.html',
 	            controllerAs: 'vm'
@@ -325,6 +350,11 @@
 			.when('/createSuccess', {
 	            controller: 'CreateSuccessController',
 	            templateUrl: viewBase + 'salermanager/createSuccess.html',
+	            controllerAs: 'vm'
+	        })
+			.when('/approvalSuccess/:track_id', {
+	            controller: 'CreateSuccessController',
+	            templateUrl: viewBase + 'salermanager/approvalSuccess.html',
 	            controllerAs: 'vm'
 	        })
 			.when('/ranking', {

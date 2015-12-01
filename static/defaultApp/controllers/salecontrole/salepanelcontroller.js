@@ -100,9 +100,9 @@
         	$scope.modalOptions = {
                 closeButtonText: '取消',
                 firstActionText:'新任务',
-                firstUrl:'#/createMission',
+                firstUrl:'#/createMission/8',
                 secondActionText:'新商户',
-                secondUrl:'#/',
+                secondUrl:'#/saler/partner/edit/0',
             };
 
             ngDialog.open({

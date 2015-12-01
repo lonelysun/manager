@@ -1,0 +1,21 @@
+<div  id="infinite1" infinite-scroll='vm.getResults()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+    <div class="no-bg bm-item" ng-repeat="result in vm.results">
+        <label style="display: block;">
+            <div>
+                <input class="pull-right" style="display:none" type="checkbox" id={{result.id}} name="{{result.name}}" data-ng-checked="vm.isSelected(result.id)" data-ng-click="vm.updateSelection($event,result.id)" >
+
+                <img ng-if="vm.isSelected(result.id)" src="/born_manager/static/src/img/saler/finished.png" class="pull-right" style="width:14px;height:12px">
+                <i class="pull-right"></i>
+                <div style="width: 100%;color: black;padding-left: 10px;">
+                    {{result.name}}
+                </div>
+            </div>
+        </label>
+    </div>
+
+</div>
+
+
+<button ng-click="vm.postFinishedMission()">Submit</button>
+
+

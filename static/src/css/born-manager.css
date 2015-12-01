@@ -415,4 +415,14 @@
     border-radius: 20px;
     margin-left: -30px;
 }
+.bm-b-all{
+    color: red;
+    background-color: #FFFFFE;
+    border: 1px solid #ff4848;
+    border-radius:10px;
+    font-size:12px;
+    margin-left:5px;
+    padding: 5px;
+    margin-top:5px;
+}
 /*liuhao end*/

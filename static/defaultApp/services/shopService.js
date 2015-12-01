@@ -327,11 +327,12 @@
 
 
 
-        factory.getOptions = function (option, enviroment) {
+        factory.getOptionsService = function (pageIndex,option, environment) {
 
             return $http.get(serviceBase + 'saler/options/'+option, {
      			params : {
-                    enviroment:enviroment
+                    pageIndex:pageIndex,
+                    environment:environment
      			}
      			}).then(function(results) {
      				return results.data;
@@ -340,8 +341,41 @@
         };
 
 
+        factory.getResultsService = function (pageIndex) {
+            return $http.get(serviceBase + 'saler/missionresults/', {
+     			params : {
+                    pageIndex:pageIndex,
+     			}
+     			}).then(function(results) {
+     				return results.data;
+     			});
 
-        //
+        };
+
+
+        factory.postFinishMission = function (finishMission) {
+            return $http.post(serviceBase +'saler/finishMission/post/',finishMission).then(function(results) {
+                return results.data;
+            });
+        };
+
+        factory.changeMissionState = function (changeData) {
+            return $http.post(serviceBase +'saler/changeMissionState/post/',changeData).then(function(results) {
+                return results.data;
+            });
+        };
+
+        factory.getFinishedMission = function (missionId) {
+            return $http.get(serviceBase +'saler/getFinishedMission/'+missionId).then(function(results) {
+                return results.data;
+            });
+        };
+
+
+        //end
+
+
+
 
 
         //获取组内销售人员数据
@@ -528,6 +562,12 @@
             return $http.get(serviceBase + 'ranking').then(function(results) {
                     return results.data;
                 });
+        };
+        //全部移交
+        factory.createMission = function (track) {
+            return $http.post(serviceBase + 'createMission',track).then(function (status) {
+                return status.data;
+            });
         };
 
         return factory;

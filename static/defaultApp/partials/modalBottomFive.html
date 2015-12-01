@@ -1,0 +1,30 @@
+    <div class="settings" style="width: 97%;background-color:white;margin-left: 5px;border-radius: 8px;bottom:70px">
+        <a>
+            <div class="modal-header text-center" style="">
+                <div>{{modalOptions.titleText}}</div>
+                <div style="color:grey">{{modalOptions.titleState}}</div>
+            </div>
+        </a>
+        <a ng-if="modalOptions.showFirstText"  ng-click="confirm('start')">
+            <div class="modal-header text-center" style="color:red;">
+                {{modalOptions.firstActionText}}
+            </div>
+        </a>
+        <a ng-if="modalOptions.showSecondText"  ng-click="confirm('pause')">
+            <div class="modal-header text-center" style="color:red;border-bottom: 0px solid #edf1f2;">
+                {{modalOptions.secondActionText}}
+            </div>
+        </a>
+        <a ng-if="modalOptions.showThirdText" ng-click="confirm('finished')">
+            <div class="modal-header text-center" style="color:red;border-bottom: 0px solid #edf1f2;">
+                {{modalOptions.thirdActionText}}
+            </div>
+        </a>
+    </div>
+    <div class="settings" style="width:97%;background-color:white;margin-left:5px;margin-top:5px;border-radius:8px;bottom:10px">
+        <a data-ng-click="closeThisDialog('canel')">
+            <div class="modal-header text-center" style="color:red;border-bottom: 0px solid #edf1f2;">
+                {{modalOptions.closeButtonText}}
+            </div>
+        </a>
+    </div>

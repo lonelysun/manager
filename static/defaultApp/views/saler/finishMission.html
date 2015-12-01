@@ -1,0 +1,33 @@
+<div class="no-bg bm-item" >
+    <span class="bm-one-line-left">主题</span>
+    <span>
+        <input type="text" class="editable editable-click no-border text-left"  placeholder="输入主题" data-ng-model="vm.finishMission.result_title"/>
+        <i class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="vm.finishMission.result_title=''"></i>
+    </span>
+</div>
+<a ng-click="vm.selectResults()">
+    <div class="no-bg bm-item" >
+        <span class="bm-one-line-left">结果</span>
+        <span>
+            <!--<input  type="text" class="editable editable-click no-border text-left"  placeholder="选择类别" data-ng-model="vm.partner.category"/>-->
+            <span ng-repeat="result in vm.finishMission.results">{{result.name}}  </span>
+            <i class=" fa fa-angle-right pull-right" style="margin-left: 0px;" ></i>
+        </span>
+    </div>
+</a>
+<!--任务说明-->
+<div class="">
+    <textarea class="form-control" style="border: 0;" ng-model="vm.finishMission.notes" rows="6" placeholder="请输入拜访记录.."></textarea>
+</div>
+<!--任务照片-->
+<div>
+    上传任务照片
+    <div>
+        <input ng-show="false" id="File" type="file" file-model="myFile" style="" />
+
+        <img  ng-if="vm.finishMission.mission_img" ng-src="{{vm.finishMission.mission_img}}" onclick="missionClick()"  style="max-width:150px;max-height:150px;margin:0 auto;padding-left:15px;padding-bottom:15px;padding-top:10px" />
+        <img ng-hide="vm.finishMission.mission_img"  src="/born_manager/static/src/img/upload.png" name="upload" onclick="missionClick()" style="padding-left:15px;padding-top:10px;padding-bottom:10px;width:108px;height:108px">
+    </div>
+</div>
+
+    <button ng-click="vm.save()">Submit</button>

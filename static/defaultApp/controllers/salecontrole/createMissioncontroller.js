@@ -7,6 +7,7 @@
                                            $timeout,$route ,config, dataService,toaster,displayModel,MyCache) {
 
     	var vm = this;
+    	vm.option = ($routeParams.option) ? parseInt($routeParams.option) : 0;
     	vm.track = {
     	    name:'',
     	    salerid:'',
@@ -18,15 +19,22 @@
     	    personname:'',
     	    tel:'',
     	    time:'',
+    	    timevalue:'',
     	    img:'',
+    	    option:vm.option,
     	};
 
+        Window.born_cancel = function(){
+            $location.path('/menu');
+        }
 
-        vm.createTrack = function(){
+        Window.born_create = function(){
 
-        	if(vm.track.salerid==''){
-                toaster.pop('warning', "", "未选择销售人员！");
-                return true;
+            if(vm.option==8){
+                if(vm.track.salerid==''){
+                    toaster.pop('warning', "", "未选择销售人员！");
+                    return true;
+                }
         	}
         	if(vm.track.name==''){
                 toaster.pop('warning', "", "未填写任务名！");
@@ -40,9 +48,14 @@
                 toaster.pop('warning', "", "未选择联系人！");
                 return true;
         	}
-
-            dataService.createMission()
+        	var time_date = vm.track.time.getUTCFullYear()+'-'+vm.track.time.getUTCMonth()+'-'+vm.track.time.getUTCDate()
+        	vm.track.timevalue = time_date
+            dataService.createMission(vm.track)
             .then(function (data) {
+                MyCache.remove('track');
+                MyCache.remove('salerid');
+                MyCache.remove('optionObj');
+                MyCache.remove('optionType');
          	   $location.path('/createSuccess');
             }, function (error) {
              toaster.pop('warning', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
@@ -51,59 +64,77 @@
 
         function init() {
             displayModel.showHeader='1';
-            displayModel.displayBack='1';
-            displayModel.displaySave='1';
+            displayModel.displayBack='0';
+            displayModel.displaySave='0';
             displayModel.displaySearch='0';
-            displayModel.displayCanel='0';
+            displayModel.displayCanel='1';
+            displayModel.displayCreate='1';
+            displayModel.displaySubmit='0';
+            displayModel.displayConfirm='0';
             displayModel.title = '创建任务';
-            displayModel.backpath = '/menu';
-            console.info(MyCache.get('salerid'));
+
+            if(MyCache.get('track')){
+                vm.track = MyCache.get('track');
+            }
             if(MyCache.get('salerid')){
                 vm.track.salerid = MyCache.get('salerid').id;
                 vm.track.salername = MyCache.get('salerid').saler_name;
                 vm.track.img = MyCache.get('salerid').saler_img;
             }
-            if(MyCache.get('track')){
-                vm.track = MyCache.get('track');
-            }
-            if(vm.track.salerid!=''){
+
+            var optionObj = MyCache.get('optionObj');
+            var optionType = MyCache.get('optionType');
+
+            if(optionType == 'contacts'){
+                vm.track.personid = MyCache.get('optionObj').id;
+                vm.track.personname = MyCache.get('optionObj').name;
+                vm.track.tel = MyCache.get('optionObj').mobile;
+            }else if (optionType == 'partners') {
+                vm.track.partnerid = MyCache.get('optionObj').id;
+                vm.track.partnername = MyCache.get('optionObj').name;
+                vm.track.street = MyCache.get('optionObj').street;
                 vm.getPerson();
             }
-
+            console.info(vm.track.time);
         }
 
         vm.selectsaler = function(){
             MyCache.put('track',vm.track);
-//            console.info(vm.track.time.toLocaleDateString());
             $location.path('/selectSaler');
-        }
+        };
 
-//        vm.getPartner = function(){
-//            dataService.getPartnerInfo(vm.track.partnerid)
-//            .then(function (data) {
-//                console.info(data);
-//                $timeout(function () {
-//                }, 1000);
-//            }, function (error) {
-//            	toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
-//            });
-//        }
-//        vm.getSaler = function(){
-//            dataService.getSetting(vm.track.salerid)
-//            .then(function (data) {
-//                console.info(data);
-//                $timeout(function () {
-//                }, 1000);
-//            }, function (error) {
-//            	toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
-//            });
-//        }
+       //Add by nisen
+       // 销售经理的选择商户
+        vm.selectpartner = function(){
+            MyCache.put('track',vm.track);
+            MyCache.put('environment_selectPartner','1');
+            $location.path('/saler/options/states');
+        };
+
+        //销售人员的选择商户
+        vm.salerSelectParner = function(){
+            MyCache.put('track',vm.track);
+            MyCache.put('environment','fromSalerSelectParner');
+            $location.path('/saler/options/partners');
+        };
+
+        vm.selectperson = function(){
+            MyCache.put('track',vm.track);
+            MyCache.put('environment',vm.track.partnerid);
+
+            $location.path('/saler/options/contacts');
+
+        };
+
+       // End add
+
         vm.getPerson = function(){
             dataService.getPartnerInfo(vm.track.partnerid)
             .then(function (data) {
                 console.info(data);
-                vm.track.personname = data.name;
-                vm.track.personid = data.id;
+                vm.track.personname = data.contacts[0].name;
+                vm.track.personid = data.contacts[0].id;
+                vm.track.tel = data.contacts[0].mobile;
                 $timeout(function () {
                 }, 1000);
             }, function (error) {

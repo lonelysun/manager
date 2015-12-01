@@ -22,6 +22,8 @@
         vm.getPartners= function () {
 
             if(vm.busy)return;
+
+
             vm.busy=true;
 
             //根据url筛选查看的是所有负责的还是待拜访、或已拜访或成功使用的

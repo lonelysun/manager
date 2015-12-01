@@ -24,20 +24,47 @@
 <body ng-cloak style="background-color:white">
     <div ng-controller="NavbarController as vm"  class="h4 app-header navbar" style="min-height: 0px;">
             <!-- navbar header -->
-            <div class="navbar-header bm-navbar-header text-center" ng-if="vm.showHeader()=='1'" style="line-height:44px;margin-top: 20px;">
+            <div class="navbar-header bm-navbar-header text-center" ng-if="vm.showHeader()=='1'" style="    line-height: 30px;margin-top: 15px;">
 
-                <button ng-if="vm.getSaveModel()=='1'" data-ng-click="vm.save()" class="pull-right visible-xs dk" style="color:#ff4848">
+                <button ng-if="vm.getSaveModel()=='1'" onclick="bm_save()" class="pull-right visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
                   保存
+                </button>
+                <button ng-if="vm.getCreateModel()=='1'" onclick="bm_create()" class="pull-right visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
+                  创建
+                </button>
+                <button ng-if="vm.getConfirmModel()=='1'" onclick="bm_confirm()" class="pull-right visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
+                  确认
+                </button>
+                <button ng-if="vm.getSubmitModel()=='1'" onclick="bm_submit()" class="pull-right visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
+                  提交
                 </button>
                 <img ng-if="vm.getSearchModel()=='1'"  data-ng-click="vm.headerSearch()" class="pull-right bm-img-back"  src="/born_manager/static/src/img/search.png">
                       {{vm.title | limitTo:6}}{{vm.title.length > 6 ? '...' : ''}}
-                <img ng-if="vm.getBackModel()=='1'" data-ng-click="vm.headerBack()" class=" pull-left no-border bm-img-back"  src="/born_manager/static/src/img/back.png">
-                <button ng-if="vm.getCanelModel()=='1'" data-ng-click="vm.headerCancel() " class="pull-left visible-xs dk" style="color:#ff4848">
+                <img ng-if="vm.getBackModel()=='1'" style="padding-top: 3px;padding-bottom: 3px;height: 29px;" data-ng-click="vm.headerBack()" class=" pull-left no-border bm-img-back"  src="/born_manager/static/src/img/back.png">
+                <button ng-if="vm.getCanelModel()=='1'" onclick="bm_canel" class="pull-left visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
                   取消
                 </button>
             </div>
+
             <!-- / navbar header -->
     </div>
+    <script type="text/javascript">
+            bm_save = function(){
+                Window.born_save();
+            }
+            bm_create = function(){
+                Window.born_create();
+            }
+            bm_confirm = function(){
+                Window.born_confirm();
+            }
+            bm_submit = function(){
+                Window.born_submit();
+            }
+            bm_canel = function(){
+                Window.born_canel();
+            }
+        </script>
 
 
     <!-- content -->
@@ -51,7 +78,6 @@
     <div wc-overlay wc-overlay-delay="30">
         <i class="fa fa-spin fa-refresh fa-2x"></i>
     </div>
-
 <!--
     <div class="app-content ng-scope m-n" style="background-color:white">
         <div class="fade-in-up ng-scope" style="padding-bottom: 0px;"  >
@@ -159,6 +185,9 @@
     <script src="/born_manager/static/defaultApp/controllers/saler/salerPartnerController.js"></script>
     <script src="/born_manager/static/defaultApp/controllers/saler/editPartnerController.js"></script>
     <script src="/born_manager/static/defaultApp/controllers/saler/optionsController.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/saler/finishMissionController.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/saler/resultsOptionController.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/saler/showFinishedMissionController.js"></script>
 
 
 

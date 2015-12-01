@@ -1,10 +1,10 @@
 (function () {
 
-    var injectParams = ['$scope', '$location', '$routeParams',
-                        '$timeout', 'config','modalService', 'dataService','toaster','displayModel'];
+    var injectParams = ['$scope', '$location', '$routeParams','$route',
+                        '$timeout', 'ngDialog','config','modalService', 'dataService','toaster','displayModel','MyCache'];
 
-    var salerController = function ($scope, $location, $routeParams,
-                                           $timeout, config,modalService, dataService,toaster,displayModel) {
+    var salerController = function ($scope, $location, $routeParams,$route,
+                                           $timeout, ngDialog,config,modalService, dataService,toaster,displayModel,MyCache) {
         var vm = this;
         vm.companys = [];
         vm.missionsUnfinished = [];
@@ -20,12 +20,18 @@
         var missionLengh=0;
         vm.missions_unfinished_numbers = 0;
         mission_state = '';
+        //add by liuhao
+        vm.role = '';
+        //add end
 
-
+        vm.clickMore = function(){
+            vm.showFinishedmissions=true;
+        };
 
 
         //Get mission
         vm.getMissions = function(mission_state){
+
             if(vm.busy)return;
             vm.busy=true;
 
@@ -83,6 +89,7 @@
 
         //Get partners
         vm.getPartners = function(){
+
             if(vm.busy)return;
             vm.busy=true;
 
@@ -93,17 +100,23 @@
                 }
 
 
+
+
                     console.info('getPartners');
                 console.info(vm.partners);
 
 
                     vm.isLoad=true;
+
                 $timeout(function () {
                     vm.busy=false;
+
                 }, 1000);
             }, function (error) {
             	toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
             });
+
+
 
         };
 
@@ -150,6 +163,128 @@
             vm.display = display;
         };
 
+        //新建
+        vm.createMissionOrPatner = function () {
+
+            MyCache.put('createNewPartner','1');
+
+
+        	$scope.modalOptions = {
+                closeButtonText: '取消',
+                firstActionText:'新任务',
+                firstUrl:'#/createMission/7',
+                secondActionText:'新商户',
+                secondUrl:'#/saler/partner/edit/0',
+            };
+
+            ngDialog.open({
+                template:'/born_manager/static/defaultApp/partials/modalBottomThree.html',
+                className: 'ngdialog',
+                scope:$scope
+            });
+        };
+
+
+        vm.changeMissionState = function(missionsUnfinished){
+            //var missionObj = missionsUnfinished;
+            console.info('------missionsUnfinished---------');
+            console.info(missionsUnfinished);
+
+            var titleText,titleState,closeButtonText,
+                firstActionText,firstUrl,
+                secondActionText,secondUrl,
+                thirdActionText,thirdUrl;
+            var showFirstText = false;
+            var showSecondText = false;
+            var showThirdText = false;
+
+            titleText = missionsUnfinished.mission_name;
+            titleState = missionsUnfinished.mission_state_name;
+
+            firstActionText = '开始';
+            secondActionText = '暂停';
+            thirdActionText = '完成' ;
+
+            switch (titleState)
+            {
+                case '未开始':
+                    showFirstText = true;
+                    showSecondText = true;
+                    showThirdText = true;
+                    break;
+                case '暂停':
+                    showFirstText = true;
+                    showSecondText = false;
+                    showThirdText = true;
+                    break;
+                case '开始':
+                    showFirstText = false;
+                    showSecondText = true;
+                    showThirdText = true;
+                    break;
+                case '完成':
+                    showFirstText = false;
+                    showSecondText = false;
+                    showThirdText = false;
+                    break;
+            }
+
+
+            $scope.modalOptions = {
+                titleText:titleText,
+                titleState:titleState,
+                closeButtonText: '取消',
+
+                firstActionText:'开始',
+                showFirstText:showFirstText,
+
+                secondActionText:'暂停',
+                showSecondText:showSecondText,
+
+                thirdActionText:'完成',
+                showThirdText:showThirdText
+            };
+
+            ngDialog.openConfirm({
+                template:'/born_manager/static/defaultApp/partials/modalBottomFive.html',
+                className: 'ngdialog',
+                scope:$scope
+            }).then(function(data){
+                console.info('----data----');
+                console.info(data);
+                console.info(missionsUnfinished);
+
+                var mission_id = missionsUnfinished.mission_id;
+                var action = data;
+
+                var changeData = {'mission_id':mission_id,'action':action};
+
+                missionsUnfinished.mission_state  = action;
+
+                if(action == 'finished'){
+                    //$location.path('/saler');
+                    $route.reload();
+                }
+
+                dataService.changeMissionState(changeData)
+                .then(function (data) {
+                        //toaster.pop('success', "", "修改成功!");
+                        //debugger;
+                        //$route.reload();
+                        //$location.path('/saler');
+
+
+                }, function (error) {
+                    toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
+            });
+
+                //$location.path('/saler');
+
+
+            });
+
+        };
+
 
 
 
@@ -161,6 +296,9 @@
             vm.display = 'missions';
             vm.showHeader='0';
 
+            //add by liuhao
+            vm.role = MyCache.get('role_option');
+            //end
 
         }
 

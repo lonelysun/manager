@@ -1,0 +1,28 @@
+<div class="no-bg bm-item" >
+    <span class="bm-one-line-left">主题</span>
+    <span>
+        {{vm.finishedMission.result_title}}
+    </span>
+</div>
+<div class="no-bg bm-item" >
+    <span class="bm-one-line-left">结果</span>
+    <span>
+        <span ng-repeat="result in vm.finishedMission.result_list" class="bm-b-all">{{result.name}}</span>
+    </span>
+</div>
+<!--任务说明-->
+<div class="">
+    <div class="no-bg bm-item">任务说明</div>
+    <div class="form-control" style="border: 0;" rows="6">{{vm.finishedMission.notes}}</div>
+</div>
+<!--任务照片-->
+<div style="width: 100%;">
+    <div class="no-bg bm-item">任务照片</div>
+    {{vm.finishedMission.image_url}}
+</div>
+
+<!--主管批注-->
+<div class="">
+    <div class="no-bg bm-item">主管批注</div>
+    <div class="form-control" style="border: 0;" rows="6">{{vm.finishedMission.remark}}</div>
+</div>

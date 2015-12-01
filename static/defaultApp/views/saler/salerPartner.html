@@ -39,13 +39,13 @@
         <div ng-repeat="contact in vm.partner.contacts" >
             <div class="no-bg bm-item">
                 <span class="bm-one-line-left">联系人</span>
-                <span>{{contact.name}}</span>
+                <span>{{contact.name}}  {{contact.mobile}}</span>
             </div>
 
-            <div class="no-bg bm-item">
-                <span class="bm-one-line-left">手机</span>
-                <span>{{contact.mobile}}</span>
-            </div>
+            <!--<div class="no-bg bm-item">-->
+                <!--<span class="bm-one-line-left">手机</span>-->
+                <!--<span>{{contact.mobile}}</span>-->
+            <!--</div>-->
         </div>
 
         <div class="no-bg bm-item">
@@ -93,7 +93,7 @@
                         <span class="bm-main-three-line-title-tag-grey"><i class="fa fa-check"></i></span>
                         <!--<span><i class="glyphicon glyphicon-play"></i></span>-->
                         <span class="bm-main-three-line-title-font-grey">{{mission.mission_company_name}}</span>
-                        <span class="pull-right"><img class=" bm-main-three-line-img" src="/born_manager/static/src/img/three-points.png"></span>
+                        <!--<span class="pull-right"><img class=" bm-main-three-line-img" src="/born_manager/static/src/img/three-points.png"></span>-->
                     </div>
 
                     <div class="bm-main-three-line-detail">
