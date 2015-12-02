@@ -24,10 +24,18 @@
     	    option:vm.option,
     	};
 
+        vm.showoption = function(){
+            if(vm.option==7||vm.option==8){
+                return 0
+            }else{
+                return 1
+            }
+        }
+
         vm.born_create = function(){
-            if(vm.option==8){
+            if(vm.option==8||vm.option==10){
                 if(vm.track.salerid==''){
-                    toaster.pop('warning', "", "未选择销售人员！");
+                    toaster.pop('warning', "", "未选择负责人员！");
                     return true;
                 }
         	}

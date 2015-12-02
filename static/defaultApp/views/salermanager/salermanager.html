@@ -25,7 +25,7 @@
                 </div>
                 <div class="pull-right bm-head-right-col">
                     <div class="bm-head-right-num">{{vm.panel.track_number}}</div>
-                    <div class="bm-head-font">待审批商户</div>
+                    <div class="bm-head-font">待审批任务</div>
                 </div>
             </div>
         </div>
@@ -93,7 +93,7 @@
         <div>
             <div id="infinite1" infinite-scroll='vm.getTeamList()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
                 <div class="bm-main-three-line-wrapper" style="padding-left: 25px;" data-ng-repeat="saler in vm.salers">
-                    <a href="#/salepanel/{{saler.id}}">
+                    <a href="#/saler/{{saler.id}}">
                         <div class="bm-main-three-line" style="padding-left: 30px;padding-bottom: 10px;">
                             <img ng-if="saler.saler_img==''" class="pull-left" style="width: 30px;padding-top: 5px;margin-left: -30px;" src="/born_manager/static/src/img/defaultlogo.png">
                             <img ng-if="saler.saler_img!=''" class="pull-left" style="width: 30px;margin-top: 5px;margin-left: -30px;border-radius: 500px;;" ng-src="data:image/png;base64,{{saler.saler_img}}">

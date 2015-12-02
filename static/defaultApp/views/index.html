@@ -50,23 +50,6 @@
 
             <!-- / navbar header -->
     </div>
-    <!--<script type="text/javascript">-->
-            <!--bm_save = function(){-->
-                <!--Window.born_save();-->
-            <!--};-->
-            <!--bm_create = function(){-->
-                <!--Window.born_create();-->
-            <!--};-->
-            <!--bm_confirm = function(){-->
-                <!--Window.born_confirm();-->
-            <!--};-->
-            <!--bm_submit = function(){-->
-                <!--Window.born_submit();-->
-            <!--};-->
-            <!--bm_cancel = function(){-->
-                <!--Window.born_cancel();-->
-            <!--};-->
-        <!--</script>-->
 
 
     <!-- content -->
@@ -76,7 +59,46 @@
             <toaster-container toaster-options="{'position-class': 'toast-top-center', 'close-button':false}"></toaster-container>
         </div>
     </div>
-
+    <div class="app-footer navbar navbar-fixed-bottom  ng-scope m-n" ui-view="footer"  ng-controller="NavbarController as vm" ng-hide="vm.showBottom()=='0'" >
+        <div class="row ng-scope" >
+            <nav>
+                 <div class="footermenu" data-collapse="isCollapsed" >
+                     <ul ng-if="vm.showBottom()=='1'"  highlight-class-name="active" style="background-color:white;" >
+                         <li style="width: 33%" >
+                            <a ng-if="vm.clicked!='menu'" href="#/salepanel" ng-click="vm.clicked = 'menu'"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/menu-b.png"><p>首页</p></a>
+                            <a ng-if="vm.clicked=='menu'" href="#/salepanel" ng-click="vm.clicked = 'menu'" style="color:#ff4848"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/menu-b-d.png"><p>首页</p></a>
+                         </li>
+                         <li style="width: 33%" >
+                            <a ng-if="vm.clicked!='license'" ng-click="vm.clicked = 'license'" href="#/salepanel"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/licenses-b.png"><p>设备管理</p></a>
+                            <a ng-if="vm.clicked=='license'" ng-click="vm.clicked = 'license'" href="#/salepanel" style="color:#ff4848"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/licenses-b-d.png"><p>设备管理</p></a>
+                         </li>
+                         <li style="width: 33%" >
+                            <a ng-if="vm.clicked!='company'" ng-click="vm.clicked = 'company'" href="#/salepanel" ><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/company-b.png"><p>公司管理</p></a>
+                            <a ng-if="vm.clicked=='company'" ng-click="vm.clicked = 'company'" href="#/salepanel"  style="color:#ff4848"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/company-b-d.png"><p>公司管理</p></a>
+                         </li>
+                     </ul>
+                     <ul  ng-if="vm.showBottom()=='2'" highlight-class-name="active" style="background-color:white" >
+                         <li style="width: 25%" >
+                            <a ng-if="vm.clicked!='menu'" href="#/salepanel" ng-click="vm.clicked = 'menu'"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/menu-b.png"><p>首页</p></a>
+                            <a ng-if="vm.clicked=='menu'" href="#/salepanel" ng-click="vm.clicked = 'menu'" style="color:#ff4848"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/menu-b-d.png"><p>首页</p></a>
+                         </li>
+                         <li style="width: 25%" >
+                            <a ng-if="vm.clicked!='license'" ng-click="vm.clicked = 'license'" href="#/salepanel"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/licenses-b.png"><p>设备管理</p></a>
+                            <a ng-if="vm.clicked=='license'" ng-click="vm.clicked = 'license'" href="#/salepanel" style="color:#ff4848"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/licenses-b-d.png"><p>设备管理</p></a>
+                         </li>
+                         <li style="width: 25%" >
+                            <a ng-if="vm.clicked!='company'" ng-click="vm.clicked = 'company'" href="#/salepanel" ><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/company-b.png"><p>公司管理</p></a>
+                            <a ng-if="vm.clicked=='company'" ng-click="vm.clicked = 'company'" href="#/salepanel"  style="color:#ff4848"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/company-b-d.png"><p>公司管理</p></a>
+                         </li>
+                         <li style="width: 25%" >
+                            <a ng-if="vm.clicked!='report'" ng-click="vm.clicked = 'report'" href="#/salepanel" ><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/report-b.png"><p>统计报表</p></a>
+                            <a ng-if="vm.clicked=='report'" ng-click="vm.clicked = 'report'" href="#/salepanel"  style="color:#ff4848"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/report-b-d.png"><p>统计报表</p></a>
+                         </li>
+                     </ul>
+                 </div>
+             </nav>
+        </div>
+    </div>
     <div wc-overlay wc-overlay-delay="30">
         <i class="fa fa-spin fa-refresh fa-2x"></i>
     </div>
@@ -87,26 +109,9 @@
             <toaster-container toaster-options="{'position-class': 'toast-top-center', 'close-button':false}"></toaster-container>
         </div>
     </div>
-    <div class="app-footer navbar navbar-fixed-bottom  ng-scope m-n" ui-view="footer"  ng-controller="NavbarController as vm" ng-show="vm.getDisplayModel()=='block'" >
-        <div class="row ng-scope" >
-            <nav>
-                 <div class="footermenu" data-collapse="isCollapsed" >
-                     <ul menu-highlighter highlight-class-name="active"  >
-                         <li style="width: 30%" >
-                            <a href="#/menus"><i class="fa icon-calendar"></i><p>工作台</p></a>
-                         </li>
-                         <li style="width: 40%" >
-                            <a href="#/messages"><i class="fa icon-plus"></i><p>消息</p></a>
-                         </li>
-                         <li style="width: 30%" >
-                            <a href="#/settings" ><i class="fa icon-list"></i><p>设置</p></a>
-                         </li>
-                     </ul>
-                 </div>
-             </nav>
-        </div>
-    </div>
+    -->
 
+<!--
     <div wc-overlay wc-overlay-delay="30">
         <i class="fa fa-spin fa-refresh fa-2x"></i>
     </div>

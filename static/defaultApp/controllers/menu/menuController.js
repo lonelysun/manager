@@ -22,9 +22,13 @@
             dataService.getMenu()
             .then(function (data) {
                 MyCache.put('role_option',data.option)
-                if(data.option=='7'){
+                if(data.option=='7'){//销售
                     $location.path('/saler');
-                }else if(data.option=='8'){
+                }else if(data.option=='8'){//销售经理
+                    $location.path('/salepanel');
+                }else if(data.option=='9'){//技术
+                    $location.path('/?');
+                }else if(data.option=='10'){//技术经理
                     $location.path('/salepanel');
                 }
 

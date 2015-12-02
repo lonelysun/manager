@@ -762,7 +762,7 @@ class born_salermanager(http.Controller):
         employee_ids = request.session.employee_ids
         track_obj = request.registry.get('born.partner.track')
         domain = [('state','=',state),('employee_id','in',employee_ids)]
-        track_ids = track_obj.search(request.cr, SUPERUSER_ID,domain,int(indexPage),10,order="create_date desc",context=request.context)
+        track_ids = track_obj.search(request.cr, SUPERUSER_ID,domain,int(indexPage),10,order="create_date asc",context=request.context)
         tracks = track_obj.browse(request.cr, SUPERUSER_ID,track_ids,context=request.context)
         data = []
         user_obj = request.registry.get('res.users')
@@ -817,21 +817,26 @@ class born_salermanager(http.Controller):
         uid = request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
-
+        role_option = request.session.option
         track_obj = request.registry.get('born.partner.track')
         vals = {}
         vals['mission_date']=post.get('timevalue','')
         vals['name']=post.get('name')
-        vals['track_id']=post.get('partnerid')
+
+        if role_option==8:
+            vals['track_id']=post.get('partnerid')
+        else:
+            vals['track_company_id'] = post.get('partnerid')
+
         vals['contacts_address']=post.get('street')
         vals['contacts_id']=post.get('personid')
         vals['contacts_phone']=post.get('tel')
         vals['state']='start'
-        if post.get('option')=='7':
+        if post.get('option')=='7' or post.get('option')=='9':
             hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
             hr_id = hr_id_list[0] or ''
             vals['employee_id']=hr_id
-        elif post.get('option')=='8':
+        elif post.get('option')=='8' or post.get('option')=='10':
             vals['employee_id']=post.get('salerid')
 
         track_obj.create(request.cr, SUPERUSER_ID,vals,context=request.context)

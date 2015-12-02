@@ -1,7 +1,7 @@
 ﻿(function () {
 
-    var injectParams = ['$scope', '$location', 'config','displayModel'];
-    var NavbarController = function ($scope, $location, config,displayModel) {
+    var injectParams = ['$scope', '$location', 'config','displayModel','MyCache'];
+    var NavbarController = function ($scope, $location, config,displayModel,MyCache) {
         var vm = this;
 
         ////定义顶部导航栏
@@ -19,6 +19,18 @@
         displayModel.displaySubmit = '0';
         displayModel.displayConfirm = '0';
         displayModel.placeholder = '0';
+
+        vm.clicked = 'menu';
+
+        vm.showBottom = function(){
+            if(MyCache.get('role_option')=='9'){
+                return '1'
+            }else if(MyCache.get('role_option')=='10'){
+                return '2'
+            }else{
+                return '0'
+            }
+        }
 
         vm.headerBack = function(){
             displayModel.headerBack();

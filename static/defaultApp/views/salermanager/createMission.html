@@ -12,17 +12,27 @@
                 <img ng-if="vm.track.img!=''" class="pull-right" ng-src="data:image/png;base64,{{vm.track.img}}" style="width:30px;border-radius: 20px;">
                 <span ng-if="vm.track.salername!=''" style="padding-left:10px">{{vm.track.salername}}</span>
                 <span ng-if="vm.track.salername==''" style="padding-left:10px">请选择</span>
-                <span class="pull-left bm-left-font" style="font-size: 18px;padding-right:18px">销售</span>
+                <span class="pull-left bm-left-font" style="font-size: 18px;">负责人</span>
             </div>
         </a>
     </div>
-    <div class="bm-main-three-line-wrapper">
+    <div ng-if="vm.showoption()==0" class="bm-main-three-line-wrapper">
         <a data-ng-click="vm.selectpartner()">
             <div class="bm-main-three-line" style="font-size: 18px;padding-left: 0px;">
                 <i class="fa fa-angle-right pull-right" style="line-height: inherit;"></i>
                 <span ng-if="vm.track.partnername==''" style="padding-left:10px">请选择</span>
                 <span ng-if="vm.track.partnername!=''" style="padding-left:10px">{{vm.track.partnername}}</span>
                 <span class="pull-left bm-left-font" style="font-size: 18px;padding-right:18px">商户</span>
+            </div>
+        </a>
+    </div>
+    <div ng-if="vm.showoption()==1" class="bm-main-three-line-wrapper">
+        <a data-ng-click="vm.selectpartner()">
+            <div class="bm-main-three-line" style="font-size: 18px;padding-left: 0px;">
+                <i class="fa fa-angle-right pull-right" style="line-height: inherit;"></i>
+                <span ng-if="vm.track.partnername==''" style="padding-left:10px">请选择</span>
+                <span ng-if="vm.track.partnername!=''" style="padding-left:10px">{{vm.track.partnername}}</span>
+                <span class="pull-left bm-left-font" style="font-size: 18px;padding-right:18px">公司</span>
             </div>
         </a>
     </div>

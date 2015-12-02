@@ -53,7 +53,7 @@
             .then(function (data) {
 
 
-                    $location.path('/saler/');
+                    $location.path('/saler/postSuccess');
 
             }, function (error) {
                toaster.pop('warning', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");

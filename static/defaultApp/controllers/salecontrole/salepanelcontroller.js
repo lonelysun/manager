@@ -1,9 +1,9 @@
 (function () {
     var injectParams = ['$scope', '$location', '$routeParams',
-                        '$timeout','ngDialog', 'config', 'dataService','toaster','displayModel'];
+                        '$timeout','ngDialog', 'config', 'dataService','toaster','displayModel','MyCache'];
 
     var SalepanelController = function ($scope, $location, $routeParams,
-                                           $timeout, ngDialog,config, dataService,toaster,displayModel) {
+                                           $timeout, ngDialog,config, dataService,toaster,displayModel,MyCache) {
         var vm = this;
         vm.panel = {};
         vm.display = 'missions';
@@ -15,10 +15,12 @@
         vm.showDone = false;
         vm.DoneTrack = false;
         var state = '';
+        vm.role = '';
 
         function init() {
             displayModel.displayModel='block';
             displayModel.showHeader = '0';
+            vm.role = MyCache.get('role_option');
             getSalepanel();
         }
 
@@ -96,14 +98,24 @@
         //创建新任务
         vm.createMission = function () {
 
+            if(vm.role=='8'){
+                $scope.modalOptions = {
+                    closeButtonText: '取消',
+                    firstActionText:'新任务',
+                    firstUrl:'#/createMission/8',
+                    secondActionText:'新商户',
+                    secondUrl:'#/saler/partner/edit/0',
+                };
+            }else{
+                $scope.modalOptions = {
+                    closeButtonText: '取消',
+                    firstActionText:'新任务',
+                    firstUrl:'#/createMission/10',
+                    secondActionText:'',
+                    secondUrl:'',
+                };
 
-        	$scope.modalOptions = {
-                closeButtonText: '取消',
-                firstActionText:'新任务',
-                firstUrl:'#/createMission/8',
-                secondActionText:'新商户',
-                secondUrl:'#/saler/partner/edit/0',
-            };
+            }
 
             ngDialog.open({
                 template:'/born_manager/static/defaultApp/partials/modalBottomThree.html',
