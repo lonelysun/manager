@@ -823,15 +823,17 @@ class born_salermanager(http.Controller):
         vals['mission_date']=post.get('timevalue','')
         vals['name']=post.get('name')
 
-        if role_option==8:
-            vals['track_id']=post.get('partnerid')
-        else:
-            vals['track_company_id'] = post.get('partnerid')
+
+        #暂时不进行权限判断，不考虑技术运维人员
+        # if role_option==8:
+        vals['track_id']=post.get('partnerid')
+        # else:
+        #     vals['track_company_id'] = post.get('partnerid')
 
         vals['contacts_address']=post.get('street')
         vals['contacts_id']=post.get('personid')
         vals['contacts_phone']=post.get('tel')
-        vals['state']='start'
+        vals['state']='notstart'
         if post.get('option')=='7' or post.get('option')=='9':
             hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
             hr_id = hr_id_list[0] or ''
@@ -858,7 +860,7 @@ class born_salermanager(http.Controller):
 
         employee_ids = request.session.employee_ids
         domain = [('state','=','finished'),('employee_id','in',employee_ids)]
-        track_ids = track_obj.search(request.cr, SUPERUSER_ID,domain,order="create_date desc",context=request.context)
+        track_ids = track_obj.search(request.cr, SUPERUSER_ID,domain,order="create_date asc",context=request.context)
 
         track_val = {
                         'img':track.image_url or '',

@@ -105,9 +105,13 @@ class born_manager_sale(http.Controller):
 
         keyword=post.get('keyword','')
 
+        if int(post.get('hr_id_for_manager')) != 0:
+            hr_id = int(post.get('hr_id_for_manager'))
+        else:
+            hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+            hr_id = hr_id_list[0] or ''
 
-        hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-        hr_id = hr_id_list[0] or ''
+
 
         company_obj = request.registry['res.company']
 
@@ -132,13 +136,17 @@ class born_manager_sale(http.Controller):
 
         companys_list = []
 
-        _logger.info(companys);
 
         for each_company in companys:
             if each_company['days'] == 0:
                 daily_average = 0
             else:
-                daily_average = (each_company['cnt_operate'])/(each_company['days'])
+                daily_average = round((each_company['cnt_operate'])/(each_company['days']),1)
+
+                # _logger.info('----daily_average stuff------')
+                # _logger.info(each_company['cnt_operate'])
+                # _logger.info(each_company['days'])
+                # _logger.info(daily_average)
 
             vals = {
                 'company_id':each_company['id'],
@@ -170,8 +178,11 @@ class born_manager_sale(http.Controller):
         require_mission_state = post.get('mission_state')
 
 
-        hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-        hr_id = hr_id_list[0] or ''
+        if int(post.get('hr_id_for_manager')) != 0:
+            hr_id = int(post.get('hr_id_for_manager'))
+        else:
+            hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+            hr_id = hr_id_list[0] or ''
 
 
 
@@ -184,8 +195,6 @@ class born_manager_sale(http.Controller):
             ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','!=','finished')],int(page_index),3, context=request.context)
 
 
-        _logger.info('----------ids--------------------')
-        _logger.info(ids)
         objs = mission_obj.browse(request.cr, SUPERUSER_ID,ids, context=request.context)
         missions_list = []
 
@@ -249,8 +258,11 @@ class born_manager_sale(http.Controller):
 
         keyword=post.get('keyword','')
 
-        hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-        hr_id = hr_id_list[0] or ''
+        if int(post.get('hr_id_for_manager')) != 0:
+            hr_id = int(post.get('hr_id_for_manager'))
+        else:
+            hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+            hr_id = hr_id_list[0] or ''
 
 
         # partner_obj = request.registry['res.partner']
@@ -320,8 +332,6 @@ class born_manager_sale(http.Controller):
         request.cr.execute(sql)
         partners = request.cr.dictfetchall()
 
-        _logger.info('sql partners')
-        _logger.info(partners)
 
         partners_list = []
         for each_partner in partners:
@@ -336,8 +346,6 @@ class born_manager_sale(http.Controller):
         data = {
             'partners_list':partners_list
         }
-        _logger.info('----------partner--------------------')
-        _logger.info(data)
 
         return json.dumps(data,sort_keys=True)
 
@@ -352,8 +360,11 @@ class born_manager_sale(http.Controller):
 
         keyword=post.get('keyword','')
 
-        hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-        hr_id = hr_id_list[0] or ''
+        if int(post.get('hr_id_for_manager')) != 0:
+            hr_id = int(post.get('hr_id_for_manager'))
+        else:
+            hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+            hr_id = hr_id_list[0] or ''
 
 
         mission_obj = request.registry['born.partner.track']
@@ -370,14 +381,10 @@ class born_manager_sale(http.Controller):
             group by tb1.id) select count(*) from tmp
             """ % (hr_id)
 
-        _logger.info('----------initdata------sql--------------------')
-        _logger.info(sql)
 
         request.cr.execute(sql)
         res_count=request.cr.fetchall()
 
-        _logger.info('----------initdata------res_count--------------------')
-        _logger.info(res_count)
 
         partner_number= int(res_count and res_count[0][0] or 0)
 
@@ -396,8 +403,6 @@ class born_manager_sale(http.Controller):
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
 
-        hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-        hr_id = hr_id_list[0] or ''
 
         partner_obj = request.registry['res.partner']
         partner = partner_obj.browse(request.cr, SUPERUSER_ID,int(partner_id),context=request.context)
@@ -490,11 +495,6 @@ class born_manager_sale(http.Controller):
             ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',int(partner_id)),('state','!=','finished')],int(page_index),5, context=request.context)
 
 
-        # _logger.info('-----------saler_partner_mission  partner_id ------------')
-        # _logger.info(partner_id)
-        #
-        # ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',int(partner_id)),('state','=','finished')],int(page_index),3, context=request.context)
-        # # ids = mission_obj.search(request.cr, SUPERUSER_ID,[], context=request.context)
 
         objs = mission_obj.browse(request.cr, SUPERUSER_ID,ids, context=request.context)
 
@@ -554,8 +554,11 @@ class born_manager_sale(http.Controller):
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
 
-        hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-        hr_id = hr_id_list[0] or ''
+        if int(post.get('hr_id_for_manager')) != 0:
+            hr_id = int(post.get('hr_id_for_manager'))
+        else:
+            hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+            hr_id = hr_id_list[0] or ''
 
 
         # 考虑取消接受参数partner_id,因为在  post.get('id',0)里 有
@@ -578,36 +581,38 @@ class born_manager_sale(http.Controller):
         street = post.get('street','')
 
         #联系人
-        vals['child_ids'] = []
-        contacts_json = post.get('contacts_json','')
-        contacts = json.loads(contacts_json)
-        # contact_obj = request.registry['res.partner']
-        for each_contact in contacts:
-            if each_contact.has_key('id'):
-                # 更新联系人信息
-                contact_id = each_contact['id']
-                contact_vals = {
-                    'name':each_contact['name'],
-                    'mobile':each_contact['mobile'],
-                    'phone':each_contact['phone'],
-                    'qq':each_contact['qq'],
-                    'wechat':each_contact['wechat'],
-                    'function':each_contact['function'],
+        if post.get('contacts_json'):
+            vals['child_ids'] = []
+            contacts_json = post.get('contacts_json')
+            contacts = json.loads(contacts_json)
+            # contact_obj = request.registry['res.partner']
+            for each_contact in contacts:
+                if each_contact.has_key('id'):
+                    # 更新联系人信息
+                    contact_id = each_contact['id']
+                    contact_vals = {
+                        'name':each_contact['name'],
+                        'mobile':each_contact['mobile'],
+                        'phone':each_contact['phone'],
+                        'qq':each_contact['qq'],
+                        'wechat':each_contact['wechat'],
+                        'function':each_contact['function'],
 
-                }
-                vals['child_ids'].append((1,contact_id,contact_vals))
-            else:
-                # 新建联系人信息
-                contact_vals = {
-                    'name':each_contact['name'],
-                    'mobile':each_contact['mobile'],
-                    'phone':each_contact['phone'],
-                    'qq':each_contact['qq'],
-                    'wechat':each_contact['wechat'],
-                    'function':each_contact['function'],
+                    }
+                    vals['child_ids'].append((1,contact_id,contact_vals))
+                else:
+                    # 新建联系人信息
+                    contact_vals = {
+                        'name':each_contact['name'],
+                        'mobile':each_contact['mobile'],
+                        'phone':each_contact['phone'],
+                        'qq':each_contact['qq'],
+                        'wechat':each_contact['wechat'],
+                        'function':each_contact['function'],
 
-                }
-                vals['child_ids'].append((0,0,contact_vals))
+                    }
+                    vals['child_ids'].append((0,0,contact_vals))
+
 
         #end
 
@@ -646,8 +651,11 @@ class born_manager_sale(http.Controller):
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
 
-        hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-        hr_id = hr_id_list[0] or ''
+        if int(post.get('hr_id_for_manager')) != 0:
+            hr_id = int(post.get('hr_id_for_manager'))
+        else:
+            hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+            hr_id = hr_id_list[0] or ''
         
         record_limit = 10
 
@@ -753,7 +761,7 @@ class born_manager_sale(http.Controller):
                 SELECT
                     tb1.id,
                     tb1.name,
-                    tb1.street
+                    tb1.street,
                     COUNT (tb2.id) AS cnt
                 FROM
                     res_partner tb1
@@ -841,8 +849,6 @@ class born_manager_sale(http.Controller):
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
 
-        hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-        hr_id = hr_id_list[0] or ''
 
         page_index = int(post.get('pageIndex',0))
         record_limit = 10
@@ -862,8 +868,6 @@ class born_manager_sale(http.Controller):
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
 
-        hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-        hr_id = hr_id_list[0] or ''
 
         mission_id = int(post.get('id'));
 

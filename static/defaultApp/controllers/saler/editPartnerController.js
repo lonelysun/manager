@@ -28,7 +28,6 @@
 
          //由url解析
         var partnerId = ($routeParams.partnerId) ? parseInt($routeParams.partnerId) : 0;
-        console.info(partnerId);
 
 
 
@@ -37,20 +36,13 @@
 
         //Get specific partner
         vm.getPartnerInfo = function(){
-            MyCache.put('notFirstGoToNewPartner','1');
+            //MyCache.put('notFirstGoToNewPartner','1');
             vm.partner = MyCache.get('partner');
-
-
-            //console.info(MyCache.get('partner'));
 
             var optionObj = MyCache.get('optionObj');
             var optionType = MyCache.get('optionType');
 
             environment = MyCache.get('environment');
-            console.info('in getPartnerInfo');
-            console.info(environment);
-
-
 
 
             switch (optionType){
@@ -69,8 +61,6 @@
                     break;
                 case 'sources3':
                     environment_name = MyCache.get('environment_name');
-                    console.info('in getPartnerInfo')
-                    console.info(environment_name)
                     vm.partner.source = '市场部'+' '+environment_name+' '+optionObj.name;
                     vm.partner.source1_id = 'mark';
                     vm.partner.source3_id = optionObj.id;
@@ -104,11 +94,8 @@
         };
 
         //修改通过导航调用---------刘浩
-        vm.born_save = function(){
+        vm.save = function(){
             vm.partner.contacts_json = angular.toJson(vm.partner.contacts);
-
-            console.info('------postPartnerInfo------');
-            console.info(vm.partner.contacts);
 
             dataService.postPartnerInfo(partnerId,vm.partner)
             .then(function (data) {
@@ -119,33 +106,43 @@
                         var locationId = partnerId
                     }
                     MyCache.remove('partner');//保存成功清楚缓存-------------刘浩
+                    //?这个cache好像在其它地方没用到
+                    //MyCache.remove('notFirstGoToNewPartner');
+                    MyCache.remove('createNewPartner')
                     $location.path('/saler/partner/'+locationId);
 
             }, function (error) {
                toaster.pop('warning', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
             });
 
-            //MyCache.remove('partner')
         };
 
-        //取消按钮-----------刘浩
-        vm.headerBack = function(){
-            MyCache.remove('partner');
+        vm.cancel = function(){
+
+
             if(MyCache.get('createNewPartner') == '1'){
+                $location.path('/saler/');
                 MyCache.remove('partner');
-                $location.path('/saler/partner/'+partnerId);
+                MyCache.remove('createNewPartner');
+
             }
             else{
+                $location.path('/saler/partner/'+partnerId);
                 MyCache.remove('partner');
-                $location.path('/menus');
+                MyCache.remove('createNewPartner');
             }
-        }
+
+            //?这个cache好像在其它地方没用到
+            //MyCache.remove('notFirstGoToNewPartner');
+
+
+        };
+
 
 
         vm.jump = function(option){
             MyCache.put('partner', vm.partner);
             MyCache.put('partnerId', partnerId);
-
 
             console.info(option);
             $location.path('/saler/options/'+option);
@@ -173,11 +170,6 @@
                 className: 'ngdialog',
                 scope:$scope
             }).then(function(data) {
-                //console.info('------now what is contactOptions-----');
-                //console.info(data);
-                //
-                //console.info($scope.contactOptions);
-
                 contactObj.name = $scope.contactOptions.name;
                 contactObj.mobile = $scope.contactOptions.mobile;
                 contactObj.phone = $scope.contactOptions.phone;
@@ -185,13 +177,6 @@
                 contactObj.wechat = $scope.contactOptions.wechat;
                 contactObj.function = $scope.contactOptions.function;
 
-                //console.info(contactObj);
-                //console.info(vm.partner.contacts);
-
-
-
-
-                //vm.partner.contact
             });
         };
 
@@ -212,10 +197,7 @@
                 className: 'ngdialog',
                 scope:$scope
             }).then(function(data)  {
-                //console.info('------now what is contactOptions-----');
-                //console.info(contactOptions);
-                //console.info(data);
-                var newVontact = {}
+                var newVontact = {};
                 newVontact.name = $scope.contactOptions.name;
                 newVontact.mobile = $scope.contactOptions.mobile;
                 newVontact.phone = $scope.contactOptions.phone;
@@ -276,47 +258,32 @@
 
         //初始化
         function init() {
-            //添加传递参数---------刘浩
             displayModel.displayModel='none';
-            displayModel.showHeader='1';
-            displayModel.displayBack='0';
-            displayModel.displaySave='1';
-            displayModel.displaySearch='0';
-            displayModel.displayCanel='1';
-            displayModel.displayCreate='0';
-            displayModel.displaySubmit='0';
-            displayModel.displayConfirm='0';
-            displayModel.headerBack = vm.headerBack;
-            displayModel.born_save = vm.born_save;
+            displayModel.displayConfirm = '0';
+            displayModel.displaySubmit = '0';
+            displayModel.displayCreate = '0';
+            displayModel.displayBack = '0';
+            displayModel.displaySearch = '0';
 
-//            displayModel.backpath = '/menu';
+            displayModel.showHeader='1';
+            displayModel.displaySave='1';
+            displayModel.displayCancel='1';
+            displayModel.headerBack = vm.cancel;
+            displayModel.born_save = vm.save;
+
 
             //改写新写法?当返回或者保存时清除partner缓存
             //只有当创建新商户时,没有从partner读取缓存
 
             if(MyCache.get('createNewPartner') == '1'){
-                MyCache.remove('partner');
                 vm.partner = {};
                 vm.partner['contacts'] = [];
-                MyCache.remove('createNewPartner');
-                displayModel.title = vm.partner.name;
+                displayModel.title = '新建商户';
             }
             else{
                 vm.getPartnerInfo();
-                displayModel.title = '新建商户';
-
+                displayModel.title = vm.partner.name;
             }
-
-
-
-            //vm.display = 'info';
-
-
-
-
-
-
-
 
         }
 

@@ -21,9 +21,12 @@
         vm.selectedTags = [];
         vm.results = []
 
+        vm.cancel = function(){
+            $location.path('/saler/finishMission/'+ missionId);
+        }
 
 
-        vm.postFinishedMission = function(){
+        vm.save = function(){
         	if(vm.selected.length==0){
             	toaster.pop('warning', "系统提示", "未选择结果");
                 return;
@@ -100,6 +103,16 @@
 
         function init() {
             displayModel.displayModel='none';
+
+
+
+            displayModel.showHeader='1';
+            displayModel.displaySave='1';
+            displayModel.displayCancel='1';
+            displayModel.headerBack = vm.cancel;
+            displayModel.born_save = vm.save;
+
+
 
 
         }

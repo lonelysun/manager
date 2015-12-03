@@ -29,6 +29,8 @@
 
 
 
+
+
         vm.clickMore = function(){
             vm.showFinishedmissions=true;
         };
@@ -84,34 +86,16 @@
                     if(data['missions_list'].length <5){
                         vm.showButton=true;
                     }
-
                     for (var i = 0; i < data['missions_list'].length; i++) {
-
-
                         vm.missionsUnfinished.push(data['missions_list'][i]);
-
-
-
                     }
-                    //console.info('in unfinished')
                 }else{
                     for (var i = 0; i < data['missions_list'].length; i++) {
-
-
                         vm.missionsFinished.push(data['missions_list'][i]);
-
                     }
-
-                    //console.info('in finished')
                 }
 
-                //console.info('getMissions');
-                //console.info(vm.missionsUnfinished);
-                //console.info(vm.missionsFinished);
-
-
                 vm.missions_unfinished_numbers = data['missions_unfinished_numbers']
-
 
                 vm.isLoad=true;
                 $timeout(function () {
@@ -124,9 +108,6 @@
 
 
         vm.changeMissionState = function(missionsUnfinished){
-            //var missionObj = missionsUnfinished;
-            console.info('------missionsUnfinished---------');
-            console.info(missionsUnfinished);
 
             var titleText,titleState,closeButtonText,
                 firstActionText,firstUrl,
@@ -168,7 +149,6 @@
                     break;
             }
 
-
             $scope.modalOptions = {
                 titleText:titleText,
                 titleState:titleState,
@@ -189,9 +169,6 @@
                 className: 'ngdialog',
                 scope:$scope
             }).then(function(data){
-                console.info('----data----');
-                console.info(data);
-                console.info(missionsUnfinished);
 
                 var mission_id = missionsUnfinished.mission_id;
                 var action = data;
@@ -200,47 +177,64 @@
 
                 missionsUnfinished.mission_state  = action;
 
-                if(action == 'finished'){
-                    //$location.path('/saler');
-                    $route.reload();
-                }
-
-                dataService.changeMissionState(changeData)
-                .then(function (data) {
-                        //toaster.pop('success', "", "修改成功!");
-                        //debugger;
-                        //$route.reload();
-                        //$location.path('/saler');
+               if(action == 'finished'){
+                    MyCache.put('finishMission_come_from','page_partner_mission');
+                    MyCache.put('finishMission_come_from_partnerId',partnerId);
 
 
-                }, function (error) {
-                    toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
-            });
-
-                //$location.path('/saler');
-
+                    $location.path('/saler/finishMission/'+mission_id)
+                } else {
+                    dataService.changeMissionState(changeData)
+                        .then(function (data) {
+                        }, function (error) {
+                            toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
+                    });
+               }
 
             });
 
         };
 
+        vm.back = function(){
+            MyCache.remove('partner');
+            MyCache.put('saler_display','partners');
+            $location.path('/saler')
+        };
+        vm.jumpWithCache = function(Id){
+            MyCache.put('finishedMission_come_from','page_partner_mission');
+            MyCache.put('finishedMission_come_from_partnerId',partnerId);
 
+            $location.path('/saler/finishedMission/'+Id)
+        };
 
 
 
         //初始化
         function init() {
             displayModel.displayModel='none';
-            vm.getPartnerInfo();
-            vm.display = 'info';
-            displayModel.showHeader = '1';
-            displayModel.displayModel='none';
-            displayModel.displayEdit = '0';
-            displayModel.displaySave = '0';
-            displayModel.displaySearch = '0';
+            displayModel.showHeader='1';
+            displayModel.displayConfirm = '0';
+            displayModel.displaySubmit = '0';
+            displayModel.displayCreate = '0';
             displayModel.displayBack = '1';
+            displayModel.displaySearch = '0';
+            displayModel.displaySave='0';
+            displayModel.displayCancel='0';
+            displayModel.headerBack = vm.back;
 
-            displayModel.backpath='/saler/partner';
+
+            vm.role = MyCache.get('role_option');
+
+
+
+            vm.getPartnerInfo();
+            if(MyCache.get('saler_partner_display')){
+                vm.display = MyCache.get('saler_partner_display');
+                MyCache.remove('saler_partner_display')
+
+            }else{
+                vm.display = 'info';
+            }
 
 
 

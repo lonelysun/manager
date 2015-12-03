@@ -232,12 +232,13 @@
         //Add by nisen, add new saler
 
         //销售首页公司
-        factory.getCompanys = function (pageIndex,keyword) {
+        factory.getCompanys = function (pageIndex,keyword,hr_id_for_manager) {
 
             return $http.get(serviceBase + 'saler/companys', {
      			params : {
                     index:pageIndex,
-                    keyword:keyword
+                    keyword:keyword,
+                    hr_id_for_manager:hr_id_for_manager
      			}
      			}).then(function(results) {
      				return results.data;
@@ -246,12 +247,13 @@
         };
 
         //销售首页商户
-        factory.getPartners = function (pageIndex,keyword) {
+        factory.getPartners = function (pageIndex,keyword,hr_id_for_manager) {
 
             return $http.get(serviceBase + 'saler/partners', {
      			params : {
                     index:pageIndex,
                     keyword:keyword,
+                    hr_id_for_manager:hr_id_for_manager
      			}
      			}).then(function(results) {
      				return results.data;
@@ -261,13 +263,14 @@
 
 
         //销售首页任务
-        factory.getMissions = function (pageIndex,keyword,mission_state) {
+        factory.getMissions = function (pageIndex,keyword,mission_state,hr_id_for_manager) {
 
             return $http.get(serviceBase + 'saler/missions', {
      			params : {
                     index:pageIndex,
                     keyword:keyword,
-                    mission_state:mission_state
+                    mission_state:mission_state,
+                    hr_id_for_manager:hr_id_for_manager
      			}
      			}).then(function(results) {
      				return results.data;
@@ -276,9 +279,13 @@
         };
 
         //销售首页初始化数据
-        factory.getInitData = function () {
+        factory.getInitData = function (hr_id_for_manager) {
 
-            return $http.get(serviceBase + 'saler/initdata').then(function(results) {
+            return $http.get(serviceBase + 'saler/initdata',{
+                params: {
+                    hr_id_for_manager:hr_id_for_manager
+                }
+            }).then(function(results) {
      				return results.data;
      			});
 
@@ -320,12 +327,13 @@
 
 
 
-        factory.getOptionsService = function (pageIndex,option, environment) {
+        factory.getOptionsService = function (pageIndex,option, environment,hr_id_for_manager) {
 
             return $http.get(serviceBase + 'saler/options/'+option, {
      			params : {
                     pageIndex:pageIndex,
-                    environment:environment
+                    environment:environment,
+                    hr_id_for_manager:hr_id_for_manager
      			}
      			}).then(function(results) {
      				return results.data;
@@ -337,7 +345,7 @@
         factory.getResultsService = function (pageIndex) {
             return $http.get(serviceBase + 'saler/missionresults/', {
      			params : {
-                    pageIndex:pageIndex,
+                    pageIndex:pageIndex
      			}
      			}).then(function(results) {
      				return results.data;

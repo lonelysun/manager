@@ -83,7 +83,7 @@
             displayModel.displayBack='0';
             displayModel.displaySave='0';
             displayModel.displaySearch='0';
-            displayModel.displayCanel='1';
+            displayModel.displayCancel='1';
             displayModel.displayCreate='1';
             displayModel.displaySubmit='0';
             displayModel.displayConfirm='0';
@@ -124,17 +124,23 @@
        //Add by nisen
        // 销售经理的选择商户
         vm.selectpartner = function(){
-            MyCache.put('track',vm.track);
-            MyCache.put('environment_selectPartner','1');
-            $location.path('/saler/options/states');
+            if(vm.option=='8'){
+                MyCache.put('track',vm.track);
+                MyCache.put('environment_selectPartner','1');
+                $location.path('/saler/options/states');
+            }else if(vm.option=='7'){
+                MyCache.put('track',vm.track);
+                MyCache.put('environment','fromSalerSelectParner');
+                $location.path('/saler/options/partners');
+            }
         };
 
         //销售人员的选择商户
-        vm.salerSelectParner = function(){
-            MyCache.put('track',vm.track);
-            MyCache.put('environment','fromSalerSelectParner');
-            $location.path('/saler/options/partners');
-        };
+//        vm.salerSelectParner = function(){
+//            MyCache.put('track',vm.track);
+//            MyCache.put('environment','fromSalerSelectParner');
+//            $location.path('/saler/options/partners');
+//        };
 
         vm.selectperson = function(){
             MyCache.put('track',vm.track);

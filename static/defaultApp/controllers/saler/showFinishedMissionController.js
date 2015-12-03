@@ -24,9 +24,6 @@
             dataService.getFinishedMission(missionId)
                 .then(function (data) {
                     vm.finishedMission = data;
-                    console.info('---vm.finishedMission---')
-                    console.info(vm.finishedMission)
-
 
                     vm.isLoad=true;
                     $timeout(function () {
@@ -38,6 +35,38 @@
 
         };
 
+        vm.back = function(){
+            if(MyCache.get('finishedMission_come_from')){
+                if(MyCache.get('finishedMission_come_from') == 'page_saler'){
+                    $location.path('/saler')
+                    MyCache.remove('finishedMission_come_from')
+                }else if(MyCache.get('finishedMission_come_from') == 'page_partner_mission'){
+
+                    var Id = MyCache.get('finishedMission_come_from_partnerId');
+
+                    MyCache.put('saler_partner_display','mission')
+                    $location.path('/saler/partner/'+Id);
+                    MyCache.remove('finishedMission_come_from')
+                    MyCache.remove('finishedMission_come_from_partnerId')
+                }else if (MyCache.get('finishedMission_come_from') == 'page_company_mission'){
+
+                    var Id = MyCache.get('finishedMission_come_from_companyId');
+                    MyCache.put('saler_partner_display','mission')
+                    $location.path('/saler/partner/'+Id);
+                    MyCache.remove('finishedMission_come_from')
+                    MyCache.remove('finishedMission_come_from_companyId')
+                }
+
+
+
+            }else {
+                $location.path('/saler')
+            }
+
+
+            $location.path('/saler');
+        }
+
 
 
 
@@ -45,21 +74,22 @@
         function init() {
 
 
-            vm.getFinishedMission()
-
+            vm.getFinishedMission();
 
             displayModel.displayModel='none';
+            displayModel.displayConfirm = '0';
+            displayModel.displaySubmit = '0';
+            displayModel.displayCreate = '0';
+            displayModel.displaySearch = '0';
+
+            displayModel.displaySave='1';
+            displayModel.displayCancel='1';
 
             //vm.display = 'info';
+
             displayModel.showHeader = '1';
-            displayModel.displayModel='none';
-            displayModel.displayEdit = '0';
-            displayModel.displaySave = '0';
-            displayModel.displaySearch = '0';
             displayModel.displayBack = '1';
-
-            displayModel.backpath='/saler/partner';
-
+            displayModel.headerBack = vm.back;
 
         }
 
@@ -70,7 +100,3 @@
     angular.module('managerApp').controller('ShowFinishedMissionController', showFinishedMissionController);
 
 }());
-
-function missionClick(){
-    return  $("#File").click();
-}

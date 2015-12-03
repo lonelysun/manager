@@ -20,7 +20,7 @@
             displayModel.displayBack='1';
             displayModel.displaySave='0';
             displayModel.displaySearch='0';
-            displayModel.displayCanel='0';
+            displayModel.displayCancel='0';
             displayModel.displayCreate='0';
             displayModel.displaySubmit='0';
             displayModel.displayConfirm='1';

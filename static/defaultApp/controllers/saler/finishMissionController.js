@@ -37,7 +37,30 @@
 
 
 
+        vm.cancel = function(){
+            if(MyCache.get('finishMission_come_from')){
+                if(MyCache.get('finishMission_come_from') == 'page_saler'){
+                    $location.path('/saler')
+                    MyCache.remove('finishMission_come_from')
+                }else if(MyCache.get('finishMission_come_from') == 'page_partner_mission'){
 
+                    var Id = MyCache.get('finishMission_come_from_partnerId');
+
+                    MyCache.put('saler_partner_display','mission')
+                    $location.path('/saler/partner/'+Id);
+                    MyCache.remove('finishMission_come_from')
+                    MyCache.remove('finishMission_come_from_partnerId')
+                }
+
+
+
+            }else {
+                $location.path('/saler')
+            }
+
+
+            $location.path('/saler');
+        }
 
 
         //点击提交
@@ -46,8 +69,6 @@
 
             vm.finishMission['id'] = missionId;
 
-            console.info('vm.finishMission');
-            console.info(vm.finishMission);
 
             dataService.postFinishMission(vm.finishMission)
             .then(function (data) {
@@ -92,10 +113,10 @@
 
 
                 //this value need to push to server
-                vm.finishMission.result_ids = selectResults
+                vm.finishMission.result_ids = selectResults;
 
                 //this value use to show on the page
-                vm.finishMission.results = []
+                vm.finishMission.results = [];
                 for (var i = 0;i< selectedTags.length;i++){
                     vm.finishMission.results.push({'name':selectedTags[i]})
                 }
@@ -103,17 +124,9 @@
 
 
 
-            displayModel.displayModel='none';
 
-            //vm.display = 'info';
-            displayModel.showHeader = '1';
-            displayModel.displayModel='none';
-            displayModel.displayEdit = '0';
-            displayModel.displaySave = '0';
-            displayModel.displaySearch = '0';
-            displayModel.displayBack = '1';
 
-            displayModel.backpath='/saler/partner';
+
 
 
         }

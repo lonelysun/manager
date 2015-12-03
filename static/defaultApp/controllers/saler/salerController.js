@@ -24,6 +24,16 @@
         vm.role = '';
         //add end
 
+
+
+        var hr_id_for_manager = ($routeParams.salerId) ? parseInt($routeParams.salerId) : 0;
+
+        MyCache.put('hr_id_for_manager',hr_id_for_manager);
+        //经理在点击点击销售人员后,之后返回时,要记得清除缓存
+
+
+
+
         vm.clickMore = function(){
             vm.showFinishedmissions=true;
         };
@@ -41,7 +51,7 @@
                 missionLengh = vm.missionsFinished.length;
             }
 
-            dataService.getMissions(missionLengh,vm.keyword,mission_state)
+            dataService.getMissions(missionLengh,vm.keyword,mission_state,hr_id_for_manager)
             .then(function (data) {
                 if(mission_state=='unfinished'){
 
@@ -93,7 +103,7 @@
             if(vm.busy)return;
             vm.busy=true;
 
-            dataService.getPartners(vm.partners.length,vm.keyword)
+            dataService.getPartners(vm.partners.length,vm.keyword,hr_id_for_manager)
             .then(function (data) {
                 for (var i = 0; i < data['partners_list'].length; i++) {
                     vm.partners.push(data['partners_list'][i]);
@@ -120,12 +130,23 @@
 
         };
 
+
+        vm.goBack = function(){
+            //清缓存
+            //MyCache.remove('')
+
+            $location.path('/menus');
+
+
+        };
+
+
         //Get companys
         vm.getCompanys = function(){
             if(vm.busy)return;
             vm.busy=true;
 
-            dataService.getCompanys(vm.companys.length,vm.keyword)
+            dataService.getCompanys(vm.companys.length,vm.keyword,hr_id_for_manager)
             .then(function (data) {
                 for (var i = 0; i < data['companys_list'].length; i++) {
                     vm.companys.push(data['companys_list'][i]);
@@ -144,7 +165,7 @@
 
         vm.getInitData = function(){
 
-            dataService.getInitData()
+            dataService.getInitData(hr_id_for_manager)
                 .then(function (data) {
                     vm.initData = data;
                     vm.isLoad=true;
@@ -184,9 +205,6 @@
 
 
         vm.changeMissionState = function(missionsUnfinished){
-            //var missionObj = missionsUnfinished;
-            //console.info('------missionsUnfinished---------');
-            //console.info(missionsUnfinished);
 
             var titleText,titleState,closeButtonText,
                 firstActionText,firstUrl,
@@ -250,9 +268,6 @@
                 className: 'ngdialog',
                 scope:$scope
             }).then(function(data){
-                //console.info('----data----');
-                //console.info(data);
-                //console.info(missionsUnfinished);
 
                 var mission_id = missionsUnfinished.mission_id;
                 var action = data;
@@ -261,27 +276,32 @@
 
                 missionsUnfinished.mission_state  = action;
 
-
-
-                dataService.changeMissionState(changeData)
-                .then(function (data) {
-                        //toaster.pop('success', "", "修改成功!");
-                        //debugger;
-                        //$route.reload();
-                        //$location.path('/saler');
-
-
-                }, function (error) {
-                    toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
-            });
-
                 if(action == 'finished'){
+
+                    MyCache.put('finishMission_come_from','page_saler');
                     $location.path('/saler/finishMission/'+mission_id)
+                }
+                else {
+
+                    dataService.changeMissionState(changeData)
+                        .then(function (data) {
+
+
+                        }, function (error) {
+                            toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
+                        });
                 }
 
 
+
+
             });
 
+        };
+
+        vm.jumpWithCache = function(Id){
+            MyCache.put('finishedMission_come_from','page_saler');
+            $location.path('/saler/finishedMission/'+Id)
         };
 
 
@@ -292,12 +312,21 @@
         function init() {
             displayModel.displayModel='none';
             vm.getInitData();
-            vm.display = 'missions';
-            vm.showHeader='0';
+            if(MyCache.get('saler_display')){
+                vm.display = MyCache.get('saler_display')
+            }
+            else{
+                vm.display = 'missions';
+            }
+            MyCache.remove('saler_display');
+
+            displayModel.showHeader='0';
 
             //add by liuhao
             vm.role = MyCache.get('role_option');
             //end
+
+
 
         }
 

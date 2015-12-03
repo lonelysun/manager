@@ -21,11 +21,35 @@
             displayModel.displayModel='block';
             displayModel.showHeader = '0';
             vm.role = MyCache.get('role_option');
+            if(vm.role=='9'||vm.role=='10'){
+                displayModel.displayBottom = '1';
+            }
             getSalepanel();
         }
 
         vm.setDisplay = function(display) {
             vm.display = display;
+        }
+
+        vm.searsh = function(){
+
+            $scope.modalOptions = {
+                keyword:''
+            }
+            ngDialog.openConfirm({
+                template:'/born_manager/static/defaultApp/partials/modalSearch.html',
+                className: 'ngdialog',
+                scope:$scope
+            }).then(function(data){
+                vm.keyword = $scope.modalOptions.keyword;
+                if(vm.display=='missions'){
+                    vm.getFinishTrack();
+                    vm.getDoneTrack();
+                }else{
+                    vm.getTeamList();
+                }
+                vm.keyword = '';
+            });
         }
 
         //获取未审批任务列表
@@ -109,10 +133,10 @@
             }else{
                 $scope.modalOptions = {
                     closeButtonText: '取消',
-                    firstActionText:'新任务',
-                    firstUrl:'#/createMission/10',
-                    secondActionText:'',
-                    secondUrl:'',
+                    firstActionText:'',
+                    firstUrl:'',
+                    secondActionText:'新任务',
+                    secondUrl:'#/createMission/10',
                 };
 
             }

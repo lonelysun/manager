@@ -186,6 +186,7 @@
             <div  id="infinite1" infinite-scroll='vm.getCompanyMission()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
 
             <div ng-repeat="mission in vm.companyMission" class="bm-main-three-line-wrapper">
+                <a ng-click="vm.jumpWithCache(missionsFinished.mission_id)">
                 <div class="bm-main-three-line">
                     <div class="bm-main-three-line-title">
                         <!--状态图标-->
@@ -206,9 +207,10 @@
                         </span>
                     </div>
                 </div>
+                </a>
             </div>
             </div>
         </div>
     </div>
 </div>
-<div style="height:60px; line-height: 60px;" ng-show="vm.busy" class="text-center" >正在加载...</div>
+<div ng-show="vm.busy" class="text-center bm-loading" >正在加载...</div>

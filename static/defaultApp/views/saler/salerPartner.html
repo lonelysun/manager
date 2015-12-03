@@ -100,7 +100,7 @@
                         <span ng-if="missionsUnfinished.mission_state=='notstart'" style="visibility:hidden" class="bm-main-three-line-title-tag-grey"><i class="fa fa-check"></i></span>
 
                         <span class="bm-main-three-line-title-font">{{missionsUnfinished.mission_name}}</span>
-                        <span class="pull-right"><img class=" bm-main-three-line-img" ng-click="vm.changeMissionState(missionsUnfinished)" src="/born_manager/static/src/img/three-points.png"></span>
+                        <span ng-if="vm.role == '7'" class="pull-right"><img class=" bm-main-three-line-img" ng-click="vm.changeMissionState(missionsUnfinished)" src="/born_manager/static/src/img/three-points.png"></span>
                     </div>
 
                     <div class="bm-main-three-line-detail">
@@ -126,7 +126,8 @@
             <div ng-if="vm.showFinishedmissions">
                 <div id="infinite4" infinite-scroll='vm.getPartnerMission("finished")' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
                     <div  ng-repeat="missionsFinished in vm.missionsFinished" class="bm-main-three-line-wrapper">
-                        <a ng-href="#/saler/finishedMission/{{missionsFinished.mission_id}}">
+                        <a ng-click="vm.jumpWithCache(missionsFinished.mission_id)">
+
                         <div class="bm-main-three-line">
                             <div class="bm-main-three-line-title">
                                 <!--状态图标-->
@@ -161,9 +162,11 @@
 
 
 </div>
-<div ng-if="vm.display=='info'" class="bm-edit">
-    <a href="#/saler/partner/edit/{{vm.partner.id}}">
-        <img class="bt-edit-img" src="/born_manager/static/src/img/saler/edit.png">
-    </a>
+<div ng-if="vm.role == '7'">
+    <div ng-if="vm.display=='info'" class="bm-edit">
+        <a href="#/saler/partner/edit/{{vm.partner.id}}">
+            <img class="bt-edit-img" src="/born_manager/static/src/img/saler/edit.png">
+        </a>
+    </div>
 </div>
-<div style="height:60px; line-height: 60px;" ng-show="vm.busy" class="text-center" >正在加载...</div>
+<div ng-show="vm.busy" class="text-center bm-loading" >正在加载...</div>

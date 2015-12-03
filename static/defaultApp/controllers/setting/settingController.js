@@ -15,7 +15,7 @@
         vm.backurl='';
 
         function init() {
-            displayModel.displayModel='none';
+            displayModel.displayBottom='0';
             displayModel.showHeader = '0';
             displayModel.backpath='/menu';
             displayModel.flag = '';

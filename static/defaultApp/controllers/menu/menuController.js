@@ -10,10 +10,7 @@
         vm.second = false;
         
         function init() {
-            displayModel.displayEdit = '0';
-            displayModel.displaySave = '0';
-            displayModel.displaySearch = '0';
-            displayModel.displayBack = '0';
+
             getPanel();
         }
 
@@ -28,8 +25,10 @@
                     $location.path('/salepanel');
                 }else if(data.option=='9'){//技术
                     $location.path('/?');
+                    displayModel.displayBottom = '1';
                 }else if(data.option=='10'){//技术经理
                     $location.path('/salepanel');
+                    displayModel.displayBottom = '1';
                 }
 
                 $timeout(function () {

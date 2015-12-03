@@ -1,64 +1,64 @@
 ﻿
-<div class="show-hide-animation"  style="margin-bottom: 0px;padding-bottom: 0px;">
-    <div class="panel no-border">
-        <div ng-if="vm.panel.option==1" class="hbox text-center b-b b-light text-sm">
-          <a href="#/licenses/0" class="col padder-v text-muted b-r b-light">
-              <img style="width: 33px;"  src="/born_manager/static/src/img/pos.png">
-            <div>设备管理</div>
-          </a>
-          <a href="#/companys"  class="col padder-v text-muted b-r b-light">
-              <img  style="width: 33px;"  src="/born_manager/static/src/img/member.png">
-         	<div>公司审核</div>
-          </a>
-          <a href="#/panel" class="col padder-v text-muted">
-              <img style="width: 33px;"   src="/born_manager/static/src/img/purchase.png">
-          	<div>看报表</div>
-          </a>
-        </div>
-        <div ng-if="vm.second"class="hbox text-center  b-light text-sm">
-          <a href="#/saler " ng-if="vm.panel.issaler" class="col padder-v text-muted b-r b-light">
-              <img  style="width: 33px;"  src="/born_manager/static/src/img/sale.png">
-          	<div>销售</div>
-          </a>
-          <a href="" ng-if="!vm.panel.issaler" class="col padder-v text-muted b-r b-light">
+<!--<div class="show-hide-animation"  style="margin-bottom: 0px;padding-bottom: 0px;">-->
+    <!--<div class="panel no-border">-->
+        <!--<div ng-if="vm.panel.option==1" class="hbox text-center b-b b-light text-sm">-->
+          <!--<a href="#/licenses/0" class="col padder-v text-muted b-r b-light">-->
+              <!--<img style="width: 33px;"  src="/born_manager/static/src/img/pos.png">-->
+            <!--<div>设备管理</div>-->
+          <!--</a>-->
+          <!--<a href="#/companys"  class="col padder-v text-muted b-r b-light">-->
+              <!--<img  style="width: 33px;"  src="/born_manager/static/src/img/member.png">-->
+         	<!--<div>公司审核</div>-->
+          <!--</a>-->
+          <!--<a href="#/panel" class="col padder-v text-muted">-->
+              <!--<img style="width: 33px;"   src="/born_manager/static/src/img/purchase.png">-->
+          	<!--<div>看报表</div>-->
+          <!--</a>-->
+        <!--</div>-->
+        <!--<div ng-if="vm.second"class="hbox text-center  b-light text-sm">-->
+          <!--<a href="#/saler " ng-if="vm.panel.issaler" class="col padder-v text-muted b-r b-light">-->
+              <!--<img  style="width: 33px;"  src="/born_manager/static/src/img/sale.png">-->
+          	<!--<div>销售</div>-->
+          <!--</a>-->
+          <!--<a href="" ng-if="!vm.panel.issaler" class="col padder-v text-muted b-r b-light">-->
 
-          </a>
-          <a href="#/salepanel" ng-if="vm.panel.ismanager" class="col padder-v text-muted b-r b-light">
-              <img style="width: 33px;"   src="/born_manager/static/src/img/stock.png">
-          	<div>销售管理</div>
-          </a>
-          <a href=""  ng-if="!vm.panel.ismanager" class="col padder-v text-muted b-r b-light">
+          <!--</a>-->
+          <!--<a href="#/salepanel" ng-if="vm.panel.ismanager" class="col padder-v text-muted b-r b-light">-->
+              <!--<img style="width: 33px;"   src="/born_manager/static/src/img/stock.png">-->
+          	<!--<div>销售管理</div>-->
+          <!--</a>-->
+          <!--<a href=""  ng-if="!vm.panel.ismanager" class="col padder-v text-muted b-r b-light">-->
 
-          </a>
-          <a href="" class="col padder-v text-muted">
+          <!--</a>-->
+          <!--<a href="" class="col padder-v text-muted">-->
 
-          </a>
-        </div>
-    </div>
-    <div class="panel no-border" style="">
-        <ul class="list-group">
-            <li data-ng-repeat="company in vm.panel.companys" class="list-group-item no-bg" style="background-color:white">
-                    <div class="text-black">
-	                	{{company.name}}
-                    </div>
-                    <div>
-                    	<small>注册日期： {{company.create_date}}</small>
-                    </div>
-                    <div>
-                    	<small>审核日期： {{company.approve_date}}</small>
-						<small class="pull-right">商户联系人： {{company.contact_name}}</small> 
-					</div> 
-					<div>             
-						<small>技术支持： {{company.employee}}</small>     
-						<small  class="pull-right" style="color:#10ABFA">销售负责人： {{company.saler}}</small>     
-					</div> 
-					<div>             
-						<i class="fa fa-map-marker" style="padding-right: 5px;"></i><small>{{company.address}}</small>
-					</div>                   
-            </li>
-        </ul>
-    </div>
-</div>
+          <!--</a>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="panel no-border" style="">-->
+        <!--<ul class="list-group">-->
+            <!--<li data-ng-repeat="company in vm.panel.companys" class="list-group-item no-bg" style="background-color:white">-->
+                    <!--<div class="text-black">-->
+	                	<!--{{company.name}}-->
+                    <!--</div>-->
+                    <!--<div>-->
+                    	<!--<small>注册日期： {{company.create_date}}</small>-->
+                    <!--</div>-->
+                    <!--<div>-->
+                    	<!--<small>审核日期： {{company.approve_date}}</small>-->
+						<!--<small class="pull-right">商户联系人： {{company.contact_name}}</small> -->
+					<!--</div> -->
+					<!--<div>             -->
+						<!--<small>技术支持： {{company.employee}}</small>     -->
+						<!--<small  class="pull-right" style="color:#10ABFA">销售负责人： {{company.saler}}</small>     -->
+					<!--</div> -->
+					<!--<div>             -->
+						<!--<i class="fa fa-map-marker" style="padding-right: 5px;"></i><small>{{company.address}}</small>-->
+					<!--</div>                   -->
+            <!--</li>-->
+        <!--</ul>-->
+    <!--</div>-->
+<!--</div>-->
 
 
 

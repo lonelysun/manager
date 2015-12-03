@@ -83,21 +83,47 @@
             });
         };
 
+        vm.jumpWithCache = function(Id){
+            MyCache.put('finishedMission_come_from','page_company_mission');
+            MyCache.put('finishedMission_come_from_companyId',companyId);
+
+            $location.path('/saler/finishedMission/'+Id)
+        };
+
+        vm.back = function(){
+            MyCache.put('saler_display','companys');
+            $location.path('/saler');
+        };
+
 
 
         //初始化
         function init() {
-            displayModel.displayModel='none';
-            vm.getCompanyDetail();
-            vm.display = 'info';
-            displayModel.showHeader = '1';
-            displayModel.displayModel='none';
-            displayModel.displayEdit = '0';
-            displayModel.displaySave = '0';
-            displayModel.displaySearch = '0';
-            displayModel.displayBack = '1';
 
-            displayModel.backpath='/saler/partner';
+            displayModel.displayModel='none';
+            displayModel.showHeader='1';
+            displayModel.displayConfirm = '0';
+            displayModel.displaySubmit = '0';
+            displayModel.displayCreate = '0';
+
+            displayModel.displayBack = '1';
+            displayModel.headerBack = vm.back;
+
+            displayModel.displaySearch = '0';
+            displayModel.displaySave='0';
+            displayModel.displayCancel='0';
+
+            vm.getCompanyDetail();
+            if(MyCache.get('saler_company_display')){
+                vm.display = MyCache.get('saler_company_display');
+                MyCache.remove('saler_company_display')
+
+
+            }else{
+                vm.display = 'info';
+            }
+
+
 
 
 

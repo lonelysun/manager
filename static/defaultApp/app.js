@@ -1,6 +1,6 @@
 ﻿(function () {
   
-    var app = angular.module('managerApp', ['ngRoute', 'ngSanitize','ngAnimate','ngTouch','ngDialog','wc.directives','datePicker', 'ui.bootstrap', 'infinite-scroll','breeze.angular','toaster'],
+    var app = angular.module('managerApp', ['ngRoute', 'ngSanitize','ngAnimate','ngTouch','ngDialog','wc.directives','datePicker', 'ui.bootstrap', 'infinite-scroll','breeze.angular','toaster','chart.js'],
 	function($httpProvider) {
 	  // Use x-www-form-urlencoded Content-Type
 	  $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -57,6 +57,18 @@
 			return $cacheFactory('myCache');
 		}
 	);
+
+//	app.config(['ChartJsProvider', function (ChartJsProvider) {
+//    // Configure all charts
+//    ChartJsProvider.setOptions({
+//      colours: ['#FF5252', '#FF8A80'],
+//      responsive: false
+//    });
+//    // Configure all line charts
+//    ChartJsProvider.setOptions('Line', {
+//      datasetFill: false
+//    });
+//  }])
 	
     app.config(['$routeProvider',  function ($routeProvider) {
         var viewBase = '/born_manager/static/defaultApp/views/';
@@ -148,6 +160,11 @@
 			.when('/saler/company/:companyId', {
 	            controller: 'SalerCompanyController',
 	            templateUrl: viewBase + 'saler/salerCompany.html',
+	            controllerAs: 'vm'
+	        })
+			.when('/saler/:salerId', {
+	            controller: 'SalerController',
+	            templateUrl: viewBase + 'saler/saler.html',
 	            controllerAs: 'vm'
 	        })
 
@@ -370,6 +387,11 @@
 			.when('/ranking', {
 	            controller: 'RankingController',
 	            templateUrl: viewBase + 'salermanager/ranking.html',
+	            controllerAs: 'vm'
+	        })
+			.when('/report', {
+	            controller: 'ReportController',
+	            templateUrl: viewBase + 'report/reporttest.html',
 	            controllerAs: 'vm'
 	        })
 			.otherwise({ redirectTo: '/menus' });
