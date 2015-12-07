@@ -14,6 +14,10 @@
             getRanking();
         }
 
+        vm.goBack = function(){
+            window.location.href = 'bornhr://back';
+        }
+
         //获取排行榜数据
         function getRanking() {
 

@@ -65,11 +65,13 @@
             if(vm.busy)return;
             vm.busy=true;
 
+
             dataService.getOptionsService(vm.options.length, option, environment,hr_id_for_manager)
                 .then(function (data) {
                     for(var i = 0;i<data.length;i++){
                         vm.options.push(data[i]);
                     }
+
                     vm.isLoad=true;
                     $timeout(function () {
                         vm.busy=false;
@@ -177,10 +179,12 @@
         };
 
         vm.back = function(){
+            var partnerId = MyCache.get('partnerId');
+            var id1;
 
             switch (option){
                 case 'states':
-                    if(Mycache.get('environment_selectPartner')== '1'){
+                    if(MyCache.get('environment_selectPartner')== '1'){
                         $location.path('/createMission/'+ vm.role_option)
                     }else{
                         $location.path('/saler/partner/edit/'+partnerId)
@@ -190,17 +194,17 @@
                     $location.path('/saler/options/states');
                     break;
                 case 'subdivides':
-                    var id1= MyCache.get('environment_stateId');
+                    id1= MyCache.get('environment_stateId');
                     MyCache.put('environment',id1);
                     $location.path('/saler/options/areas');
                     break;
                 case 'businesses':
-                    var id1 = MyCache.get('environment_areaId');
+                    id1 = MyCache.get('environment_areaId');
                     MyCache.put('environment',id1);
                     $location.path('/saler/options/subdivides');
                     break;
                 case 'partners':
-                    var id1 = MyCache.get('environment_businessId');
+                    id1 = MyCache.get('environment_subdivideId');
                     MyCache.put('environment',id1);
                     $location.path('/saler/options/businesses');
                     break;
@@ -239,7 +243,7 @@
         };
 
         vm.showImage = function(option){
-            console.info('---in showImage');
+            //console.info('---in showImage');
           var obj = angular.fromJson(vm.selectOption);
 
 
@@ -258,6 +262,17 @@
         //初始化
         function init() {
 
+            displayModel.showHeader='1';
+            displayModel.displayCancel='0';
+            displayModel.displayBack = '1';
+            displayModel.title = '选择';
+            displayModel.displaySubmit = '0';
+            displayModel.displayConfirm = '0';
+            displayModel.displayCreate = '0';
+            displayModel.displaySearch = '0';
+
+            displayModel.headerBack = vm.back;
+
             //vm.getOptions();
             vm.display = 'info';
             displayModel.showHeader = '1';
@@ -267,20 +282,10 @@
                 displayModel.displaySave = '0';
             }
             else{
-                displayModel.displayConfirm = '1';
-                displayModel.born_confirm = vm.save;
+                displayModel.displaySave = '1';
+                displayModel.born_save = vm.save;
 
             }
-
-            displayModel.displayBack = '1';
-            displayModel.headerBack = vm.back;
-
-            displayModel.displaySearch = '0';
-            displayModel.displayCancel='0';
-            displayModel.displaySubmit = '0';
-            displayModel.displaySave = '0';
-            displayModel.displayCreate = '0';
-
 
 
         }

@@ -6,7 +6,7 @@
                                            $timeout, ngDialog,config, dataService,toaster,displayModel,MyCache) {
         var vm = this;
         vm.panel = {};
-        vm.display = 'missions';
+        vm.display = 'managermissions';
         vm.busy=false;
         vm.isLoad=false;
         vm.tracklist = [];
@@ -39,16 +39,15 @@
             ngDialog.openConfirm({
                 template:'/born_manager/static/defaultApp/partials/modalSearch.html',
                 className: 'ngdialog',
-                scope:$scope
+                scope:$scope,
+                closeByDocument :true
             }).then(function(data){
-                vm.keyword = $scope.modalOptions.keyword;
-                if(vm.display=='missions'){
-                    vm.getFinishTrack();
-                    vm.getDoneTrack();
-                }else{
-                    vm.getTeamList();
-                }
-                vm.keyword = '';
+                MyCache.put('keyword', $scope.modalOptions.keyword);
+                console.info('keyworld');
+                console.info($scope.modalOptions);
+                console.info($scope.modalOptions.keyword);
+                MyCache.put('searchType',vm.display);
+                $location.path('/search');
             });
         }
 
@@ -121,7 +120,6 @@
 
         //创建新任务
         vm.createMission = function () {
-
             if(vm.role=='8'){
                 $scope.modalOptions = {
                     closeButtonText: '取消',

@@ -25,7 +25,7 @@
 
         vm.back = function(){
             displayModel.showHeader = '0';
-            $location.path('/menus');
+            window.location.href = 'bornhr://back';
         }
 
         vm.approval = function(){

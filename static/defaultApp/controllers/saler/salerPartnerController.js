@@ -73,7 +73,7 @@
             if(vm.busy)return;
             vm.busy=true;
 
-            if(mission_state=='unfinished')
+            if(mission_state=='notOk')
                 missionLengh = vm.missionsUnfinished.length;
             else{
                 missionLengh = vm.missionsFinished.length;
@@ -81,9 +81,9 @@
 
             dataService.getPartnerMission(missionLengh,vm.keyword,partnerId,mission_state)
             .then(function (data) {
-                if(mission_state=='unfinished'){
+                if(mission_state=='notOk'){
 
-                    if(data['missions_list'].length <5){
+                    if(data['missions_list'].length <10){
                         vm.showButton=true;
                     }
                     for (var i = 0; i < data['missions_list'].length; i++) {
@@ -180,7 +180,8 @@
                if(action == 'finished'){
                     MyCache.put('finishMission_come_from','page_partner_mission');
                     MyCache.put('finishMission_come_from_partnerId',partnerId);
-
+                    MyCache.put('firstComeIntoFinishMission','1');
+                    MyCache.put('passedMissionTitle',titleText);
 
                     $location.path('/saler/finishMission/'+mission_id)
                 } else {
@@ -234,6 +235,14 @@
 
             }else{
                 vm.display = 'info';
+            }
+
+            if (MyCache.get('showClickMore')=='1'){
+                vm.showFinishedmissions = true;
+                MyCache.remove('showClickMore')
+            }
+            else{
+                vm.showFinishedmissions = false;
             }
 
 

@@ -38,12 +38,13 @@
         vm.back = function(){
             if(MyCache.get('finishedMission_come_from')){
                 if(MyCache.get('finishedMission_come_from') == 'page_saler'){
-                    $location.path('/saler')
+                    MyCache.put('showClickMore','1');
+
+                    $location.path('/saler');
                     MyCache.remove('finishedMission_come_from')
                 }else if(MyCache.get('finishedMission_come_from') == 'page_partner_mission'){
-
                     var Id = MyCache.get('finishedMission_come_from_partnerId');
-
+                    MyCache.put('showClickMore','1');
                     MyCache.put('saler_partner_display','mission')
                     $location.path('/saler/partner/'+Id);
                     MyCache.remove('finishedMission_come_from')
@@ -63,9 +64,7 @@
                 $location.path('/saler')
             }
 
-
-            $location.path('/saler');
-        }
+        };
 
 
 
@@ -73,23 +72,19 @@
         //初始化
         function init() {
 
-
-            vm.getFinishedMission();
-
-            displayModel.displayModel='none';
-            displayModel.displayConfirm = '0';
+            displayModel.showHeader='1';
+            displayModel.displayCancel='0';
+            displayModel.displayBack = '1';
+            displayModel.title = '任务详情';
             displayModel.displaySubmit = '0';
+            displayModel.displayConfirm = '0';
+            displayModel.displaySave='0';
             displayModel.displayCreate = '0';
             displayModel.displaySearch = '0';
 
-            displayModel.displaySave='1';
-            displayModel.displayCancel='1';
-
-            //vm.display = 'info';
-
-            displayModel.showHeader = '1';
-            displayModel.displayBack = '1';
             displayModel.headerBack = vm.back;
+
+            vm.getFinishedMission();
 
         }
 

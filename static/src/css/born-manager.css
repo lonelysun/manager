@@ -1,8 +1,10 @@
 .bm-item{
     background-color:white;
     border-bottom: solid 1px #f6f6f5;
-    padding-left: 35px;
-    padding-right: 35px;
+    /*padding-left: 35px;*/
+    /*padding-right: 35px;*/
+    margin-left:35px;
+    margin-right:35px;
     padding-bottom:12px;
     padding-top:20px;
 }
@@ -332,6 +334,17 @@
     line-height: 60px;
     background-color: white;
 }
+.bm-textarea-wrapper{
+    padding-left:35px;
+    padding-right:35px;
+    padding-top:20px;
+    padding-bottom:20px;
+    background-color: white;
+}
+.bm-textarea {
+    border:0;
+    width:100%
+}
 
 /*end nisen*/
 
@@ -455,5 +468,8 @@
     color: #ff4848;
     padding-top: 5px;
     padding-right: 10px;
+}
+.opacity{
+    -webkit-filter:opacity(.2);
 }
 /*liuhao end*/

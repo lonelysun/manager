@@ -40,8 +40,11 @@
         vm.cancel = function(){
             if(MyCache.get('finishMission_come_from')){
                 if(MyCache.get('finishMission_come_from') == 'page_saler'){
-                    $location.path('/saler')
-                    MyCache.remove('finishMission_come_from')
+                    $location.path('/saler');
+                    MyCache.remove('finishMission_come_from');
+                    MyCache.remove('finishMission');
+                    MyCache.remove('selectResults');
+                    MyCache.remove('selectedTags');
                 }else if(MyCache.get('finishMission_come_from') == 'page_partner_mission'){
 
                     var Id = MyCache.get('finishMission_come_from_partnerId');
@@ -50,17 +53,15 @@
                     $location.path('/saler/partner/'+Id);
                     MyCache.remove('finishMission_come_from')
                     MyCache.remove('finishMission_come_from_partnerId')
+                    MyCache.remove('finishMission')
+                    MyCache.remove('selectResults');
+                    MyCache.remove('selectedTags');
                 }
-
-
 
             }else {
                 $location.path('/saler')
             }
-
-
-            $location.path('/saler');
-        }
+        };
 
 
         //点击提交
@@ -74,7 +75,11 @@
             .then(function (data) {
 
 
-                    $location.path('/saler/postSuccess');
+                $location.path('/saler/postSuccess');
+                MyCache.remove('finishMission');
+                MyCache.remove('selectResults');
+                MyCache.remove('selectedTags');
+
 
             }, function (error) {
                toaster.pop('warning', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
@@ -102,6 +107,30 @@
 
         //初始化
         function init() {
+
+            displayModel.showHeader='1';
+            displayModel.displayCancel='1';
+            displayModel.displayBack = '0';
+            displayModel.title = '任务汇报';
+            displayModel.displaySubmit = '1';
+            displayModel.displayConfirm = '0';
+            displayModel.displaySave='0';
+            displayModel.displayCreate = '0';
+            displayModel.displaySearch = '0';
+
+            displayModel.headerBack = vm.cancel;
+            displayModel.born_submit = vm.save;
+
+
+
+            if(MyCache.get('firstComeIntoFinishMission')=='1'){
+
+                vm.finishMission.result_title = MyCache.get('passedMissionTitle');
+
+                MyCache.remove('firstComeIntoFinishMission');
+                MyCache.remove('passedMissionTitle');
+            }
+
 
             if(MyCache.get('finishMission')){
                 vm.finishMission = MyCache.get('finishMission');

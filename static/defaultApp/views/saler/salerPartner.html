@@ -88,7 +88,7 @@
     <div ng-if="vm.display=='mission'">
 
         <div>
-            <div  id="infinite3" infinite-scroll='vm.getPartnerMission("unfinished")' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+            <div  id="infinite3" infinite-scroll='vm.getPartnerMission("notOk")' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
 
             <div ng-repeat="missionsUnfinished in vm.missionsUnfinished" class="bm-main-three-line-wrapper">
                 <div class="bm-main-three-line">
@@ -124,7 +124,7 @@
             </div>
 
             <div ng-if="vm.showFinishedmissions">
-                <div id="infinite4" infinite-scroll='vm.getPartnerMission("finished")' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+                <div id="infinite4" infinite-scroll='vm.getPartnerMission("ok")' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
                     <div  ng-repeat="missionsFinished in vm.missionsFinished" class="bm-main-three-line-wrapper">
                         <a ng-click="vm.jumpWithCache(missionsFinished.mission_id)">
 

@@ -10,8 +10,8 @@
                                     {{re}}
                                 </div>
                             </span>
-                            <img ng-if="vm.track.saler_img==''" class="pull-left bm-img-s-l" src="/born_manager/static/src/img/defaultlogo.png">
-                            <img ng-if="vm.track.saler_img!=''" class="pull-left bm-img-s-l" ng-src="data:image/png;base64,{{vm.track.saler_img}}">
+                            <img ng-if="vm.track.saler_img==null" class="pull-left bm-img-s-l" src="/born_manager/static/src/img/defaultlogo.png">
+                            <img ng-if="vm.track.saler_img!=null" class="pull-left bm-img-s-l" ng-src="data:image/png;base64,{{vm.track.saler_img}}">
                             <div class="h5" style="width: 100%;color: black;padding-left: 10px;margin-top:8px">
                                 {{vm.track.saler}}
                             </div>

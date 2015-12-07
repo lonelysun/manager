@@ -750,6 +750,7 @@ class born_salermanager(http.Controller):
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
         indexPage = post.get('index',0)
         state = post.get('state')
+        keyword = post.get('keyword','')
         # hr_obj = request.registry.get('hr.employee')
         # hr_id= hr_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
         # saleteam_obj = request.registry.get('commission.team')
@@ -761,7 +762,11 @@ class born_salermanager(http.Controller):
         #     employee_ids.append(employee.id)
         employee_ids = request.session.employee_ids
         track_obj = request.registry.get('born.partner.track')
-        domain = [('state','=',state),('employee_id','in',employee_ids)]
+        if keyword=='':
+            domain = [('state','=',state),('employee_id','in',employee_ids)]
+        else:
+            domain = [('state','=',state),('employee_id','in',employee_ids),('name','like',keyword)]
+
         track_ids = track_obj.search(request.cr, SUPERUSER_ID,domain,int(indexPage),10,order="create_date asc",context=request.context)
         tracks = track_obj.browse(request.cr, SUPERUSER_ID,track_ids,context=request.context)
         data = []

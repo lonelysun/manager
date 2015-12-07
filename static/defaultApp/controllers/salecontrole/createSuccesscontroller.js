@@ -26,7 +26,27 @@
 
         vm.next = function(){
             $location.path(vm.url);
-        }
+        };
+
+        //Add by Nisen
+        vm.jump = function(){
+            if(MyCache.get('finishMission_come_from')){
+                if(MyCache.get('finishMission_come_from') == 'page_saler'){
+
+                    $location.path('/saler');
+                    MyCache.remove('finishMission_come_from')
+                }else if (MyCache.get('finishMission_come_from') == 'page_partner_mission'){
+                    MyCache.put('saler_partner_display','mission')
+                    var Id = MyCache.get('finishMission_come_from_partnerId');
+                    $location.path('/saler/partner/'+Id);
+                    MyCache.remove('finishMission_come_from');
+                    MyCache.remove('finishMission_come_from_partnerId');
+                }
+            }else{
+                $location.path('/menu')
+            }
+        };
+        //End
 
 
         init();

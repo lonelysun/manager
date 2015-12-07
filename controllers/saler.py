@@ -189,10 +189,10 @@ class born_manager_sale(http.Controller):
         mission_obj = request.registry['born.partner.track']
 
         # 根据前台传来的参数判断获取已完成的任务还是未完成的任务
-        if require_mission_state == 'finished':
-            ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','=','finished')],int(page_index),3, context=request.context)
-        elif require_mission_state == 'unfinished':
-            ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','!=','finished')],int(page_index),3, context=request.context)
+        if require_mission_state == 'ok':
+            ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','in',('finished','done'))],int(page_index),5, context=request.context)
+        elif require_mission_state == 'notOk':
+            ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','not in',('finished','done'))],int(page_index),5, context=request.context)
 
 
         objs = mission_obj.browse(request.cr, SUPERUSER_ID,ids, context=request.context)
@@ -236,7 +236,7 @@ class born_manager_sale(http.Controller):
             missions_list.append(vals)
 
 
-        ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','=','finished')],context=request.context)
+        ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','in',('finished','done'))],context=request.context)
         missions_unfinished_numbers = len(ids)
 
 
@@ -368,7 +368,7 @@ class born_manager_sale(http.Controller):
 
 
         mission_obj = request.registry['born.partner.track']
-        ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','!=','finished')],context=request.context)
+        ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','not in',('finished','done'))],context=request.context)
         mission_number = len(ids)
 
 
@@ -489,10 +489,10 @@ class born_manager_sale(http.Controller):
         page_index=post.get('index',0)
         require_mission_state = post.get('mission_state')
 
-        if require_mission_state == 'finished':
-            ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',int(partner_id)),('state','=','finished')],int(page_index),5, context=request.context)
-        elif require_mission_state == 'unfinished':
-            ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',int(partner_id)),('state','!=','finished')],int(page_index),5, context=request.context)
+        if require_mission_state == 'ok':
+            ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',int(partner_id)),('state','in',('finished','done'))],int(page_index),10, context=request.context)
+        elif require_mission_state == 'notOk':
+            ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',int(partner_id)),('state','not in',('finished','done'))],int(page_index),10, context=request.context)
 
 
 
@@ -534,7 +534,7 @@ class born_manager_sale(http.Controller):
 
 
 
-        ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',partner_id),('state','=','finished')],context=request.context)
+        ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',partner_id),('state','in',('finished','done'))],context=request.context)
         missions_unfinished_numbers = len(ids)
 
 
@@ -553,14 +553,6 @@ class born_manager_sale(http.Controller):
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
-
-        if int(post.get('hr_id_for_manager')) != 0:
-            hr_id = int(post.get('hr_id_for_manager'))
-        else:
-            hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-            hr_id = hr_id_list[0] or ''
-
-
         # 考虑取消接受参数partner_id,因为在  post.get('id',0)里 有
 
 
@@ -568,6 +560,7 @@ class born_manager_sale(http.Controller):
         vals['name'] = post.get('name','')
         vals['categorys_id'] = post.get('category_id','')
         vals['business_id'] = post.get('bussiness_id','')
+        vals['comment'] =post.get('comment','')
 
         #根据business_id得到上层数据
         if vals['business_id']:
@@ -642,8 +635,6 @@ class born_manager_sale(http.Controller):
             return json.dumps({'id':id},sort_keys=True)
 
 
-
-
     @http.route('/manager/saler/options/<option>', type='http', auth="none",)
     def saler_options(self, option, **post):
         uid=request.session.uid
@@ -692,6 +683,7 @@ class born_manager_sale(http.Controller):
 
         elif option == 'businesses':
             subdivide_id = int(environment)
+
 
             # 这边有字段取名字上留下的坑，要小心
             obj = request.registry.get('born.business')
@@ -818,6 +810,7 @@ class born_manager_sale(http.Controller):
                         'street':each_partner.street or ''
                     }
                     data.append(vals)
+
         return json.dumps(data,sort_keys=True)
 
 

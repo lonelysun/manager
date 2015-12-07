@@ -28,9 +28,27 @@
 
         var hr_id_for_manager = ($routeParams.salerId) ? parseInt($routeParams.salerId) : 0;
 
-        MyCache.put('hr_id_for_manager',hr_id_for_manager);
+        //MyCache.put('hr_id_for_manager',hr_id_for_manager);
         //经理在点击点击销售人员后,之后返回时,要记得清除缓存
 
+
+        //搜索功能
+        vm.searsh = function(){
+
+            $scope.modalOptions = {
+                keyword:''
+            }
+            ngDialog.openConfirm({
+                template:'/born_manager/static/defaultApp/partials/modalSearch.html',
+                className: 'ngdialog',
+                scope:$scope,
+                closeByDocument :true
+            }).then(function(data){
+                MyCache.put('keyword', $scope.modalOptions.keyword);
+                MyCache.put('searchType',vm.display);
+                $location.path('/search');
+            });
+        }
 
 
 
@@ -45,7 +63,7 @@
             if(vm.busy)return;
             vm.busy=true;
 
-            if(mission_state=='unfinished')
+            if(mission_state=='notOk')
                 missionLengh = vm.missionsUnfinished.length;
             else{
                 missionLengh = vm.missionsFinished.length;
@@ -53,9 +71,9 @@
 
             dataService.getMissions(missionLengh,vm.keyword,mission_state,hr_id_for_manager)
             .then(function (data) {
-                if(mission_state=='unfinished'){
+                if(mission_state=='notOk'){
 
-                    if(data['missions_list'].length <3){
+                    if(data['missions_list'].length <5){
                         vm.showButton=true;
                     }
 
@@ -133,7 +151,7 @@
 
         vm.goBack = function(){
             //清缓存
-            //MyCache.remove('')
+            MyCache.remove('hr_id_for_manager');
 
             $location.path('/menus');
 
@@ -185,7 +203,8 @@
         //新建
         vm.createMissionOrPatner = function () {
 
-            MyCache.put('createNewPartner','1');
+            //MyCache.put('createNewPartner','1');
+            //MyCache.put('createNewPartner_firstLoad','1');
 
 
         	$scope.modalOptions = {
@@ -223,12 +242,16 @@
             secondActionText = '暂停';
             thirdActionText = '完成' ;
 
+            //console.info('----missionsUnfinished------')
+            //console.info(missionsUnfinished)
+
             switch (missionState)
             {
                 case 'notstart':
                     showFirstText = true;
                     showSecondText = false;
                     showThirdText = false;
+                    console.info('in notstart')
                     break;
                 case 'pause':
                     showFirstText = true;
@@ -279,6 +302,10 @@
                 if(action == 'finished'){
 
                     MyCache.put('finishMission_come_from','page_saler');
+                    MyCache.put('firstComeIntoFinishMission','1');
+                    MyCache.put('passedMissionTitle',titleText);
+
+
                     $location.path('/saler/finishMission/'+mission_id)
                 }
                 else {
@@ -310,6 +337,23 @@
 
         //初始化
         function init() {
+
+
+            //if(MyCache.get('hr_id_for_manager') != 0 ){
+            //    var
+            //    $location.path('')
+            //}
+
+            if(MyCache.get('hr_id_for_manager')){
+                hr_id_for_manager = MyCache.get('hr_id_for_manager')
+
+            }else{
+                MyCache.put('hr_id_for_manager',hr_id_for_manager)
+            }
+
+
+
+
             displayModel.displayModel='none';
             vm.getInitData();
             if(MyCache.get('saler_display')){
@@ -318,6 +362,15 @@
             else{
                 vm.display = 'missions';
             }
+
+            if (MyCache.get('showClickMore')=='1'){
+                vm.showFinishedmissions = true;
+                MyCache.remove('showClickMore')
+            }
+            else{
+                vm.showFinishedmissions = false;
+            }
+
             MyCache.remove('saler_display');
 
             displayModel.showHeader='0';

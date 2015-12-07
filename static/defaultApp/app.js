@@ -394,6 +394,11 @@
 	            templateUrl: viewBase + 'report/reporttest.html',
 	            controllerAs: 'vm'
 	        })
+			.when('/search', {
+	            controller: 'SearchResultController',
+	            templateUrl: viewBase + 'searchresult/searchresult.html',
+	            controllerAs: 'vm'
+	        })
 			.otherwise({ redirectTo: '/menus' });
     }]);
     

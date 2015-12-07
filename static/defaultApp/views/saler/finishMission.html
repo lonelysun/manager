@@ -16,18 +16,15 @@
     </div>
 </a>
 <!--任务说明-->
-<div class="">
-    <textarea class="form-control" style="border: 0;" ng-model="vm.finishMission.notes" rows="6" placeholder="请输入拜访记录.."></textarea>
+<div class="bm-textarea-wrapper">
+    <textarea class="bm-textarea" ng-model="vm.finishMission.notes" rows="6" placeholder="请输入拜访记录.."></textarea>
 </div>
 <!--任务照片-->
-<div>
-    上传任务照片
+<div class="bm-textarea-wrapper">
     <div>
-        <input ng-show="false" id="File" type="file" file-model="myFile" style="" />
+        <input ng-show="false" id="File" type="file" file-model="myFile" />
 
-        <img  ng-if="vm.finishMission.mission_img" ng-src="{{vm.finishMission.mission_img}}" onclick="missionClick()"  style="max-width:150px;max-height:150px;margin:0 auto;padding-left:15px;padding-bottom:15px;padding-top:10px" />
-        <img ng-hide="vm.finishMission.mission_img"  src="/born_manager/static/src/img/upload.png" name="upload" onclick="missionClick()" style="padding-left:15px;padding-top:10px;padding-bottom:10px;width:108px;height:108px">
+        <img  ng-if="vm.finishMission.mission_img" ng-src="{{vm.finishMission.mission_img}}" onclick="missionClick()"  style="max-width:150px;max-height:150px;margin:0 auto;padding-bottom:15px;padding-top:10px" />
+        <img ng-hide="vm.finishMission.mission_img"  src="/born_manager/static/src/img/upload.png" name="upload" onclick="missionClick()" style="padding-top:10px;padding-bottom:10px;width:108px;height:108px">
     </div>
 </div>
-
-    <button ng-click="vm.save()">Submit</button>

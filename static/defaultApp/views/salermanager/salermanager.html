@@ -35,14 +35,14 @@
     <!--Navbar-->
     <div class="panel no-border text-center bm-mid-nav">
     	<div>
-        	<button ng-class="{missions: 'bm-active'}[vm.display]" ng-click="vm.setDisplay('missions')" class="bg-white  no-border bm-top-btn-two">任务</button>
+        	<button ng-class="{managermissions: 'bm-active'}[vm.display]" ng-click="vm.setDisplay('managermissions')" class="bg-white  no-border bm-top-btn-two">任务</button>
         	<button ng-class="{team: 'bm-active'}[vm.display]" ng-click="vm.setDisplay('team')" class="bg-white no-border bm-top-btn-two">团队</button>
     	</div>
 	</div>
 
 
     <!--任务-->
-    <div ng-if="vm.display=='missions'">
+    <div ng-if="vm.display=='managermissions'">
 
         <div>
             <div  id="infinite1" infinite-scroll='vm.getFinishTrack()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
@@ -73,15 +73,15 @@
             <div  ng-if="vm.DoneTrack" id="infinite1" infinite-scroll='vm.getDoneTrack()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
                 <div class="bm-main-three-line-wrapper" style="padding-left: 25px;" data-ng-repeat="donetrack in vm.donetracklist">
                     <div class="bm-main-three-line">
-                            <img ng-if="donetrack.user_img==''" class="pull-right" style="width:30px;padding-top: 10px;" src="/born_manager/static/src/img/defaultlogo.png">
-                            <img ng-if="donetrack.user_img!=''" class="pull-right" style="width:30px;margin-top: 10px;border-radius: 500px;;" ng-src="data:image/png;base64,{{donetrack.user_img}}">
-                        <div style="width:90%;color:black">
-                            <img style="width:14px;height:12px" class="bm-main-three-line-title-font-grey" src="/born_manager/static/src/img/saler/done.png">
+                            <img ng-if="donetrack.user_img==''" class="pull-right opacity" style="width:30px;padding-top: 10px;" src="/born_manager/static/src/img/defaultlogo.png">
+                            <img ng-if="donetrack.user_img!=''" class="pull-right opacity" style="width:30px;margin-top: 10px;border-radius: 500px;;" ng-src="data:image/png;base64,{{donetrack.user_img}}">
+                        <div class="opacity" style="width:90%;color:black">
+                            <img style="width:14px;height:12px" class="bm-main-three-line-title-tag opacity" src="/born_manager/static/src/img/saler/done.png">
                             {{donetrack.employee}}完成任务：{{donetrack.name}}
                         </div>
                         <div class="bm-main-three-line-detail"  style="width:90%;font-size:10px">
-                            <span class="bm-main-three-line-span-grey"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/salermanager/company.png">{{donetrack.company_name}}</span>
-                            <span class="bm-main-three-line-span-grey"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/time.png">{{donetrack.time|limitTo:16}}</span>
+                            <span class="bm-main-three-line-span opacity"><img class="bm-main-three-line-img opacity" src="/born_manager/static/src/img/salermanager/company.png">{{donetrack.company_name}}</span>
+                            <span class="bm-main-three-line-span opacity"><img class="bm-main-three-line-img opacity" src="/born_manager/static/src/img/saler/time.png">{{donetrack.time|limitTo:16}}</span>
                         </div>
                     </div>
                 </div>

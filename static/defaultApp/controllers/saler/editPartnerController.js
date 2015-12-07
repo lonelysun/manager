@@ -108,7 +108,7 @@
                     MyCache.remove('partner');//保存成功清楚缓存-------------刘浩
                     //?这个cache好像在其它地方没用到
                     //MyCache.remove('notFirstGoToNewPartner');
-                    MyCache.remove('createNewPartner')
+                    //MyCache.remove('createNewPartner')
                     $location.path('/saler/partner/'+locationId);
 
             }, function (error) {
@@ -120,20 +120,26 @@
         vm.cancel = function(){
 
 
-            if(MyCache.get('createNewPartner') == '1'){
-                $location.path('/saler/');
-                MyCache.remove('partner');
-                MyCache.remove('createNewPartner');
+            //if(MyCache.get('createNewPartner') == '1'){
+            //    $location.path('/saler/');
+            //    MyCache.remove('partner');
+            //    MyCache.remove('createNewPartner');
+            //
+            //}
+            //else{
+            //    $location.path('/saler/partner/'+partnerId);
+            //    MyCache.remove('partner');
+            //    MyCache.remove('createNewPartner');
+            //}
 
-            }
-            else{
+            if (partnerId == 0){
+                $location.path('/menu/');
+                MyCache.remove('partner');
+            }else{
                 $location.path('/saler/partner/'+partnerId);
                 MyCache.remove('partner');
-                MyCache.remove('createNewPartner');
             }
 
-            //?这个cache好像在其它地方没用到
-            //MyCache.remove('notFirstGoToNewPartner');
 
 
         };
@@ -144,7 +150,7 @@
             MyCache.put('partner', vm.partner);
             MyCache.put('partnerId', partnerId);
 
-            console.info(option);
+
             $location.path('/saler/options/'+option);
         };
 
@@ -275,15 +281,45 @@
             //改写新写法?当返回或者保存时清除partner缓存
             //只有当创建新商户时,没有从partner读取缓存
 
-            if(MyCache.get('createNewPartner') == '1'){
-                vm.partner = {};
-                vm.partner['contacts'] = [];
-                displayModel.title = '新建商户';
-            }
-            else{
+            //if(MyCache.get('createNewPartner') == '1'){
+            //
+            //    if(MyCache.get('createNewPartner_firstLoad')=='1'){
+            //        vm.partner = {};
+            //        vm.partner['contacts'] = [];
+            //        displayModel.title = '新建商户';
+            //        MyCache.remove( 'createNewPartner_firstLoad');
+            //    }else{
+            //        vm.getPartnerInfo();
+            //        displayModel.title = vm.partner.name;
+            //    }
+            //
+            //
+            //}
+            //else{
+            //    vm.getPartnerInfo();
+            //    displayModel.title = vm.partner.name;
+            //}
+
+
+            //新的判断新建页面和修改页面的方法
+            if(partnerId == 0){
+
+                if(MyCache.get('partner')){
+                    vm.getPartnerInfo();
+                    displayModel.title = '新建商户';
+
+                }else{
+                    vm.partner = {};
+                    vm.partner['contacts'] = [];
+                    displayModel.title = '新建商户';
+                }
+
+            }else{
                 vm.getPartnerInfo();
                 displayModel.title = vm.partner.name;
             }
+
+
 
         }
 

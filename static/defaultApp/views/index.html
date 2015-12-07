@@ -25,7 +25,7 @@
 <body ng-cloak style="background-color:white">
     <div ng-controller="NavbarController as vm"  class="h4 app-header navbar" style="min-height: 0px;">
             <!-- navbar header -->
-            <div class="navbar-header bm-navbar-header text-center" ng-if="vm.showHeader()=='1'" style="    line-height: 30px;margin-top: 15px;">
+            <div class="navbar-header bm-navbar-header text-center" ng-if="vm.showHeader()=='1'" style="line-height: 30px; margin-top: 20px;padding-bottom: 5px;">
 
                 <button ng-if="vm.getSaveModel()=='1'" data-ng-click="vm.save()" class="pull-right visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
                   保存
@@ -42,7 +42,7 @@
                 <button ng-if="vm.getPlaceholder()=='1'" class="pull-right visible-xs dk" style="adding-bottom: 0px;padding-left: 32px;padding-right: 32px;">
                 </button>
                 <img ng-if="vm.getSearchModel()=='1'"  data-ng-click="vm.headerSearch()" class="pull-right bm-img-back"  src="/born_manager/static/src/img/search.png">
-                      {{vm.title | limitTo:6}}{{vm.title.length > 6 ? '...' : ''}}
+                      <span>{{vm.title | limitTo:8}}{{vm.title.length > 8 ? '...' : ''}}</span>
                 <img ng-if="vm.getBackModel()=='1'" style="padding-top: 3px;padding-bottom: 3px;height: 29px;" data-ng-click="vm.headerBack()" class=" pull-left no-border bm-img-back"  src="/born_manager/static/src/img/back.png">
                 <button ng-if="vm.getCancelModel()=='1'" data-ng-click="vm.headerBack()" class="pull-left visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
                   取消
@@ -55,7 +55,7 @@
 
     <!-- content -->
     <div class="app-content ng-scope m-n" style="background-color:white">
-        <div class="app-content-body fade-in-up ng-scope"  style="padding-bottom: 0px;" >
+        <div class="app-content-body fade-in-up ng-scope"  style="padding-bottom: 0px;background-color:white">
             <div ng-view style="position:relative;" id="ng-view" ></div>
             <toaster-container toaster-options="{'position-class': 'toast-top-center', 'close-button':false}"></toaster-container>
         </div>
@@ -202,6 +202,8 @@
     <script src="/born_manager/static/defaultApp/controllers/saler/finishMissionController.js"></script>
     <script src="/born_manager/static/defaultApp/controllers/saler/resultsOptionController.js"></script>
     <script src="/born_manager/static/defaultApp/controllers/saler/showFinishedMissionController.js"></script>
+
+    <script src="/born_manager/static/defaultApp/controllers/searchresult/searchresultController.js"></script>
 
 
 
