@@ -797,13 +797,17 @@ class born_salermanager(http.Controller):
         data = []
         employee_ids = request.session.employee_ids
         indexPage = post.get('index')
-        if indexPage == str(len(employee_ids)):
-            return json.dumps(data,sort_keys=True)
+        keyword = post.get('keyword','');
         hr_obj = request.registry.get('hr.employee')
-        hr_ids= hr_obj.browse(request.cr, SUPERUSER_ID,employee_ids)
+        if keyword=='':
+            domain = [('id','in',employee_ids)]
+        else:
+            domain = [('id','in',employee_ids),('name','like',keyword)]
+        hr_ids= hr_obj.search(request.cr, SUPERUSER_ID,domain, int(indexPage),10,context=request.context)
+        hrs= hr_obj.browse(request.cr, SUPERUSER_ID,hr_ids)
         user_obj = request.registry.get('res.users')
         track_obj = request.registry.get('born.partner.track')
-        for hr_id in hr_ids:
+        for hr_id in hrs:
             user = user_obj.browse(request.cr, SUPERUSER_ID,hr_id.user_id.id)
             track_id = track_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id.id),('state','in',('finished','done'))],0,1,order="create_date desc",context=request.context)
             track = track_obj.browse(request.cr, SUPERUSER_ID,track_id,context=request.context)

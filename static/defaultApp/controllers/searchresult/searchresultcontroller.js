@@ -13,6 +13,7 @@
         vm.showDone = false;
         vm.donetracklist = [];
         vm.tracklist=[];
+        vm.salers = [];
         vm.companys = [];
         vm.missionsUnfinished = [];
         vm.missionsFinished = [];
@@ -37,25 +38,11 @@
             displayModel.displayConfirm='0';
             displayModel.headerBack=vm.back;
             displayModel.title = '搜索结果';
-//            switch(vm.type){
-//                case 'managermissions':
-//                    console.info('manager');
-//                    vm.getlist = vm.getManagerTrack;
-//                    break;
-//                case 'team':
-//                    vm.getlist = vm.getTeamList;
-//                    break;
-//                case 'missions':
-//
-//                    break;
-//                case 'companys':
-//
-//                    break;
-//                case 'partners':
-//
-//                    break;
-//
-//            }
+            if(MyCache.get('hr_id_for_manager')){
+                hr_id_for_manager = MyCache.get('hr_id_for_manager')
+            }else{
+                hr_id_for_manager = 0;
+            }
         }
 
 
@@ -109,6 +96,27 @@
         }
 
 
+        //团队列表
+        vm.getTeamList = function(){
+            if(vm.busy)return;
+            vm.busy=true;
+            dataService.getTeamList(vm.salers.length,vm.keyword)
+            .then(function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    vm.salers.push(data[i]);
+                }
+                vm.isLoad=true;
+                vm.isLoad=true;
+                $timeout(function () {
+                    vm.busy=false;
+                }, 1000);
+            }, function (error) {
+            	toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
+            });
+        }
+
+
+
         //Get mission
         vm.getMissions = function(mission_state){
 
@@ -126,7 +134,7 @@
                 if(mission_state=='notOk'){
 
                     if(data['missions_list'].length <5){
-                        vm.showButton=true;
+                        vm.showFinishedmissions=true;
                     }
 
                     for (var i = 0; i < data['missions_list'].length; i++) {
@@ -137,7 +145,6 @@
 
 
                     }
-                    //console.info('in unfinished')
                 }else{
                     for (var i = 0; i < data['missions_list'].length; i++) {
 
@@ -146,13 +153,7 @@
 
                     }
 
-                    //console.info('in finished')
                 }
-
-                //console.info('getMissions');
-                //console.info(vm.missionsUnfinished);
-                //console.info(vm.missionsFinished);
-
 
                 vm.missions_unfinished_numbers = data['missions_unfinished_numbers']
 
@@ -165,14 +166,6 @@
             	toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
             });
         };
-
-
-
-
-        vm.clickMore = function(){
-            vm.showFinishedmissions=true;
-        };
-
 
         //Get mission
         vm.getMissions = function(mission_state){

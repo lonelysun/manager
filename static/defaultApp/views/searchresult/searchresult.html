@@ -23,6 +23,8 @@
         </div>
 
 
+
+
         <div>
             <div  ng-if="vm.DoneTrack" id="infinite1" infinite-scroll='vm.getDoneTrack()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
                 <div class="bm-main-three-line-wrapper" style="padding-left: 25px;" data-ng-repeat="donetrack in vm.donetracklist">
@@ -43,7 +45,28 @@
         </div>
     </div>
 
-
+    <!--成员-->
+    <div ng-if="vm.type=='team'">
+        <div>
+            <div id="infinite1" infinite-scroll='vm.getTeamList()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+                <div class="bm-main-three-line-wrapper" style="padding-left: 25px;" data-ng-repeat="saler in vm.salers">
+                    <a href="#/saler/{{saler.id}}">
+                        <div class="bm-main-three-line" style="padding-left: 30px;padding-bottom: 10px;">
+                            <img ng-if="saler.saler_img==''" class="pull-left" style="width: 30px;padding-top: 5px;margin-left: -30px;" src="/born_manager/static/src/img/defaultlogo.png">
+                            <img ng-if="saler.saler_img!=''" class="pull-left" style="width: 30px;margin-top: 5px;margin-left: -30px;border-radius: 500px;;" ng-src="data:image/png;base64,{{saler.saler_img}}">
+                            <i class="pull-right fa fa-angle-right" style="padding-top: 20px;"></i>
+                            <div style="width: 100%;color: black;padding-left: 10px;">
+                                {{saler.saler_name}}
+                            </div>
+                            <div class="bm-main-three-line-detail"  style="width:100%;font-size:10px;padding-left: 10px;margin-top: 0px;">
+                                完成任务：{{saler.track_name}}
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!--任务-->
     <div ng-if="vm.type=='missions'">
@@ -75,11 +98,6 @@
                 </div>
             </div>
         </div>
-        </div>
-
-        <div ng-show="vm.showButton" class="bm-btn-add-more-wrapper">
-            <!--<button class="">10个已完成任务</button>-->
-            <button class="btn m-b-xs bm-btn-add-more" ng-click="vm.clickMore()">{{vm.missions_unfinished_numbers}}个已完成任务</button>
         </div>
 
         <div ng-if="vm.showFinishedmissions">

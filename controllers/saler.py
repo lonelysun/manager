@@ -104,6 +104,11 @@ class born_manager_sale(http.Controller):
         page_index=post.get('index',0)
 
         keyword=post.get('keyword','')
+        if keyword == '':
+            where = " and true"
+        else:
+            where = " and (tb1.name like '%%%s%%') " %(keyword)
+
 
         if int(post.get('hr_id_for_manager')) != 0:
             hr_id = int(post.get('hr_id_for_manager'))
@@ -124,12 +129,13 @@ class born_manager_sale(http.Controller):
                  on a.company_id=c.id left join tmp_b b
                   on a.company_id=b.company_id
 			    where c.sale_employee_id = %s
+			    %s
 			    group by 1
 
 		        order by days asc
 		        limit 10 offset %s
                 ;
-        """%(hr_id,page_index)
+        """%(hr_id,where,page_index)
 
         request.cr.execute(sql)
         companys = request.cr.dictfetchall()
@@ -175,6 +181,7 @@ class born_manager_sale(http.Controller):
 
         keyword=post.get('keyword','')
 
+
         require_mission_state = post.get('mission_state')
 
 
@@ -190,10 +197,16 @@ class born_manager_sale(http.Controller):
 
         # 根据前台传来的参数判断获取已完成的任务还是未完成的任务
         if require_mission_state == 'ok':
-            ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','in',('finished','done'))],int(page_index),5, context=request.context)
-        elif require_mission_state == 'notOk':
-            ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','not in',('finished','done'))],int(page_index),5, context=request.context)
+            if keyword == '':
+                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','in',('finished','done'))],int(page_index),5, context=request.context)
+            else:
+                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','in',('finished','done')),('name','like',keyword)],int(page_index),5, context=request.context)
 
+        elif require_mission_state == 'notOk':
+            if keyword == '':
+                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','not in',('finished','done'))],int(page_index),5, context=request.context)
+            else:
+                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','not in',('finished','done')),('name','like',keyword)],int(page_index),5, context=request.context)
 
         objs = mission_obj.browse(request.cr, SUPERUSER_ID,ids, context=request.context)
         missions_list = []
@@ -257,6 +270,10 @@ class born_manager_sale(http.Controller):
         page_index=post.get('index',0)
 
         keyword=post.get('keyword','')
+        if keyword == '':
+            where = " and true"
+        else:
+            where = " and (tb1.name like '%%%s%%') " %(keyword)
 
         if int(post.get('hr_id_for_manager')) != 0:
             hr_id = int(post.get('hr_id_for_manager'))
@@ -286,9 +303,8 @@ class born_manager_sale(http.Controller):
                 ON
                     tb1.id = tb2.track_id
                 WHERE
-                    true
-                AND
                     tb2.employee_id = %s
+                %s
                 GROUP BY
                     tb1.id,tb1.name
                 ORDER By
@@ -298,7 +314,7 @@ class born_manager_sale(http.Controller):
                 OFFSET
                     %s
 
-        """% (hr_id, page_index)
+        """% (hr_id,where,page_index)
 
 
         # this is real!!!

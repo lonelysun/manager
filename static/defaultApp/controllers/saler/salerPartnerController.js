@@ -196,11 +196,22 @@
 
         };
 
+        //vm.back = function(){
+        //    MyCache.remove('partner');
+        //    MyCache.put('saler_display','partners');
+        //    $location.path('/saler')
+        //};
+
+        //Test for new Back
         vm.back = function(){
+
             MyCache.remove('partner');
             MyCache.put('saler_display','partners');
-            $location.path('/saler')
+            window.location.href = 'bornhr://back';
         };
+
+
+
         vm.jumpWithCache = function(Id){
             MyCache.put('finishedMission_come_from','page_partner_mission');
             MyCache.put('finishedMission_come_from_partnerId',partnerId);
@@ -229,9 +240,9 @@
 
 
             vm.getPartnerInfo();
-            if(MyCache.get('saler_partner_display')){
-                vm.display = MyCache.get('saler_partner_display');
-                MyCache.remove('saler_partner_display')
+            if(MyCache.get('saler_partnerOrCompany_display')){
+                vm.display = MyCache.get('saler_partnerOrCompany_display');
+                MyCache.remove('saler_partnerOrCompany_display')
 
             }else{
                 vm.display = 'info';

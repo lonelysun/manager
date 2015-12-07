@@ -204,9 +204,15 @@
                     $location.path('/saler/options/subdivides');
                     break;
                 case 'partners':
-                    id1 = MyCache.get('environment_subdivideId');
-                    MyCache.put('environment',id1);
-                    $location.path('/saler/options/businesses');
+                    if(MyCache.get('environment') == 'fromSalerSelectParner'){
+                        $location.path('/createMission/7');
+
+                    }else{
+                        id1 = MyCache.get('environment_subdivideId');
+                        MyCache.put('environment',id1);
+                        $location.path('/saler/options/businesses');
+                    }
+
                     break;
                 case 'sources1':
                     $location.path('/saler/partner/edit/'+partnerId);

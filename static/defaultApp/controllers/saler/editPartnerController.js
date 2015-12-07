@@ -1,9 +1,9 @@
 (function () {
 
-    var injectParams = ['$scope', '$location', '$routeParams',
+    var injectParams = ['$scope', '$location', '$routeParams','$rootScope',
                         '$timeout', 'ngDialog','config','modalService', 'dataService','toaster','displayModel','MyCache'];
 
-    var editPartnerController = function ($scope, $location, $routeParams,
+    var editPartnerController = function ($scope, $location, $routeParams,$rootScope,
                                            $timeout, ngDialog,config,modalService, dataService,toaster,displayModel,MyCache) {
         var vm = this;
         vm.companys = [];
@@ -117,31 +117,37 @@
 
         };
 
+        //vm.cancel = function(){
+        //
+        //
+        //    //if(MyCache.get('createNewPartner') == '1'){
+        //    //    $location.path('/saler/');
+        //    //    MyCache.remove('partner');
+        //    //    MyCache.remove('createNewPartner');
+        //    //
+        //    //}
+        //    //else{
+        //    //    $location.path('/saler/partner/'+partnerId);
+        //    //    MyCache.remove('partner');
+        //    //    MyCache.remove('createNewPartner');
+        //    //}
+        //
+        //    if (partnerId == 0){
+        //        $location.path('/menu/');
+        //        MyCache.remove('partner');
+        //    }else{
+        //        $location.path('/saler/partner/'+partnerId);
+        //        MyCache.remove('partner');
+        //    }
+        //
+        //
+        //
+        //};
+
+        //Test for new Back
         vm.cancel = function(){
-
-
-            //if(MyCache.get('createNewPartner') == '1'){
-            //    $location.path('/saler/');
-            //    MyCache.remove('partner');
-            //    MyCache.remove('createNewPartner');
-            //
-            //}
-            //else{
-            //    $location.path('/saler/partner/'+partnerId);
-            //    MyCache.remove('partner');
-            //    MyCache.remove('createNewPartner');
-            //}
-
-            if (partnerId == 0){
-                $location.path('/menu/');
-                MyCache.remove('partner');
-            }else{
-                $location.path('/saler/partner/'+partnerId);
-                MyCache.remove('partner');
-            }
-
-
-
+            MyCache.remove('partner');
+            window.location.href = 'bornhr://back';
         };
 
 
@@ -257,6 +263,7 @@
             }
 
         };
+
 
 
 

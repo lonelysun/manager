@@ -1,9 +1,9 @@
 (function () {
 
-    var injectParams = ['$scope', '$location', '$routeParams','$route',
+    var injectParams = ['$scope', '$location', '$routeParams','$route','$rootScope',
                         '$timeout', 'ngDialog','config','modalService', 'dataService','toaster','displayModel','MyCache'];
 
-    var salerController = function ($scope, $location, $routeParams,$route,
+    var salerController = function ($scope, $location, $routeParams,$route,$rootScope,
                                            $timeout, ngDialog,config,modalService, dataService,toaster,displayModel,MyCache) {
         var vm = this;
         vm.companys = [];
@@ -330,6 +330,7 @@
             MyCache.put('finishedMission_come_from','page_saler');
             $location.path('/saler/finishedMission/'+Id)
         };
+
 
 
 

@@ -52,7 +52,7 @@
                 }else if (MyCache.get('finishedMission_come_from') == 'page_company_mission'){
 
                     var Id = MyCache.get('finishedMission_come_from_companyId');
-                    MyCache.put('saler_partner_display','mission')
+                    MyCache.put('saler_company_display','mission')
                     $location.path('/saler/partner/'+Id);
                     MyCache.remove('finishedMission_come_from')
                     MyCache.remove('finishedMission_come_from_companyId')
@@ -64,6 +64,14 @@
                 $location.path('/saler')
             }
 
+        };
+
+        //Test for new Back
+        vm.back = function(){
+            MyCache.put('showClickMore','1');
+            MyCache.put('saler_partnerOrCompany_display','mission');
+
+            window.location.href = 'bornhr://back';
         };
 
 

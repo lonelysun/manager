@@ -90,9 +90,15 @@
             $location.path('/saler/finishedMission/'+Id)
         };
 
+        //vm.back = function(){
+        //    MyCache.put('saler_display','companys');
+        //    $location.path('/saler');
+        //};
+
+        //Test for new Back
         vm.back = function(){
             MyCache.put('saler_display','companys');
-            $location.path('/saler');
+            window.location.href = 'bornhr://back';
         };
 
 
@@ -114,9 +120,9 @@
             displayModel.displayCancel='0';
 
             vm.getCompanyDetail();
-            if(MyCache.get('saler_company_display')){
-                vm.display = MyCache.get('saler_company_display');
-                MyCache.remove('saler_company_display')
+            if(MyCache.get('saler_partnerOrCompany_display')){
+                vm.display = MyCache.get('saler_partnerOrCompany_display');
+                MyCache.remove('saler_partnerOrCompany_display')
 
 
             }else{
