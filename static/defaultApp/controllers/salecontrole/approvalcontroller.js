@@ -20,6 +20,7 @@
             displayModel.displayConfirm='0';
             displayModel.headerBack = vm.back;
             displayModel.title = '任务汇报';
+            javascript:scroll(0,0);
             gettrack();
         }
 

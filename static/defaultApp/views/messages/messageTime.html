@@ -1,0 +1,18 @@
+<div class="wrapper bm-move">
+    <ul class="timeline"  id="infinite1" infinite-scroll='vm.getServices()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy'>
+        <li class="tl-item" data-ng-repeat="message in vm.messages" >
+            <div class="tl-wrap" style="border-color: #ff4848;">
+                <span class="tl-date"><i class="bm-top icon-clock" style="padding-right:5px"></i>{{message.create_date}}</span>
+                <div class="tl-content">
+                    <div>
+                        {{message.title}}
+                    </div>
+                    <div class="bm-top">
+                        {{message.content}}
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<div style="height:60px; line-height: 60px;background-color:white" ng-show="vm.busy" class="text-center" >正在加载...</div>

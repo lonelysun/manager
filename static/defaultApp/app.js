@@ -78,6 +78,11 @@
 	            templateUrl: viewBase + 'messages/messages.html',
 	            controllerAs: 'vm'
 	        })
+	        .when('/messagesTime', {
+	            controller: 'MessageTimeController',
+	            templateUrl: viewBase + 'messages/messageTime.html',
+	            controllerAs: 'vm'
+	        })
             //.when('/panel', {
 	        //    controller: 'PanelController',
 	        //    templateUrl: viewBase + 'panel/panel.html',

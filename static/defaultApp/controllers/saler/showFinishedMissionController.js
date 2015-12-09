@@ -94,6 +94,8 @@
 
             vm.getFinishedMission();
 
+            javascript: scroll(0,0);
+
         }
 
         init();

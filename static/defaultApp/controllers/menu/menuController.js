@@ -10,7 +10,7 @@
         vm.second = false;
         
         function init() {
-
+            displayModel.showHeader = '0';
             getPanel();
         }
 

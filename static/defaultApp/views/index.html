@@ -25,7 +25,7 @@
 <body ng-cloak style="background-color:white">
     <div ng-controller="NavbarController as vm"  class="h4 app-header navbar navbar-fixed-top" style="min-height: 0px;">
             <!-- navbar header -->
-            <div class="navbar-header bm-navbar-header text-center" ng-if="vm.showHeader()=='1'" style="line-height: 30px; margin-top: 20px;padding-bottom: 5px;">
+            <div class="navbar-header bm-navbar-header text-center" ng-if="vm.showHeader()=='1'" style="line-height: 30px; padding-top: 20px;padding-bottom: 5px;">
 
                 <button ng-if="vm.getSaveModel()=='1'" data-ng-click="vm.save()" class="pull-right visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
                   保存
@@ -56,7 +56,7 @@
     <!-- content -->
     <div class="app-content ng-scope m-n" style="background-color:white">
         <div class="app-content-body fade-in-up ng-scope"  style="padding-bottom: 0px;background-color:white;height:100%">
-            <div ng-view style="height:100%" class="page-about" id="ng-view" ></div>
+            <div ng-view style="height:100%;background-color:white" class="page-about" id="ng-view" ></div>
             <toaster-container toaster-options="{'position-class': 'toast-top-center', 'close-button':false}"></toaster-container>
         </div>
     </div>
@@ -155,6 +155,7 @@
     <script src="/born_manager/static/defaultApp/services/shopService.js"></script>
 
     <script src="/born_manager/static/defaultApp/controllers/messages/messageController.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/messages/messageTimeController.js"></script>
     <script src="/born_manager/static/defaultApp/controllers/setting/settingController.js"></script>
     <script src="/born_manager/static/defaultApp/controllers/panel/panelController.js"></script>
     <script src="/born_manager/static/defaultApp/controllers/companys/companysController.js"></script>

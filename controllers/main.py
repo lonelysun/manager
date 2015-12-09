@@ -139,13 +139,13 @@ class born_manager(http.Controller):
         data = []
 
         push_obj = request.registry.get('born.push')
-        domain=[('type','=','boss'),('user_id','=',int(uid))]
-        service_ids = push_obj.search(request.cr, SUPERUSER_ID, domain,int(page_index),10,order="id desc", context=request.context)
+        domain=[('type','=','internal'),('user_id','=',int(uid))]
+        service_ids = push_obj.search(request.cr, SUPERUSER_ID, domain,int(page_index),10,order="create_date desc", context=request.context)
         for push in push_obj.browse(request.cr, SUPERUSER_ID,service_ids, context=request.context):
             val_message={
                  'title': push.title or '',
                  'content' : push.content or '',
-                 'create_date' : push.create_date,
+                 'create_date' : push.create_date[11:16],
             }
             data.append(val_message)
         return json.dumps(data,sort_keys=True)

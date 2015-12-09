@@ -293,6 +293,11 @@
 
             }
 
+            javascript: scroll(0,0);
+
+            //$location.hash('atTop');
+            //$anchorScroll();
+
 
         }
 

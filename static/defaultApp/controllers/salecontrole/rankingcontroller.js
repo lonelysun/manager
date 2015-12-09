@@ -11,6 +11,7 @@
         vm.max = '';
 
         function init() {
+            javascript:scroll(0,0);
             getRanking();
         }
 
