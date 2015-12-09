@@ -31,7 +31,7 @@
         var hr_id_for_manager;
 
         if(MyCache.get('hr_id_for_manager')){
-            hr_id_for_manager = int(MyCache.get('hr_id_for_manager'));
+            hr_id_for_manager = parseInt(MyCache.get('hr_id_for_manager'));
         }
         else{
             hr_id_for_manager = 0;

@@ -43,9 +43,6 @@
                 closeByDocument :true
             }).then(function(data){
                 MyCache.put('keyword', $scope.modalOptions.keyword);
-                console.info('keyworld');
-                console.info($scope.modalOptions);
-                console.info($scope.modalOptions.keyword);
                 MyCache.put('searchType',vm.display);
                 $location.path('/search');
             });
@@ -76,7 +73,7 @@
 
         vm.showDoneTrack = function(){
             vm.getDoneTrack();
-            vm.DoneTrack = true;
+            vm.DoneTrack = !(vm.DoneTrack);
         }
 
         //获取已审批任务列表

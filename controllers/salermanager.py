@@ -852,6 +852,28 @@ class born_salermanager(http.Controller):
 
         track_obj.create(request.cr, SUPERUSER_ID,vals,context=request.context)
 
+        #推送
+        hr_obj=request.registry.get('hr.employee')
+        hr=hr_obj.browse(request.cr,SUPERUSER_ID,int(vals.get('employee_id')),request.context)
+
+        if hr.user_id:
+                title=u'您有一个新的任务'
+                message=u"您有一笔新的任务，截止最晚完成时间%s。" % (vals.get('mission_date'))
+                push_obj = request.registry.get('born.push')
+                vm = {
+                    'title':title,
+                    'phone':hr.mobile_phone,
+                    'content':message,
+                    'type':'internal',
+                    'state':'draft',
+                    'user_id':hr.user_id.id,
+                    'message_type':'4',
+                }
+                push_id = push_obj.create(request.cr,SUPERUSER_ID,vm,context=request.context)
+                push_obj.send_message(request.cr,SUPERUSER_ID,push_id,context=request.context)
+
+
+
         return json.dumps(True,sort_keys=True)
 
 
@@ -885,6 +907,7 @@ class born_salermanager(http.Controller):
                         'remark' : track.remark or '',
                         'ids_list' : track_ids,
                         'mission_date' : track.mission_date or '',
+                        'employee_id': track.employee_id.id
             }
 
         return json.dumps(track_val,sort_keys=True)
@@ -901,6 +924,27 @@ class born_salermanager(http.Controller):
         vals['remark'] = post.get('remark')
         vals['state'] = 'done'
         track_obj.write(request.cr,SUPERUSER_ID,id,vals)
+
+        #推送
+        hr_obj=request.registry.get('hr.employee')
+        hr=hr_obj.browse(request.cr,SUPERUSER_ID,int(post.get('employee_id')),request.context)
+
+        if hr.user_id:
+                title=u'任务已批注'
+                message=u"任务：%s，经理已批注。" % (post.get('name'))
+                push_obj = request.registry.get('born.push')
+                vm = {
+                    'title':title,
+                    'phone':hr.mobile_phone,
+                    'content':message,
+                    'type':'internal',
+                    'state':'draft',
+                    'user_id':hr.user_id.id,
+                    'message_type':'6',
+                }
+                push_id = push_obj.create(request.cr,SUPERUSER_ID,vm,context=request.context)
+                push_obj.send_message(request.cr,SUPERUSER_ID,push_id,context=request.context)
+
         return json.dumps(True,sort_keys=True)
 
 

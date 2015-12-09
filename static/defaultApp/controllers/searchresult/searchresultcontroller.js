@@ -122,56 +122,6 @@
 
             if(vm.busy)return;
             vm.busy=true;
-
-            if(mission_state=='notOk')
-                missionLengh = vm.missionsUnfinished.length;
-            else{
-                missionLengh = vm.missionsFinished.length;
-            }
-
-            dataService.getMissions(missionLengh,vm.keyword,mission_state,hr_id_for_manager)
-            .then(function (data) {
-                if(mission_state=='notOk'){
-
-                    if(data['missions_list'].length <5){
-                        vm.showFinishedmissions=true;
-                    }
-
-                    for (var i = 0; i < data['missions_list'].length; i++) {
-
-
-                        vm.missionsUnfinished.push(data['missions_list'][i]);
-
-
-
-                    }
-                }else{
-                    for (var i = 0; i < data['missions_list'].length; i++) {
-
-
-                        vm.missionsFinished.push(data['missions_list'][i]);
-
-                    }
-
-                }
-
-                vm.missions_unfinished_numbers = data['missions_unfinished_numbers']
-
-
-                vm.isLoad=true;
-                $timeout(function () {
-                    vm.busy=false;
-                }, 1000);
-            }, function (error) {
-            	toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
-            });
-        };
-
-        //Get mission
-        vm.getMissions = function(mission_state){
-
-            if(vm.busy)return;
-            vm.busy=true;
             if(mission_state=='notOk')
                 missionLengh = vm.missionsUnfinished.length;
             else{
@@ -223,14 +173,38 @@
             }, function (error) {
             	toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
             });
+        };
 
 
+        //Get companys
+        vm.getCompanys = function(){
+            if(vm.busy)return;
+            vm.busy=true;
+
+            dataService.getCompanys(vm.companys.length,vm.keyword,hr_id_for_manager)
+            .then(function (data) {
+                for (var i = 0; i < data['companys_list'].length; i++) {
+                    vm.companys.push(data['companys_list'][i]);
+                }
+
+
+                    vm.isLoad=true;
+                $timeout(function () {
+                    vm.busy=false;
+                }, 1000);
+            }, function (error) {
+            	toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
+            });
 
         };
 
         vm.back = function(){
             displayModel.showHeader = '0';
-            window.location.href = 'bornhr://back';
+            if(MyCache.get('goToSearch')=='1'){
+                $location.path('/saler');
+            }else{
+                window.location.href = 'bornhr://back';
+            }
         }
 
         init();

@@ -47,10 +47,7 @@
                 toaster.pop('warning', "", "未选择商户！");
                 return true;
         	}
-        	if(vm.track.personid==''){
-                toaster.pop('warning', "", "未选择联系人！");
-                return true;
-        	}
+
 
            var yyyy = vm.track.time.getFullYear().toString();
            var mm = (vm.track.time.getMonth()+1).toString(); // getMonth() is zero-based
@@ -75,7 +72,9 @@
                 MyCache.remove('optionObj');
                 MyCache.remove('optionType');
                 displayModel.showHeader = '0';
+//                window.location.href = 'bornhr://back';
                 $location.path('/menus');
+
         }
 
         function init() {
@@ -113,7 +112,6 @@
                 vm.track.street = MyCache.get('optionObj').street;
                 vm.getPerson();
             }
-            console.info(vm.track.time);
         }
 
         vm.selectsaler = function(){
@@ -155,10 +153,16 @@
         vm.getPerson = function(){
             dataService.getPartnerInfo(vm.track.partnerid)
             .then(function (data) {
-                console.info(data);
-                vm.track.personname = data.contacts[0].name;
-                vm.track.personid = data.contacts[0].id;
-                vm.track.tel = data.contacts[0].mobile;
+                if(data.contacts[0]){
+                    vm.track.personname = data.contacts[0].name;
+                    vm.track.personid = data.contacts[0].id;
+                    vm.track.tel = data.contacts[0].mobile;
+                }else{
+                    vm.track.personname = '';
+                    vm.track.personid = '';
+                    vm.track.tel = '';
+                }
+
                 $timeout(function () {
                 }, 1000);
             }, function (error) {

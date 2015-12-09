@@ -24,11 +24,13 @@
             <div class="pull-right">
                 <div class="pull-right bm-head-right-part">
                     <div class="bm-head-int">{{vm.initData.partner_number}}</div>
-                    <div class="bm-head-font">负责的商户</div>
+                    <div class="bm-head-font">负责的</div>
+                    <div class="bm-head-font">商户</div>
                 </div>
                 <div class="pull-right bm-head-right-part">
                     <div class="bm-head-int">{{vm.initData.mission_number}}</div>
-                    <div class="bm-head-font">待处理任务</div>
+                    <div class="bm-head-font">待处理</div>
+                    <div class="bm-head-font">任务</div>
                 </div>
             </div>
         </div>
@@ -46,7 +48,7 @@
 
     <!--任务-->
     <div ng-if="vm.display=='missions'">
-        <div  id="infinite3" infinite-scroll='vm.getMissions("notOk")' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+        <div  id="infinite1" infinite-scroll='vm.getMissions("notOk")' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
 
         <div ng-repeat="missionsUnfinished in vm.missionsUnfinished" class="bm-main-three-line-wrapper">
             <div class="bm-main-three-line">
@@ -81,8 +83,8 @@
             <button class="btn m-b-xs bm-btn-add-more" ng-click="vm.clickMore()">{{vm.missions_unfinished_numbers}}个已完成任务</button>
         </div>
 
-        <div ng-if="vm.showFinishedmissions">
-            <div id="infinite4" infinite-scroll='vm.getMissions("ok")' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+        <div >
+            <div ng-if="vm.showFinishedmissions" id="infinite2" infinite-scroll='vm.getMissions("ok")' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
                 <div ng-repeat="missionsFinished in vm.missionsFinished" class="bm-main-three-line-wrapper">
                     <a ng-click="vm.jumpWithCache(missionsFinished.mission_id)">
                     <div class="bm-main-three-line">
@@ -116,7 +118,7 @@
 
     <!--商户-->
     <div>
-        <div  ng-if="vm.display=='partners'" id="infinite1" infinite-scroll='vm.getPartners()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+        <div  ng-if="vm.display=='partners'" id="infinite3" infinite-scroll='vm.getPartners()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
 
             <a ng-href="#saler/partner/{{partner.partner_id}}" ng-repeat="partner in vm.partners">
             <div  class="no-bg bm-item">
@@ -130,7 +132,7 @@
 
     <!--公司-->
     <div>
-        <div  ng-if="vm.display=='companys'" id="infinite2" infinite-scroll='vm.getCompanys()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+        <div ng-if="vm.display=='companys'" id="infinite4" infinite-scroll='vm.getCompanys()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
             <a ng-href="#saler/company/{{company.company_id}}" ng-repeat="company in vm.companys">
                 <div  class="no-bg bm-item">
                     <div>
@@ -149,4 +151,4 @@
     </div>
 
 </div>
-<div ng-if="vm.display=='companys'" ng-show="vm.busy" class="text-center bm-loading" >正在加载...</div>
+<div ng-show="vm.busy" class="text-center bm-loading" >正在加载...</div>

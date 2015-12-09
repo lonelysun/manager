@@ -303,14 +303,15 @@
 
 
 
-        factory.getPartnerMission = function (pageIndex,keyword,partnerId,mission_state) {
+        factory.getPartnerMission = function (pageIndex,keyword,partnerId,mission_state,hr_id_for_manager) {
 
             return $http.get(serviceBase + 'saler/partner/mission/', {
      			params : {
                     index:pageIndex,
                     keyword:keyword,
                     partnerId:partnerId,
-                    mission_state:mission_state
+                    mission_state:mission_state,
+                    hr_id_for_manager:hr_id_for_manager
      			}
      			}).then(function(results) {
      				return results.data;

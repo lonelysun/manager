@@ -32,7 +32,7 @@
 
 
         vm.clickMore = function(){
-            vm.showFinishedmissions=true;
+            vm.showFinishedmissions= !(vm.showFinishedmissions);
         };
 
 

@@ -186,7 +186,7 @@
 .bm-head-font{
     color:rgba(246, 246, 246, 0.53);
     font-size: 10px;
-    width:40px;
+    /*width:40px;*/
     text-align: right;
 }
 .bm-head-right-part {
@@ -471,5 +471,8 @@
 }
 .opacity{
     -webkit-filter:opacity(.2);
+}
+.bm-move{
+    margin-top: 56px;
 }
 /*liuhao end*/

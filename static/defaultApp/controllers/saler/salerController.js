@@ -53,7 +53,8 @@
 
 
         vm.clickMore = function(){
-            vm.showFinishedmissions=true;
+            vm.showFinishedmissions= !(vm.showFinishedmissions);
+
         };
 
 
@@ -130,8 +131,8 @@
 
 
 
-                    console.info('getPartners');
-                console.info(vm.partners);
+                //    console.info('getPartners');
+                //console.info(vm.partners);
 
 
                     vm.isLoad=true;

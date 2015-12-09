@@ -107,7 +107,7 @@ class born_manager_sale(http.Controller):
         if keyword == '':
             where = " and true"
         else:
-            where = " and (tb1.name like '%%%s%%') " %(keyword)
+            where = " and (c.name like '%%%s%%') " %(keyword)
 
 
         if int(post.get('hr_id_for_manager')) != 0:
@@ -198,15 +198,15 @@ class born_manager_sale(http.Controller):
         # 根据前台传来的参数判断获取已完成的任务还是未完成的任务
         if require_mission_state == 'ok':
             if keyword == '':
-                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','in',('finished','done'))],int(page_index),5, context=request.context)
+                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','in',('finished','done'))],int(page_index),5, order="write_date desc", context=request.context)
             else:
-                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','in',('finished','done')),('name','like',keyword)],int(page_index),5, context=request.context)
+                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','in',('finished','done')),('name','like',keyword)],int(page_index),5, order="write_date desc",context=request.context)
 
         elif require_mission_state == 'notOk':
             if keyword == '':
-                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','not in',('finished','done'))],int(page_index),5, context=request.context)
+                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','not in',('finished','done'))],int(page_index),5, order="write_date desc",context=request.context)
             else:
-                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','not in',('finished','done')),('name','like',keyword)],int(page_index),5, context=request.context)
+                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','not in',('finished','done')),('name','like',keyword)],int(page_index),5, order="write_date desc",context=request.context)
 
         objs = mission_obj.browse(request.cr, SUPERUSER_ID,ids, context=request.context)
         missions_list = []
@@ -217,14 +217,14 @@ class born_manager_sale(http.Controller):
             mission_id = each_obj.id
             company_id = each_obj.track_id.id
             # mission_company_name = each_obj.track_id.name
-            mission_name = each_obj.name
-            mission_contacts_phone = each_obj.contacts_phone
-            mission_contacts_name = each_obj.contacts_id.name
+            mission_name = each_obj.name or u'无'
+            mission_contacts_phone = each_obj.contacts_phone or u'无'
+            mission_contacts_name = each_obj.contacts_id.name or u'无'
             if each_obj.mission_date:
                 mission_date = (each_obj.mission_date)[5:10]
             else:
-                mission_date = ''
-            mission_address = each_obj.contacts_address
+                mission_date = u'无'
+            mission_address = each_obj.contacts_address or u'无'
             mission_state = each_obj.state
 
 
@@ -427,9 +427,9 @@ class born_manager_sale(http.Controller):
         # 联系人数据
         contact_list = []
 
-        _logger.info('--------------- upper---------')
-        _logger.info(partner)
-        _logger.info(partner.child_ids)
+        # _logger.info('--------------- upper---------')
+        # _logger.info(partner)
+        # _logger.info(partner.child_ids)
         for contact in partner.child_ids:
             contact_data = {
                 'id': contact.id,
@@ -499,6 +499,16 @@ class born_manager_sale(http.Controller):
         # hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
         # hr_id = hr_id_list[0] or ''
 
+        _logger.info('***********')
+        _logger.info(post)
+
+        if int(post.get('hr_id_for_manager')) != 0:
+            hr_id = int(post.get('hr_id_for_manager'))
+        else:
+            hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+            hr_id = hr_id_list[0] or ''
+
+
         mission_obj = request.registry['born.partner.track']
 
         partner_id = int(post.get('partnerId'))
@@ -508,7 +518,7 @@ class born_manager_sale(http.Controller):
         if require_mission_state == 'ok':
             ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',int(partner_id)),('state','in',('finished','done'))],int(page_index),10, context=request.context)
         elif require_mission_state == 'notOk':
-            ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',int(partner_id)),('state','not in',('finished','done'))],int(page_index),10, context=request.context)
+            ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',int(partner_id)),('state','not in',('finished','done')),('employee_id','=',hr_id)],int(page_index),10, context=request.context)
 
 
 
@@ -520,14 +530,14 @@ class born_manager_sale(http.Controller):
             mission_id = each_obj.id
             company_id = each_obj.track_id.id
             mission_company_name = each_obj.track_id.name
-            mission_name = each_obj.name
-            mission_contacts_phone = each_obj.contacts_phone
-            mission_contacts_name = each_obj.contacts_id.name
+            mission_name = each_obj.name or u'无'
+            mission_contacts_phone = each_obj.contacts_phone or u'无'
+            mission_contacts_name = each_obj.contacts_id.name or u'无'
             if each_obj.mission_date:
                 mission_date = (each_obj.mission_date)[5:10]
             else:
                 mission_date = ''
-            mission_address = each_obj.contacts_address
+            mission_address = each_obj.contacts_address or u'无'
             mission_state = each_obj.state
 
             state_name_dict = {'start':u'开始','pause':u'暂停','finished':u'完成','notstart':u'未开始'}
@@ -644,10 +654,58 @@ class born_manager_sale(http.Controller):
             # 修改商户
             obj = request.registry['res.partner'].browse(request.cr, SUPERUSER_ID,partner_id, context=request.context)
             obj.write(vals)
+
+            # 推送消息
+            manager_id=request.session.manager_id
+
+
+
+            if manager_id:
+                hr_obj=request.registry.get('hr.employee')
+                hr=hr_obj.browse(request.cr,SUPERUSER_ID,int(manager_id),request.context)
+
+                title=u'商户资料已更新'
+                message=u"商户:%s 资料已更新" % (vals['name'])
+                push_obj = request.registry.get('born.push')
+                vm = {
+                    'title':title,
+                    'phone':hr.mobile_phone,
+                    'content':message,
+                    'type':'internal',
+                    'state':'draft',
+                    'user_id':hr.user_id.id,
+                    'message_type':'10',
+                }
+                push_id = push_obj.create(request.cr,SUPERUSER_ID,vm,context=request.context)
             return json.dumps(True,sort_keys=True)
         else:
             # 新建商户
             id = request.registry['res.partner'].create(request.cr, SUPERUSER_ID,vals,context=request.context)
+
+            # 推送消息
+            manager_id=request.session.manager_id
+
+
+
+            if manager_id:
+                hr_obj=request.registry.get('hr.employee')
+                hr=hr_obj.browse(request.cr,SUPERUSER_ID,int(manager_id),request.context)
+
+                title=u'新商户建立'
+                message=u"新商户:%s 已经建立" % (vals['name'])
+                push_obj = request.registry.get('born.push')
+                vm = {
+                    'title':title,
+                    'phone':hr.mobile_phone,
+                    'content':message,
+                    'type':'internal',
+                    'state':'draft',
+                    'user_id':hr.user_id.id,
+                    'message_type':'9',
+                }
+                push_id = push_obj.create(request.cr,SUPERUSER_ID,vm,context=request.context)
+
+
             return json.dumps({'id':id},sort_keys=True)
 
 
@@ -900,7 +958,37 @@ class born_manager_sale(http.Controller):
 
         vals['state'] = 'finished'
 
-        request.registry['born.partner.track'].write(request.cr, SUPERUSER_ID,mission_id,vals,context=request.context)
+        obj = request.registry['born.partner.track']
+
+        obj.write(request.cr, SUPERUSER_ID,mission_id,vals,context=request.context)
+
+
+        # 推送消息
+        mission_name = obj.browse(request.cr, SUPERUSER_ID,mission_id,context=request.context).name
+
+        manager_id=request.session.manager_id
+
+
+
+        if manager_id:
+            hr_obj=request.registry.get('hr.employee')
+            hr=hr_obj.browse(request.cr,SUPERUSER_ID,int(manager_id),request.context)
+
+            title=u'任务已批注'
+            message=u"任务：%s 已经完成。" % (mission_name)
+            push_obj = request.registry.get('born.push')
+            vm = {
+                'title':title,
+                'phone':hr.mobile_phone,
+                'content':message,
+                'type':'internal',
+                'state':'draft',
+                'user_id':hr.user_id.id,
+                'message_type':'6',
+            }
+            push_id = push_obj.create(request.cr,SUPERUSER_ID,vm,context=request.context)
+
+
 
         return json.dumps(True,sort_keys=True)
 

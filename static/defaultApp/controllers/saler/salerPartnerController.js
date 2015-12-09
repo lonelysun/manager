@@ -28,11 +28,17 @@
         var partnerId = ($routeParams.partnerId) ? parseInt($routeParams.partnerId) : 0;
 
 
+        var hr_id_for_manager;
 
+        if(MyCache.get('hr_id_for_manager')){
+            hr_id_for_manager = parseInt(MyCache.get('hr_id_for_manager'))
+        }else{
+            hr_id_for_manager = 0
+        }
 
 
         vm.clickMore = function(){
-            vm.showFinishedmissions=true;
+            vm.showFinishedmissions= !(vm.showFinishedmissions);
         };
 
 
@@ -79,7 +85,7 @@
                 missionLengh = vm.missionsFinished.length;
             }
 
-            dataService.getPartnerMission(missionLengh,vm.keyword,partnerId,mission_state)
+            dataService.getPartnerMission(missionLengh,vm.keyword,partnerId,mission_state,hr_id_for_manager)
             .then(function (data) {
                 if(mission_state=='notOk'){
 
@@ -196,19 +202,28 @@
 
         };
 
-        //vm.back = function(){
-        //    MyCache.remove('partner');
-        //    MyCache.put('saler_display','partners');
-        //    $location.path('/saler')
-        //};
-
-        //Test for new Back
         vm.back = function(){
 
-            MyCache.remove('partner');
-            MyCache.put('saler_display','partners');
-            window.location.href = 'bornhr://back';
+            if(MyCache.get('keyword')){
+                MyCache.put('goToSearch','1');
+                $location.path('/search');
+                MyCache.remove('partner');
+            }else{
+                MyCache.remove('partner');
+                MyCache.put('saler_display','partners');
+                $location.path('/saler');
+            }
+
+
         };
+
+        ////Test for new Back
+        //vm.back = function(){
+        //
+        //    MyCache.remove('partner');
+        //    MyCache.put('saler_display','partners');
+        //    window.location.href = 'bornhr://back';
+        //};
 
 
 

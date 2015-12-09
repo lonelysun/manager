@@ -40,7 +40,7 @@ def ensure_db(db='MAST',redirect='/except'):
  
     if db and db not in http.db_filter([db]):
         db = None
-     
+
     if not db and request.session.db and http.db_filter([request.session.db]):
         db = request.session.db
          
@@ -82,28 +82,43 @@ class born_manager(http.Controller):
     #获取可显示权限
     @http.route('/manager/menu', type='http', auth="none",)
     def menu(self, **post):
-        
+
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
+        users_obj = request.registry.get('res.users')
+        user=users_obj.browse(request.cr, SUPERUSER_ID, uid)
+        val = {
+            'option':user.role_option,
+        }
+        request.session.option = user.role_option
+
+
         hr_obj = request.registry.get('hr.employee')
         hr_id= hr_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
         saleteam_obj = request.registry.get('commission.team')
-        domain=[('manager_id','in',hr_id)]
-        tid = saleteam_obj.search(request.cr, SUPERUSER_ID, domain, context=request.context)
-        team = saleteam_obj.browse(request.cr, SUPERUSER_ID, tid, context=request.context)
-        employee_ids = []
-        for employee in team.employee_ids:
-            employee_ids.append(employee.id)
+        if user.role_option=='7' or user.role_option=='9':
+            sql = u"""
+                select tid from commission_team_employee_rel where uid = %s
+            """ %(hr_id[0])
+            request.cr.execute(sql)
+            row = request.cr.fetchone()
+            if row:
+                team = saleteam_obj.browse(request.cr, SUPERUSER_ID, row[0], context=request.context)
+                request.session.manager_id = team.manager_id.id
 
-        request.session.employee_ids = employee_ids
-        users_obj = request.registry.get('res.users')
-        user=users_obj.browse(request.cr, SUPERUSER_ID, uid)
-        request.session.option = user.role_option
+        else:
+            domain=[('manager_id','in',hr_id)]
+            tid = saleteam_obj.search(request.cr, SUPERUSER_ID, domain, context=request.context)
+            team = saleteam_obj.browse(request.cr, SUPERUSER_ID, tid, context=request.context)
+            employee_ids = []
+            for employee in team.employee_ids:
+                employee_ids.append(employee.id)
 
-        val = {
-               'option':user.role_option,
-        }
+            request.session.employee_ids = employee_ids
+
+
+
         # val = {
         #        'ismanager' : True,
         #        'issaler' : True,

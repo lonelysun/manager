@@ -30,10 +30,6 @@
         var partnerId = ($routeParams.partnerId) ? parseInt($routeParams.partnerId) : 0;
 
 
-
-
-
-
         //Get specific partner
         vm.getPartnerInfo = function(){
             //MyCache.put('notFirstGoToNewPartner','1');
@@ -87,10 +83,6 @@
 
             }
 
-
-
-
-
         };
 
         //修改通过导航调用---------刘浩
@@ -109,6 +101,7 @@
                     //?这个cache好像在其它地方没用到
                     //MyCache.remove('notFirstGoToNewPartner');
                     //MyCache.remove('createNewPartner')
+                    //window.location.href = 'bornhr://back';
                     $location.path('/saler/partner/'+locationId);
 
             }, function (error) {
@@ -117,38 +110,38 @@
 
         };
 
-        //vm.cancel = function(){
-        //
-        //
-        //    //if(MyCache.get('createNewPartner') == '1'){
-        //    //    $location.path('/saler/');
-        //    //    MyCache.remove('partner');
-        //    //    MyCache.remove('createNewPartner');
-        //    //
-        //    //}
-        //    //else{
-        //    //    $location.path('/saler/partner/'+partnerId);
-        //    //    MyCache.remove('partner');
-        //    //    MyCache.remove('createNewPartner');
-        //    //}
-        //
-        //    if (partnerId == 0){
-        //        $location.path('/menu/');
-        //        MyCache.remove('partner');
-        //    }else{
-        //        $location.path('/saler/partner/'+partnerId);
-        //        MyCache.remove('partner');
-        //    }
-        //
-        //
-        //
-        //};
-
-        //Test for new Back
         vm.cancel = function(){
-            MyCache.remove('partner');
-            window.location.href = 'bornhr://back';
+
+
+            //if(MyCache.get('createNewPartner') == '1'){
+            //    $location.path('/saler/');
+            //    MyCache.remove('partner');
+            //    MyCache.remove('createNewPartner');
+            //
+            //}
+            //else{
+            //    $location.path('/saler/partner/'+partnerId);
+            //    MyCache.remove('partner');
+            //    MyCache.remove('createNewPartner');
+            //}
+
+            if (partnerId == 0){
+                $location.path('/menu/');
+                MyCache.remove('partner');
+            }else{
+                $location.path('/saler/partner/'+partnerId);
+                MyCache.remove('partner');
+            }
+
+
+
         };
+
+        ////Test for new Back
+        //vm.cancel = function(){
+        //    MyCache.remove('partner');
+        //    window.location.href = 'bornhr://back';
+        //};
 
 
 
