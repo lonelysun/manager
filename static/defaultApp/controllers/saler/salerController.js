@@ -18,7 +18,7 @@
         vm.showFinishedmissions=false;
         vm.display = null;
         var missionLengh=0;
-        vm.missions_unfinished_numbers = 0;
+        vm.missions_finished_numbers = 0;
         mission_state = '';
         //add by liuhao
         vm.role = '';
@@ -103,7 +103,7 @@
                 //console.info(vm.missionsFinished);
 
 
-                vm.missions_unfinished_numbers = data['missions_unfinished_numbers']
+                vm.missions_finished_numbers = data['missions_finished_numbers']
 
 
                 vm.isLoad=true;
@@ -153,6 +153,7 @@
         vm.goBack = function(){
             //清缓存
             MyCache.remove('hr_id_for_manager');
+            MyCache.put('comeFromSaler','team');
 
             $location.path('/menus');
 
@@ -225,6 +226,10 @@
 
 
         vm.changeMissionState = function(missionsUnfinished){
+
+            if(vm.role != '7'){
+                return;
+            }
 
             var titleText,titleState,closeButtonText,
                 firstActionText,firstUrl,

@@ -63,6 +63,10 @@
             return vm.selected.indexOf(id)>=0;
         };
 
+        vm.hasChoosen = function(){
+            displayModel.displaySave = '1';
+        };
+
 
         vm.getResults = function(){
             if(vm.busy)return;
@@ -92,7 +96,7 @@
             displayModel.title = '选择结果(多选)';
             displayModel.displaySubmit = '0';
             displayModel.displayConfirm = '0';
-            displayModel.displaySave='1';
+            displayModel.displaySave='0';
             displayModel.displayCreate = '0';
             displayModel.displaySearch = '0';
 

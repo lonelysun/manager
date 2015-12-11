@@ -4,7 +4,7 @@
     <div ng-if="!vm.needAutoSave">
         <div  id="infinite1" infinite-scroll='vm.getOptions()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
             <div  ng-repeat="option in vm.options" class="no-bg bm-item">
-                <label style="display: block;">
+                <label ng-click="vm.hasChoosen()" style="display: block;">
                     <div>
                         <input class="pull-right" type="radio"  value="{{option}}" data-ng-model="vm.selectOption" style="display:none">
                         <img ng-if="vm.showImage(option)=='1'" src="/born_manager/static/src/img/saler/finished.png" class="pull-right" style="width:14px;height:12px">

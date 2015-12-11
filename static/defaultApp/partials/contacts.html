@@ -3,7 +3,7 @@
     <span class="bm-one-line-left">姓名</span>
     <span>
         <input type="text" class="editable editable-click no-border text-left"  placeholder="输入姓名" data-ng-model="contactOptions.name"/>
-        <i class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="contactOptions.name=''"></i>
+        <i ng-show="contactOptions.name!=''" class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="contactOptions.name=''"></i>
     </span>
 
 </div>
@@ -12,7 +12,7 @@
     <span class="bm-one-line-left">手机</span>
     <span>
         <input type="text" class="editable editable-click no-border text-left"  placeholder="输入手机" data-ng-model="contactOptions.mobile"/>
-        <i class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="contactOptions.mobile=''"></i>
+        <i ng-show="contactOptions.mobile !=''" class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="contactOptions.mobile=''"></i>
     </span>
 
 </div>
@@ -21,7 +21,7 @@
     <span class="bm-one-line-left">电话</span>
     <span>
         <input type="text" class="editable editable-click no-border text-left"  placeholder="输入电话" data-ng-model="contactOptions.phone"/>
-        <i class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="contactOptions.phone=''"></i>
+        <i ng-show="contactOptions.phone !=''" class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="contactOptions.phone=''"></i>
     </span>
 
 </div>
@@ -30,7 +30,7 @@
     <span class="bm-one-line-left">QQ</span>
     <span>
         <input type="text" class="editable editable-click no-border text-left"  placeholder="输入QQ" data-ng-model="contactOptions.qq"/>
-        <i class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="contactOptions.qq=''"></i>
+        <i ng-show="contactOptions.qq!=''" class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="contactOptions.qq=''"></i>
     </span>
 
 </div>
@@ -39,7 +39,7 @@
     <span class="bm-one-line-left">微信</span>
     <span>
         <input type="text" class="editable editable-click no-border text-left"  placeholder="输入微信" data-ng-model="contactOptions.wechat"/>
-        <i class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="contactOptions.wechat=''"></i>
+        <i ng-show="contactOptions.wechat !=''" class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="contactOptions.wechat=''"></i>
     </span>
 
 </div>
@@ -48,7 +48,7 @@
     <span class="bm-one-line-left">职位</span>
     <span>
         <input type="text" class="editable editable-click no-border text-left"  placeholder="输入职位" data-ng-model="contactOptions.function"/>
-        <i class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="contactOptions.function=''"></i>
+        <i ng-show="contactOptions.function!=''" class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="contactOptions.function=''"></i>
     </span>
 </div>
 

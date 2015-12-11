@@ -250,12 +250,12 @@ class born_manager_sale(http.Controller):
 
 
         ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','in',('finished','done'))],context=request.context)
-        missions_unfinished_numbers = len(ids)
+        missions_finished_numbers = len(ids)
 
 
         data = {
             'missions_list':missions_list,
-            'missions_unfinished_numbers':missions_unfinished_numbers
+            'missions_finished_numbers':missions_finished_numbers
         }
         return json.dumps(data,sort_keys=True)
 
@@ -295,7 +295,7 @@ class born_manager_sale(http.Controller):
                 SELECT
                     tb1.id,
                     tb1.name,
-                    COUNT (tb2.id) AS cnt
+                   (select count(*) from born_partner_track where born_partner_track.track_id=tb1.id ) AS cnt
                 FROM
                     res_partner tb1
                 LEFT JOIN
@@ -404,9 +404,20 @@ class born_manager_sale(http.Controller):
 
         partner_number= int(res_count and res_count[0][0] or 0)
 
+
+        # 获取头像
+        hr_obj = request.registry['hr.employee']
+        obj = hr_obj.browse(request.cr, SUPERUSER_ID,hr_id,context=request.context)
+        image = obj.user_id.image_medium
+
+
+
+
         data = {
             'mission_number':mission_number,
-            'partner_number':partner_number
+            'partner_number':partner_number,
+            'image':image
+
         }
 
         return json.dumps(data,sort_keys=True)
@@ -470,7 +481,7 @@ class born_manager_sale(http.Controller):
             'category_id': partner.categorys_id.id or '',
             'bussiness': partner.business_id.name or '',
             'bussiness_id': partner.business_id.id or '',
-            'address': partner.street or '',
+            'street': partner.street or '',
             'contacts':contact_list,
             'source': source,
             'source2_id': source2_id,
@@ -499,9 +510,6 @@ class born_manager_sale(http.Controller):
         # hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
         # hr_id = hr_id_list[0] or ''
 
-        _logger.info('***********')
-        _logger.info(post)
-
         if int(post.get('hr_id_for_manager')) != 0:
             hr_id = int(post.get('hr_id_for_manager'))
         else:
@@ -516,9 +524,9 @@ class born_manager_sale(http.Controller):
         require_mission_state = post.get('mission_state')
 
         if require_mission_state == 'ok':
-            ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',int(partner_id)),('state','in',('finished','done'))],int(page_index),10, context=request.context)
+            ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',int(partner_id)),('state','in',('finished','done'))],int(page_index),10, order="write_date desc", context=request.context)
         elif require_mission_state == 'notOk':
-            ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',int(partner_id)),('state','not in',('finished','done')),('employee_id','=',hr_id)],int(page_index),10, context=request.context)
+            ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',int(partner_id)),('state','not in',('finished','done'))],int(page_index),10, order="write_date desc", context=request.context)
 
 
 
@@ -544,6 +552,12 @@ class born_manager_sale(http.Controller):
 
             mission_state_name = state_name_dict.get(mission_state)
 
+            # 判断该任务是否是自己负责的
+            if each_obj.employee_id.id ==  hr_id:
+                is_mine = True
+            else:
+                is_mine = False
+
             vals = {
                 'mission_id':mission_id,
                 'company_id':company_id,
@@ -554,19 +568,20 @@ class born_manager_sale(http.Controller):
                 'mission_contacts_name':mission_contacts_name,
                 'mission_date':mission_date,
                 'mission_address':mission_address,
-                'mission_state':mission_state
+                'mission_state':mission_state,
+                'is_mine':is_mine
             }
             missions_list.append(vals)
 
 
 
         ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',partner_id),('state','in',('finished','done'))],context=request.context)
-        missions_unfinished_numbers = len(ids)
+        missions_finished_numbers = len(ids)
 
 
         data = {
             'missions_list':missions_list,
-            'missions_unfinished_numbers':missions_unfinished_numbers
+            'missions_finished_numbers':missions_finished_numbers
         }
 
 
@@ -597,7 +612,7 @@ class born_manager_sale(http.Controller):
 
 
 
-        street = post.get('street','')
+        vals['street'] = post.get('street','')
 
         #联系人
         if post.get('contacts_json'):
@@ -645,9 +660,9 @@ class born_manager_sale(http.Controller):
             vals['mark_source'] = obj.source_id.id
 
         vals['partner_size_id'] = post.get('size_id','')
-        vals['partner_environment_id'] = post.get('size_id','')
-        vals['partner_employee_id'] = post.get('size_id','')
-        vals['partner_room_id'] = post.get('size_id','')
+        vals['partner_environment_id'] = post.get('environment_id','')
+        vals['partner_employee_id'] = post.get('employee_id','')
+        vals['partner_room_id'] = post.get('room_id','')
 
 
         if partner_id != 0:
@@ -1020,12 +1035,15 @@ class born_manager_sale(http.Controller):
         for each_obj in obj.result_ids:
             result_list.append({'name':each_obj.name})
 
+
+
         data = {
             'result_title':obj.result_title or '',
             'result_list':result_list,
             'notes':obj.notes or '',
             'image_url':obj.image_url or '',
-            'remark':obj.remark or ''
+            'remark':obj.remark or '',
+            'state':obj.state or ''
         }
 
         return json.dumps(data,sort_keys=True)
@@ -1041,7 +1059,7 @@ class born_manager_sale(http.Controller):
         mission_obj = request.registry['born.partner.track']
         company_obj = request.registry['res.company']
 
-        page_index=post.get('index',0)
+        page_index=post.get('pageIndex',0)
 
 
 
@@ -1049,7 +1067,7 @@ class born_manager_sale(http.Controller):
         instance_of_company = company_obj.browse(request.cr, SUPERUSER_ID,company_id,context=request.context)
         partner_id = instance_of_company.partner_id.id
 
-        ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',partner_id),('state','=','finished')],int(page_index),5, context=request.context)
+        ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',partner_id),('state','in',('done','finished'))],int(page_index),5, context=request.context)
 
 
         objs = mission_obj.browse(request.cr, SUPERUSER_ID,ids, context=request.context)

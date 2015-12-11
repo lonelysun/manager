@@ -18,7 +18,7 @@
         vm.showButton=false;
         vm.display = null;
         var missionLengh=0;
-        vm.missions_unfinished_numbers = 0;
+        vm.missions_finished_numbers = 0;
         mission_state = '';
         vm.missions = [];
         vm.showFinishedmissions=false;
@@ -101,7 +101,7 @@
                     }
                 }
 
-                vm.missions_unfinished_numbers = data['missions_unfinished_numbers']
+                vm.missions_finished_numbers = data['missions_finished_numbers']
 
                 vm.isLoad=true;
                 $timeout(function () {
@@ -114,6 +114,12 @@
 
 
         vm.changeMissionState = function(missionsUnfinished){
+
+            if(vm.role != '7' || missionsUnfinished.is_mine == false){
+                return;
+            }
+
+
 
             var titleText,titleState,closeButtonText,
                 firstActionText,firstUrl,
@@ -208,11 +214,17 @@
                 MyCache.put('goToSearch','1');
                 $location.path('/search');
                 MyCache.remove('partner');
-            }else{
+            }else if(MyCache.get('comeFromeNewPartner') == '1'){
+                MyCache.remove('partner');
+                $location.path('/menu');
+                MyCache.remove('comeFromeNewPartner')
+            }
+            else{
                 MyCache.remove('partner');
                 MyCache.put('saler_display','partners');
                 $location.path('/saler');
             }
+
 
 
         };
@@ -255,11 +267,14 @@
 
 
             vm.getPartnerInfo();
+
             if(MyCache.get('saler_partnerOrCompany_display')){
+                console.info('---->3');
                 vm.display = MyCache.get('saler_partnerOrCompany_display');
                 MyCache.remove('saler_partnerOrCompany_display')
 
             }else{
+                console.info('---->4');
                 vm.display = 'info';
             }
 

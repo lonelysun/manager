@@ -3,7 +3,7 @@
     <span class="bm-one-line-left">商户</span>
     <span>
         <input type="text" class="editable editable-click no-border text-left"  placeholder="输入名称" data-ng-model="vm.partner.name"/>
-        <i class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="vm.partner.name=''"></i>
+        <i ng-show="vm.partner.name!=''" class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="vm.partner.name=''"></i>
     </span>
 </div>
 <a ng-click="vm.jump('categories')">
@@ -29,8 +29,8 @@
 <div class="no-bg bm-item" >
     <span class="bm-one-line-left">地址</span>
     <span>
-        <input  type="text" class="editable editable-click no-border text-left"  placeholder="输入地址" data-ng-model="vm.partner.address"/>
-        <i class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="vm.partner.address=''"></i>
+        <input  type="text" class="editable editable-click no-border text-left"  placeholder="输入地址" data-ng-model="vm.partner.street"/>
+        <i ng-show="vm.partner.street!=''" class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="vm.partner.street=''"></i>
     </span>
 </div>
 <!--<div  ng-repeat="contact in vm.partner.contacts">-->
@@ -122,7 +122,7 @@
     <span class="bm-one-line-left">备注</span>
     <span>
         <input type="text" class="editable editable-click no-border text-left"  placeholder="输入备注" data-ng-model="vm.partner.comment"/>
-        <i class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="vm.partner.comment=''"></i>
+        <i ng-show="vm.partner.comment!=''" class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="vm.partner.comment=''"></i>
     </span>
 
 </div>

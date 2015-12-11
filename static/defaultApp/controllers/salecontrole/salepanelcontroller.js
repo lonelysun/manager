@@ -6,7 +6,7 @@
                                            $timeout, ngDialog,config, dataService,toaster,displayModel,MyCache) {
         var vm = this;
         vm.panel = {};
-        vm.display = 'managermissions';
+        vm.display = '';
         vm.busy=false;
         vm.isLoad=false;
         vm.tracklist = [];
@@ -20,6 +20,16 @@
         function init() {
             displayModel.displayModel='block';
             displayModel.showHeader = '0';
+
+            //判定显示哪个部分的页面
+            if(MyCache.get('comeFromSaler') == 'team'){
+                vm.display = 'team';
+                MyCache.remove('comeFromSaler');
+            }else{
+                vm.display = 'managermissions';
+            }
+
+
             vm.role = MyCache.get('role_option');
             if(vm.role=='9'||vm.role=='10'){
                 displayModel.displayBottom = '1';

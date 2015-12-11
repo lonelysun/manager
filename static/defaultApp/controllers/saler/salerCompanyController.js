@@ -123,8 +123,6 @@
             if(MyCache.get('saler_partnerOrCompany_display')){
                 vm.display = MyCache.get('saler_partnerOrCompany_display');
                 MyCache.remove('saler_partnerOrCompany_display')
-
-
             }else{
                 vm.display = 'info';
             }

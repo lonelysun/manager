@@ -1,6 +1,6 @@
 <div class="bm-move" id="infinite1" infinite-scroll='vm.getResults()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
     <div class="no-bg bm-item" ng-repeat="result in vm.results">
-        <label style="display: block;">
+        <label ng-click="vm.hasChoosen()" style="display: block;">
             <div>
                 <input class="pull-right" style="display:none" type="checkbox" id={{result.id}} name="{{result.name}}" data-ng-checked="vm.isSelected(result.id)" data-ng-click="vm.updateSelection($event,result.id)" >
 
@@ -12,7 +12,6 @@
             </div>
         </label>
     </div>
-
 </div>
 
 

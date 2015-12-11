@@ -560,6 +560,10 @@ class born_manager(http.Controller):
                  from born_operate_sync where company_id=%s and type in ('buy','consume'); """  % (company_id)
             request.cr.execute(sql)
             res_count = request.cr.fetchall()
+
+            _logger.info('----------->>>>>>>>.yyyycompanys')
+            _logger.info(res_count)
+
             consume_total= int(res_count and res_count[0][0] or 0)
 
 
@@ -655,6 +659,25 @@ class born_manager(http.Controller):
 
             create_date = (company.create_date)[:10]
 
+            # 计算该公司活跃天数
+            sql = u"""
+            with temp_a as (select tb1.create_date::date as create_day from born_operate_sync tb1
+            where company_id = %s
+            group by tb1.create_date::date)
+            select coalesce(count(*),0) cnt from temp_a
+            """%(company_id)
+
+            request.cr.execute(sql)
+            _logger.info('----------->>>>>>>>.companys')
+
+            res_count = request.cr.fetchall()
+            _logger.info(res_count)
+            active_days = int(res_count and res_count[0][0] or 0)
+
+
+
+
+
             data={
                 'id': company.id,
                 'name': company.name,
@@ -685,6 +708,7 @@ class born_manager(http.Controller):
                 'total_operate_count':total_operate_count,
                 'cash_total':'{0:,}'.format(cash_total),
                 'consume_total':'{0:,}'.format(consume_total),
+                'active_days':active_days
 
             }
 

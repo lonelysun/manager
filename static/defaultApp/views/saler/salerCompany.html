@@ -1,5 +1,5 @@
 <div class="show-hide-animation bm-move" >
-    <div class="panel no-border text-center " style="padding-top:15px;margin-bottom: 0px;background-color: #FFFFFF;border-bottom:solid 1px #ececec; ">
+    <div class="no-border text-center bm-mid-nav" >
     	<div class="" style="width:100%">
         	<button ng-class="{'info': 'bm-active'}[vm.display]" ng-click="vm.setDisplay('info')" class=" bg-white  no-border bm-nav-head-two"  >简介</button>
         	<button ng-class="{'mission': 'bm-active'}[vm.display]" ng-click="vm.setDisplay('mission')" class="bg-white no-border bm-nav-head-two"  >任务</button>
@@ -20,13 +20,13 @@
         </div>
 
         <div>
-            <div class="hbox text-center b-t b-b b-light text-sm bm-wrapper">
+            <div class="hbox text-center b-light text-sm bm-wrapper">
                 <div class="col padder-v text-muted b-r b-light bm-three-col-left">
                     <div class="bm-three-col-up-font">{{ vm.company.license_count }}</div>
                     <div class="bm-top">设备数</div>
                 </div>
                 <div class="col padder-v text-muted bm-three-col-middle">
-                    <div class="bm-three-col-up-font">{{ vm.company.use_dates }}</div>
+                    <div class="bm-three-col-up-font">{{ vm.company.active_days }}</div>
                     <div class="bm-top">使用天数</div>
                 </div>
                 <div class="col padder-v text-muted bm-three-col-right">
@@ -135,31 +135,40 @@
                     <div class="wrapper bm-wrapper">
                       <ul class="timeline">
 
-                          <li class="tl-item">
-                            <div class="bm-timeline tl-wrap b-danger">
+                        <li class="tl-item">
+                            <div class="bm-timeline-red">
                                 <span class="bt-timeline-left tl-date">最后登录时间</span>
                                 <div class="tl-content bm-timeline-right">
-                                  <div><i class="icon-clock bm-i-clock"></i>{{ vm.company.last_consume_date }}</div>
+                                  <div>
+                                      <i class="icon-clock bm-i-clock"></i>
+                                      <span class="bm-timeline-time">{{ vm.company.last_consume_date }}</span>
+                                  </div>
                                 </div>
                             </div>
                         </li>
 
 
 
-                          <li class="tl-item">
-                            <div class="bm-timeline tl-wrap b-info">
+                        <li class="tl-item">
+                            <div class="bm-timeline-orange">
                                 <span class="bt-timeline-left tl-date">审核时间</span>
                                 <div class="tl-content bm-timeline-right">
-                                  <div><i class="icon-clock bm-i-clock"></i>{{ vm.company.approve_date }}</div>
+                                  <div>
+                                      <i class="icon-clock bm-i-clock"></i>
+                                      <span class="bm-timeline-time">{{ vm.company.approve_date }}</span>
+                                  </div>
                                 </div>
                             </div>
                         </li>
 
-                          <li class="tl-item">
-                            <div class="bm-timeline tl-wrap b-success">
+                        <li class="tl-item">
+                            <div class="bm-timeline-green">
                                 <span class="bt-timeline-left tl-date">创建时间</span>
                                 <div class="tl-content bm-timeline-right">
-                                    <div><i class="icon-clock bm-i-clock"></i>{{ vm.company.create_date }}</div>
+                                    <div>
+                                        <i class="icon-clock bm-i-clock"></i>
+                                        <span class="bm-timeline-time">{{ vm.company.create_date }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </li>
@@ -183,10 +192,10 @@
 
     <div ng-if="vm.display=='mission'">
         <div>
-            <div  id="infinite1" infinite-scroll='vm.getCompanyMission()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+            <div id="infinite1" infinite-scroll='vm.getCompanyMission()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
 
             <div ng-repeat="mission in vm.companyMission" class="bm-main-three-line-wrapper">
-                <a ng-click="vm.jumpWithCache(missionsFinished.mission_id)">
+                <a ng-click="vm.jumpWithCache(mission.mission_id)">
                 <div class="bm-main-three-line">
                     <div class="bm-main-three-line-title">
                         <!--状态图标-->
@@ -202,8 +211,8 @@
                     </div>
 
                     <div class="bm-main-three-line-detail">
-                        <span>
-                            <img class="bm-main-three-line-span-grey" src="/born_manager/static/src/img/saler/location-copy.png">{{mission.mission_address}}
+                        <span class="bm-main-three-line-span-grey">
+                            <img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/location-copy.png">{{missionsFinished.mission_address}}
                         </span>
                     </div>
                 </div>

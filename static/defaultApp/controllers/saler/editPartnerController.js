@@ -70,15 +70,15 @@
                     break;
                 case 'environments':
                     vm.partner.environment = optionObj.name;
-                    vm.partner.environment_id = optionObj.name;
+                    vm.partner.environment_id = optionObj.id;
                     break;
                 case 'employees':
                     vm.partner.employee = optionObj.name;
-                    vm.partner.employee_id = optionObj.name;
+                    vm.partner.employee_id = optionObj.id;
                     break;
                 case 'rooms':
                     vm.partner.room = optionObj.name;
-                    vm.partner.room_id = optionObj.name;
+                    vm.partner.room_id = optionObj.id;
                     break;
 
             }
@@ -87,6 +87,16 @@
 
         //修改通过导航调用---------刘浩
         vm.save = function(){
+            //console.info('---->1');
+            //console.info(vm.partner);
+
+            if(vm.partner.name==''){
+
+                toaster.pop('warning', "", "请填写商户名称！");
+                return true;
+            }
+
+
             vm.partner.contacts_json = angular.toJson(vm.partner.contacts);
 
             dataService.postPartnerInfo(partnerId,vm.partner)
@@ -98,10 +108,13 @@
                         var locationId = partnerId
                     }
                     MyCache.remove('partner');//保存成功清楚缓存-------------刘浩
+                    MyCache.remove('optionType');
+                    MyCache.remove('optionObj');
                     //?这个cache好像在其它地方没用到
                     //MyCache.remove('notFirstGoToNewPartner');
                     //MyCache.remove('createNewPartner')
                     //window.location.href = 'bornhr://back';
+                    MyCache.put('comeFromeNewPartner','1')
                     $location.path('/saler/partner/'+locationId);
 
             }, function (error) {
@@ -128,9 +141,13 @@
             if (partnerId == 0){
                 $location.path('/menu/');
                 MyCache.remove('partner');
+                MyCache.remove('optionType');
+                MyCache.remove('optionObj');
             }else{
                 $location.path('/saler/partner/'+partnerId);
                 MyCache.remove('partner');
+                MyCache.remove('optionType');
+                MyCache.remove('optionObj');
             }
 
 

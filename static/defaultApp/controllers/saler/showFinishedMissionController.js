@@ -35,25 +35,72 @@
 
         };
 
+        //vm.back = function(){
+        //    console.info('---->1');
+        //    if(MyCache.get('finishedMission_come_from')){
+        //        if(MyCache.get('finishedMission_come_from') == 'page_saler'){
+        //            console.info('---->2');
+        //            MyCache.put('showClickMore','1');
+        //
+        //            $location.path('/saler');
+        //            MyCache.remove('finishedMission_come_from')
+        //        }else if(MyCache.get('finishedMission_come_from') == 'page_partner_mission'){
+        //            var Id = MyCache.get('finishedMission_come_from_partnerId');
+        //            MyCache.put('showClickMore','1');
+        //            MyCache.put('saler_partner_display','mission')
+        //            $location.path('/saler/partner/'+Id);
+        //            MyCache.remove('finishedMission_come_from')
+        //            MyCache.remove('finishedMission_come_from_partnerId')
+        //        }else if (MyCache.get('finishedMission_come_from') == 'page_company_mission'){
+        //
+        //            var Id = MyCache.get('finishedMission_come_from_companyId');
+        //            MyCache.put('saler_company_display','mission')
+        //            $location.path('/saler/partner/'+Id);
+        //            MyCache.remove('finishedMission_come_from')
+        //            MyCache.remove('finishedMission_come_from_companyId')
+        //        }
+        //
+        //
+        //
+        //    }else {
+        //        $location.path('/saler')
+        //    }
+        //
+        //};
+
+        //Test for new Back
+        //vm.back = function(){
+        //    MyCache.put('showClickMore','1');
+        //
+        //    MyCache.put('saler_partnerOrCompany_display','mission');
+        //
+        //    window.location.href = 'bornhr://back';
+        //};
+
         vm.back = function(){
+            console.info('---->1');
             if(MyCache.get('finishedMission_come_from')){
                 if(MyCache.get('finishedMission_come_from') == 'page_saler'){
+                    console.info('---->2');
                     MyCache.put('showClickMore','1');
 
-                    $location.path('/saler');
+                    //$location.path('/saler');
+                    window.location.href = 'bornhr://back';
                     MyCache.remove('finishedMission_come_from')
                 }else if(MyCache.get('finishedMission_come_from') == 'page_partner_mission'){
                     var Id = MyCache.get('finishedMission_come_from_partnerId');
                     MyCache.put('showClickMore','1');
-                    MyCache.put('saler_partner_display','mission')
-                    $location.path('/saler/partner/'+Id);
+                    MyCache.put('saler_partnerOrCompany_display','mission')
+                    //$location.path('/saler/partner/'+Id);
+                    window.location.href = 'bornhr://back';
                     MyCache.remove('finishedMission_come_from')
                     MyCache.remove('finishedMission_come_from_partnerId')
                 }else if (MyCache.get('finishedMission_come_from') == 'page_company_mission'){
 
                     var Id = MyCache.get('finishedMission_come_from_companyId');
-                    MyCache.put('saler_company_display','mission')
-                    $location.path('/saler/partner/'+Id);
+                    MyCache.put('saler_partnerOrCompany_display','mission')
+                    //$location.path('/saler/partner/'+Id);
+                    window.location.href = 'bornhr://back';
                     MyCache.remove('finishedMission_come_from')
                     MyCache.remove('finishedMission_come_from_companyId')
                 }
@@ -61,17 +108,9 @@
 
 
             }else {
-                $location.path('/saler')
+                $location.path('/menu')
             }
 
-        };
-
-        //Test for new Back
-        vm.back = function(){
-            MyCache.put('showClickMore','1');
-            MyCache.put('saler_partnerOrCompany_display','mission');
-
-            window.location.href = 'bornhr://back';
         };
 
 

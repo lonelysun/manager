@@ -47,6 +47,10 @@
                 toaster.pop('warning', "", "未选择商户！");
                 return true;
         	}
+        	if(vm.track.time=''){
+                toaster.pop('warning', "", "未选择时间！");
+                return true;
+        	}
 
 
            var yyyy = vm.track.time.getFullYear().toString();

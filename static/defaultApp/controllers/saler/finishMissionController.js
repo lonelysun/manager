@@ -103,6 +103,12 @@
 
 
 
+        //点击上传图片
+        vm.missionClick = function(){
+            angular.element("#File").click();
+        };
+
+
 
 
         //初始化
@@ -168,6 +174,6 @@
 
 }());
 
-function missionClick(){
-    return  $("#File").click();
-}
+//function missionClick(){
+//    return  $("#File").click();
+//}

@@ -1,7 +1,7 @@
 <div class="wrapper bm-move">
     <ul class="timeline"  id="infinite1" infinite-scroll='vm.getServices()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy'>
         <li class="tl-item" data-ng-repeat="message in vm.messages" >
-            <div class="tl-wrap" style="border-color: #ff4848;">
+            <div class="bm-tl-wrap" style="">
                 <span class="tl-date"><i class="bm-top icon-clock" style="padding-right:5px"></i>{{message.create_date}}</span>
                 <div class="tl-content">
                     <div>

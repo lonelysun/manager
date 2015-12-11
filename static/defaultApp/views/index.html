@@ -25,26 +25,26 @@
 <body ng-cloak style="background-color:white">
     <div ng-controller="NavbarController as vm"  class="h4 app-header navbar navbar-fixed-top" style="min-height: 0px;">
             <!-- navbar header -->
-            <div class="navbar-header bm-navbar-header text-center" ng-if="vm.showHeader()=='1'" style="line-height: 30px; padding-top: 20px;padding-bottom: 5px;">
+            <div class="bm-navbar-header text-center" ng-if="vm.showHeader()=='1'" style="line-height: 30px; padding-top: 24px;padding-bottom: 9px;">
 
-                <button ng-if="vm.getSaveModel()=='1'" data-ng-click="vm.save()" class="pull-right visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
+                <button ng-if="vm.getSaveModel()=='1'" data-ng-click="vm.save()" class="bm-head-button pull-right visible-xs dk" >
                   保存
                 </button>
-                <button ng-if="vm.getCreateModel()=='1'" data-ng-click="vm.create()" class="pull-right visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
+                <button ng-if="vm.getCreateModel()=='1'" data-ng-click="vm.create()" class="bm-head-button pull-right visible-xs dk" >
                   创建
                 </button>
-                <button ng-if="vm.getConfirmModel()=='1'" data-ng-click="vm.confirm()" class="pull-right visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
+                <button ng-if="vm.getConfirmModel()=='1'" data-ng-click="vm.confirm()" class="bm-head-button pull-right visible-xs dk" >
                   确认
                 </button>
-                <button ng-if="vm.getSubmitModel()=='1'" data-ng-click="vm.submit()" class="pull-right visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
+                <button ng-if="vm.getSubmitModel()=='1'" data-ng-click="vm.submit()" class="bm-head-button pull-right visible-xs dk" >
                   提交
                 </button>
-                <button ng-if="vm.getPlaceholder()=='1'" class="pull-right visible-xs dk" style="adding-bottom: 0px;padding-left: 32px;padding-right: 32px;">
+                <button ng-if="vm.getPlaceholder()=='1'" class="bm-head-button pull-right visible-xs dk" style="padding-left: 34px;padding-right: 34px;height: 2px;">
                 </button>
                 <img ng-if="vm.getSearchModel()=='1'"  data-ng-click="vm.headerSearch()" class="pull-right bm-img-back"  src="/born_manager/static/src/img/search.png">
                       <span>{{vm.title | limitTo:8}}{{vm.title.length > 8 ? '...' : ''}}</span>
                 <img ng-if="vm.getBackModel()=='1'" style="padding-top: 3px;padding-bottom: 3px;height: 29px;" data-ng-click="vm.headerBack()" class=" pull-left no-border bm-img-back"  src="/born_manager/static/src/img/back.png">
-                <button ng-if="vm.getCancelModel()=='1'" data-ng-click="vm.headerBack()" class="pull-left visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
+                <button ng-if="vm.getCancelModel()=='1'" data-ng-click="vm.headerBack()" class="bm-head-button pull-left visible-xs dk" >
                   取消
                 </button>
             </div>
@@ -55,8 +55,10 @@
 
     <!-- content -->
     <div class="app-content ng-scope m-n" style="background-color:white">
-        <div class="app-content-body fade-in-up ng-scope"  style="padding-bottom: 0px;background-color:white;height:100%">
-            <div ng-view style="height:100%;background-color:white" class="page-about" id="ng-view" ></div>
+        <div class="app-content-body fade-in-up ng-scope"  style="padding-bottom: 0px;background-color:white;">
+        <!--<div class="app-content-body fade-in-up ng-scope"  style="padding-bottom: 0px;background-color:white;height:100%">-->
+            <div ng-view style="background-color:white" class="" id="ng-view" ></div>
+            <!--<div ng-view style="height:100%;background-color:white" class="" id="ng-view" ></div>-->
             <toaster-container toaster-options="{'position-class': 'toast-top-center', 'close-button':false}"></toaster-container>
         </div>
     </div>

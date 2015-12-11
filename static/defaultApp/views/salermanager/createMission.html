@@ -1,7 +1,7 @@
 <div class="bm-move">
     <div class="bm-head" style="height:150px;">
         <div class="h2 text-center">
-            <input class="editable editable-click no-border text-center" placeholder="添加任务标题" style="background-color: inherit;padding-top: 50px;" data-ng-model="vm.track.name">
+            <input class="bm-placeholder editable editable-click no-border text-center" placeholder="添加任务标题" style="background-color: inherit;padding-top: 50px;" data-ng-model="vm.track.name">
         </div>
     </div>
     <div class="bm-main-three-line-wrapper" ng-if="vm.option=='8'">
@@ -12,7 +12,7 @@
                 <img ng-if="vm.track.img!=''" class="pull-right" ng-src="data:image/png;base64,{{vm.track.img}}" style="width:30px;border-radius: 20px;margin-top: -3px;">
                 <span ng-if="vm.track.salername!=''" style="padding-left:10px">{{vm.track.salername}}</span>
                 <span ng-if="vm.track.salername==''" style="padding-left:10px">请选择</span>
-                <span class="pull-left bm-left-font" style="font-size: 15px;">负责人</span>
+                <span class="pull-left bm-left-font" style="font-size: 15px;padding-right:3px">负责人</span>
             </div>
         </a>
     </div>
@@ -64,10 +64,10 @@
             <!--<input  id="CalendarShow" readonly  class="no-border" style="width: 50%;"-->
                                               <!--ng-model="vm.track.time" auto-close="false"-->
                                        <!--format="yyyy-MM-dd"  type="text" max-view="date" min-view="date" date-time  ng-model="vm.track.time" >-->
-            <label style="width: 50%;height: 10px;margin-bottom:0px">
+            <label style="width: 70%;height: 10px;margin-bottom:0px">
                 <input type="date" class="" style="background:0 0;border:1px inset;margin-top:-8px" ng-model="vm.track.time">
             </label>
-            <span class="pull-left bm-left-font" style="font-size: 15px;padding-right:18px">时间</span>
+            <span class="pull-left bm-left-font" style="font-size: 15px;padding-right:28px">时间</span>
         </div>
     </div>
 </div>

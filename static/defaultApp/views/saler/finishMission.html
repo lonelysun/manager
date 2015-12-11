@@ -1,32 +1,39 @@
 <div class="bm-move">
-<div class="no-bg bm-item" >
-    <span class="bm-one-line-left">主题</span>
-    <span>
-        <input type="text" class="editable editable-click no-border text-left"  placeholder="输入主题" data-ng-model="vm.finishMission.result_title"/>
-        <i class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="vm.finishMission.result_title=''"></i>
-    </span>
-</div>
-<a ng-click="vm.selectResults()">
     <div class="no-bg bm-item" >
-        <span class="bm-one-line-left">结果</span>
+        <span class="bm-one-line-left">主题</span>
         <span>
-            <!--<input  type="text" class="editable editable-click no-border text-left"  placeholder="选择类别" data-ng-model="vm.partner.category"/>-->
-            <span ng-repeat="result in vm.finishMission.results">{{result.name}}  </span>
-            <i class=" fa fa-angle-right pull-right" style="margin-left: 0px;" ></i>
+            <input type="text" class="editable editable-click no-border text-left"  placeholder="输入主题" data-ng-model="vm.finishMission.result_title"/>
+            <i ng-show="vm.finishMission.result_title !=''" class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="vm.finishMission.result_title=''"></i>
         </span>
     </div>
-</a>
-<!--任务说明-->
-<div class="bm-textarea-wrapper">
-    <textarea class="bm-textarea" ng-model="vm.finishMission.notes" rows="6" placeholder="请输入拜访记录.."></textarea>
-</div>
-<!--任务照片-->
-<div class="bm-textarea-wrapper">
-    <div>
-        <input ng-show="false" id="File" type="file" file-model="myFile" />
-
-        <img  ng-if="vm.finishMission.mission_img" ng-src="{{vm.finishMission.mission_img}}" onclick="missionClick()"  style="max-width:150px;max-height:150px;margin:0 auto;padding-bottom:15px;padding-top:10px" />
-        <img ng-hide="vm.finishMission.mission_img"  src="/born_manager/static/src/img/upload.png" name="upload" onclick="missionClick()" style="padding-top:10px;padding-bottom:10px;width:108px;height:108px">
+    <a ng-click="vm.selectResults()">
+        <div class="no-bg bm-item" >
+            <span class="bm-one-line-left">结果</span>
+            <span>
+                <!--<input  type="text" class="editable editable-click no-border text-left"  placeholder="选择类别" data-ng-model="vm.partner.category"/>-->
+                <span ng-repeat="result in vm.finishMission.results">{{result.name}}  </span>
+                <i class=" fa fa-angle-right pull-right" style="margin-left: 0px;" ></i>
+            </span>
+        </div>
+    </a>
+    <!--任务说明-->
+    <div class="bm-textarea-wrapper">
+        <textarea class="bm-textarea bm-placeholder-default" ng-model="vm.finishMission.notes" rows="6" placeholder="请输入拜访记录.."></textarea>
     </div>
-</div>
+    <!--任务照片-->
+    <div >
+        <div>
+            <input ng-show="false" id="File" type="file" file-model="myFile" />
+
+            <img  ng-if="vm.finishMission.mission_img" ng-src="{{vm.finishMission.mission_img}}" style="width:100%;padding-top:10px" />
+        </div>
+    </div>
+
+    <div class="bm-edit">
+        <a ng-click="vm.missionClick()">
+            <img class="bt-edit-img" src="/born_manager/static/src/img/saler/camera.png">
+        </a>
+    </div>
+
+
 </div>

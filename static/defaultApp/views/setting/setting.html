@@ -2,18 +2,18 @@
 <div class="show-hide-animation" >
     <div  class="h4 app-header navbar navbar-fixed-top" style="min-height: 0px;">
             <!-- navbar header -->
-            <div class="navbar-header bm-navbar-header text-center " style="line-height: 30px; margin-top: 20px;padding-bottom: 5px;">
-                <button ng-if="vm.getEditModel=='1'" data-ng-click="vm.headerEdit()" class="pull-right visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
+            <div class=" bm-navbar-header text-center ">
+                <button ng-if="vm.getEditModel=='1'" data-ng-click="vm.headerEdit()" class="bm-head-button pull-right visible-xs dk" >
                   编辑
                 </button>
-                <button ng-if="vm.getSaveModel=='1'" data-ng-click="vm.regiest()" class="pull-right visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
+                <button ng-if="vm.getSaveModel=='1'" data-ng-click="vm.regiest()" class="bm-head-button pull-right visible-xs dk" >
                   保存
                 </button>
                       个人资料
                 <a href="{{vm.backurl}}">
-                    <img ng-if="vm.getBackModel=='1'" data-ng-click="vm.headerBack()"  style="padding-top: 3px;padding-bottom: 3px;height: 29px;" class=" pull-left no-border bm-img-back"  src="/born_manager/static/src/img/back.png">
+                    <img ng-if="vm.getBackModel=='1'" data-ng-click="vm.headerBack()"  class=" pull-left no-border bm-img-back"  src="/born_manager/static/src/img/back.png">
                 </a>
-                <button ng-if="vm.getSaveModel=='1'" data-ng-click="vm.headerCancel()" class="pull-left visible-xs dk" style="color: #ff4848;padding-bottom: 0px;padding-top: 0px;">
+                <button ng-if="vm.getSaveModel=='1'" data-ng-click="vm.headerCancel()" class="bm-head-button pull-left visible-xs dk">
                   取消
                 </button>
             </div>
@@ -21,7 +21,7 @@
 
     </div>
     <div ng-hide="vm.edit()=='edit'" class="panel hbox panel-default no-border" style="margin-bottom: 0px;margin-top:56px">
-        <div class="panel-body text-center" style="padding: 20px;">
+        <div class="panel-body text-center" style="padding-top:35px;padding-bottom:15px;padding-right:20px;padding-left:20px">
             <div class="avatar">
                 <img data-ng-show="vm.settings.image==''" style="width:95px; text-align:center;" src="/born_manager/static/src/img/default_employee.png" class="img">
                 <img data-ng-show="vm.settings.image!=''" style="width:95px;text-align:center;" ng-src="data:image/png;base64,{{vm.settings.image}}" class="img">
@@ -74,24 +74,24 @@
                 {{vm.settings.team_name}}
             </div>
         </div>
-        <div class="no-bg bm-item">
+        <div class="no-bg bm-item" ng-if="">
             <div class="bm-top">
-                销售主管
+                团队主管
                 <img src="/born_manager/static/src/img/men.png" class="pull-right" style="width:25px;">
             </div>
             <div class="bm-main">
                 {{vm.settings.manager_name}}
             </div>
         </div>
-     <div class="" style="width:100%;bottom: 0px;">
+     <div class="" style="width:100%;bottom: 0px;padding-top: 45px;">
     <p style="width:80%;margin:0 auto;padding-top: 10px;padding-bottom: 10px;">
         <button type="submit" class="btn btn-lg btn-block" data-ng-click="vm.logout()" style="color:white;background-color:#ffa69a;">退出登录</button>
       </p>
  </div>
     </div>
 
-    <div ng-show="vm.edit()=='edit'" class="panel hbox panel-default no-border" style="margin-bottom: 0px;">
-        <div class="panel-body text-center" style="padding: 20px;">
+    <div ng-show="vm.edit()=='edit'" class="panel hbox panel-default no-border" style="margin-bottom: 0px;margin-top:56px">
+        <div class="panel-body text-center" style="padding-top:35px;padding-bottom:15px;padding-right:20px;padding-left:20px">
             <div class="  avatar">
                 <input ng-show="false" id="File" type="file" file-model="myFile"style="" />
                 <img data-ng-show="vm.reset.image==''"  onclick="changeimg()"  style="width:95px; text-align:center;" src="/born_manager/static/src/img/default_employee.png" class="img">

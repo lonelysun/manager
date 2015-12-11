@@ -1,31 +1,33 @@
 <div class="bm-move">
-<div class="no-bg bm-item" >
-    <span class="bm-one-line-left">主题</span>
-    <span>
-        {{vm.finishedMission.result_title}}
-    </span>
-</div>
-<div class="no-bg bm-item" >
-    <span class="bm-one-line-left">结果</span>
-    <span>
-        <span ng-repeat="result in vm.finishedMission.result_list" class="bm-b-all">{{result.name}}</span>
-    </span>
-</div>
-<!--任务说明-->
-<div>
-    <div class="no-bg bm-item">任务说明</div>
-    <div class="bm-textarea-wrapper">{{vm.finishedMission.notes}}</div>
-</div>
-<!--主管批注-->
-<div>
-    <div class="no-bg bm-item">主管批注</div>
-    <div class="bm-textarea-wrapper">{{vm.finishedMission.remark}}</div>
+    <div class="no-bg bm-item" >
+        <span class="bm-one-line-left">主题</span>
+        <span>
+            {{vm.finishedMission.result_title}}
+        </span>
+        <span ng-if="vm.finishedMission == 'done'" class="bm-b-all">已审批</span>
+    </div>
+    <div class="no-bg bm-item" >
+        <span class="bm-one-line-left">结果</span>
+        <span>
+            <span ng-repeat="result in vm.finishedMission.result_list" class="bm-b-all">{{result.name}}</span>
+        </span>
+    </div>
+    <!--任务说明-->
+    <div class="bm-show-missions">
+        <div class="bm-show-missions-first">任务说明</div>
+        <div class="bm-show-missions-second">{{vm.finishedMission.notes}}</div>
+    </div>
+    <!--主管批注-->
+    <div class="bm-show-missions">
+        <div class="bm-show-missions-first">主管批注</div>
+        <div class="bm-show-missions-second">{{vm.finishedMission.remark}}</div>
+    </div>
+
+    <!--任务照片-->
+    <div class="no-bg bm-show-missions-img">任务照片</div>
+    <div style="width: 100%;background-color: white">
+        <img style="width:100%" ng-show="vm.finishedMission.image_url" ng-src="{{vm.finishedMission.image_url}}">
+        <div class="bm-textarea-wrapper" ng-hide="vm.finishedMission.image_url">无</div>
+    </div>
 </div>
 
-<!--任务照片-->
-<div style="width: 100%;background-color: white">
-    <div class="no-bg bm-item">任务照片</div>
-    <img style="width:100%" ng-show="vm.finishedMission.image_url" ng-src="{{vm.finishedMission.image_url}}">
-    <div class="bm-textarea-wrapper" ng-hide="vm.finishedMission.image_url">无</div>
-</div>
-</div>

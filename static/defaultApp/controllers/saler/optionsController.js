@@ -134,6 +134,9 @@
 
 
         vm.save = function(){
+            console.info('---------->11');
+            console.info(vm.selectOption);
+
             var obj = angular.fromJson(vm.selectOption);
 
             MyCache.put('optionType',option);
@@ -261,6 +264,10 @@
             }
         };
 
+        vm.hasChoosen = function(){
+            displayModel.displaySave = '1';
+        };
+
         //vm.setDisplay = function(display){
         //    vm.display = display;
         //};
@@ -283,13 +290,24 @@
             vm.display = 'info';
             displayModel.showHeader = '1';
 
-            if (vm.needAutoSave){
+            //console.info('---->1')
+            //console.info(vm.selectOption)
+            //debugger;
 
+            if (vm.needAutoSave){
+                //debugger;
                 displayModel.displaySave = '0';
             }
             else{
-                displayModel.displaySave = '1';
-                displayModel.born_save = vm.save;
+
+                //if(vm.selectOption.id == undefined){
+                //    //debugger;
+                //    displayModel.displaySave = '0';
+                //}else{
+                        //debugger;
+                    displayModel.displaySave = '0';
+                    displayModel.born_save = vm.save;
+                //}
 
             }
 
