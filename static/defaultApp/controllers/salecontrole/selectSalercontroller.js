@@ -8,7 +8,7 @@
 
     	var vm = this;
     	vm.salers = [];
-        vm.salerid ='';
+        vm.salerid ={};
         vm.role_option = MyCache.get('role_option');
 
         vm.busy=false;

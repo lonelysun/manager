@@ -40,26 +40,23 @@
 
         //由url解析
         var option = $routeParams.option;
-        console.info('which option ?');
-        console.info(option);
 
         environment = MyCache.get('environment');
-        console.info('what environment ?');
-        console.info(environment);
-
 
         if (option=='states' ||option=='areas' || option=='subdivides'||option=='sources1'){
                 vm.needAutoSave = true;
         }
-            else if(option=='sources2' && environment=='mark'){
+        else if(option=='sources2' && environment=='mark'){
                 vm.needAutoSave = true;
         }
-            else if (option == 'businesses'){
+        else if (option == 'businesses'){
             var environment_selectPartner = MyCache.get('environment_selectPartner');
             if (environment_selectPartner == '1'){
                 vm.needAutoSave = true;
             }
         }
+
+        //向服务器获取选项数据
         vm.getOptions = function(){
 
             if(vm.busy)return;
@@ -81,9 +78,9 @@
                     toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
             });
 
-
         };
 
+        //自动跳转的保存
         vm.autoSave = function(selectOption){
             var obj = angular.fromJson(selectOption);
             MyCache.put('optionType',option);
@@ -91,6 +88,7 @@
 
             var partnerId = MyCache.get('partnerId');
 
+            //判断保存后转向哪个页面
             switch (option){
                 case 'states':
                     MyCache.put('environment',obj.id);
@@ -119,9 +117,7 @@
                     $location.path('/saler/options/sources2');
                     break;
                 case 'sources2':
-
                     environment = MyCache.get('environment');
-
                     MyCache.put('environment', obj.id);
                     MyCache.put('environment_oldId',environment);
                     MyCache.put('environment_name', obj.name);
@@ -132,11 +128,8 @@
         };
 
 
-
+        //手动保存
         vm.save = function(){
-            console.info('---------->11');
-            console.info(vm.selectOption);
-
             var obj = angular.fromJson(vm.selectOption);
 
             MyCache.put('optionType',option);
@@ -251,10 +244,9 @@
 
         };
 
+        //显示 打钩
         vm.showImage = function(option){
-            //console.info('---in showImage');
           var obj = angular.fromJson(vm.selectOption);
-
 
             if(option.id == obj.id){
                 return '1';
@@ -264,17 +256,13 @@
             }
         };
 
+        //选中后显示 保存 选项
         vm.hasChoosen = function(){
             displayModel.displaySave = '1';
         };
 
-        //vm.setDisplay = function(display){
-        //    vm.display = display;
-        //};
-
         //初始化
         function init() {
-
             displayModel.showHeader='1';
             displayModel.displayCancel='0';
             displayModel.displayBack = '1';
@@ -286,36 +274,19 @@
 
             displayModel.headerBack = vm.back;
 
-            //vm.getOptions();
             vm.display = 'info';
             displayModel.showHeader = '1';
 
-            //console.info('---->1')
-            //console.info(vm.selectOption)
-            //debugger;
-
             if (vm.needAutoSave){
-                //debugger;
                 displayModel.displaySave = '0';
             }
             else{
 
-                //if(vm.selectOption.id == undefined){
-                //    //debugger;
-                //    displayModel.displaySave = '0';
-                //}else{
-                        //debugger;
-                    displayModel.displaySave = '0';
-                    displayModel.born_save = vm.save;
-                //}
+                displayModel.displaySave = '0';
+                displayModel.born_save = vm.save;
 
             }
-
             javascript: scroll(0,0);
-
-            //$location.hash('atTop');
-            //$anchorScroll();
-
 
         }
 

@@ -141,6 +141,7 @@ class born_manager(http.Controller):
         push_obj = request.registry.get('born.push')
         domain=[('type','=','internal'),('user_id','=',int(uid))]
         service_ids = push_obj.search(request.cr, SUPERUSER_ID, domain,int(page_index),10,order="create_date desc", context=request.context)
+        push_obj.write(request.cr,SUPERUSER_ID,service_ids,{'state':'done'})
         for push in push_obj.browse(request.cr, SUPERUSER_ID,service_ids, context=request.context):
             val_message={
                  'title': push.title or '',
@@ -148,6 +149,7 @@ class born_manager(http.Controller):
                  'create_date' : push.create_date[11:16],
             }
             data.append(val_message)
+
         return json.dumps(data,sort_keys=True)
 
     #获取工作台信息

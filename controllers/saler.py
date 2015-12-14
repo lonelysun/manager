@@ -116,10 +116,6 @@ class born_manager_sale(http.Controller):
             hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
             hr_id = hr_id_list[0] or ''
 
-
-
-        company_obj = request.registry['res.company']
-
         sql=u"""
             with tmp_a as (select b.company_id ,b.create_date::date as create_day,coalesce(count(*),0) cnt from born_operate_sync b
                 group by b.company_id ,b.create_date::date) ,
@@ -142,17 +138,11 @@ class born_manager_sale(http.Controller):
 
         companys_list = []
 
-
         for each_company in companys:
             if each_company['days'] == 0:
                 daily_average = 0
             else:
                 daily_average = round((each_company['cnt_operate'])/(each_company['days']),1)
-
-                # _logger.info('----daily_average stuff------')
-                # _logger.info(each_company['cnt_operate'])
-                # _logger.info(each_company['days'])
-                # _logger.info(daily_average)
 
             vals = {
                 'company_id':each_company['id'],
@@ -191,11 +181,10 @@ class born_manager_sale(http.Controller):
             hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
             hr_id = hr_id_list[0] or ''
 
-
-
         mission_obj = request.registry['born.partner.track']
 
         # 根据前台传来的参数判断获取已完成的任务还是未完成的任务
+        ids = []
         if require_mission_state == 'ok':
             if keyword == '':
                 ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','in',('finished','done'))],int(page_index),5, order="write_date desc", context=request.context)
@@ -212,11 +201,9 @@ class born_manager_sale(http.Controller):
         missions_list = []
 
         for each_obj in objs:
-            #考虑改写 去掉不必要的字段contacts_phone,contacts_address,要跟创建任务时一致
 
             mission_id = each_obj.id
             company_id = each_obj.track_id.id
-            # mission_company_name = each_obj.track_id.name
             mission_name = each_obj.name or u'无'
             mission_contacts_phone = each_obj.contacts_phone or u'无'
             mission_contacts_name = each_obj.contacts_id.name or u'无'
@@ -227,17 +214,13 @@ class born_manager_sale(http.Controller):
             mission_address = each_obj.contacts_address or u'无'
             mission_state = each_obj.state
 
-
             state_name_dict = {'start':u'开始','pause':u'暂停','finished':u'完成','notstart':u'未开始'}
 
             mission_state_name = state_name_dict.get(mission_state)
 
-
-
             vals = {
                 'mission_id':mission_id,
                 'company_id':company_id,
-                # 'mission_company_name':mission_company_name,
                 'mission_name':mission_name,
                 'mission_state_name':mission_state_name,
                 'mission_contacts_phone':mission_contacts_phone,
@@ -372,10 +355,6 @@ class born_manager_sale(http.Controller):
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
-        page_index=post.get('index',0)
-
-        keyword=post.get('keyword','')
-
         if int(post.get('hr_id_for_manager')) != 0:
             hr_id = int(post.get('hr_id_for_manager'))
         else:
@@ -401,22 +380,26 @@ class born_manager_sale(http.Controller):
         request.cr.execute(sql)
         res_count=request.cr.fetchall()
 
-
         partner_number= int(res_count and res_count[0][0] or 0)
-
 
         # 获取头像
         hr_obj = request.registry['hr.employee']
         obj = hr_obj.browse(request.cr, SUPERUSER_ID,hr_id,context=request.context)
         image = obj.user_id.image_medium
 
-
+        # 获取是否有未读信息
+        push_obj = request.registry.get('born.push')
+        push_domain=[('type','=','internal'),('user_id','=',int(uid))]
+        service_ids = push_obj.search(request.cr, SUPERUSER_ID, push_domain,0,1,order="create_date desc", context=request.context)
+        push = push_obj.browse(request.cr, SUPERUSER_ID,service_ids, context=request.context)
 
 
         data = {
             'mission_number':mission_number,
             'partner_number':partner_number,
-            'image':image
+            'image':image,
+            'push_state' : push.state,
+
 
         }
 
@@ -429,18 +412,12 @@ class born_manager_sale(http.Controller):
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
-
-
         partner_obj = request.registry['res.partner']
         partner = partner_obj.browse(request.cr, SUPERUSER_ID,int(partner_id),context=request.context)
 
 
         # 联系人数据
         contact_list = []
-
-        # _logger.info('--------------- upper---------')
-        # _logger.info(partner)
-        # _logger.info(partner.child_ids)
         for contact in partner.child_ids:
             contact_data = {
                 'id': contact.id,
@@ -452,7 +429,6 @@ class born_manager_sale(http.Controller):
                 'qq': contact.qq or ''
             }
             contact_list.append(contact_data)
-
 
 
         # 来源数据
@@ -506,16 +482,11 @@ class born_manager_sale(http.Controller):
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
-
-        # hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-        # hr_id = hr_id_list[0] or ''
-
         if int(post.get('hr_id_for_manager')) != 0:
             hr_id = int(post.get('hr_id_for_manager'))
         else:
             hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
             hr_id = hr_id_list[0] or ''
-
 
         mission_obj = request.registry['born.partner.track']
 
@@ -523,12 +494,11 @@ class born_manager_sale(http.Controller):
         page_index=post.get('index',0)
         require_mission_state = post.get('mission_state')
 
+        ids = []
         if require_mission_state == 'ok':
             ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',int(partner_id)),('state','in',('finished','done'))],int(page_index),10, order="write_date desc", context=request.context)
         elif require_mission_state == 'notOk':
             ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',int(partner_id)),('state','not in',('finished','done'))],int(page_index),10, order="write_date desc", context=request.context)
-
-
 
         objs = mission_obj.browse(request.cr, SUPERUSER_ID,ids, context=request.context)
 
@@ -573,17 +543,13 @@ class born_manager_sale(http.Controller):
             }
             missions_list.append(vals)
 
-
-
         ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',partner_id),('state','in',('finished','done'))],context=request.context)
         missions_finished_numbers = len(ids)
-
 
         data = {
             'missions_list':missions_list,
             'missions_finished_numbers':missions_finished_numbers
         }
-
 
         return json.dumps(data,sort_keys=True)
 
@@ -595,7 +561,6 @@ class born_manager_sale(http.Controller):
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
         # 考虑取消接受参数partner_id,因为在  post.get('id',0)里 有
-
 
         vals = {}
         vals['name'] = post.get('name','')
@@ -609,7 +574,6 @@ class born_manager_sale(http.Controller):
             vals['subdivide_id'] = obj.area_id.id
             vals['area_id'] = obj.area_id.country_id.id
             vals['state_id'] = obj.area_id.country_id.country_id.id
-
 
 
         vals['street'] = post.get('street','')
@@ -647,9 +611,6 @@ class born_manager_sale(http.Controller):
                     }
                     vals['child_ids'].append((0,0,contact_vals))
 
-
-        #end
-
         vals['ascription'] =  post.get('source1_id','')
 
         if  vals['ascription'] == 'sale':
@@ -673,14 +634,16 @@ class born_manager_sale(http.Controller):
             # 推送消息
             manager_id=request.session.manager_id
 
-
-
             if manager_id:
                 hr_obj=request.registry.get('hr.employee')
                 hr=hr_obj.browse(request.cr,SUPERUSER_ID,int(manager_id),request.context)
 
-                title=u'商户资料已更新'
-                message=u"商户:%s 资料已更新" % (vals['name'])
+                res_user_obj = request.registry.get('res.users')
+                obj = res_user_obj.browse(request.cr,SUPERUSER_ID,uid,request.context)
+                user_name = obj.name or ''
+
+                title=u'商户资料更新'
+                message=u"%s 更新了商户 : %s " % (user_name, vals['name'])
                 push_obj = request.registry.get('born.push')
                 vm = {
                     'title':title,
@@ -700,14 +663,17 @@ class born_manager_sale(http.Controller):
             # 推送消息
             manager_id=request.session.manager_id
 
-
-
             if manager_id:
                 hr_obj=request.registry.get('hr.employee')
                 hr=hr_obj.browse(request.cr,SUPERUSER_ID,int(manager_id),request.context)
 
+                res_user_obj = request.registry.get('res.users')
+                obj = res_user_obj.browse(request.cr,SUPERUSER_ID,uid,request.context)
+                user_name = obj.name or ''
+
                 title=u'新商户建立'
-                message=u"新商户:%s 已经建立" % (vals['name'])
+
+                message=u"%s 建立了新商户 : %s " % (user_name, vals['name'])
                 push_obj = request.registry.get('born.push')
                 vm = {
                     'title':title,
@@ -719,7 +685,6 @@ class born_manager_sale(http.Controller):
                     'message_type':'9',
                 }
                 push_id = push_obj.create(request.cr,SUPERUSER_ID,vm,context=request.context)
-
 
             return json.dumps({'id':id},sort_keys=True)
 
@@ -738,7 +703,6 @@ class born_manager_sale(http.Controller):
             hr_id = hr_id_list[0] or ''
         
         record_limit = 10
-
 
         option = option
         environment = post.get('environment','')
@@ -773,7 +737,6 @@ class born_manager_sale(http.Controller):
         elif option == 'businesses':
             subdivide_id = int(environment)
 
-
             # 这边有字段取名字上留下的坑，要小心
             obj = request.registry.get('born.business')
             ids = obj.search(request.cr, SUPERUSER_ID,[('area_id','=',subdivide_id)],page_index,record_limit, context=request.context)
@@ -781,14 +744,9 @@ class born_manager_sale(http.Controller):
 
         elif option == 'contacts':
             partner_id = int(environment)
-
             obj = request.registry.get('res.partner')
-
-
             ids = obj.search(request.cr, SUPERUSER_ID,[('parent_id','=',partner_id)],page_index,record_limit,context=request.context)
-
             data = obj.read(request.cr, SUPERUSER_ID,ids,fields=['name','mobile'], context=request.context)
-
 
         elif option == 'sources1':
             if page_index < 2:
@@ -886,6 +844,7 @@ class born_manager_sale(http.Controller):
                 business_id = int(environment)
 
                 obj = request.registry.get('res.partner')
+                #!!Change
                 # !!! This is true
                 # ids = obj.search(request.cr, SUPERUSER_ID,[('business_id','=',business_id),('has_installed','=','false')],page_index,record_limit,context=request.context)
                 #上面这个多个限制条件是对的
@@ -920,17 +879,11 @@ class born_manager_sale(http.Controller):
         return url
 
 
-
-
-
-
     @http.route('/manager/saler/missionresults', type='http', auth="none",)
     def saler_mission_results(self, **post):
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
-
-
 
         page_index = int(post.get('pageIndex',0))
         record_limit = 10
@@ -942,16 +895,13 @@ class born_manager_sale(http.Controller):
         return json.dumps(data,sort_keys=True)
 
 
-
     @http.route('/manager/saler/finishMission/post', type='http', auth="none",)
     def saler_finish_mission_post(self, **post):
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
-
-
-        mission_id = int(post.get('id'));
+        mission_id = int(post.get('id'))
 
         vals = {}
         vals['result_title'] = post.get('result_title','')
@@ -965,8 +915,6 @@ class born_manager_sale(http.Controller):
 
         vals['result_ids'] = result_ids_list
 
-
-
         vals['notes'] = post.get('notes','')
         if post.get('mission_img'):
             vals['image_url'] = self.upLoadS3(post.get('mission_img'))
@@ -977,20 +925,21 @@ class born_manager_sale(http.Controller):
 
         obj.write(request.cr, SUPERUSER_ID,mission_id,vals,context=request.context)
 
-
         # 推送消息
         mission_name = obj.browse(request.cr, SUPERUSER_ID,mission_id,context=request.context).name
-
         manager_id=request.session.manager_id
 
-
-
         if manager_id:
-            hr_obj=request.registry.get('hr.employee')
-            hr=hr_obj.browse(request.cr,SUPERUSER_ID,int(manager_id),request.context)
+            hr_obj = request.registry.get('hr.employee')
+            hr = hr_obj.browse(request.cr,SUPERUSER_ID,int(manager_id),request.context)
 
-            title=u'任务已批注'
-            message=u"任务：%s 已经完成。" % (mission_name)
+
+            res_user_obj = request.registry.get('res.users')
+            obj = res_user_obj.browse(request.cr,SUPERUSER_ID,uid,request.context)
+            user_name = obj.name or ''
+
+            title=u'任务完成'
+            message=u"%s 完成了 %s" % (user_name, mission_name)
             push_obj = request.registry.get('born.push')
             vm = {
                 'title':title,
@@ -1003,11 +952,7 @@ class born_manager_sale(http.Controller):
             }
             push_id = push_obj.create(request.cr,SUPERUSER_ID,vm,context=request.context)
 
-
-
         return json.dumps(True,sort_keys=True)
-
-
 
     @http.route('/manager/saler/changeMissionState/post', type='http', auth="none",)
     def saler_change_mission_state(self, **post):
@@ -1035,8 +980,6 @@ class born_manager_sale(http.Controller):
         for each_obj in obj.result_ids:
             result_list.append({'name':each_obj.name})
 
-
-
         data = {
             'result_title':obj.result_title or '',
             'result_list':result_list,
@@ -1062,14 +1005,11 @@ class born_manager_sale(http.Controller):
         page_index=post.get('pageIndex',0)
 
 
-
         # 由company_id 获得对对应的partner_id
         instance_of_company = company_obj.browse(request.cr, SUPERUSER_ID,company_id,context=request.context)
         partner_id = instance_of_company.partner_id.id
 
         ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',partner_id),('state','in',('done','finished'))],int(page_index),5, context=request.context)
-
-
         objs = mission_obj.browse(request.cr, SUPERUSER_ID,ids, context=request.context)
 
         missions_list = []

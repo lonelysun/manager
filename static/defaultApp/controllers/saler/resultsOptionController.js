@@ -7,17 +7,15 @@
                                            $timeout, $route,config, dataService,toaster,displayModel,MyCache) {
 
     	var vm = this;
-    	var missionId = ($routeParams.missionId) ? parseInt($routeParams.missionId) : 0;
-
         vm.shops = [];
     	vm.keyword = '';
-
         vm.busy=false;
         vm.isLoad=false;
-
         vm.selected = [];
         vm.selectedTags = [];
         vm.results = [];
+
+        var missionId = ($routeParams.missionId) ? parseInt($routeParams.missionId) : 0;
 
         vm.cancel = function(){
             $location.path('/saler/finishMission/'+ missionId);
@@ -29,13 +27,9 @@
             	toaster.pop('warning', "系统提示", "未选择结果");
                 return;
             }
-        	//var da = {"results" : JSON.stringify(vm.selected)};
-
 
             MyCache.put('selectResults',vm.selected);
             MyCache.put('selectedTags',vm.selectedTags);
-
-            //need get missionId first
 
             $location.path('/saler/finishMission/'+ missionId);
 

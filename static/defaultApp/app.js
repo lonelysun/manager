@@ -404,6 +404,11 @@
 	            templateUrl: viewBase + 'searchresult/searchresult.html',
 	            controllerAs: 'vm'
 	        })
+			.when('/selectpartner', {
+	            controller: 'SelectPartnerController',
+	            templateUrl: viewBase + 'salermanager/selectPartner.html',
+	            controllerAs: 'vm'
+	        })
 			.otherwise({ redirectTo: '/menus' });
     }]);
     

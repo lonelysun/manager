@@ -42,9 +42,8 @@
     <!--Navbar-->
     <div class="no-border text-center bm-mid-nav">
     	<div>
-        	<button ng-class="{'missions': 'bm-active'}[vm.display]" ng-click="vm.setDisplay('missions')" class="bg-white no-border bm-top-btn-three">任务</button>
-        	<button ng-class="{'partners': 'bm-active'}[vm.display]" ng-click="vm.setDisplay('partners')" class="bg-white no-border bm-top-btn-three">商户</button>
-        	<button ng-class="{'companys': 'bm-active'}[vm.display]" ng-click="vm.setDisplay('companys')" class="bg-white no-border bm-top-btn-three">公司</button>
+        	<button ng-class="{'missions': 'bm-active'}[vm.display]" ng-click="vm.setDisplay('missions')" class="bg-white no-border bm-top-btn-two">任务</button>
+        	<button ng-class="{'companys': 'bm-active'}[vm.display]" ng-click="vm.setDisplay('companys')" class="bg-white no-border bm-top-btn-two">公司</button>
     	</div>
 	</div>
 
@@ -112,19 +111,6 @@
     </div>
 
 
-    <!--商户-->
-    <div>
-        <div  ng-if="vm.display=='partners'" id="infinite3" infinite-scroll='vm.getPartners()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
-
-            <a ng-href="#saler/partner/{{partner.partner_id}}" ng-repeat="partner in vm.partners">
-            <div  class="no-bg bm-item">
-                <span class="bm-main-three-line-title-font">{{partner.partner_name}}</span>
-                <span class="pull-right bm-main-two-line-title-right-font-grey">共{{partner.missions_count}}任务<i class=" fa fa-fw fa-angle-right text"></i></span>
-            </div>
-            </a>
-        </div>
-
-    </div>
 
     <!--公司-->
     <div>

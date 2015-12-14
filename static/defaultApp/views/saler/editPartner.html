@@ -1,133 +1,104 @@
 <div class="bm-move">
-<div class="no-bg bm-item" >
-    <span class="bm-one-line-left">商户</span>
-    <span>
-        <input type="text" class="editable editable-click no-border text-left"  placeholder="输入名称" data-ng-model="vm.partner.name"/>
-        <i ng-show="vm.partner.name!=''" class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="vm.partner.name=''"></i>
-    </span>
-</div>
-<a ng-click="vm.jump('categories')">
     <div class="no-bg bm-item" >
-        <span class="bm-one-line-left">类别</span>
+        <span class="bm-one-line-left">商户</span>
         <span>
-            <!--<input  type="text" class="editable editable-click no-border text-left"  placeholder="选择类别" data-ng-model="vm.partner.category"/>-->
-            {{vm.partner.category}}
-            <i class=" fa fa-angle-right pull-right" style="margin-left: 0px;" ></i>
+            <input type="text" class="editable editable-click no-border text-left"  placeholder="输入名称" data-ng-model="vm.partner.name"/>
+            <i ng-show="vm.partner.name!=''" class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="vm.partner.name=''"></i>
         </span>
     </div>
-</a>
-<a ng-click="vm.jump('states')">
-    <div class="no-bg bm-item" >
-        <span class="bm-one-line-left">商圈</span>
-        <span>
-            <!--<input  type="text" class="editable editable-click no-border text-left"  placeholder="选择商圈" data-ng-model="vm.partner.bussiness"/>-->
-            {{vm.partner.bussiness}}
-            <i class=" fa fa-angle-right pull-right" style="margin-left: 0px;" ></i>
-        </span>
-    </div>
-</a>
-<div class="no-bg bm-item" >
-    <span class="bm-one-line-left">地址</span>
-    <span>
-        <input  type="text" class="editable editable-click no-border text-left"  placeholder="输入地址" data-ng-model="vm.partner.street"/>
-        <i ng-show="vm.partner.street!=''" class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="vm.partner.street=''"></i>
-    </span>
-</div>
-<!--<div  ng-repeat="contact in vm.partner.contacts">-->
-    <!--<div class="no-bg bm-item" >-->
-        <!--<span class="bm-one-line-left">联系人</span>-->
-        <!--<span>-->
-            <!--<input  type="text" class="editable editable-click no-border text-left"  placeholder="输入联系人" data-ng-model="contact.name"/>-->
-            <!--<i class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="vm.clear('email')"></i>-->
-        <!--</span>-->
-    <!--</div>-->
-    <!--&lt;!&ndash;<div class="no-bg bm-item" >&ndash;&gt;-->
-        <!--&lt;!&ndash;<span class="bm-one-line-left">手机</span>&ndash;&gt;-->
-        <!--&lt;!&ndash;<span>&ndash;&gt;-->
-            <!--&lt;!&ndash;<input  type="text" class="editable editable-click no-border text-left"  placeholder="输入号码" data-ng-model="contact.mobile"/>&ndash;&gt;-->
-            <!--&lt;!&ndash;<i class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="vm.clear('email')"></i>&ndash;&gt;-->
-        <!--&lt;!&ndash;</span>&ndash;&gt;-->
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--</div>-->
-<div  ng-repeat="contact in vm.partner.contacts">
-    <a ng-click="vm.editContact(contact)">
-        <div class="no-bg bm-item">
-            <span class="bm-one-line-left">联系人</span>
-            <span>{{contact.name}}     {{contact.mobile}}</span>
+    <a ng-click="vm.jump('categories')">
+        <div class="no-bg bm-item" >
+            <span class="bm-one-line-left">类别</span>
+            <span>
+                {{vm.partner.category}}
+                <i class=" fa fa-angle-right pull-right" style="margin-left: 0px;" ></i>
+            </span>
         </div>
     </a>
+    <a ng-click="vm.jump('states')">
+        <div class="no-bg bm-item" >
+            <span class="bm-one-line-left">商圈</span>
+            <span>
+                {{vm.partner.bussiness}}
+                <i class=" fa fa-angle-right pull-right" style="margin-left: 0px;" ></i>
+            </span>
+        </div>
+    </a>
+    <div class="no-bg bm-item" >
+        <span class="bm-one-line-left">地址</span>
+        <span>
+            <input  type="text" class="editable editable-click no-border text-left"  placeholder="输入地址" data-ng-model="vm.partner.street"/>
+            <i ng-show="vm.partner.street!=''" class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="vm.partner.street=''"></i>
+        </span>
+    </div>
+    <div  ng-repeat="contact in vm.partner.contacts">
+        <a ng-click="vm.editContact(contact)">
+            <div class="no-bg bm-item">
+                <span class="bm-one-line-left">联系人</span>
+                <span>{{contact.name}}     {{contact.mobile}}</span>
+            </div>
+        </a>
+    </div>
+
+    <div class="no-bg bm-item" style="text-align: center">
+       <p style="width:100%">
+            <button type="submit" style="background:#ffffff;border:0"data-ng-click="vm.createContact()"><i class="icon-plus" style="padding-right:10px; color:#ffa499"></i>添加联系人</button>
+        </p>
+    </div>
+
+    <a ng-click="vm.jump('sources1')">
+        <div class="no-bg bm-item" >
+            <span class="bm-one-line-left">来源</span>
+            <span>
+                {{vm.partner.source}}
+                <i class=" fa fa-angle-right pull-right" style="margin-left: 0px;" ></i>
+            </span>
+        </div>
+    </a>
+    <a ng-click="vm.jump('sizes')">
+        <div class="no-bg bm-item" >
+            <span class="bm-one-line-left">规模</span>
+            <span>
+                {{vm.partner.size}}
+                <i class=" fa fa-angle-right pull-right" style="margin-left: 0px;" ></i>
+            </span>
+        </div>
+    </a>
+    <a ng-click="vm.jump('environments')">
+        <div class="no-bg bm-item" >
+            <span class="bm-one-line-left">环境</span>
+            <span>
+                {{vm.partner.environment}}
+                <i class=" fa fa-angle-right pull-right" style="margin-left: 0px;"></i>
+            </span>
+        </div>
+    </a>
+    <a ng-click="vm.jump('employees')">
+        <div class="no-bg bm-item" >
+            <span class="bm-one-line-left">员工</span>
+            <span>
+                {{vm.partner.employee}}
+                <i class=" fa fa-angle-right pull-right" style="margin-left: 0px;" ></i>
+            </span>
+        </div>
+    </a>
+    <a ng-click="vm.jump('rooms')">
+        <div class="no-bg bm-item" >
+            <span class="bm-one-line-left">房间</span>
+            <span>
+                {{vm.partner.room}}
+                <i class=" fa fa-angle-right pull-right" style="margin-left: 0px;" ></i>
+            </span>
+        </div>
+    </a>
+    <div class="no-bg bm-item" >
+        <span class="bm-one-line-left">备注</span>
+        <span>
+            <input ng-focus="vm.getFocus()" ng-blur="vm.getBlur()" btype="text" class="editable editable-click no-border text-left"  placeholder="输入备注" data-ng-model="vm.partner.comment"/>
+            <i ng-show="vm.partner.comment!=''" class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="vm.partner.comment=''"></i>
+        </span>
+    </div>
 </div>
-
-<div class="no-bg bm-item" style="text-align: center">
-   <p style="width:100%">
-        <button type="submit" style="background:#ffffff;border:0"data-ng-click="vm.createContact()"><i class="icon-plus" style="padding-right:10px; color:#ffa499"></i>添加联系人</button>
-    </p>
-</div>
-
-
-
-
-
-<a ng-click="vm.jump('sources1')">
-    <div class="no-bg bm-item" >
-        <span class="bm-one-line-left">来源</span>
-        <span>
-            <!--<input  type="text" class="editable editable-click no-border text-left"  placeholder="选择来源" data-ng-model="vm.partner.source"/>-->
-            {{vm.partner.source}}
-            <i class=" fa fa-angle-right pull-right" style="margin-left: 0px;" ></i>
-        </span>
-    </div>
-</a>
-<a ng-click="vm.jump('sizes')">
-    <div class="no-bg bm-item" >
-        <span class="bm-one-line-left">规模</span>
-        <span>
-            <!--<input  type="text" class="editable editable-click no-border text-left"  placeholder="选择规模" data-ng-model="vm.partner.size"/>-->
-            {{vm.partner.size}}
-            <i class=" fa fa-angle-right pull-right" style="margin-left: 0px;" ></i>
-        </span>
-    </div>
-</a>
-<a ng-click="vm.jump('environments')">
-    <div class="no-bg bm-item" >
-        <span class="bm-one-line-left">环境</span>
-        <span>
-            <!--<input  type="text" class="editable editable-click no-border text-left"  placeholder="选择环境" data-ng-model="vm.partner.environment"/>-->
-            {{vm.partner.environment}}
-            <i class=" fa fa-angle-right pull-right" style="margin-left: 0px;"></i>
-        </span>
-    </div>
-</a>
-<a ng-click="vm.jump('employees')">
-    <div class="no-bg bm-item" >
-        <span class="bm-one-line-left">员工</span>
-        <span>
-            <!--<input  type="text" class="editable editable-click no-border text-left"  placeholder="选择员工" data-ng-model="vm.partner.employee"/>-->
-            {{vm.partner.employee}}
-            <i class=" fa fa-angle-right pull-right" style="margin-left: 0px;" ></i>
-        </span>
-    </div>
-</a>
-<a ng-click="vm.jump('rooms')">
-    <div class="no-bg bm-item" >
-        <span class="bm-one-line-left">房间</span>
-        <span>
-            <!--<input  type="text" class="editable editable-click no-border text-left"  placeholder="选择房间" data-ng-model="vm.partner.room"/>-->
-            {{vm.partner.room}}
-            <i class=" fa fa-angle-right pull-right" style="margin-left: 0px;" ></i>
-        </span>
-    </div>
-</a>
-<div class="no-bg bm-item" >
-    <span class="bm-one-line-left">备注</span>
-    <span>
-        <input type="text" class="editable editable-click no-border text-left"  placeholder="输入备注" data-ng-model="vm.partner.comment"/>
-        <i ng-show="vm.partner.comment!=''" class="fa-times-circle fa pull-right" style="margin-left: 0px;"  data-ng-click="vm.partner.comment=''"></i>
-    </span>
-
-</div>
-</div>
-<!--<button ng-click="vm.test()"></button>-->
 
 
 

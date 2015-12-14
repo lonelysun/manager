@@ -101,6 +101,9 @@
         vm.headerBack = function(){
             displayModel.headerBack();
         }
+        vm.search = function(){
+            displayModel.born_search();
+        }
     };
 
     NavbarController.$inject = injectParams;

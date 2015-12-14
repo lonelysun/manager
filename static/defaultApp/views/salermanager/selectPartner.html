@@ -1,0 +1,17 @@
+    <div class="bm-move" style="background-color:white">
+        <div  id="infinite1" infinite-scroll='vm.getPartnerList()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+            <div  ng-repeat="option in vm.partners" class="no-bg bm-item">
+                <label style="display: block;">
+                    <div>
+                        <input class="pull-right" type="radio"  value="{{option}}" data-ng-model="vm.partnerid" style="display:none">
+                        <img ng-if="vm.showimg(option)=='0'" src="/born_manager/static/src/img/saler/finished.png" class="pull-right" style="width:14px;height:12px">
+                        <i class="pull-right"></i>
+                        <div style="width: 100%;color: black;padding-left: 10px;">
+                            {{option.name}}
+                        </div>
+                    </div>
+                </label>
+            </div>
+        </div>
+    </div>
+<div style="height:60px; line-height: 60px;background-color:white" ng-show="vm.busy" class="text-center" >正在加载...</div>

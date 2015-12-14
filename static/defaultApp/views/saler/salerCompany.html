@@ -8,11 +8,11 @@
 
 
     <div ng-if="vm.display=='info'">
-    <div class="panel">
+    <div class="bm-panel">
 
         <div>
             <div class="panel-body text-center" style="padding: 20px;">
-                <div class="avatar m-r">
+                <div class="avatar">
                     <img  data-ng-show="vm.company.logo ==''" style="width:95px; height:95px; text-align:center;" src="/born_manager/static/src/img/default_company.png" class="img">
                     <img data-ng-show="vm.company.logo !=''" style="width:95px;height:95px; text-align:center;" ng-src="data:image/png;base64,{{vm.company.logo}}" class="img">
                </div>
@@ -137,7 +137,7 @@
 
                         <li class="tl-item">
                             <div class="bm-timeline-red">
-                                <span class="bt-timeline-left tl-date">最后登录时间</span>
+                                <span class="bm-timeline-left tl-date">最后登录时间</span>
                                 <div class="tl-content bm-timeline-right">
                                   <div>
                                       <i class="icon-clock bm-i-clock"></i>
@@ -151,7 +151,7 @@
 
                         <li class="tl-item">
                             <div class="bm-timeline-orange">
-                                <span class="bt-timeline-left tl-date">审核时间</span>
+                                <span class="bm-timeline-left tl-date">审核时间</span>
                                 <div class="tl-content bm-timeline-right">
                                   <div>
                                       <i class="icon-clock bm-i-clock"></i>
@@ -163,7 +163,7 @@
 
                         <li class="tl-item">
                             <div class="bm-timeline-green">
-                                <span class="bt-timeline-left tl-date">创建时间</span>
+                                <span class="bm-timeline-left tl-date">创建时间</span>
                                 <div class="tl-content bm-timeline-right">
                                     <div>
                                         <i class="icon-clock bm-i-clock"></i>

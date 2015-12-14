@@ -23,7 +23,7 @@
     <div ng-hide="vm.edit()=='edit'" class="panel hbox panel-default no-border" style="margin-bottom: 0px;margin-top:56px">
         <div class="panel-body text-center" style="padding-top:35px;padding-bottom:15px;padding-right:20px;padding-left:20px">
             <div class="avatar">
-                <img data-ng-show="vm.settings.image==''" style="width:95px; text-align:center;" src="/born_manager/static/src/img/default_employee.png" class="img">
+                <img data-ng-show="vm.settings.image==''" style="width:95px; text-align:center;" src="/born_manager/static/src/img/default_company.png" class="img">
                 <img data-ng-show="vm.settings.image!=''" style="width:95px;text-align:center;" ng-src="data:image/png;base64,{{vm.settings.image}}" class="img">
            </div>
         </div>
@@ -94,7 +94,7 @@
         <div class="panel-body text-center" style="padding-top:35px;padding-bottom:15px;padding-right:20px;padding-left:20px">
             <div class="  avatar">
                 <input ng-show="false" id="File" type="file" file-model="myFile"style="" />
-                <img data-ng-show="vm.reset.image==''"  onclick="changeimg()"  style="width:95px; text-align:center;" src="/born_manager/static/src/img/default_employee.png" class="img">
+                <img data-ng-show="vm.reset.image==''"  onclick="changeimg()"  style="width:95px; text-align:center;" src="/born_manager/static/src/img/default_company.png" class="img">
                 <img data-ng-show="vm.reset.image!=''"  onclick="changeimg()"  style="width:95px; text-align:center;" ng-src="{{vm.reset.image}}" class="img">
            </div>
         </div>

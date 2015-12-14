@@ -444,19 +444,7 @@
                 return status.data;
             });
         };
-        //获取团队负责商户信息
-        factory.getteamshop = function (pageIndex,states,keyword,type) {
-            return $http.get(serviceBase + 'teamshop',{
-            	params : {
-                index:pageIndex,
-                states:states,
-                keyword:keyword,
-                type:type
- 			}
-            }).then(function (results) {
-                return results.data;
-            });
-        };
+
         //获取销售负责商户信息
         factory.getsalershop = function (pageIndex,id,id2,keyword) {
         	return $http.get(serviceBase + 'salershop/'+id+'/'+id2,{
@@ -576,10 +564,21 @@
                     return results.data;
                 });
         };
-        //全部移交
+        //创建任务
         factory.createMission = function (track) {
             return $http.post(serviceBase + 'createMission',track).then(function (status) {
                 return status.data;
+            });
+        };
+        //获取团队负责商户信息
+        factory.getteamshop = function (pageIndex,keyword) {
+            return $http.get(serviceBase + 'teamshop',{
+            	params : {
+                index:pageIndex,
+                keyword:keyword,
+ 			}
+            }).then(function (results) {
+                return results.data;
             });
         };
 

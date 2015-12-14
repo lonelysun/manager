@@ -29,13 +29,12 @@
         var missionId = ($routeParams.missionId) ? parseInt($routeParams.missionId) : 0;
 
 
+        //选择拜访结果
         vm.selectResults = function(){
             MyCache.put('finishMission',vm.finishMission);
 
             $location.path('/saler/selectResults/'+ missionId);
         };
-
-
 
         vm.cancel = function(){
             if(MyCache.get('finishMission_come_from')){
@@ -49,11 +48,11 @@
 
                     var Id = MyCache.get('finishMission_come_from_partnerId');
 
-                    MyCache.put('saler_partner_display','mission')
+                    MyCache.put('saler_partner_display','mission');
                     $location.path('/saler/partner/'+Id);
-                    MyCache.remove('finishMission_come_from')
-                    MyCache.remove('finishMission_come_from_partnerId')
-                    MyCache.remove('finishMission')
+                    MyCache.remove('finishMission_come_from');
+                    MyCache.remove('finishMission_come_from_partnerId');
+                    MyCache.remove('finishMission');
                     MyCache.remove('selectResults');
                     MyCache.remove('selectedTags');
                 }
@@ -73,13 +72,10 @@
 
             dataService.postFinishMission(vm.finishMission)
             .then(function (data) {
-
-
                 $location.path('/saler/postSuccess');
                 MyCache.remove('finishMission');
                 MyCache.remove('selectResults');
                 MyCache.remove('selectedTags');
-
 
             }, function (error) {
                toaster.pop('warning', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
@@ -87,7 +83,7 @@
 
         };
 
-
+        //获得图片
         $scope.getFile= function ($index) {
             var file = $scope.myFile;
             if (file){
@@ -101,14 +97,10 @@
             }
          };
 
-
-
         //点击上传图片
         vm.missionClick = function(){
             angular.element("#File").click();
         };
-
-
 
 
         //初始化
@@ -127,16 +119,12 @@
             displayModel.headerBack = vm.cancel;
             displayModel.born_submit = vm.save;
 
-
-
             if(MyCache.get('firstComeIntoFinishMission')=='1'){
-
                 vm.finishMission.result_title = MyCache.get('passedMissionTitle');
 
                 MyCache.remove('firstComeIntoFinishMission');
                 MyCache.remove('passedMissionTitle');
             }
-
 
             if(MyCache.get('finishMission')){
                 vm.finishMission = MyCache.get('finishMission');
@@ -156,14 +144,6 @@
                     vm.finishMission.results.push({'name':selectedTags[i]})
                 }
             }
-
-
-
-
-
-
-
-
         }
 
         init();
@@ -173,7 +153,3 @@
     angular.module('managerApp').controller('FinishMissionController', finishMissionController);
 
 }());
-
-//function missionClick(){
-//    return  $("#File").click();
-//}

@@ -41,9 +41,9 @@
                 </button>
                 <button ng-if="vm.getPlaceholder()=='1'" class="bm-head-button pull-right visible-xs dk" style="padding-left: 34px;padding-right: 34px;height: 2px;">
                 </button>
-                <img ng-if="vm.getSearchModel()=='1'"  data-ng-click="vm.headerSearch()" class="pull-right bm-img-back"  src="/born_manager/static/src/img/search.png">
+                <img ng-if="vm.getSearchModel()=='1'"  data-ng-click="vm.search()" class="pull-right bm-img-search"  src="/born_manager/static/src/img/search.png">
                       <span>{{vm.title | limitTo:8}}{{vm.title.length > 8 ? '...' : ''}}</span>
-                <img ng-if="vm.getBackModel()=='1'" style="padding-top: 3px;padding-bottom: 3px;height: 29px;" data-ng-click="vm.headerBack()" class=" pull-left no-border bm-img-back"  src="/born_manager/static/src/img/back.png">
+                <img ng-if="vm.getBackModel()=='1'" data-ng-click="vm.headerBack()" class=" pull-left no-border bm-img-back"  src="/born_manager/static/src/img/back.png">
                 <button ng-if="vm.getCancelModel()=='1'" data-ng-click="vm.headerBack()" class="bm-head-button pull-left visible-xs dk" >
                   取消
                 </button>
@@ -188,6 +188,7 @@
     <script src="/born_manager/static/defaultApp/controllers/salecontrole/createSuccesscontroller.js"></script>
     <script src="/born_manager/static/defaultApp/controllers/salecontrole/rankingcontroller.js"></script>
     <script src="/born_manager/static/defaultApp/controllers/searchresult/searchresultcontroller.js"></script>
+    <script src="/born_manager/static/defaultApp/controllers/salecontrole/selectPartnercontroller.js"></script>
 
 
     <script src="/born_manager/static/defaultApp/controllers/report/reporttestcontroller.js"></script>

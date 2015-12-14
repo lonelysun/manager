@@ -37,13 +37,9 @@
         }
 
 
-        vm.clickMore = function(){
-            vm.showFinishedmissions= !(vm.showFinishedmissions);
-        };
 
 
-
-        //Get specific partner
+        //获取特定商户信息
         vm.getPartnerInfo = function(){
             if(vm.busy)return;
             vm.busy=true;
@@ -52,9 +48,7 @@
             .then(function (data) {
                     vm.partner = data;
                     vm.isLoad=true;
-
                     MyCache.put('partner',vm.partner);
-
                     displayModel.title = vm.partner.name;
                 $timeout(function () {
                     vm.busy=false;
@@ -62,23 +56,23 @@
             }, function (error) {
             	toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
             });
-
         };
 
-
-
+        //控制导航栏显示 商户信息/商户任务
         vm.setDisplay = function(display){
             vm.display = display;
         };
 
+        //点击已完成的按钮,显示/隐藏 已完成的任务
+        vm.clickMore = function(){
+            vm.showFinishedmissions= !(vm.showFinishedmissions);
+        };
 
 
-        //Get mission for specific partner
+        //获取特定商户的任务
         vm.getPartnerMission = function(mission_state){
-
             if(vm.busy)return;
             vm.busy=true;
-
             if(mission_state=='notOk')
                 missionLengh = vm.missionsUnfinished.length;
             else{
@@ -87,20 +81,20 @@
 
             dataService.getPartnerMission(missionLengh,vm.keyword,partnerId,mission_state,hr_id_for_manager)
             .then(function (data) {
+                    var i;
                 if(mission_state=='notOk'){
 
                     if(data['missions_list'].length <10){
                         vm.showButton=true;
                     }
-                    for (var i = 0; i < data['missions_list'].length; i++) {
+                    for (i = 0; i < data['missions_list'].length; i++) {
                         vm.missionsUnfinished.push(data['missions_list'][i]);
                     }
                 }else{
-                    for (var i = 0; i < data['missions_list'].length; i++) {
+                    for (i = 0; i < data['missions_list'].length; i++) {
                         vm.missionsFinished.push(data['missions_list'][i]);
                     }
                 }
-
                 vm.missions_finished_numbers = data['missions_finished_numbers']
 
                 vm.isLoad=true;
@@ -112,19 +106,14 @@
             });
         };
 
-
+        //改变任务状态
         vm.changeMissionState = function(missionsUnfinished){
 
             if(vm.role != '7' || missionsUnfinished.is_mine == false){
                 return;
             }
 
-
-
-            var titleText,titleState,closeButtonText,
-                firstActionText,firstUrl,
-                secondActionText,secondUrl,
-                thirdActionText,thirdUrl;
+            var titleText,titleState;
             var showFirstText = false;
             var showSecondText = false;
             var showThirdText = false;
@@ -132,10 +121,6 @@
             titleText = missionsUnfinished.mission_name;
             titleState = missionsUnfinished.mission_state_name;
             var missionState = missionsUnfinished.mission_state;
-
-            firstActionText = '开始';
-            secondActionText = '暂停';
-            thirdActionText = '完成' ;
 
             switch (missionState)
             {
@@ -181,12 +166,9 @@
                 className: 'ngdialog',
                 scope:$scope
             }).then(function(data){
-
                 var mission_id = missionsUnfinished.mission_id;
                 var action = data;
-
                 var changeData = {'mission_id':mission_id,'action':action};
-
                 missionsUnfinished.mission_state  = action;
 
                if(action == 'finished'){
@@ -203,11 +185,10 @@
                             toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
                     });
                }
-
             });
-
         };
 
+        //返回按钮
         vm.back = function(){
 
             if(MyCache.get('keyword')){
@@ -229,24 +210,13 @@
 
         };
 
-        ////Test for new Back
-        //vm.back = function(){
-        //
-        //    MyCache.remove('partner');
-        //    MyCache.put('saler_display','partners');
-        //    window.location.href = 'bornhr://back';
-        //};
-
-
-
+        //点击已完成任务跳转到已完成的任务详细页面
         vm.jumpWithCache = function(Id){
             MyCache.put('finishedMission_come_from','page_partner_mission');
             MyCache.put('finishedMission_come_from_partnerId',partnerId);
 
             $location.path('/saler/finishedMission/'+Id)
         };
-
-
 
         //初始化
         function init() {
@@ -263,18 +233,13 @@
 
 
             vm.role = MyCache.get('role_option');
-
-
-
             vm.getPartnerInfo();
 
             if(MyCache.get('saler_partnerOrCompany_display')){
-                console.info('---->3');
                 vm.display = MyCache.get('saler_partnerOrCompany_display');
                 MyCache.remove('saler_partnerOrCompany_display')
 
             }else{
-                console.info('---->4');
                 vm.display = 'info';
             }
 
@@ -285,12 +250,6 @@
             else{
                 vm.showFinishedmissions = false;
             }
-
-
-
-
-
-
         }
 
         init();

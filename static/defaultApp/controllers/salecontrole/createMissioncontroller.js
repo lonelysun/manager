@@ -47,7 +47,7 @@
                 toaster.pop('warning', "", "未选择商户！");
                 return true;
         	}
-        	if(vm.track.time=''){
+        	if(vm.track.time==''){
                 toaster.pop('warning', "", "未选择时间！");
                 return true;
         	}
@@ -105,7 +105,6 @@
 
             var optionObj = MyCache.get('optionObj');
             var optionType = MyCache.get('optionType');
-
             if(optionType == 'contacts'){
                 vm.track.personid = MyCache.get('optionObj').id;
                 vm.track.personname = MyCache.get('optionObj').name;
@@ -128,8 +127,7 @@
         vm.selectpartner = function(){
             if(vm.option=='8'){
                 MyCache.put('track',vm.track);
-                MyCache.put('environment_selectPartner','1');
-                $location.path('/saler/options/states');
+                $location.path('/selectpartner');
             }else if(vm.option=='7'){
                 MyCache.put('track',vm.track);
                 MyCache.put('environment','fromSalerSelectParner');
