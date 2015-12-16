@@ -1,6 +1,6 @@
 ﻿(function () {
   
-    var app = angular.module('managerApp', ['ngRoute', 'ngSanitize','ngAnimate','ngTouch','ngDialog','wc.directives','datePicker', 'ui.bootstrap', 'infinite-scroll','breeze.angular','toaster','chart.js'],
+    var app = angular.module('managerApp', ['ngRoute', 'ngSanitize','ngAnimate','ngTouch','ngDialog','wc.directives','datePicker', 'ui.bootstrap', 'infinite-scroll','breeze.angular','toaster','chart.js','angular-carousel'],
 	function($httpProvider) {
 	  // Use x-www-form-urlencoded Content-Type
 	  $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -58,17 +58,6 @@
 		}
 	);
 
-//	app.config(['ChartJsProvider', function (ChartJsProvider) {
-//    // Configure all charts
-//    ChartJsProvider.setOptions({
-//      colours: ['#FF5252', '#FF8A80'],
-//      responsive: false
-//    });
-//    // Configure all line charts
-//    ChartJsProvider.setOptions('Line', {
-//      datasetFill: false
-//    });
-//  }])
 	
     app.config(['$routeProvider',  function ($routeProvider) {
         var viewBase = '/born_manager/static/defaultApp/views/';
@@ -397,6 +386,11 @@
 			.when('/report', {
 	            controller: 'ReportController',
 	            templateUrl: viewBase + 'report/reporttest.html',
+	            controllerAs: 'vm'
+	        })
+			.when('/reportline', {
+	            controller: 'ReportController',
+	            templateUrl: viewBase + 'report/reportLine.html',
 	            controllerAs: 'vm'
 	        })
 			.when('/search', {

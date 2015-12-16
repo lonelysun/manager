@@ -19,6 +19,7 @@
         displayModel.displaySubmit = '0';
         displayModel.displayConfirm = '0';
         displayModel.placeholder = '0';
+        displayModel.placeholderleft = '0';
         displayModel.displayBottom = '0';
 
         vm.clicked = 'menu';
@@ -42,6 +43,14 @@
                 displayModel.placeholder = '0';
             }
             return displayModel.placeholder;
+        };
+        vm.getPlaceholderleft = function(){
+            if(displayModel.displayBack=='0'&&displayModel.displayCancel=='0'){
+                displayModel.placeholderleft = '1';
+            }else{
+                displayModel.placeholderleft = '0';
+            }
+            return displayModel.placeholderleft;
         };
 
         vm.getDisplayModel = function(){

@@ -1,7 +1,16 @@
 <div>
-    <canvas id="line" class="chart chart-line" chart-data="data"
-      chart-labels="labels" chart-legend="true" chart-series="series"
-      chart-click="onClick" >
-    </canvas>
-
+    <ul rn-carousel>
+        <div>
+            <canvas id="line" class="chart chart-line" chart-data="data"
+                    chart-labels="labels" chart-legend="false" chart-series="series" chart-options = options
+                    chart-click="onClick" chart-colours=colours  >
+            </canvas>
+        </div>
+        <li>
+            <canvas id="line2" class="chart chart-line" chart-data="data1"
+                    chart-labels="labels1" chart-legend="true" chart-series="series1"
+                    chart-click="onClick" chart-colours=colours>
+            </canvas>
+        </li>
+    </ul>
 </div>

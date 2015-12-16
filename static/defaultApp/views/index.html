@@ -20,12 +20,13 @@
     <link href="/born_manager/static/src/css/ngDialog-theme-plain.css" rel="stylesheet" />
     <link href="/born_manager/static/src/css/angular-datepicker.css" rel="stylesheet" />
     <link href="/born_manager/static/src/css/angular-chart.css" rel="stylesheet" />
+    <link href="/born_manager/static/src/css/angular-carousel.css" rel="stylesheet" />
 
 </head>
-<body ng-cloak style="background-color:white">
+<body  ng-cloak style="background-color:white">
     <div ng-controller="NavbarController as vm"  class="h4 app-header navbar navbar-fixed-top" style="min-height: 0px;">
             <!-- navbar header -->
-            <div class="bm-navbar-header text-center" ng-if="vm.showHeader()=='1'" style="line-height: 30px; padding-top: 24px;padding-bottom: 9px;">
+            <div  class="bm-navbar-header text-center " ng-if="vm.showHeader()=='1'" style="line-height: 30px; padding-top: 24px;padding-bottom: 9px;">
 
                 <button ng-if="vm.getSaveModel()=='1'" data-ng-click="vm.save()" class="bm-head-button pull-right visible-xs dk" >
                   保存
@@ -40,6 +41,8 @@
                   提交
                 </button>
                 <button ng-if="vm.getPlaceholder()=='1'" class="bm-head-button pull-right visible-xs dk" style="padding-left: 34px;padding-right: 34px;height: 2px;">
+                </button>
+                <button ng-if="vm.getPlaceholderleft()=='1'" class="bm-head-button pull-left visible-xs dk" style="padding-left: 34px;padding-right: 34px;height: 2px;">
                 </button>
                 <img ng-if="vm.getSearchModel()=='1'"  data-ng-click="vm.search()" class="pull-right bm-img-search"  src="/born_manager/static/src/img/search.png">
                       <span>{{vm.title | limitTo:8}}{{vm.title.length > 8 ? '...' : ''}}</span>
@@ -62,11 +65,11 @@
             <toaster-container toaster-options="{'position-class': 'toast-top-center', 'close-button':false}"></toaster-container>
         </div>
     </div>
-    <div class="app-footer navbar navbar-fixed-bottom  ng-scope m-n" ui-view="footer"  ng-controller="NavbarController as vm" ng-if="vm.displayBottom()=='1'" >
-        <div class="row ng-scope" >
+    <div class="app-footer navbar navbar-fixed-bottom  ng-scope m-n" ui-view="footer"  ng-controller="NavbarController as vm" style="min-height: 0px;">
+        <div class="row ng-scope"  ng-if="vm.displayBottom()=='1'">
             <nav>
                  <div class="footermenu" data-collapse="isCollapsed" >
-                     <ul ng-if="vm.showBottom()=='1'"  highlight-class-name="active" style="background-color:white;" >
+                     <ul ng-if="vm.showBottom()=='1'"  highlight-class-name="active" style="background-color:white;box-shadow: 0 -2px 4px rgba(0,0,0,0.2);" >
                          <li style="width: 33%" >
                             <a ng-if="vm.clicked!='menu'" href="#/salepanel" ng-click="vm.clicked = 'menu'"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/menu-b.png"><p>首页</p></a>
                             <a ng-if="vm.clicked=='menu'" href="#/salepanel" ng-click="vm.clicked = 'menu'" style="color:#ff4848"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/menu-b-d.png"><p>首页</p></a>
@@ -80,7 +83,7 @@
                             <a ng-if="vm.clicked=='company'" ng-click="vm.clicked = 'company'" href="#/companys"  style="color:#ff4848"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/company-b-d.png"><p>公司管理</p></a>
                          </li>
                      </ul>
-                     <ul  ng-if="vm.showBottom()=='2'" highlight-class-name="active" style="background-color:white" >
+                     <ul  ng-if="vm.showBottom()=='2'" highlight-class-name="active" style="background-color:white;box-shadow: 0 -2px 4px rgba(0,0,0,0.2);" >
                          <li style="width: 25%" >
                             <a ng-if="vm.clicked!='menu'" href="#/salepanel" ng-click="vm.clicked = 'menu'"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/menu-b.png"><p>首页</p></a>
                             <a ng-if="vm.clicked=='menu'" href="#/salepanel" ng-click="vm.clicked = 'menu'" style="color:#ff4848"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/menu-b-d.png"><p>首页</p></a>
@@ -140,6 +143,7 @@
     <script src="/born_manager/static/src/js/angular-datepicker.js"></script>
     <script src="/born_manager/static/src/js/Chart.min.js"></script>
     <script src="/born_manager/static/src/js/angular-chart.js"></script>
+    <script src="/born_manager/static/src/js/angular-carousel.js"></script>
 
     <script src="/born_manager/static/src/js/ng-infinite-scroll.min.js"></script>
 

@@ -1,11 +1,13 @@
-﻿<div class="show-hide-animation" >
-	<div class="panel no-border text-center " style="padding-top:15px;margin-bottom: 0px;background-color: #FFFFFF;">
+﻿<div class="bm-main-showbottom" >
+	<div class="panel no-border text-center bm-three-head" style="padding-top:15px;margin-bottom: 0px;background-color: #FFFFFF;">
     	<div class="" style="width:100%">
         	<button ng-class="{day: 'bm-active'}[vm.licenses.display]" ng-click="vm.setDisplay('day')" class=" bg-white  no-border bm-top-btn"  >日</button>
         	<button ng-class="{week: 'bm-active'}[vm.licenses.display]" ng-click="vm.setDisplay('week')" class="bg-white no-border bm-top-btn"  >周</button>
         	<button ng-class="{month: 'bm-active'}[vm.licenses.display]" ng-click="vm.setDisplay('month')" class="bg-white no-border bm-top-btn" >月</button>
     	</div>
 	</div>
+    <div class="bm-main-body">
+
 	<div ng-show="vm.licenses.display!='date'" class="panel" style="  margin-bottom: 0px;background-color: #F2F2F2;">
     	<div class="hbox text-center  b-light text-sm " style="padding: 10px  10px;" >
         	<a  ng-click="vm.setPage(-1)" class="col text-left" style="width:30px;padding: 0px;">
@@ -28,18 +30,19 @@
             <div class="col padder-v text-muted bm-b-r bm-b-light bm-two-col">
                 <a href ng-click="vm.showset('1')" >
                     <div ng-class="{2:'bm-two-col-up-font-default',1:'bm-two-col-up-font-hightlight'}[vm.show]">{{vm.licenses.number_one[0].count}}</div>
-                    <div class="bm-top">登录数（台）</div>
+                    <div class="bm-top">当前登录数（台）</div>
                 </a>
             </div>
             <div class="col padder-v text-muted bm-two-col">
                 <a href ng-click="vm.showset('2')" >
                     <div ng-class="{1:'bm-two-col-up-font-default',2:'bm-two-col-up-font-hightlight'}[vm.show]" >{{vm.licenses.number_two[0].count}}</div>
-                    <div class="bm-top">未激活数（台）</div>
+                    <div class="bm-top">未激活总数（台）</div>
                 </a>
             </div>
         </div>
         <div ng-if="vm.show=='1'" id="triangle-up1">&nbsp;</div>
         <div ng-if="vm.show=='2'" id="triangle-up2">&nbsp;</div>
+
         <div ng-if="vm.show=='1'" class="no-bg bm-item" data-ng-repeat="license in vm.licenses.accountone">
             <a href="#/licenses/deatil/{{vm.date}}/{{license.company_id}}">
 
@@ -49,20 +52,19 @@
                     </span>
                 {{license.name}}
             </a>
-                  </div>
-
+        </div>
         <div ng-if="vm.show=='2'" class="no-bg bm-item" data-ng-repeat="license in vm.licenses.accounttwo">
             <a href="#/licenses/deatil/{{vm.date}}/{{license.company_id}}">
                     <span class=" pull-right" style="color:#A0A0A0">
                         {{license.count}}
                         <i class=" fa fa-fw fa-angle-right text"></i>
                     </span>
-                    {{license.name}}
+                {{license.name}}
             </a>
         </div>
-
+    </div>
+    <div style="height:60px; line-height: 60px;" ng-show="vm.busy" class="text-center" >正在加载...</div>
 </div>
-<div style="height:60px; line-height: 60px;" ng-show="vm.busy" class="text-center" >正在加载...</div>
 
 
 

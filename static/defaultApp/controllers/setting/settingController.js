@@ -25,6 +25,9 @@
         vm.logout = function(){
             window.location.href = 'bornhr://loginout';
         }
+        vm.back = function(){
+            window.location.href = 'bornhr://back';
+        }
 
 
         vm.headerEdit = function(){

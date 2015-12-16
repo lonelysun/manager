@@ -33,12 +33,14 @@
             vm.role = MyCache.get('role_option');
             if(vm.role=='9'||vm.role=='10'){
                 displayModel.displayBottom = '1';
+                console.info(displayModel.displayBottom);
             }
             getSalepanel();
         }
 
         vm.setDisplay = function(display) {
             vm.display = display;
+            MyCache.put('comeFromSaler',display);
         }
 
         vm.searsh = function(){
@@ -165,6 +167,7 @@
             	toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
             });
         }
+
 
         init();
     };

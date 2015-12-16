@@ -70,15 +70,24 @@
         };
 
 
+        vm.back = function(){
+            window.location.href = 'bornhr://back';
+        }
+
         //初始化
         function init() {
-            displayModel.displayModel='none';
-            displayModel.displayEdit = '0';
-            displayModel.displaySave = '0';
-            displayModel.displaySearch = '0';
-            displayModel.displayBack = '1';
+            displayModel.showHeader='1';
+            displayModel.displayBack='1';
+            displayModel.displaySave='0';
+            displayModel.displaySearch='1';
+            displayModel.displayCancel='0';
+            displayModel.displayCreate='0';
+            displayModel.displaySubmit='0';
+            displayModel.displayConfirm='0';
+            displayModel.displayBottom = '0';
+            displayModel.headerBack=vm.back;
+//            displayModel.born_search = vm.born_searsh;
             vm.show='1';
-            displayModel.backpath='/licenses/0';
         }
 
         init();

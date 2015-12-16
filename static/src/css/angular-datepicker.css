@@ -30,7 +30,6 @@
 }
 [date-picker-wrapper] {
   position: absolute;
-  width:60%;
   min-width: 50%;
   z-index: 10;
   display: block;

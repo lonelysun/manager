@@ -1,5 +1,5 @@
 <div class="show-hide-animation bm-move" >
-    <div class="no-border text-center bm-mid-nav">
+    <div class="no-border text-center bm-mid-nav bm-second-head">
     	<div class="" style="width:100%">
         	<button ng-class="{'info': 'bm-active'}[vm.display]" ng-click="vm.setDisplay('info')" class=" bg-white  no-border bm-nav-head-two"  >简介</button>
         	<button ng-class="{'mission': 'bm-active'}[vm.display]" ng-click="vm.setDisplay('mission')" class="bg-white no-border bm-nav-head-two"  >任务</button>
@@ -7,130 +7,132 @@
 	</div>
 
 
-    <div ng-if="vm.display=='info'" style="background-color: white;">
+    <div class="bm-second-head-body">
+        <div ng-if="vm.display=='info'" style="background-color: white;">
 
-        <div class="no-bg bm-item">
-            <span class="bm-one-line-left">商户</span>
-            <span>{{vm.partner.name}}</span>
-        </div>
-
-
-        <div class="no-bg bm-item">
-            <span class="bm-one-line-left">类别</span>
-            <span>{{vm.partner.category}}</span>
-        </div>
-
-        <div class="no-bg bm-item">
-            <span class="bm-one-line-left">商圈</span>
-            <span>{{vm.partner.bussiness}}</span>
-        </div>
-
-        <div class="no-bg bm-item">
-            <span class="bm-one-line-left">地址</span>
-            <span>{{vm.partner.street}}</span>
-        </div>
-
-        <div ng-repeat="contact in vm.partner.contacts" >
             <div class="no-bg bm-item">
-                <span class="bm-one-line-left">联系人</span>
-                <span>{{contact.name}}  {{contact.mobile}}</span>
+                <span class="bm-one-line-left">商户</span>
+                <span>{{vm.partner.name}}</span>
             </div>
-        </div>
 
-        <div class="no-bg bm-item">
-            <span class="bm-one-line-left">来源</span>
-            <span>{{vm.partner.source}}</span>
-        </div>
 
-        <div class="no-bg bm-item">
-            <span class="bm-one-line-left">规模</span>
-            <span>{{vm.partner.size}}</span>
-        </div>
+            <div class="no-bg bm-item">
+                <span class="bm-one-line-left">类别</span>
+                <span>{{vm.partner.category}}</span>
+            </div>
 
-        <div class="no-bg bm-item">
-            <span class="bm-one-line-left">环境</span>
-            <span>{{vm.partner.environment}}</span>
-        </div>
+            <div class="no-bg bm-item">
+                <span class="bm-one-line-left">商圈</span>
+                <span>{{vm.partner.bussiness}}</span>
+            </div>
 
-        <div class="no-bg bm-item">
-            <span class="bm-one-line-left">员工</span>
-            <span>{{vm.partner.employee}}</span>
-        </div>
+            <div class="no-bg bm-item">
+                <span class="bm-one-line-left">地址</span>
+                <span>{{vm.partner.street}}</span>
+            </div>
 
-        <div class="no-bg bm-item">
-            <span class="bm-one-line-left">房间</span>
-            <span>{{vm.partner.room}}</span>
-        </div>
-
-        <div class="no-bg bm-item">
-            <span class="bm-one-line-left">备注</span>
-            <span>{{vm.partner.comment}}</span>
-        </div>
-    </div>
-
-    <div ng-if="vm.display=='mission'"  style="background-color: white;">
-
-        <div>
-            <div  id="infinite3" infinite-scroll='vm.getPartnerMission("notOk")' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
-
-                <div ng-repeat="missionsUnfinished in vm.missionsUnfinished" class="bm-main-three-line-wrapper">
-                    <a ng-click="vm.changeMissionState(missionsUnfinished)">
-                        <div class="bm-main-three-line">
-                            <div class="bm-main-three-line-title">
-                                <!--状态图标-->
-                                <span ng-if="missionsUnfinished.mission_state=='pause'" class="bm-main-three-line-title-tag"><i class="glyphicon glyphicon-pause"></i></span>
-                                <span ng-if="missionsUnfinished.mission_state=='start'" class="bm-main-three-line-title-tag"><i class="glyphicon glyphicon-play"></i></span>
-                                <span ng-if="missionsUnfinished.mission_state=='finished'" class="bm-main-three-line-title-tag"><i class="fa fa-check"></i></span>
-                                <span ng-if="missionsUnfinished.mission_state=='notstart'" style="visibility:hidden" class="bm-main-three-line-title-tag-grey"><i class="fa fa-check"></i></span>
-
-                                <span class="bm-main-three-line-title-font">{{missionsUnfinished.mission_name}}</span>
-                                <span ng-if="vm.role == '7' && missionsUnfinished.is_mine" class="pull-right"><img class="bm-img-three-points"  src="/born_manager/static/src/img/three-points.png"></span>
-                            </div>
-
-                            <div class="bm-main-three-line-detail">
-                                <span class="bm-main-three-line-span"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/phone.png">{{missionsUnfinished.mission_contacts_phone}}</span>
-                                <span class="bm-main-three-line-span"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/bounds.png">{{missionsUnfinished.mission_contacts_name}}</span>
-                                <span class="bm-main-three-line-span"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/time.png">{{missionsUnfinished.mission_date}}</span>
-                            </div>
-
-                            <div class="bm-main-three-line-detail">
-                                <span>
-                                    <img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/location-copy.png">{{missionsUnfinished.mission_address}}
-                                </span>
-                            </div>
-                        </div>
-                    </a>
+            <div ng-repeat="contact in vm.partner.contacts" >
+                <div class="no-bg bm-item">
+                    <span class="bm-one-line-left">联系人</span>
+                    <span>{{contact.name}}  {{contact.mobile}}</span>
                 </div>
             </div>
 
-            <div ng-show="vm.showButton" class="bm-btn-add-more-wrapper">
-                <button class="bm-btn-add-more" ng-click="vm.clickMore()"><span class="bm-btn-add-more-text">{{vm.missions_finished_numbers}}个已完成任务</span></button>
+            <div class="no-bg bm-item">
+                <span class="bm-one-line-left">来源</span>
+                <span>{{vm.partner.source}}</span>
             </div>
 
-            <div ng-if="vm.showFinishedmissions">
-                <div id="infinite4" infinite-scroll='vm.getPartnerMission("ok")' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
-                    <div  ng-repeat="missionsFinished in vm.missionsFinished" class="bm-main-three-line-wrapper">
-                        <a ng-click="vm.jumpWithCache(missionsFinished.mission_id)">
+            <div class="no-bg bm-item">
+                <span class="bm-one-line-left">规模</span>
+                <span>{{vm.partner.size}}</span>
+            </div>
 
+            <div class="no-bg bm-item">
+                <span class="bm-one-line-left">环境</span>
+                <span>{{vm.partner.environment}}</span>
+            </div>
+
+            <div class="no-bg bm-item">
+                <span class="bm-one-line-left">员工</span>
+                <span>{{vm.partner.employee}}</span>
+            </div>
+
+            <div class="no-bg bm-item">
+                <span class="bm-one-line-left">房间</span>
+                <span>{{vm.partner.room}}</span>
+            </div>
+
+            <div class="no-bg bm-item">
+                <span class="bm-one-line-left">备注</span>
+                <span>{{vm.partner.comment}}</span>
+            </div>
+        </div>
+
+        <div ng-if="vm.display=='mission'"  style="background-color: white;">
+
+            <div>
+                <div  id="infinite3" infinite-scroll='vm.getPartnerMission("notOk")' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+
+                    <div ng-repeat="missionsUnfinished in vm.missionsUnfinished" class="bm-main-three-line-wrapper">
+                        <a ng-click="vm.changeMissionState(missionsUnfinished)">
                             <div class="bm-main-three-line">
                                 <div class="bm-main-three-line-title">
                                     <!--状态图标-->
-                                    <span  class="bm-main-three-line-title-tag-grey"><i class="fa fa-check"></i></span>
-                                    <span class="bm-main-three-line-title-font-grey">{{missionsFinished.mission_name}}</span>
+                                    <span ng-if="missionsUnfinished.mission_state=='pause'" class="bm-main-three-line-title-tag"><i class="glyphicon glyphicon-pause"></i></span>
+                                    <span ng-if="missionsUnfinished.mission_state=='start'" class="bm-main-three-line-title-tag"><i class="glyphicon glyphicon-play"></i></span>
+                                    <span ng-if="missionsUnfinished.mission_state=='finished'" class="bm-main-three-line-title-tag"><i class="fa fa-check"></i></span>
+                                    <span ng-if="missionsUnfinished.mission_state=='notstart'" style="visibility:hidden" class="bm-main-three-line-title-tag-grey"><i class="fa fa-check"></i></span>
+
+                                    <span class="bm-main-three-line-title-font">{{missionsUnfinished.mission_name}}</span>
+                                    <span ng-if="vm.role == '7' && missionsUnfinished.is_mine" class="pull-right"><img class="bm-img-three-points"  src="/born_manager/static/src/img/three-points.png"></span>
                                 </div>
 
                                 <div class="bm-main-three-line-detail">
-                                    <span class="bm-main-three-line-span-grey"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/phone.png">{{missionsFinished.mission_contacts_phone}}</span>
-                                    <span class="bm-main-three-line-span-grey"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/bounds.png">{{missionsFinished.mission_contacts_name}}</span>
+                                    <span class="bm-main-three-line-span"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/phone.png">{{missionsUnfinished.mission_contacts_phone}}</span>
+                                    <span class="bm-main-three-line-span"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/bounds.png">{{missionsUnfinished.mission_contacts_name}}</span>
+                                    <span class="bm-main-three-line-span"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/time.png">{{missionsUnfinished.mission_date}}</span>
                                 </div>
 
                                 <div class="bm-main-three-line-detail">
-                                    <span class="bm-main-three-line-span-grey">
-                                        <img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/location-copy.png">{{missionsFinished.mission_address}}
+                                    <span>
+                                        <img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/location-copy.png">{{missionsUnfinished.mission_address}}
                                     </span>
                                 </div>
                             </div>
                         </a>
+                    </div>
+                </div>
+
+                <div ng-show="vm.showButton" class="bm-btn-add-more-wrapper">
+                    <button class="bm-btn-add-more" ng-click="vm.clickMore()"><span class="bm-btn-add-more-text">{{vm.missions_finished_numbers}}个已完成任务</span></button>
+                </div>
+
+                <div ng-if="vm.showFinishedmissions">
+                    <div id="infinite4" infinite-scroll='vm.getPartnerMission("ok")' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+                        <div  ng-repeat="missionsFinished in vm.missionsFinished" class="bm-main-three-line-wrapper">
+                            <a ng-click="vm.jumpWithCache(missionsFinished.mission_id)">
+
+                                <div class="bm-main-three-line">
+                                    <div class="bm-main-three-line-title">
+                                        <!--状态图标-->
+                                        <span  class="bm-main-three-line-title-tag-grey"><i class="fa fa-check"></i></span>
+                                        <span class="bm-main-three-line-title-font-grey">{{missionsFinished.mission_name}}</span>
+                                    </div>
+
+                                    <div class="bm-main-three-line-detail">
+                                        <span class="bm-main-three-line-span-grey"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/phone.png">{{missionsFinished.mission_contacts_phone}}</span>
+                                        <span class="bm-main-three-line-span-grey"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/bounds.png">{{missionsFinished.mission_contacts_name}}</span>
+                                    </div>
+
+                                    <div class="bm-main-three-line-detail">
+                                        <span class="bm-main-three-line-span-grey">
+                                            <img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/location-copy.png">{{missionsFinished.mission_address}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -49,7 +49,7 @@
 
             dataService.getLicensesPages(companyId,vm.licenses.display,0,
                     vm.licenses.current_date, vm.licenses.current_week, vm.licenses.current_year, vm.licenses.current_month,
-                    direction,vm.licenses.date_from,vm.licenses.date_to)
+                    direction)
             .then(function (data) {
             	vm.licenses = data;
                 vm.isLoad=true;
@@ -73,13 +73,17 @@
 
         //初始化
         function init() {
-            displayModel.displayModel='none';
-            displayModel.displayEdit = '0';
-            displayModel.displaySave = '0';
-            displayModel.displaySearch = '0';
-            displayModel.displayBack = '1';
+            displayModel.showHeader='1';
+            displayModel.displayBack='0';
+            displayModel.displaySave='0';
+            displayModel.displaySearch='1';
+            displayModel.displayCancel='0';
+            displayModel.displayCreate='0';
+            displayModel.displaySubmit='0';
+            displayModel.displayConfirm='0';
+            displayModel.displayBottom = '1';
+//            displayModel.born_search = vm.born_searsh;
             vm.show='1';
-            displayModel.backpath='/menu';
             displayModel.title = '设备管理';
             getLicenses(0);
         }

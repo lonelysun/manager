@@ -227,9 +227,9 @@
 
 .bm-mid-nav {
     padding-top:6px;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
     background-color: #FFFFFF;
-    box-shadow: 0 2px 4px #f6f6f6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .bm-main-three-line-wrapper {
@@ -245,18 +245,19 @@
     padding-left: 20px;
     /*padding-right: 35px;*/
     padding-top:20px;
-    padding-bottom:20px;
+    padding-bottom:13px;
 
     background-color: white;
     border-bottom:solid 1px rgba(204, 204, 203, 0.54);
 }
 .bm-main-three-line-title{
 
-
+    margin-bottom: 8px;
 }
 .bm-main-three-line-detail{
-    margin-top:8px;
-    margin-bottom:8px;
+    /*margin-top:8px;*/
+    /*margin-bottom:8px;*/
+    margin-left:-4px;
 }
 
 
@@ -278,9 +279,24 @@
     width:30%;
     padding-right:10px;
     font-size: 11px;
-    display:-moz-inline-box;
+}
+
+.bm-main-three-line-span-left {
+    width:47%;
+    font-size: 11px;
     display:inline-block;
 }
+.bm-main-three-line-span-middle {
+    width:29%;
+    font-size: 11px;
+    display:inline-block;
+}
+.bm-main-three-line-span-right {
+    font-size: 11px;
+    display:inline-block;
+}
+
+
 .bm-main-two-line-span {
     width:30%;
     padding-right:10px;
@@ -415,6 +431,16 @@
 .bm-panel {
     padding-bottom:20px;
 }
+
+.bm-second-head{
+    position:fixed;
+    right:0;
+    left:0;
+    top:63px;
+}
+.bm-second-head-body{
+    margin-top:99px;
+}
 /*end nisen*/
 
 
@@ -467,6 +493,10 @@
     background-color:#f2f2f2;
     color: #4a4a4a;
     font-size:20px;
+}
+.bm-nolight{
+    color: white;
+    font-size:16px;
 }
 .bm-btn-big{
     color: rgba(0, 0, 0, 0.74);
@@ -669,6 +699,42 @@ input.bm-placeholder-default:-ms-input-placeholder, textarea:-ms-input-placehold
     color:    #dadada;
 }
 
-
-
+.bm-top-btn-nobg{
+    width: 30px;
+    margin-left: 5px;
+    margin-right: 5px;
+    font-size: 12px;
+    background-color: inherit;
+    color: white;
+}
+.bm-top-btn-nobg-active{
+    background-color: white;
+    color: #ff4848;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 10px;
+    border-radius: 10px;
+    padding-right: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 30px;
+    font-size: 12px;
+}
+.bm-main-showbottom{
+    padding-bottom: 50px;
+}
+.bm-main-body{
+    margin-top:101px;
+}
+.bm-three-head{
+    padding-top: 15px;
+    margin-bottom: 4px;
+    background-color: #FFFFFF;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: 55px;
+}
 /*liuhao end*/

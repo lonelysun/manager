@@ -1,223 +1,224 @@
 <div class="show-hide-animation bm-move" >
-    <div class="no-border text-center bm-mid-nav" >
+    <div class="no-border text-center bm-mid-nav bm-second-head" >
     	<div class="" style="width:100%">
         	<button ng-class="{'info': 'bm-active'}[vm.display]" ng-click="vm.setDisplay('info')" class=" bg-white  no-border bm-nav-head-two"  >简介</button>
         	<button ng-class="{'mission': 'bm-active'}[vm.display]" ng-click="vm.setDisplay('mission')" class="bg-white no-border bm-nav-head-two"  >任务</button>
     	</div>
 	</div>
 
-
+    <div class="bm-second-head-body">
     <div ng-if="vm.display=='info'">
-    <div class="bm-panel">
+        <div class="bm-panel">
 
-        <div>
-            <div class="panel-body text-center" style="padding: 20px;">
-                <div class="avatar">
-                    <img  data-ng-show="vm.company.logo ==''" style="width:95px; height:95px; text-align:center;" src="/born_manager/static/src/img/default_company.png" class="img">
-                    <img data-ng-show="vm.company.logo !=''" style="width:95px;height:95px; text-align:center;" ng-src="data:image/png;base64,{{vm.company.logo}}" class="img">
-               </div>
-            </div>
-        </div>
-
-        <div>
-            <div class="hbox text-center b-light text-sm bm-wrapper">
-                <div class="col padder-v text-muted b-r b-light bm-three-col-left">
-                    <div class="bm-three-col-up-font">{{ vm.company.license_count }}</div>
-                    <div class="bm-top">设备数</div>
-                </div>
-                <div class="col padder-v text-muted bm-three-col-middle">
-                    <div class="bm-three-col-up-font">{{ vm.company.active_days }}</div>
-                    <div class="bm-top">使用天数</div>
-                </div>
-                <div class="col padder-v text-muted bm-three-col-right">
-                    <div class="bm-three-col-up-font">{{ vm.company.member_count }}</div>
-                    <div class="bm-top">会员数</div>
+            <div>
+                <div class="panel-body text-center" style="padding: 20px;">
+                    <div class="avatar">
+                        <img  data-ng-show="vm.company.logo ==''" style="width:95px; height:95px; text-align:center;" src="/born_manager/static/src/img/default_company.png" class="img">
+                        <img data-ng-show="vm.company.logo !=''" style="width:95px;height:95px; text-align:center;" ng-src="data:image/png;base64,{{vm.company.logo}}" class="img">
+                   </div>
                 </div>
             </div>
 
-
-
-        </div>
-            <div class="no-bg bm-item">
-                <div class="bm-top">
-                    品牌
-                    <img class="pull-right bm-icon" src="/born_manager/static/src/img/name.png">
-                </div>
-                <div class="bm-main">
-                    {{ vm.company.brand }}
-                </div>
-            </div>
-            <div class="no-bg bm-item">
-                <div class="bm-top">
-                    公司
-                    <img class="pull-right bm-icon" src="/born_manager/static/src/img/company.png">
-                </div>
-                <div class="bm-main">
-                    {{ vm.company.name  }}
-                </div>
-            </div>
-            <div class="no-bg bm-item">
-                <div class="bm-top">
-                    行业
-                    <img class="pull-right bm-icon" src="/born_manager/static/src/img/groups.png">
-                </div>
-                <div class="bm-main">
-                    {{ vm.company.industry_category }}
-                </div>
-            </div>
-            <div class="no-bg bm-item">
-                <div class="bm-top">
-                    地址
-                    <img class="pull-right bm-icon" src="/born_manager/static/src/img/address.png">
-                </div>
-                <div class="bm-main">
-                    <div class="btm-main-address">
-                    {{vm.company.address}}
+            <div>
+                <div class="hbox text-center b-light text-sm bm-wrapper">
+                    <div class="col padder-v text-muted b-r b-light bm-three-col-left">
+                        <div class="bm-three-col-up-font">{{ vm.company.license_count }}</div>
+                        <div class="bm-top">设备数</div>
+                    </div>
+                    <div class="col padder-v text-muted bm-three-col-middle">
+                        <div class="bm-three-col-up-font">{{ vm.company.active_days }}</div>
+                        <div class="bm-top">使用天数</div>
+                    </div>
+                    <div class="col padder-v text-muted bm-three-col-right">
+                        <div class="bm-three-col-up-font">{{ vm.company.member_count }}</div>
+                        <div class="bm-top">会员数</div>
                     </div>
                 </div>
-            </div>
-            <div class="no-bg bm-item">
-                <div class="bm-top">
-                    门店
-                    <img class="pull-right bm-icon" src="/born_manager/static/src/img/store.png">
-                </div>
-                <div class="bm-main">
-                    {{ vm.company.shop_count }} 家
-                </div>
-            </div>
-            <div class="no-bg bm-item">
-                <div class="bm-top">
-                    员工
-                    <img class="pull-right bm-icon" src="/born_manager/static/src/img/employee.png">
-                </div>
-                <div class="bm-main">
-                    {{vm.company.res_users_count}} 人
-                </div>
-            </div>
-            <div class="no-bg bm-item">
-                <div class="bm-top">
-                    权益金 (营)
-                    <img class="pull-right bm-icon" src="/born_manager/static/src/img/data2.png">
-                </div>
-                <div class="bm-main">
-                    ￥ {{ vm.company.cash_total }}
-                </div>
-            </div>
-            <div class="no-bg bm-item">
-                <div class="bm-top">
-                    消耗额 (收)
-                    <img class="pull-right bm-icon" src="/born_manager/static/src/img/data1.png">
-                </div>
-                <div class="bm-main">
-                    ￥ {{ vm.company.consume_total }}
-                </div>
-            </div>
-            <div class="no-bg bm-item">
-                <div class="bm-top">
-                    联系人
-                    <img class="pull-right bm-icon" src="/born_manager/static/src/img/men.png">
-                </div>
-                <div class="bm-main">
-                    {{ vm.company.contact_name }}
-                </div>
-            </div>
-            <div class="no-bg bm-item">
-                <div class="bm-top">
-                    手机
-                    <img class="pull-right bm-icon" src="/born_manager/static/src/img/phone.png">
-                </div>
-                <div class="bm-main">
-                    {{ vm.company.phone }}
-                </div>
-            </div>
-            <div>
-                <div class="col">
-                    <div class="wrapper bm-wrapper">
-                      <ul class="timeline">
-
-                        <li class="tl-item">
-                            <div class="bm-timeline-red">
-                                <span class="bm-timeline-left tl-date">最后登录时间</span>
-                                <div class="tl-content bm-timeline-right">
-                                  <div>
-                                      <i class="icon-clock bm-i-clock"></i>
-                                      <span class="bm-timeline-time">{{ vm.company.last_consume_date }}</span>
-                                  </div>
-                                </div>
-                            </div>
-                        </li>
 
 
 
-                        <li class="tl-item">
-                            <div class="bm-timeline-orange">
-                                <span class="bm-timeline-left tl-date">审核时间</span>
-                                <div class="tl-content bm-timeline-right">
-                                  <div>
-                                      <i class="icon-clock bm-i-clock"></i>
-                                      <span class="bm-timeline-time">{{ vm.company.approve_date }}</span>
-                                  </div>
-                                </div>
-                            </div>
-                        </li>
+            </div>
+                <div class="no-bg bm-item">
+                    <div class="bm-top">
+                        品牌
+                        <img class="pull-right bm-icon" src="/born_manager/static/src/img/name.png">
+                    </div>
+                    <div class="bm-main">
+                        {{ vm.company.brand }}
+                    </div>
+                </div>
+                <div class="no-bg bm-item">
+                    <div class="bm-top">
+                        公司
+                        <img class="pull-right bm-icon" src="/born_manager/static/src/img/company.png">
+                    </div>
+                    <div class="bm-main">
+                        {{ vm.company.name  }}
+                    </div>
+                </div>
+                <div class="no-bg bm-item">
+                    <div class="bm-top">
+                        行业
+                        <img class="pull-right bm-icon" src="/born_manager/static/src/img/groups.png">
+                    </div>
+                    <div class="bm-main">
+                        {{ vm.company.industry_category }}
+                    </div>
+                </div>
+                <div class="no-bg bm-item">
+                    <div class="bm-top">
+                        地址
+                        <img class="pull-right bm-icon" src="/born_manager/static/src/img/address.png">
+                    </div>
+                    <div class="bm-main">
+                        <div class="btm-main-address">
+                        {{vm.company.address}}
+                        </div>
+                    </div>
+                </div>
+                <div class="no-bg bm-item">
+                    <div class="bm-top">
+                        门店
+                        <img class="pull-right bm-icon" src="/born_manager/static/src/img/store.png">
+                    </div>
+                    <div class="bm-main">
+                        {{ vm.company.shop_count }} 家
+                    </div>
+                </div>
+                <div class="no-bg bm-item">
+                    <div class="bm-top">
+                        员工
+                        <img class="pull-right bm-icon" src="/born_manager/static/src/img/employee.png">
+                    </div>
+                    <div class="bm-main">
+                        {{vm.company.res_users_count}} 人
+                    </div>
+                </div>
+                <div class="no-bg bm-item">
+                    <div class="bm-top">
+                        权益金 (营)
+                        <img class="pull-right bm-icon" src="/born_manager/static/src/img/data2.png">
+                    </div>
+                    <div class="bm-main">
+                        ￥ {{ vm.company.cash_total }}
+                    </div>
+                </div>
+                <div class="no-bg bm-item">
+                    <div class="bm-top">
+                        消耗额 (收)
+                        <img class="pull-right bm-icon" src="/born_manager/static/src/img/data1.png">
+                    </div>
+                    <div class="bm-main">
+                        ￥ {{ vm.company.consume_total }}
+                    </div>
+                </div>
+                <div class="no-bg bm-item">
+                    <div class="bm-top">
+                        联系人
+                        <img class="pull-right bm-icon" src="/born_manager/static/src/img/men.png">
+                    </div>
+                    <div class="bm-main">
+                        {{ vm.company.contact_name }}
+                    </div>
+                </div>
+                <div class="no-bg bm-item">
+                    <div class="bm-top">
+                        手机
+                        <img class="pull-right bm-icon" src="/born_manager/static/src/img/phone.png">
+                    </div>
+                    <div class="bm-main">
+                        {{ vm.company.phone }}
+                    </div>
+                </div>
+                <div>
+                    <div class="col">
+                        <div class="wrapper bm-wrapper">
+                          <ul class="timeline">
 
-                        <li class="tl-item">
-                            <div class="bm-timeline-green">
-                                <span class="bm-timeline-left tl-date">创建时间</span>
-                                <div class="tl-content bm-timeline-right">
-                                    <div>
-                                        <i class="icon-clock bm-i-clock"></i>
-                                        <span class="bm-timeline-time">{{ vm.company.create_date }}</span>
+                            <li class="tl-item">
+                                <div class="bm-timeline-red">
+                                    <span class="bm-timeline-left tl-date">最后登录时间</span>
+                                    <div class="tl-content bm-timeline-right">
+                                      <div>
+                                          <i class="icon-clock bm-i-clock"></i>
+                                          <span class="bm-timeline-time">{{ vm.company.last_consume_date }}</span>
+                                      </div>
                                     </div>
                                 </div>
-                            </div>
-                        </li>
+                            </li>
 
-                      </ul>
+
+
+                            <li class="tl-item">
+                                <div class="bm-timeline-orange">
+                                    <span class="bm-timeline-left tl-date">审核时间</span>
+                                    <div class="tl-content bm-timeline-right">
+                                      <div>
+                                          <i class="icon-clock bm-i-clock"></i>
+                                          <span class="bm-timeline-time">{{ vm.company.approve_date }}</span>
+                                      </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="tl-item">
+                                <div class="bm-timeline-green">
+                                    <span class="bm-timeline-left tl-date">创建时间</span>
+                                    <div class="tl-content bm-timeline-right">
+                                        <div>
+                                            <i class="icon-clock bm-i-clock"></i>
+                                            <span class="bm-timeline-time">{{ vm.company.create_date }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                          </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="no-bg bm-item">
-                销售
-                <span class="pull-right">{{vm.company.sale_employee_name}}</span>
+                <div class="no-bg bm-item">
+                    销售
+                    <span class="pull-right">{{vm.company.sale_employee_name}}</span>
 
-            </div>
-            <div class="no-bg bm-item">
-                技术支持
-                <span class="pull-right">{{vm.company.employee_name}}</span>
+                </div>
+                <div class="no-bg bm-item">
+                    技术支持
+                    <span class="pull-right">{{vm.company.employee_name}}</span>
 
+                </div>
             </div>
         </div>
-    </div>
 
-    <div ng-if="vm.display=='mission'">
-        <div>
-            <div id="infinite1" infinite-scroll='vm.getCompanyMission()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+        <div ng-if="vm.display=='mission'">
+            <div>
+                <div id="infinite1" infinite-scroll='vm.getCompanyMission()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
 
-            <div ng-repeat="mission in vm.companyMission" class="bm-main-three-line-wrapper">
-                <a ng-click="vm.jumpWithCache(mission.mission_id)">
-                <div class="bm-main-three-line">
-                    <div class="bm-main-three-line-title">
-                        <!--状态图标-->
-                        <span  class="bm-main-three-line-title-tag-grey"><i class="fa fa-check"></i></span>
+                <div ng-repeat="mission in vm.companyMission" class="bm-main-three-line-wrapper">
+                    <a ng-click="vm.jumpWithCache(mission.mission_id)">
+                    <div class="bm-main-three-line">
+                        <div class="bm-main-three-line-title">
+                            <!--状态图标-->
+                            <span  class="bm-main-three-line-title-tag-grey"><i class="fa fa-check"></i></span>
 
-                        <span class="bm-main-three-line-title-font-grey">{{mission.mission_name}}</span>
+                            <span class="bm-main-three-line-title-font-grey">{{mission.mission_name}}</span>
+                        </div>
+
+                        <div class="bm-main-three-line-detail">
+                            <span class="bm-main-three-line-span-grey"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/phone.png">{{mission.mission_contacts_phone}}</span>
+                            <span class="bm-main-three-line-span-grey"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/bounds.png">{{mission.mission_contacts_name}}</span>
+                            <span class="bm-main-three-line-span-grey"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/time.png">{{mission.mission_date}}</span>
+                        </div>
+
+                        <div class="bm-main-three-line-detail">
+                            <span class="bm-main-three-line-span-grey">
+                                <img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/location-copy.png">{{missionsFinished.mission_address}}
+                            </span>
+                        </div>
                     </div>
-
-                    <div class="bm-main-three-line-detail">
-                        <span class="bm-main-three-line-span-grey"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/phone.png">{{mission.mission_contacts_phone}}</span>
-                        <span class="bm-main-three-line-span-grey"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/bounds.png">{{mission.mission_contacts_name}}</span>
-                        <span class="bm-main-three-line-span-grey"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/time.png">{{mission.mission_date}}</span>
-                    </div>
-
-                    <div class="bm-main-three-line-detail">
-                        <span class="bm-main-three-line-span-grey">
-                            <img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/location-copy.png">{{missionsFinished.mission_address}}
-                        </span>
-                    </div>
+                    </a>
                 </div>
-                </a>
-            </div>
+                </div>
             </div>
         </div>
     </div>

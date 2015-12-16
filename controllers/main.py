@@ -837,8 +837,8 @@ class born_manager(http.Controller):
         sql_two = u"""
             select bl.company_id ,  count(bl.id) ,rc.name from born_license bl
             join res_company rc on bl.company_id = rc.id
-                 where  bl.state = 'draft' %s group by bl.company_id,rc.name HAVING count(bl.id) >0
-            """ %(where)
+                 where  bl.state = 'draft' group by bl.company_id,rc.name HAVING count(bl.id) >0
+            """
         request.cr.execute(sql_two)
         operates_two = request.cr.dictfetchall()
 
@@ -849,8 +849,8 @@ class born_manager(http.Controller):
         number_one = request.cr.dictfetchall()
 
         sql_number_two = u"""
-            select count(*) from born_license bl where state = 'draft' %s
-        """%(where)
+            select count(*) from born_license bl where state = 'draft'
+        """
         request.cr.execute(sql_number_two)
         number_two = request.cr.dictfetchall()
 
@@ -1064,7 +1064,7 @@ class born_manager(http.Controller):
             'name':user.name or '',
             'tel' :user.login or '',
             'email' :user.email or '',
-            'image' :user.image_small or '',
+            'image' :user.image_medium or '',
             'team_name':team_name,
             'manager_name':manager_name,
         }
@@ -1113,6 +1113,7 @@ class born_manager(http.Controller):
         sql_detail = u"""
             select
                 rr.name,
+                rp.image_small,
                 (select count(*) from res_company rc where rc.sale_employee_id = rr.id %s) as number
             from res_users ru
             join resource_resource rr on ru.id = rr.user_id
@@ -1121,6 +1122,8 @@ class born_manager(http.Controller):
         """%(where)
         request.cr.execute(sql_detail)
         detail = request.cr.dictfetchall()
+        for saler in detail:
+            saler['image_small'] = str(saler['image_small'])
 
         val = {
             'all_number': len(operates),

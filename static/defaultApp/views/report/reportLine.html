@@ -1,0 +1,52 @@
+<div>
+    <div class="bm-head">
+        <div class="text-center h2 text-white" style="padding-top:60px;padding-bottom:15px">
+            电商营收报表{{vm.title}}
+        </div>
+        <div class="no-border text-center " style="padding-top:15px;margin-bottom: 0px;background-color: inherit;">
+            <div>
+                <button ng-class="{day: 'bm-top-btn-nobg-active'}[vm.report.display]" ng-click="vm.setDisplay('day')" class="  no-border bm-top-btn-nobg" style="width:40px" >全部</button>
+                <button ng-class="{day: 'bm-top-btn-nobg-active'}[vm.report.display]" ng-click="vm.setDisplay('day')" class="  no-border bm-top-btn-nobg"  >周</button>
+                <button ng-class="{week: 'bm-top-btn-nobg-active'}[vm.report.display]" ng-click="vm.setDisplay('week')" class=" no-border bm-top-btn-nobg"  >月</button>
+                <button ng-class="{month: 'bm-top-btn-nobg-active'}[vm.report.display]" ng-click="vm.setDisplay('month')" class=" no-border bm-top-btn-nobg" >年</button>
+            </div>
+        </div>
+        <div ng-show="vm.report.display!='date'" class="panel" style="  margin-bottom: 0px;background-color: inherit;">
+            <div class="hbox text-center text-sm " style="padding: 10px  10px;" >
+                <a  ng-click="vm.setPage(-1)" class="col text-left" style="width:30px;padding: 0px;">
+                    <span   class=" bm-nolight no-shadow  btn  no-border" style=";border-radius:50px 0px 0px 50px;   "  >
+                        <i class="fa fa-angle-left"></i>
+                    </span>
+                </a>
+                <a class="col bm-nolight" style=" padding: 5px 0px; ">
+                    <span class="bm-nolight">{{ vm.report.display_current }}2015 12</span>
+                </a>
+                <a ng-click="vm.setPage(1)" class="col text-right" style="width:30px;padding: 0px;">
+                    <span class="bm-nolight no-shadow  btn  no-border " style="border:0px;border-radius:0px 50px 50px 0px; " >
+                        <i class="fa fa-angle-right"></i>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div>
+            <span class="pull-right">
+                ￥39786.67
+            </span>
+            <div>
+                <p class="text-black ">
+                    权益金（营）
+                </p>
+                <p>
+                    日平均 ￥2987.02
+                </p>
+            </div>
+        </div>
+        <div>
+            <canvas id="line" class="chart chart-line" chart-data="data"
+                    chart-labels="labels" chart-legend="false" chart-series="series" chart-options = options
+                    chart-click="onClick" chart-colours=colours ></canvas>
+        </div>
+    </div>
+</div>
