@@ -56,6 +56,13 @@
                     MyCache.remove('selectResults');
                     MyCache.remove('selectedTags');
                 }
+                else if(MyCache.get('finishMission_come_from') == 'page_support'){
+                    $location.path('/support');
+                    MyCache.remove('finishMission_come_from');
+                    MyCache.remove('finishMission');
+                    MyCache.remove('selectResults');
+                    MyCache.remove('selectedTags');
+                }
 
             }else {
                 $location.path('/saler')
@@ -115,6 +122,7 @@
             displayModel.displaySave='0';
             displayModel.displayCreate = '0';
             displayModel.displaySearch = '0';
+            displayModel.displayBottom = '0';
 
             displayModel.headerBack = vm.cancel;
             displayModel.born_submit = vm.save;

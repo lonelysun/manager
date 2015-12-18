@@ -1,5 +1,33 @@
  <div class="show-hide-animation"  style="margin-bottom: 0px;padding-bottom: 0px;">
-    <div class="hbox text-center b-t b-b b-light text-sm bm-wrapper">
+
+     <!-- 年月日导航-->
+     <div class="panel no-border text-center bm-three-head" style="padding-top:15px;margin-bottom: 0px;background-color: #FFFFFF;">
+    	<div class="" style="width:100%">
+        	<button ng-class="{day: 'bm-active'}[vm.nav.display]" ng-click="vm.setDisplay('day')" class=" bg-white  no-border bm-top-btn"  >日</button>
+        	<button ng-class="{week: 'bm-active'}[vm.nav.display]" ng-click="vm.setDisplay('week')" class="bg-white no-border bm-top-btn"  >周</button>
+        	<button ng-class="{month: 'bm-active'}[vm.nav.display]" ng-click="vm.setDisplay('month')" class="bg-white no-border bm-top-btn" >月</button>
+    	</div>
+	</div>
+     <div class="bm-main-body">
+     <div class="panel" style="  margin-bottom: 0px;background-color: #F2F2F2;">
+    	<div class="hbox text-center  b-light text-sm " style="padding: 10px  10px;" >
+        	<a  ng-click="vm.setPage(-1)" class="col text-left" style="width:30px;padding: 0px;">
+            	<span   class=" bm-light no-shadow  btn  no-border" style=";border-radius:50px 0px 0px 50px;   "  >
+                	<i class="fa fa-angle-left" style="color:#A0A0A0;"></i>
+            	</span>
+       		</a>
+        	<a class="col bm-light" style=" padding: 5px 0px; ">
+           		<span class="bm-light">{{ vm.nav.display_current }}</span>
+        	</a>
+        	<a ng-click="vm.setPage(1)" class="col text-right" style="width:30px;padding: 0px;">
+            	<span class="bm-light no-shadow  btn  no-border " style="border:0px;border-radius:0px 50px 50px 0px; " >
+           			<i class="fa fa-angle-right" style="color:#A0A0A0;"></i>
+             	</span>
+        	</a>
+     	</div>
+  	</div>
+
+     <div class="hbox text-center b-t b-b b-light text-sm bm-wrapper">
         <div class="bm-two-col-left col padder-v text-muted b-r b-light ">
             <a href ng-click="vm.click('done')">
                 <div ng-class="{1:'bm-two-col-up-font-hightlight', 2:'bm-two-col-up-font-default'}[vm.state]">{{vm.updated_company_count}}</div>
@@ -21,13 +49,13 @@
 
     <!--</div>-->
 
-    <div ng-if="vm.state==1" id="infinite1" infinite-scroll='vm.getCompanys("done")' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+    <div ng-show="vm.state==1" id="infinite1" infinite-scroll='vm.getUpdatedCompanys()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
         <div>
-            <div ng-repeat="company in vm.companys">
+            <div ng-repeat="company in vm.updatedCompanys">
                 <a href="#company/updated/{{company.id}}" >
                     <div class="no-bg bm-item">
                         <span class="pull-right">
-                            {{company.use_dates}}天
+                            {{company.cnt}}单
                             <i class=" fa fa-fw fa-angle-right text"></i>
                         </span>
                         {{company.name}}
@@ -37,9 +65,9 @@
         </div>
     </div>
 
-    <div ng-if="vm.state==2" id="infinite2" infinite-scroll='vm.getCompanys("draft")' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+    <div ng-show="vm.state==2" id="infinite2" infinite-scroll='vm.getNotUpdatedCompanys()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
         <div >
-            <div ng-repeat="company in vm.companys">
+            <div ng-repeat="company in vm.notUpdatedCompanys">
                 <a href="#company/notupdated/{{company.id}}" >
                     <div class="no-bg bm-item">
                         <span class="pull-right">
@@ -52,4 +80,5 @@
         </div>
     </div>
 </div>
+ </div>
 <div style="height:60px; line-height: 60px;" ng-show="vm.busy" class="text-center" >正在加载...</div>

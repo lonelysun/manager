@@ -13,7 +13,7 @@
       $scope.data = [
         [0, 100, 12, 23, 34, 45, 56],
       ];
-      $scope.options = [{scaleShowVerticalLines: false},{scaleShowGridLines : false}];
+      $scope.options = {'scaleShowVerticalLines': true};
       $scope.labels1 = ["9", "8", "7", "6", "5", "4", "3"];
       $scope.series1 = ['Series B'];
       $scope.data1 = [

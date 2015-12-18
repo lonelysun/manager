@@ -11,6 +11,7 @@
         vm.max = '';
 
         function init() {
+            displayModel.displayBottom='0';
             javascript:scroll(0,0);
             getRanking();
         }

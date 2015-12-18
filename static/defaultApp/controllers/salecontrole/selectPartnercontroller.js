@@ -18,6 +18,7 @@
 
         function init() {
             displayModel.showHeader='1';
+            displayModel.displayBottom='0';
             displayModel.displayBack='1';
             displayModel.displaySave='0';
             displayModel.displaySearch='1';

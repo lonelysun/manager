@@ -73,18 +73,20 @@
         <div>
             <div  ng-if="vm.DoneTrack" id="infinite1" infinite-scroll='vm.getDoneTrack()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
                 <div class="bm-main-three-line-wrapper" style="padding-left: 25px;" data-ng-repeat="donetrack in vm.donetracklist">
-                    <div class="bm-main-three-line">
+                    <a href="#/saler/finishedMission/{{donetrack.id}}">
+                        <div class="bm-main-three-line">
                             <img ng-if="donetrack.user_img==''" class="pull-right opacity" style="width:30px;padding-top: 10px;" src="/born_manager/static/src/img/defaultlogo.png">
                             <img ng-if="donetrack.user_img!=''" class="pull-right opacity" style="width:30px;margin-top: 10px;border-radius: 500px;;" ng-src="data:image/png;base64,{{donetrack.user_img}}">
-                        <div class="opacity" style="width:90%;color:black">
-                            <img style="width:14px;height:12px" class="bm-main-three-line-title-tag opacity" src="/born_manager/static/src/img/saler/done.png">
-                            {{donetrack.employee}}完成任务：{{donetrack.name}}
+                            <div class="opacity" style="width:90%;color:black">
+                                <img style="width:14px;height:12px" class="bm-main-three-line-title-tag opacity" src="/born_manager/static/src/img/saler/done.png">
+                                {{donetrack.employee}}完成任务：{{donetrack.name}}
+                            </div>
+                            <div class="bm-main-three-line-detail"  style="width:90%;font-size:10px">
+                                <span class="bm-main-two-line-span opacity"><img class="bm-main-three-line-img opacity" src="/born_manager/static/src/img/salermanager/company.png">{{donetrack.company_name}}</span>
+                                <span class="bm-main-two-line-span opacity"><img class="bm-main-three-line-img opacity" src="/born_manager/static/src/img/saler/time.png">{{donetrack.time|limitTo:16}}</span>
+                            </div>
                         </div>
-                        <div class="bm-main-three-line-detail"  style="width:90%;font-size:10px">
-                            <span class="bm-main-two-line-span opacity"><img class="bm-main-three-line-img opacity" src="/born_manager/static/src/img/salermanager/company.png">{{donetrack.company_name}}</span>
-                            <span class="bm-main-two-line-span opacity"><img class="bm-main-three-line-img opacity" src="/born_manager/static/src/img/saler/time.png">{{donetrack.time|limitTo:16}}</span>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>

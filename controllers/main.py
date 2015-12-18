@@ -114,7 +114,6 @@ class born_manager(http.Controller):
             employee_ids = []
             for employee in team.employee_ids:
                 employee_ids.append(employee.id)
-
             request.session.employee_ids = employee_ids
 
 
@@ -242,9 +241,105 @@ class born_manager(http.Controller):
 
         return json.dumps(data,sort_keys=True)
 
+    # #获取公司列表信息
+    # @http.route('/manager/companys', type='http', auth="none",)
+    # def companys(self, **post):
+    #
+    #     uid=request.session.uid
+    #     if not uid:
+    #         werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
+    #
+    #     page_index=post.get('index',0)
+    #
+    #     keyword=post.get('keyword','')
+    #     companysState = post.get('companysState','')
+    #
+    #
+    #     if keyword == '':
+    #         where = "and true"
+    #     else:
+    #         where = " and (tb1.name like '%%%s%%'  or tb1.contact_name like '%%%s%%' or tb1.phone like '%%%s%%' ) " % (keyword,keyword,keyword)
+    #     data = {}
+    #
+    #     sql=u""" select count(id) as cnt  from res_company where state='done' """
+    #     request.cr.execute(sql)
+    #     res_count=request.cr.fetchall()
+    #     updated_company_count= int(res_count and res_count[0][0] or 0)
+    #
+    #     sql=u""" select count(id) as cnt  from res_company where state='draft' """
+    #     request.cr.execute(sql)
+    #     res_count=request.cr.fetchall()
+    #     not_updated_company_count= int(res_count and res_count[0][0] or 0)
+    #
+    #
+    #
+    #     companys_data = []
+    #
+    #     if companysState == 'done':
+    #         where2 = "and  tb1.state='done'"
+    #         # where2 = "and  true"
+    #         sql=u"""SELECT
+    #                 tb1. ID,
+    #                 tb1. NAME,
+    #                 date_part('days', now() - tb1.approve_date) use_dates
+    #             FROM
+    #                 res_company tb1
+    #             WHERE
+    #                 tb1. ID > 1   %s %s
+    #             ORDER BY tb1.id DESC
+    #             LIMIT 10 OFFSET %s """ % (where,where2,page_index)
+    #         request.cr.execute(sql)
+    #         companys = request.cr.dictfetchall()
+    #         for company in companys:
+    #             val = {
+    #                 'id': company['id'],
+    #                 'name': company['name'],
+    #                 'use_dates':company['use_dates'],
+    #             }
+    #             companys_data.append(val)
+    #
+    #         data = {
+    #             'companys_data' : companys_data,
+    #             'updated_company_count': updated_company_count,
+    #             'not_updated_company_count': not_updated_company_count
+    #         }
+    #
+    #     elif companysState == 'draft':
+    #         where2 = "and  tb1.state='draft'"
+    #         # where2 = "and  true"
+    #         sql=u"""SELECT
+    #                 tb1. ID,
+    #                 tb1. NAME
+    #             FROM
+    #                 res_company tb1
+    #             WHERE
+    #                 tb1. ID > 1   %s %s
+    #             ORDER BY tb1.id DESC
+    #             LIMIT 10 OFFSET %s """ % (where,where2,page_index)
+    #
+    #
+    #         request.cr.execute(sql)
+    #         companys = request.cr.dictfetchall()
+    #         for company in companys:
+    #             val = {
+    #                 'id': company['id'],
+    #                 'name': company['name'],
+    #             }
+    #             companys_data.append(val)
+    #         data = {
+    #             'companys_data' : companys_data,
+    #             'updated_company_count': updated_company_count,
+    #             'not_updated_company_count': not_updated_company_count
+    #         }
+    #
+    #     return json.dumps(data,sort_keys=True)
+
+
+
+    # Try New
     #获取公司列表信息
-    @http.route('/manager/companys', type='http', auth="none",)
-    def companys(self, **post):
+    @http.route('/manager/companys/updatedManagement', type='http', auth="none",)
+    def companysUpdatedManagement(self, **post):
 
         uid=request.session.uid
         if not uid:
@@ -253,63 +348,169 @@ class born_manager(http.Controller):
         page_index=post.get('index',0)
 
         keyword=post.get('keyword','')
-        companysState = post.get('companysState','')
+        # companysState = post.get('companysState','')
 
+
+#######################Add######################################
+        display_type = post.get('display','day')
+        current_date = post.get('current_date',False)
+        current_week = post.get('current_week',False)
+        current_year = post.get('current_year',False)
+        current_month = post.get('current_month',False)
+        direction = post.get('direction',0)
+
+        #计算当前的时间
+        if not current_date or current_date=='':
+            today = datetime.date.today()
+            current_date=today.strftime("%Y-%m-%d")
+            current_month=today.strftime("%Y-%m")
+            current_year=today.strftime("%Y")
+            current_week='%s %s' % (current_year,int(today.strftime("%W"))+1) #current_week:  2015 51
+
+        # display_current=current_date
+        filter_week_year=current_week.split(' ')[0]  #filter_week_year: 2015
+        filter_week=current_week.split(' ')[1]  #filter_week_year: 51
+
+        if direction=='1':
+            if display_type =='day':
+                today=datetime.datetime.strptime(current_date,'%Y-%m-%d')
+                current_date= today + datetime.timedelta(days=1)
+                current_date=current_date.strftime("%Y-%m-%d")
+            elif display_type == 'month':
+                today=datetime.datetime.strptime(current_month+'-01','%Y-%m-01')
+                current_month=today.replace(month=(today.month + 1 - 1) % 12 + 1, year=today.year if today.month < 12 else today.year + 1)
+                current_month=current_month.strftime("%Y-%m")
+            elif display_type=='week':
+                filter_week=int(filter_week)+1  #filter_week: 52
+                new_date = datetime.date(int(filter_week_year)+1,01,01) #new_date:datetime.date(2015+1,01,01)
+                new_date = new_date + datetime.timedelta(days=-1) #new_date:datetime.date(2015+1,01,01) 减一天
+                max_filter_week = new_date.strftime("%W") #
+                if int(filter_week) > int(max_filter_week): #判断 filter_week是否大于最大的max_filter_week
+                    filter_week=1
+                    filter_week_year=int(filter_week_year)+1
+                current_week='%s %s' % (filter_week_year,filter_week)
+        elif direction=='-1':
+            if display_type=='day':
+                today=datetime.datetime.strptime(current_date,'%Y-%m-%d')
+                current_date= today + datetime.timedelta(days=-1)
+                current_date=current_date.strftime("%Y-%m-%d")
+            elif display_type=='month':
+                today=datetime.datetime.strptime(current_month+'-01','%Y-%m-01')
+                current_month= today + datetime.timedelta(days=-1)
+                current_month=current_month.strftime("%Y-%m")
+            elif display_type=='week':
+                filter_week=int(filter_week)-1
+                #前一年的最后一周
+                if filter_week <= 0:
+                    new_date = datetime.date(int(filter_week_year),01,01)
+                    new_date = new_date + datetime.timedelta(days=-1)
+                    filter_week = new_date.strftime("%W")
+                    filter_week_year = int(filter_week_year)-1
+                current_week='%s %s' % (filter_week_year,filter_week)
+
+        where3 = ""
+
+        if display_type=='day':
+            display_current=current_date
+            where3 +="  and TO_CHAR(bos.create_date,'YYYY-MM-DD') = '%s' " % (current_date)
+        elif display_type=='month':
+            display_current=current_month
+            where3 += "  and TO_CHAR(bos.create_date,'YYYY-MM') = '%s' " % (current_month)
+        elif display_type=='week':
+            display_current= current_week
+
+            #change new show ways
+            fist_day = datetime.datetime.strptime( current_week + ' 1', "%Y %W %w").strftime("%Y.%m.%d")
+            last_day = datetime.datetime.strptime( current_week + ' 0', "%Y %W %w").strftime("%Y.%m.%d")
+            display_current = fist_day + ' - ' +last_day
+
+
+            where3 += "  and TO_CHAR(bos.create_date,'YYYY') = '%s' and extract('week' from bos.create_date)::varchar = '%s' " % (filter_week_year,filter_week)
+
+
+#############################################################
 
         if keyword == '':
-            where = "and true"
+            where4 = "and true"
         else:
-            where = " and (tb1.name like '%%%s%%'  or tb1.contact_name like '%%%s%%' or tb1.phone like '%%%s%%' ) " % (keyword,keyword,keyword)
+            where4 = " and (rc.name like '%%%s%%'  or rc.contact_name like '%%%s%%' or rc.phone like '%%%s%%' ) " % (keyword,keyword,keyword)
         data = {}
 
-        sql=u""" select count(id) as cnt  from res_company where state='done' """
+
+
+        # 计算数量
+        sql=u"""with temp_a as (
+                select bos.company_id,rc.name
+                from born_operate_sync bos
+                join res_company rc on rc.id = bos.company_id
+                where rc.state = 'done'
+                %s %s
+                group by bos.company_id,rc.name)
+                select count(*) from temp_a""" % (where3, where4)
         request.cr.execute(sql)
         res_count=request.cr.fetchall()
         updated_company_count= int(res_count and res_count[0][0] or 0)
-
-        sql=u""" select count(id) as cnt  from res_company where state='draft' """
-        request.cr.execute(sql)
-        res_count=request.cr.fetchall()
-        not_updated_company_count= int(res_count and res_count[0][0] or 0)
 
 
 
         companys_data = []
 
-        if companysState == 'done':
-            # where2 = "and  tb1.state='done'"
-            where2 = "and  true"
-            sql=u"""SELECT
-                    tb1. ID,
-                    tb1. NAME,
-                    date_part('days', now() - tb1.approve_date) use_dates
-                FROM
-                    res_company tb1
-                WHERE
-                    tb1. ID > 1   %s %s
-                ORDER BY tb1.id DESC
-                LIMIT 10 OFFSET %s """ % (where,where2,page_index)
-            request.cr.execute(sql)
-            companys = request.cr.dictfetchall()
-            for company in companys:
-                val = {
-                    'id': company['id'],
-                    'name': company['name'],
-                    'use_dates':company['use_dates'],
-                }
-                companys_data.append(val)
-
-            data = {
-                'companys_data' : companys_data,
-                'updated_company_count': updated_company_count,
-                'not_updated_company_count': not_updated_company_count
+        where2 = "and  rc.state='done'"
+        # where2 = "and  true"
+        sql=u"""select bos.company_id,rc.name,
+                count(bos.company_id) cnt
+                from born_operate_sync bos
+                join res_company rc on rc.id = bos.company_id
+                where rc.state = 'done'
+                %s %s
+                group by bos.company_id,rc.name
+                limit 10
+                offset %s """ % (where3,where4,page_index)
+        request.cr.execute(sql)
+        companys = request.cr.dictfetchall()
+        for company in companys:
+            val = {
+                'id': company['company_id'],
+                'name': company['name'],
+                'cnt':company['cnt']
             }
-            return json.dumps(data,sort_keys=True)
+            companys_data.append(val)
 
-        elif companysState == 'draft':
-            where2 = "and  tb1.state='draft'"
-            # where2 = "and  true"
-            sql=u"""SELECT
+        data = {
+            'updatedCompanys' : companys_data,
+            'updated_company_count': updated_company_count,
+            'current_date':current_date,
+            'current_month':current_month,
+            'current_year':current_year,
+            'current_week':current_week,
+            'display_current':display_current,
+            'display':display_type,
+
+        }
+
+        return json.dumps(data,sort_keys=True)
+
+
+
+
+    @http.route('/manager/companys/notUpdatedManagement', type='http', auth="none",)
+    def companysnotupdated(self, **post):
+        uid=request.session.uid
+        if not uid:
+            werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
+
+        page_index=post.get('index',0)
+
+        keyword=post.get('keyword','')
+
+        if keyword == '':
+            where1 = "and true"
+        else:
+            where1 = " and (tb1.name like '%%%s%%'  or tb1.contact_name like '%%%s%%' or tb1.phone like '%%%s%%' ) " % (keyword,keyword,keyword)
+
+
+        where2 = "and  tb1.state='draft'"
+        sql=u"""SELECT
                     tb1. ID,
                     tb1. NAME
                 FROM
@@ -317,193 +518,230 @@ class born_manager(http.Controller):
                 WHERE
                     tb1. ID > 1   %s %s
                 ORDER BY tb1.id DESC
-                LIMIT 10 OFFSET %s """ % (where,where2,page_index)
+                LIMIT 10 OFFSET %s """ % (where1,where2,page_index)
 
 
-            request.cr.execute(sql)
-            companys = request.cr.dictfetchall()
-            for company in companys:
-                val = {
-                    'id': company['id'],
-                    'name': company['name'],
-                }
-                companys_data.append(val)
-            data = {
-                'companys_data' : companys_data,
-                'updated_company_count': updated_company_count,
-                'not_updated_company_count': not_updated_company_count
+        request.cr.execute(sql)
+        companys_data = []
+        companys = request.cr.dictfetchall()
+        for company in companys:
+            val = {
+                'id': company['id'],
+                'name': company['name'],
             }
-            return json.dumps(data,sort_keys=True)
-
-    #获取公司的详细信息
-    @http.route('/manager/company/<int:company_id>', type='http', auth="none",)
-    def company(self, company_id, **post):
-
-        data={}
-        company_obj = request.registry.get('res.company')
-        for company in company_obj.browse(request.cr, SUPERUSER_ID,company_id, context=request.context):
-
-            sql=u""" select count(id) as cnt  from born_license where company_id=%s  """ % (company_id)
-            request.cr.execute(sql)
-            res_count=request.cr.fetchall()
-            license_count= int(res_count and res_count[0][0] or 0)
-
-            sql=u""" select count(id) as cnt  from res_users where company_id=%s  """ % (company_id)
-            request.cr.execute(sql)
-            res_count=request.cr.fetchall()
-            users_count= int(res_count and res_count[0][0] or 0)
-
-            sql=u""" select count(id) as cnt  from born_shop where company_id=%s  """ % (company_id)
-            request.cr.execute(sql)
-            res_count=request.cr.fetchall()
-            shop_count= int(res_count and res_count[0][0] or 0)
-
-            sql=u""" select count(id) as cnt  from born_member_sync where company_id=%s  """ % (company_id)
-            request.cr.execute(sql)
-            res_count=request.cr.fetchall()
-            member_count= int(res_count and res_count[0][0] or 0)
-
-            sql=u""" select count(id) as cnt  from born_card_sync where company_id=%s  """ % (company_id)
-            request.cr.execute(sql)
-            res_count=request.cr.fetchall()
-            card_count= int(res_count and res_count[0][0] or 0)
-
-            #现金
-            sql=u""" SELECT  sum(
-              case when type in ('card','recharge','active','lost','upgrade','refund') then now_amount
-              when type in ('repayment') then now_card_amount
-              when type in ('buy','consume') then now_amount+now_card_amount else 0 end) as xianjin
-              from born_operate_sync where company_id=%s """ % (company_id)
-            request.cr.execute(sql)
-            res_count = request.cr.fetchall()
-            cash_total= int(res_count and res_count[0][0] or 0)
-
-            #卡消耗
-            sql=u""" SELECT  sum(abs(now_card_amount)) +sum(consume_amount) as xiaohao
-                 from born_operate_sync where company_id=%s and type in ('buy','consume'); """  % (company_id)
-            request.cr.execute(sql)
-            res_count = request.cr.fetchall()
-            consume_total= int(res_count and res_count[0][0] or 0)
+            companys_data.append(val)
 
 
-            sql=u""" SELECT
-                tb1. ID,
-                date_part('days', now() - tb1.approve_date) AS use_dates,
-                COALESCE (
-                    to_char(
-                        MAX (tb4.create_date),
-                        'yyyy-mm-dd'
-                    ),
-                    ''
-                ) AS last_consume_date
-            FROM
-                res_company tb1
-            LEFT JOIN born_operate_sync tb4 ON tb4.company_id = tb1. ID where tb1.id=%s
-            GROUP BY
-                tb1. ID,
-                tb1.approve_date """ % (company_id)
 
-            request.cr.execute(sql)
-            infos = request.cr.dictfetchall()
-            use_dates=0
-            last_consume_date=company.create_date
-            for info in infos:
-                use_dates=info['use_dates']
-                last_consume_date=info['last_consume_date']
+        # 计算数量
+        sql=u"""with temp_a as (SELECT
+                    tb1. ID,
+                    tb1. NAME
+                FROM
+                    res_company tb1
+                WHERE
+                    tb1. ID > 1   %s %s
+                ORDER BY tb1.id DESC)
+                select count(*) from temp_a
+                """ % (where1,where2)
+        request.cr.execute(sql)
+        res_count=request.cr.fetchall()
+        not_updated_company_count = int(res_count and res_count[0][0] or 0)
 
-            #业务列表
-            total_operate_count=0
-            sql=u""" select type, SUM(now_amount+consume_amount) as total,count(id) as cnt  from  born_operate_sync where company_id=%s  group by type  """ % (company_id)
-            request.cr.execute(sql)
-            operates = request.cr.dictfetchall()
-            operate_data=[]
-            for operate in operates:
 
-                type=operate['type']
-                type_display=type
-                if type=='upgrade':
-                    type_display='卡升级'
-                elif type=='refund':
-                    type_display='退款'
-                elif type=='retreat':
-                    type_display='退货'
-                elif type=='consume':
-                    type_display='消费'
-                elif type=='card':
-                    type_display='开卡'
-                elif type=='lost':
-                    type_display='挂失'
-                elif type=='active':
-                    type_display='激活'
-                elif type=='exchange':
-                    type_display='退换'
-                elif type=='merger':
-                    type_display='并卡'
-                elif type=='buy':
-                    type_display='消费'
-                elif type=='replacement':
-                    type_display='换卡'
-                elif type=='repayment':
-                    type_display='还款'
-                elif type=='recharge':
-                    type_display='充值'
 
-                operate_data.append({
-                    'type':operate['type'],
-                    'total':'{0:,}'.format(operate['total']),
-                    'cnt':operate['cnt'],
-                    'type_display':type_display,
-                })
-
-                total_operate_count+=int(operate['cnt'])
-
-            address='%s%s%s%s%s' % (company.state_id.name or '',
-                                         company.area_id.name or '',
-                company.subdivide_id.name or '',
-                company.street or '', company.street2 or '')
-
-            if company.state == 'draft':
-                state_display=u'待审核'
-            elif company.state == 'done':
-                state_display=u'运行中'
-            elif company.state == 'cancel':
-                state_display=u'已停止'
-            elif company.state == 'review':
-                state_display=u'提交申请'
-            elif company.state == 'sent':
-                state_display=u'发送邮件'
-            else:
-                state_display=u''
-
-            data={
-                'id': company.id,
-                'name': company.name,
-                'create_date':company.create_date,
-                'approve_date':company.approve_date or '',
-                'state_display':state_display,
-                'state': company.state,
-                'address':address,
-                'contact_name':company.contact_name or '',
-                'phone':company.phone or '',
-                'employee_name':company.employee_id and company.employee_id.name or '',
-                'employee_phone':company.employee_id and company.employee_id.mobile_phone or '',
-                'brand':company.brand or '',
-                'industry_category': company.industry_id.name or '',
-                'use_dates':use_dates,
-                'last_consume_date':last_consume_date or '',
-                'users_count':users_count,
-                'license_count':license_count,
-                'shop_count':shop_count,
-                'member_count':member_count,
-                'card_count':card_count,
-                'operate_data':operate_data,
-                'total_operate_count':total_operate_count,
-                'cash_total':'{0:,}'.format(cash_total),
-                'consume_total':'{0:,}'.format(consume_total),
-
-            }
+        data = {
+            'not_updated_company_count' : not_updated_company_count,
+            'notUpdatedCompanys': companys_data,
+        }
 
         return json.dumps(data,sort_keys=True)
+
+
+
+
+
+
+
+
+
+
+
+
+    # End Try New
+
+
+
+
+    # #获取公司的详细信息
+    # @http.route('/manager/company/<int:company_id>', type='http', auth="none",)
+    # def company(self, company_id, **post):
+    #
+    #     data={}
+    #     company_obj = request.registry.get('res.company')
+    #     for company in company_obj.browse(request.cr, SUPERUSER_ID,company_id, context=request.context):
+    #
+    #         sql=u""" select count(id) as cnt  from born_license where company_id=%s  """ % (company_id)
+    #         request.cr.execute(sql)
+    #         res_count=request.cr.fetchall()
+    #         license_count= int(res_count and res_count[0][0] or 0)
+    #
+    #         sql=u""" select count(id) as cnt  from res_users where company_id=%s  """ % (company_id)
+    #         request.cr.execute(sql)
+    #         res_count=request.cr.fetchall()
+    #         users_count= int(res_count and res_count[0][0] or 0)
+    #
+    #         sql=u""" select count(id) as cnt  from born_shop where company_id=%s  """ % (company_id)
+    #         request.cr.execute(sql)
+    #         res_count=request.cr.fetchall()
+    #         shop_count= int(res_count and res_count[0][0] or 0)
+    #
+    #         sql=u""" select count(id) as cnt  from born_member_sync where company_id=%s  """ % (company_id)
+    #         request.cr.execute(sql)
+    #         res_count=request.cr.fetchall()
+    #         member_count= int(res_count and res_count[0][0] or 0)
+    #
+    #         sql=u""" select count(id) as cnt  from born_card_sync where company_id=%s  """ % (company_id)
+    #         request.cr.execute(sql)
+    #         res_count=request.cr.fetchall()
+    #         card_count= int(res_count and res_count[0][0] or 0)
+    #
+    #         #现金
+    #         sql=u""" SELECT  sum(
+    #           case when type in ('card','recharge','active','lost','upgrade','refund') then now_amount
+    #           when type in ('repayment') then now_card_amount
+    #           when type in ('buy','consume') then now_amount+now_card_amount else 0 end) as xianjin
+    #           from born_operate_sync where company_id=%s """ % (company_id)
+    #         request.cr.execute(sql)
+    #         res_count = request.cr.fetchall()
+    #         cash_total= int(res_count and res_count[0][0] or 0)
+    #
+    #         #卡消耗
+    #         sql=u""" SELECT  sum(abs(now_card_amount)) +sum(consume_amount) as xiaohao
+    #              from born_operate_sync where company_id=%s and type in ('buy','consume'); """  % (company_id)
+    #         request.cr.execute(sql)
+    #         res_count = request.cr.fetchall()
+    #         consume_total= int(res_count and res_count[0][0] or 0)
+    #
+    #
+    #         sql=u""" SELECT
+    #             tb1. ID,
+    #             date_part('days', now() - tb1.approve_date) AS use_dates,
+    #             COALESCE (
+    #                 to_char(
+    #                     MAX (tb4.create_date),
+    #                     'yyyy-mm-dd'
+    #                 ),
+    #                 ''
+    #             ) AS last_consume_date
+    #         FROM
+    #             res_company tb1
+    #         LEFT JOIN born_operate_sync tb4 ON tb4.company_id = tb1. ID where tb1.id=%s
+    #         GROUP BY
+    #             tb1. ID,
+    #             tb1.approve_date """ % (company_id)
+    #
+    #         request.cr.execute(sql)
+    #         infos = request.cr.dictfetchall()
+    #         use_dates=0
+    #         last_consume_date=company.create_date
+    #         for info in infos:
+    #             use_dates=info['use_dates']
+    #             last_consume_date=info['last_consume_date']
+    #
+    #         #业务列表
+    #         total_operate_count=0
+    #         sql=u""" select type, SUM(now_amount+consume_amount) as total,count(id) as cnt  from  born_operate_sync where company_id=%s  group by type  """ % (company_id)
+    #         request.cr.execute(sql)
+    #         operates = request.cr.dictfetchall()
+    #         operate_data=[]
+    #         for operate in operates:
+    #
+    #             type=operate['type']
+    #             type_display=type
+    #             if type=='upgrade':
+    #                 type_display='卡升级'
+    #             elif type=='refund':
+    #                 type_display='退款'
+    #             elif type=='retreat':
+    #                 type_display='退货'
+    #             elif type=='consume':
+    #                 type_display='消费'
+    #             elif type=='card':
+    #                 type_display='开卡'
+    #             elif type=='lost':
+    #                 type_display='挂失'
+    #             elif type=='active':
+    #                 type_display='激活'
+    #             elif type=='exchange':
+    #                 type_display='退换'
+    #             elif type=='merger':
+    #                 type_display='并卡'
+    #             elif type=='buy':
+    #                 type_display='消费'
+    #             elif type=='replacement':
+    #                 type_display='换卡'
+    #             elif type=='repayment':
+    #                 type_display='还款'
+    #             elif type=='recharge':
+    #                 type_display='充值'
+    #
+    #             operate_data.append({
+    #                 'type':operate['type'],
+    #                 'total':'{0:,}'.format(operate['total']),
+    #                 'cnt':operate['cnt'],
+    #                 'type_display':type_display,
+    #             })
+    #
+    #             total_operate_count+=int(operate['cnt'])
+    #
+    #         address='%s%s%s%s%s' % (company.state_id.name or '',
+    #                                      company.area_id.name or '',
+    #             company.subdivide_id.name or '',
+    #             company.street or '', company.street2 or '')
+    #
+    #         if company.state == 'draft':
+    #             state_display=u'待审核'
+    #         elif company.state == 'done':
+    #             state_display=u'运行中'
+    #         elif company.state == 'cancel':
+    #             state_display=u'已停止'
+    #         elif company.state == 'review':
+    #             state_display=u'提交申请'
+    #         elif company.state == 'sent':
+    #             state_display=u'发送邮件'
+    #         else:
+    #             state_display=u''
+    #
+    #         data={
+    #             'id': company.id,
+    #             'name': company.name,
+    #             'create_date':company.create_date,
+    #             'approve_date':company.approve_date or '',
+    #             'state_display':state_display,
+    #             'state': company.state,
+    #             'address':address,
+    #             'contact_name':company.contact_name or '',
+    #             'phone':company.phone or '',
+    #             'employee_name':company.employee_id and company.employee_id.name or '',
+    #             'employee_phone':company.employee_id and company.employee_id.mobile_phone or '',
+    #             'brand':company.brand or '',
+    #             'industry_category': company.industry_id.name or '',
+    #             'use_dates':use_dates,
+    #             'last_consume_date':last_consume_date or '',
+    #             'users_count':users_count,
+    #             'license_count':license_count,
+    #             'shop_count':shop_count,
+    #             'member_count':member_count,
+    #             'card_count':card_count,
+    #             'operate_data':operate_data,
+    #             'total_operate_count':total_operate_count,
+    #             'cash_total':'{0:,}'.format(cash_total),
+    #             'consume_total':'{0:,}'.format(consume_total),
+    #
+    #         }
+    #
+    #     return json.dumps(data,sort_keys=True)
 
 
 
@@ -823,6 +1061,16 @@ class born_manager(http.Controller):
             where += "  and TO_CHAR(bl.check_date,'YYYY-MM') = '%s' " % (current_month)
         elif display_type=='week':
             display_current= current_week
+
+            #change new show ways
+            f_year = current_week.split(' ')[0]
+            f_week = int(current_week.split(' ')[1]) - 1
+            f_current_week = '%s %s' % (f_year,f_week)
+            fist_day = datetime.datetime.strptime( f_current_week + ' 1', "%Y %W %w").strftime("%Y.%m.%d")
+            last_day = datetime.datetime.strptime( f_current_week + ' 0', "%Y %W %w").strftime("%Y.%m.%d")
+            display_current = fist_day + ' - ' +last_day
+
+
             where += "  and TO_CHAR(bl.check_date,'YYYY') = '%s' and extract('week' from bl.check_date)::varchar = '%s' " % (filter_week_year,filter_week)
 
 

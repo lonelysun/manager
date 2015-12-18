@@ -3,7 +3,7 @@
     var injectParams = ['$scope', '$location', '$routeParams','$route','$rootScope',
                         '$timeout', 'ngDialog','config','modalService', 'dataService','toaster','displayModel','MyCache'];
 
-    var salerController = function ($scope, $location, $routeParams,$route,$rootScope,
+    var supportController = function ($scope, $location, $routeParams,$route,$rootScope,
                                            $timeout, ngDialog,config,modalService, dataService,toaster,displayModel,MyCache) {
         var vm = this;
         vm.companys = [];
@@ -22,14 +22,14 @@
         mission_state = '';
         vm.role = '';
 
-        var hr_id_for_manager = ($routeParams.salerId) ? parseInt($routeParams.salerId) : 0;
+        var hr_id_for_manager = ($routeParams.supportId) ? parseInt($routeParams.supportId) : 0;
 
 
 
         //首页初始化数据
         vm.getInitData = function(){
 
-            dataService.getInitData(hr_id_for_manager)
+            dataService.getSupportInitData(hr_id_for_manager)
                 .then(function (data) {
                     vm.initData = data;
                     vm.isLoad=true;
@@ -52,7 +52,7 @@
                 missionLengh = vm.missionsFinished.length;
             }
 
-            dataService.getMissions(missionLengh,vm.keyword,mission_state,hr_id_for_manager)
+            dataService.getSupportMissions(missionLengh,vm.keyword,mission_state,hr_id_for_manager)
             .then(function (data) {
                 var i;
                 if(mission_state=='notOk'){
@@ -83,26 +83,6 @@
 
 
 
-        //获取首页上的商户
-        vm.getPartners = function(){
-            if(vm.busy)return;
-            vm.busy=true;
-            dataService.getPartners(vm.partners.length,vm.keyword,hr_id_for_manager)
-            .then(function (data) {
-
-                for (var i = 0; i < data['partners_list'].length; i++) {
-                    vm.partners.push(data['partners_list'][i]);
-                }
-                vm.isLoad=true;
-                $timeout(function () {
-                    vm.busy=false;
-
-                }, 1000);
-            }, function (error) {
-            	toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
-            });
-
-        };
 
 
         //获取首页上的公司列表
@@ -110,7 +90,7 @@
             if(vm.busy)return;
             vm.busy=true;
 
-            dataService.getCompanys(vm.companys.length,vm.keyword,hr_id_for_manager)
+            dataService.getSupportCompanys(vm.companys.length,vm.keyword,hr_id_for_manager)
             .then(function (data) {
                 for (var i = 0; i < data['companys_list'].length; i++) {
                     vm.companys.push(data['companys_list'][i]);
@@ -171,8 +151,8 @@
                 closeButtonText: '取消',
                 firstActionText:'新任务',
                 firstUrl:'#/createMission/7',
-                secondActionText:'新商户',
-                secondUrl:'#/saler/partner/edit/0',
+                secondActionText:'',
+                secondUrl:''
             };
 
             ngDialog.open({
@@ -185,7 +165,7 @@
         //改变任务状态
         vm.changeMissionState = function(missionsUnfinished){
 
-            if(vm.role != '7'){
+            if(vm.role != '9'){
                 return;
             }
 
@@ -252,7 +232,7 @@
 
                 if(action == 'finished'){
 
-                    MyCache.put('finishMission_come_from','page_saler');
+                    MyCache.put('finishMission_come_from','page_support');
                     MyCache.put('firstComeIntoFinishMission','1');
                     MyCache.put('passedMissionTitle',titleText);
 
@@ -274,7 +254,7 @@
 
         //点击已完成任务跳转到已完成的任务详细页面
         vm.jumpWithCache = function(Id){
-            MyCache.put('finishedMission_come_from','page_saler');
+            MyCache.put('finishedMission_come_from','page_support');
             $location.path('/saler/finishedMission/'+Id)
         };
 
@@ -293,9 +273,9 @@
 
             vm.getInitData();
 
-            if(MyCache.get('saler_display')){
-                vm.display = MyCache.get('saler_display')
-                MyCache.remove('saler_display');
+            if(MyCache.get('support_display')){
+                vm.display = MyCache.get('support_display');
+                MyCache.remove('support_display');
             }
             else{
                 vm.display = 'missions';
@@ -319,7 +299,7 @@
         init();
     };
 
-    salerController.$inject = injectParams;
-    angular.module('managerApp').controller('SalerController', salerController);
+    supportController.$inject = injectParams;
+    angular.module('managerApp').controller('SupportController', supportController);
 
 }());

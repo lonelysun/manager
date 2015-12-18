@@ -12,6 +12,7 @@
         vm.track_ids = [];
         function init() {
             displayModel.showHeader = '0';
+            displayModel.displayBottom='0';
             if(track_id!=0){
                 var temp = '';
                 vm.track_ids = MyCache.get('track_ids');

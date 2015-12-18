@@ -61,7 +61,14 @@
                     window.location.href = 'bornhr://back';
                     MyCache.remove('finishedMission_come_from');
                     MyCache.remove('finishedMission_come_from_companyId')
+                }else if(MyCache.get('finishedMission_come_from') == 'page_support'){
+                    MyCache.put('showClickMore','1');
+
+                    //$location.path('/saler');
+                    window.location.href = 'bornhr://back';
+                    MyCache.remove('finishedMission_come_from')
                 }
+
 
             }else {
                 $location.path('/menu')

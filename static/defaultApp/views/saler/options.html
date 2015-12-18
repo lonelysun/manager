@@ -21,8 +21,8 @@
     <div ng-if="vm.needAutoSave">
         <div  id="infinite2" infinite-scroll='vm.getOptions()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
             <div  ng-repeat="option in vm.options" class="no-bg bm-item">
-                <a ng-click="vm.autoSave(option)">
-                <label style="display: block;">
+                <!--<a>-->
+                <label ng-click="vm.autoSave(option)" style="display: block;">
                     <div>
                         <input class="pull-right" type="radio"  value="{{option}}" data-ng-model="vm.selectOption" style="display:none">
                         <div style="width: 100%;color: black;padding-left: 10px;">
@@ -30,7 +30,7 @@
                         </div>
                     </div>
                 </label>
-                </a>
+                <!--</a>-->
             </div>
         </div>
     </div>

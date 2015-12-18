@@ -2,23 +2,23 @@
     <!--Head-->
     <div class="bm-head">
         <div class="bm-head-top">
-            <span ng-if="vm.role == '7'" class="bm-head-top-icon-left"><img class="bm-head-top-img" src="/born_manager/static/src/img/saler/add.png" data-ng-click="vm.createMissionOrPatner()"></span>
-            <span ng-if="vm.role == '8'" class="bm-head-top-icon-left"><img  style="width:12px;height:23px" src="/born_manager/static/src/img/salermanager/backwhite.png" data-ng-click="vm.goBack()"></span>
+            <span ng-if="vm.role == '9'" class="bm-head-top-icon-left"><img class="bm-head-top-img" src="/born_manager/static/src/img/saler/add.png" data-ng-click="vm.createMissionOrPatner()"></span>
+            <span ng-if="vm.role == '10'" class="bm-head-top-icon-left"><img  style="width:12px;height:23px" src="/born_manager/static/src/img/salermanager/backwhite.png" data-ng-click="vm.goBack()"></span>
             <span class="pull-right">
                 <span class="bm-head-top-icon"><a href="#/ranking"><img class="bm-head-top-img" src="/born_manager/static/src/img/saler/rank.png"></a></span>
-                <span class="bm-head-top-icon" ng-if="vm.initData.push_state=='draft' && vm.role == '7'"><a href="#/messagesTime"><img class="bm-head-top-img" src="/born_manager/static/src/img/saler/have-message.png"></a></span>
-                <span class="bm-head-top-icon" ng-if="vm.initData.push_state=='done' && vm.role == '7'"><a href="#/messagesTime"><img class="bm-head-top-img" src="/born_manager/static/src/img/saler/message.png"></a></span>
+                <span class="bm-head-top-icon" ng-if="vm.initData.push_state=='draft' && vm.role == '9'"><a href="#/messagesTime"><img class="bm-head-top-img" src="/born_manager/static/src/img/saler/have-message.png"></a></span>
+                <span class="bm-head-top-icon" ng-if="vm.initData.push_state=='done' && vm.role == '9'"><a href="#/messagesTime"><img class="bm-head-top-img" src="/born_manager/static/src/img/saler/message.png"></a></span>
                 <span class="bm-head-top-icon"><img class="bm-head-top-img" data-ng-click="vm.searsh()" src="/born_manager/static/src/img/saler/search.png"></span>
             </span>
         </div>
 
         <div class="bm-head-down">
             <div class="pull-left">
-                <a ng-if="vm.role == '7'" href="#/settings">
+                <a ng-if="vm.role == '9'" href="#/settings">
                     <img ng-if="vm.initData.image != ''" class="bm-photo-round img" style="border-radius: 500px;" ng-src="data:image/png;base64,{{vm.initData.image}}">
                     <img ng-if="vm.initData.image == ''" class="bm-photo-round img" ng-src="/born_manager/static/src/img/defaultlogo.png">
                 </a>
-                <a ng-if="vm.role == '8'">
+                <a ng-if="vm.role == '10'">
                     <img ng-if="vm.initData.image != ''" class="bm-photo-round img" style="border-radius: 500px;" ng-src="data:image/png;base64,{{vm.initData.image}}">
                     <img ng-if="vm.initData.image == ''" class="bm-photo-round img" ng-src="/born_manager/static/src/img/defaultlogo.png">
                 </a>
@@ -26,9 +26,9 @@
 
             <div class="pull-right">
                 <div class="pull-right bm-head-right-part">
-                    <div class="bm-head-int">{{vm.initData.partner_number}}</div>
+                    <div class="bm-head-int">{{vm.initData.company_number}}</div>
                     <div class="bm-head-font">负责的</div>
-                    <div class="bm-head-font">商户</div>
+                    <div class="bm-head-font">公司</div>
                 </div>
                 <div class="pull-right bm-head-right-part">
                     <div class="bm-head-int">{{vm.initData.mission_number}}</div>
@@ -61,7 +61,7 @@
                             <span ng-if="missionsUnfinished.mission_state=='notstart'" style="visibility:hidden" class="bm-main-three-line-title-tag-grey"><i class="fa fa-check"></i></span>
 
                             <span class="bm-main-three-line-title-font">{{missionsUnfinished.mission_name}}</span>
-                            <span ng-if="vm.role == '7'" class="pull-right"><img class=" bm-img-three-points"  src="/born_manager/static/src/img/three-points.png"></span>
+                            <span ng-if="vm.role == '9'" class="pull-right"><img class=" bm-img-three-points"  src="/born_manager/static/src/img/three-points.png"></span>
                         </div>
 
                         <div class="bm-main-three-line-detail">
@@ -122,10 +122,14 @@
                         <span class="pull-right bm-main-three-line-title-font-grey">{{company.use_days}}天<i class=" fa fa-fw fa-angle-right text"></i></span>
                     </div>
                     <div>
-                        <span class="bm-main-two-line-span"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/ticket.png"></span>
+                        <span class="bm-main-two-line-span-img"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/ticket.png"></span>
                         <span class="bm-main-two-line-span">共{{company.total_operate_number}}单.</span>
                         <span class="bm-main-two-line-span">今日{{company.today_operate_number}}单.</span>
-                        <span class="bm-main-two-line-span">日均{{company.daily_average}}单.</span>
+                        <!--<span class="bm-main-two-line-span">日均{{company.daily_average}}单.</span>-->
+                    </div>
+                    <div>
+                        <i class="icon-clock bm-i-clock"></i>
+                        <span class="bm-main-two-line-span">注册时间: {{company.register_date_year}}年{{company.register_date_month}}月{{company.register_date_day}}日</span>
                     </div>
                 </div>
             </a>

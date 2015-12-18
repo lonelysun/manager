@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html ng-app="managerApp" >
 <head>
     <title>${user.name}</title>
@@ -23,31 +23,31 @@
     <link href="/born_manager/static/src/css/angular-carousel.css" rel="stylesheet" />
 
 </head>
-<body  ng-cloak style="background-color:white">
+<body  style="background-color:white">
     <div ng-controller="NavbarController as vm"  class="h4 app-header navbar navbar-fixed-top" style="min-height: 0px;">
             <!-- navbar header -->
-            <div  class="bm-navbar-header text-center " ng-if="vm.showHeader()=='1'" style="line-height: 30px; padding-top: 24px;padding-bottom: 9px;">
+            <div ng-cloak  class="bm-navbar-header text-center " ng-if="vm.showHeader()=='1'" style="line-height: 30px; padding-top: 24px;padding-bottom: 9px;">
 
-                <button ng-if="vm.getSaveModel()=='1'" data-ng-click="vm.save()" class="bm-head-button pull-right visible-xs dk" >
+                <button  ng-if="vm.getSaveModel()=='1'" data-ng-click="vm.save()" class="bm-head-button pull-right visible-xs dk" >
                   保存
                 </button>
-                <button ng-if="vm.getCreateModel()=='1'" data-ng-click="vm.create()" class="bm-head-button pull-right visible-xs dk" >
+                <button  ng-if="vm.getCreateModel()=='1'" data-ng-click="vm.create()" class="bm-head-button pull-right visible-xs dk" >
                   创建
                 </button>
-                <button ng-if="vm.getConfirmModel()=='1'" data-ng-click="vm.confirm()" class="bm-head-button pull-right visible-xs dk" >
+                <button  ng-if="vm.getConfirmModel()=='1'" data-ng-click="vm.confirm()" class="bm-head-button pull-right visible-xs dk" >
                   确认
                 </button>
-                <button ng-if="vm.getSubmitModel()=='1'" data-ng-click="vm.submit()" class="bm-head-button pull-right visible-xs dk" >
+                <button  ng-if="vm.getSubmitModel()=='1'" data-ng-click="vm.submit()" class="bm-head-button pull-right visible-xs dk" >
                   提交
                 </button>
-                <button ng-if="vm.getPlaceholder()=='1'" class="bm-head-button pull-right visible-xs dk" style="padding-left: 34px;padding-right: 34px;height: 2px;">
+                <button  ng-if="vm.getPlaceholder()=='1'" class="bm-head-button pull-right visible-xs dk" style="padding-left: 34px;padding-right: 34px;height: 2px;">
                 </button>
-                <button ng-if="vm.getPlaceholderleft()=='1'" class="bm-head-button pull-left visible-xs dk" style="padding-left: 34px;padding-right: 34px;height: 2px;">
+                <button  ng-if="vm.getPlaceholderleft()=='1'" class="bm-head-button pull-left visible-xs dk" style="padding-left: 34px;padding-right: 34px;height: 2px;">
                 </button>
-                <img ng-if="vm.getSearchModel()=='1'"  data-ng-click="vm.search()" class="pull-right bm-img-search"  src="/born_manager/static/src/img/search.png">
+                <img  ng-if="vm.getSearchModel()=='1'"  data-ng-click="vm.search()" class="pull-right bm-img-search"  src="/born_manager/static/src/img/search.png">
                       <span>{{vm.title | limitTo:8}}{{vm.title.length > 8 ? '...' : ''}}</span>
                 <img ng-if="vm.getBackModel()=='1'" data-ng-click="vm.headerBack()" class=" pull-left no-border bm-img-back"  src="/born_manager/static/src/img/back.png">
-                <button ng-if="vm.getCancelModel()=='1'" data-ng-click="vm.headerBack()" class="bm-head-button pull-left visible-xs dk" >
+                <button  ng-if="vm.getCancelModel()=='1'" data-ng-click="vm.headerBack()" class="bm-head-button pull-left visible-xs dk" >
                   取消
                 </button>
             </div>
@@ -68,25 +68,25 @@
     <div class="app-footer navbar navbar-fixed-bottom  ng-scope m-n" ui-view="footer"  ng-controller="NavbarController as vm" style="min-height: 0px;">
         <div class="row ng-scope"  ng-if="vm.displayBottom()=='1'">
             <nav>
-                 <div class="footermenu" data-collapse="isCollapsed" >
-                     <ul ng-if="vm.showBottom()=='1'"  highlight-class-name="active" style="background-color:white;box-shadow: 0 -2px 4px rgba(0,0,0,0.2);" >
-                         <li style="width: 33%" >
-                            <a ng-if="vm.clicked!='menu'" href="#/salepanel" ng-click="vm.clicked = 'menu'"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/menu-b.png"><p>首页</p></a>
-                            <a ng-if="vm.clicked=='menu'" href="#/salepanel" ng-click="vm.clicked = 'menu'" style="color:#ff4848"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/menu-b-d.png"><p>首页</p></a>
+                 <div ng-cloak class="footermenu" data-collapse="isCollapsed" >
+                     <ul  ng-if="vm.showBottom()=='1'"  highlight-class-name="active" style="background-color:white;box-shadow: 0 -2px 4px rgba(0,0,0,0.2);" >
+                         <li style="width: 50%" >
+                            <a ng-if="vm.clicked!='menu'" href="#/menus" ng-click="vm.clicked = 'menu'"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/menu-b.png"><p>首页</p></a>
+                            <a ng-if="vm.clicked=='menu'" href="#/menus" ng-click="vm.clicked = 'menu'" style="color:#ff4848"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/menu-b-d.png"><p>首页</p></a>
                          </li>
-                         <li style="width: 33%" >
+                         <li style="width: 50%" >
                             <a ng-if="vm.clicked!='license'" ng-click="vm.clicked = 'license'" href="#/licenses/0"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/licenses-b.png"><p>设备管理</p></a>
                             <a ng-if="vm.clicked=='license'" ng-click="vm.clicked = 'license'" href="#/licenses/0" style="color:#ff4848"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/licenses-b-d.png"><p>设备管理</p></a>
                          </li>
-                         <li style="width: 33%" >
-                            <a ng-if="vm.clicked!='company'" ng-click="vm.clicked = 'company'" href="#/companys" ><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/company-b.png"><p>公司管理</p></a>
-                            <a ng-if="vm.clicked=='company'" ng-click="vm.clicked = 'company'" href="#/companys"  style="color:#ff4848"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/company-b-d.png"><p>公司管理</p></a>
-                         </li>
+                         <!--<li style="width: 33%" >-->
+                            <!--<a ng-if="vm.clicked!='company'" ng-click="vm.clicked = 'company'" href="#/companys" ><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/company-b.png"><p>公司管理</p></a>-->
+                            <!--<a ng-if="vm.clicked=='company'" ng-click="vm.clicked = 'company'" href="#/companys"  style="color:#ff4848"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/company-b-d.png"><p>公司管理</p></a>-->
+                         <!--</li>-->
                      </ul>
                      <ul  ng-if="vm.showBottom()=='2'" highlight-class-name="active" style="background-color:white;box-shadow: 0 -2px 4px rgba(0,0,0,0.2);" >
                          <li style="width: 25%" >
-                            <a ng-if="vm.clicked!='menu'" href="#/salepanel" ng-click="vm.clicked = 'menu'"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/menu-b.png"><p>首页</p></a>
-                            <a ng-if="vm.clicked=='menu'" href="#/salepanel" ng-click="vm.clicked = 'menu'" style="color:#ff4848"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/menu-b-d.png"><p>首页</p></a>
+                            <a ng-if="vm.clicked!='menu'" href="#/menus" ng-click="vm.clicked = 'menu'"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/menu-b.png"><p>首页</p></a>
+                            <a ng-if="vm.clicked=='menu'" href="#/menus" ng-click="vm.clicked = 'menu'" style="color:#ff4848"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/menu-b-d.png"><p>首页</p></a>
                          </li>
                          <li style="width: 25%" >
                             <a ng-if="vm.clicked!='license'" ng-click="vm.clicked = 'license'" href="#/licenses/0"><img style="width:26px;height:25px" src="/born_manager/static/src/img/bottom/licenses-b.png"><p>设备管理</p></a>
@@ -212,7 +212,7 @@
     <script src="/born_manager/static/defaultApp/controllers/saler/resultsOptionController.js"></script>
     <script src="/born_manager/static/defaultApp/controllers/saler/showFinishedMissionController.js"></script>
 
-
+    <script src="/born_manager/static/defaultApp/controllers/support/supportController.js"></script>
 
 
     <script src="/born_manager/static/defaultApp/controllers/navbarController.js"></script>

@@ -83,7 +83,7 @@
 	            controllerAs: 'vm'
 	        })
 			.when('/companys', {
-	            controller: 'CompanyController',
+	            controller: 'CompanysController',
 	            templateUrl: viewBase + 'companys/companys.html',
 	            controllerAs: 'vm'
 	        })
@@ -159,6 +159,11 @@
 			.when('/saler/:salerId', {
 	            controller: 'SalerController',
 	            templateUrl: viewBase + 'saler/saler.html',
+	            controllerAs: 'vm'
+	        })
+			.when('/support', {
+	            controller: 'SupportController',
+	            templateUrl: viewBase + 'support/support.html',
 	            controllerAs: 'vm'
 	        })
 

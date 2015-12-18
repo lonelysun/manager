@@ -205,7 +205,7 @@ class born_manager_sale(http.Controller):
             mission_id = each_obj.id
             company_id = each_obj.track_id.id
             mission_name = each_obj.name or u'无'
-            mission_contacts_phone = each_obj.contacts_phone or u'无'
+            mission_contacts_phone = each_obj.contacts_id.phone or u'无'
             mission_contacts_name = each_obj.contacts_id.name or u'无'
             if each_obj.mission_date:
                 mission_date = (each_obj.mission_date)[5:10]
@@ -424,7 +424,7 @@ class born_manager_sale(http.Controller):
                 'name': contact.name,
                 'function': contact.function or '',
                 'mobile': contact.mobile or '',
-                'phone': contact.phone or '',
+                # 'phone': contact.phone or '',
                 'wechat': contact.wechat or '',
                 'qq': contact.qq or ''
             }
@@ -591,7 +591,7 @@ class born_manager_sale(http.Controller):
                     contact_vals = {
                         'name':each_contact['name'],
                         'mobile':each_contact['mobile'],
-                        'phone':each_contact['phone'],
+                        # 'phone':each_contact['phone'],
                         'qq':each_contact['qq'],
                         'wechat':each_contact['wechat'],
                         'function':each_contact['function'],
@@ -603,7 +603,7 @@ class born_manager_sale(http.Controller):
                     contact_vals = {
                         'name':each_contact['name'],
                         'mobile':each_contact['mobile'],
-                        'phone':each_contact['phone'],
+                        # 'phone':each_contact['phone'],
                         'qq':each_contact['qq'],
                         'wechat':each_contact['wechat'],
                         'function':each_contact['function'],
@@ -1019,7 +1019,7 @@ class born_manager_sale(http.Controller):
             company_id = each_obj.track_id.id
             mission_company_name = each_obj.track_id.name
             mission_name = each_obj.name
-            mission_contacts_phone = each_obj.contacts_phone
+            mission_contacts_phone = each_obj.contacts_id.mobile
             mission_contacts_name = each_obj.contacts_id.name
             if each_obj.mission_date:
                 mission_date = (each_obj.mission_date)[5:10]

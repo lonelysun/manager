@@ -29,7 +29,7 @@
         	return $http.post(serviceBase + 'regiest', setting).then(function (status) {
                 return status.data;
             });
-        }
+        };
 
         //获取设置数据
         factory.getSetting = function () {
@@ -38,20 +38,22 @@
             });
         };
 
-        ////获取公司列表
-        //factory.getCompanys = function (pageIndex,keyword,companysState) {
-        //
-        //    return $http.get(serviceBase + 'companys', {
-     	//		params : {
-        //            index:pageIndex,
-        //            keyword:keyword,
-        //            companysState:companysState
-     	//		}
-     	//		}).then(function(results) {
-     	//			return results.data;
-     	//		});
-        //
-        //};
+
+        // Change New support
+        //获取公司列表
+        factory.getSupportCompanys = function (pageIndex,keyword,companysState) {
+
+            return $http.get(serviceBase + 'companys', {
+     			params : {
+                    index:pageIndex,
+                    keyword:keyword,
+                    companysState:companysState
+     			}
+     			}).then(function(results) {
+     				return results.data;
+     			});
+
+        };
 
         //获取公司详细信息
         factory.getCompanyDetail = function (id) {
@@ -388,7 +390,93 @@
         //end
 
 
+        //start for support
+        //技术首页初始化数据
+        factory.getSupportInitData = function (hr_id_for_manager) {
 
+            return $http.get(serviceBase + 'support/initdata',{
+                params: {
+                    hr_id_for_manager:hr_id_for_manager
+                }
+            }).then(function(results) {
+     				return results.data;
+     			});
+
+        };
+
+        //技术首页任务
+        factory.getSupportMissions = function (pageIndex,keyword,mission_state,hr_id_for_manager) {
+
+            return $http.get(serviceBase + 'support/missions', {
+     			params : {
+                    index:pageIndex,
+                    keyword:keyword,
+                    mission_state:mission_state,
+                    hr_id_for_manager:hr_id_for_manager
+     			}
+     			}).then(function(results) {
+     				return results.data;
+     			});
+
+        };
+
+
+        //技术首页公司
+        factory.getSupportCompanys = function (pageIndex,keyword,hr_id_for_manager) {
+
+            return $http.get(serviceBase + 'support/companys', {
+     			params : {
+                    index:pageIndex,
+                    keyword:keyword,
+                    hr_id_for_manager:hr_id_for_manager
+     			}
+     			}).then(function(results) {
+     				return results.data;
+     			});
+
+        };
+
+
+
+        //公司管理
+        factory.getUpdatedCompanysManagement = function (pageIndex,keyword,direction,
+        display,current_date,current_week,current_year,current_month
+        ) {
+
+            return $http.get(serviceBase + 'companys/updatedManagement', {
+     			params : {
+                    index:pageIndex,
+                    keyword:keyword,
+                    direction:direction,
+                    display:display,
+                    current_date:current_date,
+                    current_week:current_week,
+                    current_year:current_year,
+                    current_month:current_month
+     			}
+     			}).then(function(results) {
+     				return results.data;
+     			});
+
+        };
+
+        //公司管理
+        factory.getNotUpdatedCompanysManagement = function (pageIndex,keyword) {
+
+            return $http.get(serviceBase + 'companys/notUpdatedManagement', {
+     			params : {
+                    index:pageIndex,
+                    keyword:keyword
+     			}
+     			}).then(function(results) {
+     				return results.data;
+     			});
+
+        };
+
+
+
+        //end
 
 
         //获取组内销售人员数据

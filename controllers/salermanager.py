@@ -700,7 +700,6 @@ class born_salermanager(http.Controller):
 
         vals['contacts_address']=post.get('street')
         vals['contacts_id']=post.get('personid')
-        vals['contacts_phone']=post.get('tel')
         vals['state']='notstart'
         if post.get('option')=='7' or post.get('option')=='9':
             hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
@@ -848,25 +847,40 @@ class born_salermanager(http.Controller):
                 domain = [('business_id','in',businesses_ids)]
             else:
                 domain = [('business_id','in',businesses_ids),('name','like',keyword)]
+            shop_ids = partner_obj.search(request.cr, SUPERUSER_ID,domain,int(indexPage),10, context=request.context)
+            shops = partner_obj.browse(request.cr, SUPERUSER_ID, shop_ids, context=request.context)
+
+            data = []
+            for shop in shops:
+                val = {
+                    'name' : shop.name,
+                    'address' : shop.street or '',
+                    'id' : shop.id,
+                }
+                data.append(val)
         else:
             employee_ids = request.session.employee_ids
             partner_obj = request.registry.get('res.company')
+            if keyword == '':
+                domain = [('employee_id','in',employee_ids)]
+            else:
+                domain = [('employee_id','in',employee_ids),('name','like',keyword)]
+            shop_ids = partner_obj.search(request.cr, SUPERUSER_ID,domain,int(indexPage),10, context=request.context)
+            shops = partner_obj.browse(request.cr, SUPERUSER_ID, shop_ids, context=request.context)
+
+            data = []
+            for shop in shops:
+                val = {
+                    'name' : shop.name,
+                    'address' : shop.street or '',
+                    'id' : shop.id,
+                    'partner_id': shop.partner_id.id,
+                }
+                data.append(val)
 
 
 
 
-
-        shop_ids = partner_obj.search(request.cr, SUPERUSER_ID,domain,int(indexPage),10, context=request.context)
-        shops = partner_obj.browse(request.cr, SUPERUSER_ID, shop_ids, context=request.context)
-
-        data = []
-        for shop in shops:
-            val = {
-                'name' : shop.name,
-                'address' : shop.street or '',
-                'id' : shop.id,
-            }
-            data.append(val)
         return json.dumps(data,sort_keys=True)
 
 

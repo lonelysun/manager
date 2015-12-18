@@ -22,8 +22,6 @@
                 display_current:'',
                 filter_week:'',
                 filter_week_year:'',
-                total_amount:0,
-                cnt:0,
             };
         vm.date = '';
 
@@ -62,7 +60,7 @@
                 }
                 $timeout(function () {
                     vm.busy=false;
-                }, 1000);
+                }, 500);
             }, function (error) {
             	toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
             });

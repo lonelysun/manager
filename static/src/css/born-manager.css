@@ -302,6 +302,10 @@
     padding-right:10px;
     font-size: 11px;
 }
+.bm-main-two-line-span-img {
+    width:30%;
+    font-size: 11px;
+}
 
 .bm-main-three-line-title-tag {
     margin-left: -19px;
@@ -736,5 +740,8 @@ input.bm-placeholder-default:-ms-input-placeholder, textarea:-ms-input-placehold
     right: 0;
     left: 0;
     top: 55px;
+}
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
 }
 /*liuhao end*/

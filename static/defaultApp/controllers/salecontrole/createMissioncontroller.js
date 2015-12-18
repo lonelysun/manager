@@ -83,6 +83,7 @@
 
         function init() {
             displayModel.showHeader='1';
+            displayModel.displayBottom = '0';
             displayModel.displayBack='0';
             displayModel.displaySave='0';
             displayModel.displaySearch='0';
@@ -112,7 +113,7 @@
             }else if (optionType == 'partners') {
                 vm.track.partnerid = MyCache.get('optionObj').id;
                 vm.track.partnername = MyCache.get('optionObj').name;
-                vm.track.street = MyCache.get('optionObj').street;
+                vm.track.street = MyCache.get('optionObj').address;
                 vm.getPerson();
             }
         }
@@ -125,10 +126,10 @@
        //Add by nisen
        // 销售经理的选择商户
         vm.selectpartner = function(){
-            if(vm.option=='8'){
+            if(vm.option=='8'||vm.option=='10'){
                 MyCache.put('track',vm.track);
                 $location.path('/selectpartner');
-            }else if(vm.option=='7'){
+            }else if(vm.option=='7'||vm.option=='9'){
                 MyCache.put('track',vm.track);
                 MyCache.put('environment','fromSalerSelectParner');
                 $location.path('/saler/options/partners');
@@ -144,7 +145,12 @@
 
         vm.selectperson = function(){
             MyCache.put('track',vm.track);
-            MyCache.put('environment',vm.track.partnerid);
+            if(vm.option=='9'||vm.option=='10'){
+                var person_PID = MyCache.get('optionObj').partner_id;
+            }else{
+                var person_PID = vm.track.partnerid;
+            }
+             MyCache.put('environment',person_PID);
 
             $location.path('/saler/options/contacts');
 
@@ -153,7 +159,12 @@
        // End add
 
         vm.getPerson = function(){
-            dataService.getPartnerInfo(vm.track.partnerid)
+            if(vm.option=='9'||vm.option=='10'){
+                var person_PID = MyCache.get('optionObj').partner_id;
+            }else{
+                var person_PID = vm.track.partnerid;
+            }
+            dataService.getPartnerInfo(person_PID)
             .then(function (data) {
                 if(data.contacts[0]){
                     vm.track.personname = data.contacts[0].name;
