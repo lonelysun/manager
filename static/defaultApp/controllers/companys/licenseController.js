@@ -1,10 +1,10 @@
 (function () {
 
     var injectParams = ['$scope', '$location', '$routeParams',
-                        '$timeout', 'config', 'modalService','dataService','toaster','displayModel'];
+                        '$timeout', 'config', 'modalService','dataService','toaster','displayModel','MyCache'];
 
     var licenseController = function ($scope, $location, $routeParams,
-                                           $timeout, config,modalService, dataService,toaster,displayModel) {
+                                           $timeout, config,modalService, dataService,toaster,displayModel,MyCache) {
         var vm = this,
     	companyId = ($routeParams.companyId) ? parseInt($routeParams.companyId) : 0;
         vm.busy=false;
@@ -40,6 +40,11 @@
 
         }
 
+        vm.toLicenseDetail = function(company_id){
+            MyCache.put('license_type',vm.show);
+            $location.path('/licenses/deatil/'+vm.date+'/'+company_id);
+        }
+
         function getLicenses(direction) {
 
             if(vm.busy)return;
@@ -50,6 +55,7 @@
                     direction)
             .then(function (data) {
             	vm.licenses = data;
+                MyCache.put('licenses_date',vm.licenses);
                 vm.isLoad=true;
                 if (vm.licenses.display=='day'){
                     vm.date = 'day+'+vm.licenses.current_date;
@@ -74,15 +80,22 @@
             displayModel.showHeader='1';
             displayModel.displayBack='0';
             displayModel.displaySave='0';
-            displayModel.displaySearch='1';
+            displayModel.displaySearch='0';
             displayModel.displayCancel='0';
             displayModel.displayCreate='0';
             displayModel.displaySubmit='0';
             displayModel.displayConfirm='0';
             displayModel.displayBottom = '1';
 //            displayModel.born_search = vm.born_searsh;
-            vm.show='1';
+            if(MyCache.get('license_type')){
+                vm.show = MyCache.get('license_type');
+            }else{
+                vm.show='1';
+            }
             displayModel.title = '设备管理';
+            if(MyCache.get('licenses_date')){
+                vm.licenses = MyCache.get('licenses_date');
+            }
             getLicenses(0);
         }
 

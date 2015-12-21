@@ -1,10 +1,10 @@
 (function () {
 
     var injectParams = ['$scope', '$location', '$routeParams',
-                        '$timeout', 'config', 'modalService','ngDialog','dataService','toaster','displayModel'];
+                        '$timeout', 'config', 'modalService','ngDialog','dataService','toaster','displayModel','MyCache'];
 
     var licenseDetailController = function ($scope, $location, $routeParams,
-                                           $timeout, config,modalService,ngDialog ,dataService,toaster,displayModel) {
+                                           $timeout, config,modalService,ngDialog ,dataService,toaster,displayModel,MyCache) {
         var vm = this,
     	date = $routeParams.date;
     	companyId = ($routeParams.companyId) ? parseInt($routeParams.companyId) : 0;
@@ -12,13 +12,14 @@
         vm.isLoad=false;
         vm.keyword='';
         vm.licenses = [];
+        vm.type = '';
 
         vm.getLicenses = function () {
 
             if(vm.busy)return;
             vm.busy=true;
 
-            dataService.getLicenses(date,companyId,vm.licenses.length,vm.keyword)
+            dataService.getLicenses(vm.type,date,companyId,vm.licenses.length,vm.keyword)
             .then(function (data) {
                 for (var i = 0; i < data.length; i++) {
                     vm.licenses.push(data[i]);
@@ -79,7 +80,7 @@
             displayModel.showHeader='1';
             displayModel.displayBack='1';
             displayModel.displaySave='0';
-            displayModel.displaySearch='1';
+            displayModel.displaySearch='0';
             displayModel.displayCancel='0';
             displayModel.displayCreate='0';
             displayModel.displaySubmit='0';
@@ -87,7 +88,7 @@
             displayModel.displayBottom = '0';
             displayModel.headerBack=vm.back;
 //            displayModel.born_search = vm.born_searsh;
-            vm.show='1';
+            vm.type = MyCache.get('license_type');
         }
 
         init();

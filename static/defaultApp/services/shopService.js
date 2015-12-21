@@ -375,11 +375,14 @@
             });
         };
 
-        factory.getCompanyMission = function (pageIndex,keyword,companyId) {
+        factory.getCompanyMission = function (pageIndex,keyword,companyId,comeFrom,mission_state,hr_id_for_manager) {
             return $http.get(serviceBase + 'saler/company/mission/'+companyId,{
                 params : {
                     pageIndex:pageIndex,
-                    keyword:keyword
+                    keyword:keyword,
+                    saler_or_support:comeFrom,
+                    mission_state:mission_state,
+                    hr_id_for_manager:hr_id_for_manager
      			}
             }).then(function(results) {
      				return results.data;
@@ -607,10 +610,11 @@
         	});
         };
          //获取终端数据
-        factory.getLicenses = function (date,companyId,pageIndex,keyword) {
+        factory.getLicenses = function (type,date,companyId,pageIndex,keyword) {
 
             return $http.get(serviceBase + 'licensesdetail', {
                 params : {
+                    type : type,
                     company_id:companyId,
                     date:date,
                     index:pageIndex,

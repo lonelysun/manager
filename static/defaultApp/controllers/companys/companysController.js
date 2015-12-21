@@ -144,7 +144,7 @@
             displayModel.displayEdit = '0';
             displayModel.displaySave = '0';
             displayModel.displaySearch = '1';
-            displayModel.displayBack = '1';
+            displayModel.displayBack = '0';
             vm.state= 1;
             displayModel.backpath='/menu';
             displayModel.title = '公司管理';

@@ -419,11 +419,19 @@ class born_manager(http.Controller):
         elif display_type=='week':
             display_current= current_week
 
-            #change new show ways
-            fist_day = datetime.datetime.strptime( current_week + ' 1', "%Y %W %w").strftime("%Y.%m.%d")
-            last_day = datetime.datetime.strptime( current_week + ' 0', "%Y %W %w").strftime("%Y.%m.%d")
-            display_current = fist_day + ' - ' +last_day
 
+
+            #change new show ways
+            f_year = current_week.split(' ')[0]
+            f_week = int(current_week.split(' ')[1]) - 1
+            f_current_week = '%s %s' % (f_year,f_week)
+            fist_day = datetime.datetime.strptime( f_current_week + ' 1', "%Y %W %w").strftime("%Y.%m.%d")
+            last_day = datetime.datetime.strptime( f_current_week + ' 0', "%Y %W %w").strftime("%Y.%m.%d")
+            display_current = fist_day + ' - ' +last_day
+            # _logger.info('@@@@@@@@@@@@@@@@@@@>>>>>>>>')
+            # _logger.info(current_week)
+            # _logger.info(fist_day)
+            # _logger.info(last_day)
 
             where3 += "  and TO_CHAR(bos.create_date,'YYYY') = '%s' and extract('week' from bos.create_date)::varchar = '%s' " % (filter_week_year,filter_week)
 
@@ -1075,7 +1083,9 @@ class born_manager(http.Controller):
 
 
         sql_one = u"""
-            select bl.company_id ,  count(bl.id) ,rc.name from born_license bl
+            select bl.company_id ,  count(bl.id) ,rc.name,
+             (select check_date from born_license where state in ('confirm','active') and company_id = bl.company_id order by check_date desc limit 1)
+             from born_license bl
             join res_company rc on bl.company_id = rc.id
                  where  bl.state in ('confirm','active') %s group by bl.company_id,rc.name HAVING count(bl.id) >0
             """ %(where)
@@ -1083,7 +1093,9 @@ class born_manager(http.Controller):
         operates_one = request.cr.dictfetchall()
 
         sql_two = u"""
-            select bl.company_id ,  count(bl.id) ,rc.name from born_license bl
+            select bl.company_id ,  count(bl.id) ,rc.name,
+             (select check_date from born_license where state in ('confirm','active') and company_id = bl.company_id order by check_date desc limit 1)
+             from born_license bl
             join res_company rc on bl.company_id = rc.id
                  where  bl.state = 'draft' group by bl.company_id,rc.name HAVING count(bl.id) >0
             """
@@ -1127,19 +1139,23 @@ class born_manager(http.Controller):
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
         page_index=post.get('index',0)
+        type = post.get('type','')
         keyword=post.get('keyword','')
         company_id=int(post.get('company_id',0))
         date = post.get('date','')
         datetype = date.split('+')
         where = "where bl.company_id = %s "%(company_id)
-        if datetype[0]=='day':
-            where_date = datetype[1]
-            where +="  and TO_CHAR(bl.check_date,'YYYY-MM-DD') = '%s' " % (datetype[1])
-        elif datetype[0]=='month':
-            where += "  and TO_CHAR(bl.check_date,'YYYY-MM') = '%s' " % (datetype[1])
+        if type == '1':
+            where += " and bl.state in ('confirm','active')"
+            if datetype[0]=='day':
+                where_date = datetype[1]
+                where +="  and TO_CHAR(bl.check_date,'YYYY-MM-DD') = '%s' " % (datetype[1])
+            elif datetype[0]=='month':
+                where += "  and TO_CHAR(bl.check_date,'YYYY-MM') = '%s' " % (datetype[1])
+            else:
+                where += "  and TO_CHAR(bl.check_date,'YYYY') = '%s' and extract('week' from bl.check_date)::varchar = '%s' " % (datetype[1],datetype[2])
         else:
-            where += "  and TO_CHAR(bl.check_date,'YYYY') = '%s' and extract('week' from bl.check_date)::varchar = '%s' " % (datetype[1],datetype[2])
-
+            where +=" and bl.state = 'draft'"
         sql = u"""
         select bl.mac,bl.version,bl.state,bl.check_date,bl.note,bl.id,rc.name as company_name from born_license bl
     join res_company rc on rc.id = bl.company_id %s order by bl.check_date desc limit 20 offset %s
@@ -1278,6 +1294,7 @@ class born_manager(http.Controller):
     @http.route('/manager/user',type="http",auth="none")
     def user_info(self,**post):
         uid=request.session.uid
+        role_option = request.session.option
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
@@ -1285,18 +1302,21 @@ class born_manager(http.Controller):
         hr_obj = request.registry.get('hr.employee')
         user = user_obj.browse(request.cr, SUPERUSER_ID,uid, context=request.context)
 
-
-
-
         manager_name=''
         team_name=''
-        #查找销售团队和销售经理
-        hr_ids = hr_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',user.id)], context=request.context)
-        if hr_ids:
-            if len(hr_ids)>1:
-                where=" and rel.uid in %s " % (tuple(hr_ids),)
+        #testing 查找团队与经理 by 刘浩
+        team_obj = request.registry.get('commission.team')
+        hr_id= hr_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+        if(role_option in ('8','10') and hr_id):
+            manager_name=user.name
+            team_id = team_obj.search(request.cr, SUPERUSER_ID,[('manager_id','=',hr_id[0])], context=request.context)
+            team = team_obj.browse(request.cr, SUPERUSER_ID,team_id[0], context=request.context)
+            team_name = team.name
+        elif hr_id:
+            if len(hr_id)>1:
+                where=" and rel.uid in %s " % (tuple(hr_id),)
             else:
-                where=" and rel.uid = %s " % (hr_ids[0])
+                where=" and rel.uid = %s " % (hr_id[0])
             sql=u""" select team.name as team_name,emp.name_related as manager_name from commission_team_employee_rel rel join commission_team  team on team.id=rel.tid
                 join hr_employee emp on emp.id=team.manager_id
                 where 1=1 %s limit 1
@@ -1306,6 +1326,25 @@ class born_manager(http.Controller):
             if row:
                 team_name= row[0]
                 manager_name=row[1]
+
+        #end
+
+        #查找销售团队和销售经理
+        # hr_ids = hr_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',user.id)], context=request.context)
+        # if hr_ids:
+        #     if len(hr_ids)>1:
+        #         where=" and rel.uid in %s " % (tuple(hr_ids),)
+        #     else:
+        #         where=" and rel.uid = %s " % (hr_ids[0])
+        #     sql=u""" select team.name as team_name,emp.name_related as manager_name from commission_team_employee_rel rel join commission_team  team on team.id=rel.tid
+        #         join hr_employee emp on emp.id=team.manager_id
+        #         where 1=1 %s limit 1
+        #      """ % ( where,)
+        #     request.cr.execute(sql)
+        #     row = request.cr.fetchone()
+        #     if row:
+        #         team_name= row[0]
+        #         manager_name=row[1]
 
         val={
             'role_option':user.role_option,

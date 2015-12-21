@@ -1,10 +1,10 @@
 (function () {
 
     var injectParams = ['$scope', '$location', '$routeParams','$route',
-                        '$timeout', 'config', 'dataService','toaster','displayModel'];
+                        '$timeout', 'config', 'dataService','toaster','displayModel','MyCache'];
 
     var SettingController = function ($scope, $location, $routeParams,$route,
-                                           $timeout, config, dataService,toaster,displayModel) {
+                                           $timeout, config, dataService,toaster,displayModel,MyCache) {
         var vm = this;
         vm.settings={};
         vm.reset = {};
@@ -13,12 +13,14 @@
         vm.getSaveModel = '0';
         vm.getBackModel = '1';
         vm.backurl='';
+        vm.option = '';
 
         function init() {
             displayModel.displayBottom='0';
             displayModel.showHeader = '0';
             displayModel.backpath='/menu';
             displayModel.flag = '';
+            vm.option = MyCache.get('role_option');
             getSetting();
         }
 

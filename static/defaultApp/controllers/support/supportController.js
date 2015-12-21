@@ -17,7 +17,7 @@
         vm.showButton=false;
         vm.showFinishedmissions=false;
         vm.display = null;
-        var missionLengh=0;
+        var missionLength=0;
         vm.missions_finished_numbers = 0;
         mission_state = '';
         vm.role = '';
@@ -47,12 +47,12 @@
             if(vm.busy)return;
             vm.busy=true;
             if(mission_state=='notOk')
-                missionLengh = vm.missionsUnfinished.length;
+                missionLength = vm.missionsUnfinished.length;
             else{
-                missionLengh = vm.missionsFinished.length;
+                missionLength = vm.missionsFinished.length;
             }
 
-            dataService.getSupportMissions(missionLengh,vm.keyword,mission_state,hr_id_for_manager)
+            dataService.getSupportMissions(missionLength,vm.keyword,mission_state,hr_id_for_manager)
             .then(function (data) {
                 var i;
                 if(mission_state=='notOk'){
@@ -150,7 +150,7 @@
         	$scope.modalOptions = {
                 closeButtonText: '取消',
                 firstActionText:'新任务',
-                firstUrl:'#/createMission/7',
+                firstUrl:'#/createMission/9',
                 secondActionText:'',
                 secondUrl:''
             };
@@ -256,6 +256,11 @@
         vm.jumpWithCache = function(Id){
             MyCache.put('finishedMission_come_from','page_support');
             $location.path('/saler/finishedMission/'+Id)
+        };
+
+        vm.jumpToCompany = function (company_id) {
+            MyCache.put('comeFrom','support');
+            $location.path('saler/company/'+company_id);
         };
 
 

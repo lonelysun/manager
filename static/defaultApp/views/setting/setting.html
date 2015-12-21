@@ -65,7 +65,7 @@
                 {{vm.settings.tel}}
             </div>
         </div>
-        <div class="no-bg bm-item">
+        <div class="no-bg bm-item" ng-if="vm.option=='7'||vm.option=='8'">
             <div class="bm-top">
                 销售团队
                 <img src="/born_manager/static/src/img/groups.png" class="pull-right" style="width:25px;">
@@ -74,7 +74,16 @@
                 {{vm.settings.team_name}}
             </div>
         </div>
-        <div class="no-bg bm-item" ng-if="">
+        <div class="no-bg bm-item" ng-if="vm.option=='9'||vm.option=='10'">
+            <div class="bm-top">
+                技术团队
+                <img src="/born_manager/static/src/img/groups.png" class="pull-right" style="width:25px;">
+            </div>
+            <div class="bm-main">
+                {{vm.settings.team_name}}
+            </div>
+        </div>
+        <div class="no-bg bm-item" ng-if="vm.settings.manager_name!=''">
             <div class="bm-top">
                 团队主管
                 <img src="/born_manager/static/src/img/men.png" class="pull-right" style="width:25px;">

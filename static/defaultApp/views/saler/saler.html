@@ -129,7 +129,7 @@
     <!--公司-->
     <div>
         <div ng-if="vm.display=='companys'" id="infinite4" infinite-scroll='vm.getCompanys()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
-            <a ng-href="#saler/company/{{company.company_id}}" ng-repeat="company in vm.companys">
+            <a ng-click="vm.jumpToCompany(company.company_id)" ng-repeat="company in vm.companys">
                 <div  class="no-bg bm-item">
                     <div>
                         <span class="bm-main-three-line-title-font">{{company.company_name | limitTo:10}} {{company.company_name.length > 10 ? '...' : ''}}</span>

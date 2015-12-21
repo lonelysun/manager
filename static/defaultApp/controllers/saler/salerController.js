@@ -278,6 +278,11 @@
             $location.path('/saler/finishedMission/'+Id)
         };
 
+        vm.jumpToCompany = function (company_id) {
+            MyCache.put('comeFrom','saler');
+            $location.path('saler/company/'+company_id);
+        };
+
 
         //初始化
         function init() {
@@ -294,7 +299,7 @@
             vm.getInitData();
 
             if(MyCache.get('saler_display')){
-                vm.display = MyCache.get('saler_display')
+                vm.display = MyCache.get('saler_display');
                 MyCache.remove('saler_display');
             }
             else{

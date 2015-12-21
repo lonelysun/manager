@@ -616,17 +616,16 @@ class born_salermanager(http.Controller):
         tracks = track_obj.browse(request.cr, SUPERUSER_ID,track_ids,context=request.context)
         data = []
         user_obj = request.registry.get('res.users')
-        today = datetime.date.today()
-        current_date=today.strftime("%Y-%m-%d")
 
         if role_option == '7' or role_option == '8':
             for track in tracks:
                 user = user_obj.browse(request.cr, SUPERUSER_ID,track.employee_id.user_id.id)
+                time = "%s月%s日 %s"%(track.track_time[5:7],track.track_time[8:10],track.track_time[11:16])
                 val = {
                     'company_name':track.track_id.name,
                     'id':track.id,
                     'employee':track.employee_id.name,
-                    'time':track.create_date,
+                    'time':time or '',
                     'name':track.name or '',
                     'user_img':user.image_small or '',
                 }
@@ -634,11 +633,12 @@ class born_salermanager(http.Controller):
         else:
             for track in tracks:
                 user = user_obj.browse(request.cr, SUPERUSER_ID,track.employee_id.user_id.id)
+                time = "%s月%s日 %s"%(track.track_time[5:7],track.track_time[8:10],track.track_time[11:16])
                 val = {
                     'company_name':track.track_company_id.name,
                     'id':track.id,
                     'employee':track.employee_id.name,
-                    'time':track.create_date,
+                    'time':time or '',
                     'name':track.name or '',
                     'user_img':user.image_small or '',
                 }
@@ -750,11 +750,12 @@ class born_salermanager(http.Controller):
         employee_ids = request.session.employee_ids
         domain = [('state','=','finished'),('employee_id','in',employee_ids)]
         track_ids = track_obj.search(request.cr, SUPERUSER_ID,domain,order="create_date asc",context=request.context)
-
+        mission_date = "%s月%s日"%(track.mission_date[5:7],track.mission_date[8:])
+        time = "%s月%s日 %s分"%(track.track_time[5:7],track.track_time[8:10],track.track_time[11:16])
         track_val = {
                         'img':track.image_url or '',
                         'trackid' : track.id,
-                        'time' : track.track_time or '',
+                        'time' : time or '',
                         'saler' : track.employee_id.name,
                         'saler_img' : track.employee_id.user_id.image_small,
                         'name' : track.name or '',
@@ -764,7 +765,7 @@ class born_salermanager(http.Controller):
                         'address' : track.contacts_address or '',
                         'remark' : track.remark or '',
                         'ids_list' : track_ids,
-                        'mission_date' : track.mission_date or '',
+                        'mission_date' : mission_date or '',
                         'employee_id': track.employee_id.id
             }
 

@@ -192,32 +192,100 @@
 
         <div ng-if="vm.display=='mission'">
             <div>
-                <div id="infinite1" infinite-scroll='vm.getCompanyMission()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+                <div ng-if="vm.comeFrom=='saler'">
+                    <div id="infinite1" infinite-scroll='vm.getCompanyMission("ok")' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
 
-                <div ng-repeat="mission in vm.companyMission" class="bm-main-three-line-wrapper">
-                    <a ng-click="vm.jumpWithCache(mission.mission_id)">
-                    <div class="bm-main-three-line">
-                        <div class="bm-main-three-line-title">
-                            <!--状态图标-->
-                            <span  class="bm-main-three-line-title-tag-grey"><i class="fa fa-check"></i></span>
+                        <div ng-repeat="mission in vm.companyMissionFinished" class="bm-main-three-line-wrapper">
+                            <a ng-click="vm.jumpWithCache(mission.mission_id)">
+                            <div class="bm-main-three-line">
+                                <div class="bm-main-three-line-title">
+                                    <!--状态图标-->
+                                    <span  class="bm-main-three-line-title-tag-grey"><i class="fa fa-check"></i></span>
 
-                            <span class="bm-main-three-line-title-font-grey">{{mission.mission_name}}</span>
-                        </div>
+                                    <span class="bm-main-three-line-title-font-grey">{{mission.mission_name}}</span>
+                                </div>
 
-                        <div class="bm-main-three-line-detail">
-                            <span class="bm-main-three-line-span-grey"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/phone.png">{{mission.mission_contacts_phone}}</span>
-                            <span class="bm-main-three-line-span-grey"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/bounds.png">{{mission.mission_contacts_name}}</span>
-                            <span class="bm-main-three-line-span-grey"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/time.png">{{mission.mission_date}}</span>
-                        </div>
+                                <div class="bm-main-three-line-detail">
+                                    <span class="bm-main-three-line-span-grey"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/phone.png">{{mission.mission_contacts_phone}}</span>
+                                    <span class="bm-main-three-line-span-grey"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/bounds.png">{{mission.mission_contacts_name}}</span>
+                                    <span class="bm-main-three-line-span-grey"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/time.png">{{mission.mission_date}}</span>
+                                </div>
 
-                        <div class="bm-main-three-line-detail">
-                            <span class="bm-main-three-line-span-grey">
-                                <img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/location-copy.png">{{missionsFinished.mission_address}}
-                            </span>
+                                <div class="bm-main-three-line-detail">
+                                    <span class="bm-main-three-line-span-grey">
+                                        <img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/location-copy.png">{{missionsFinished.mission_address}}
+                                    </span>
+                                </div>
+                            </div>
+                            </a>
                         </div>
                     </div>
-                    </a>
                 </div>
+
+
+                <!--for support, all missions including finished and unfinished-->
+
+                <div ng-if="vm.comeFrom=='support'">
+
+                    <div  id="infinite2" infinite-scroll='vm.getCompanyMission("notOk")' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+                        <div ng-repeat="missionsUnfinished in vm.companyMissionUnFinished" class="bm-main-three-line-wrapper">
+                            <a ng-click="vm.changeMissionState(missionsUnfinished)">
+                                <div class="bm-main-three-line">
+                                    <div class="bm-main-three-line-title">
+                                        <!--状态图标-->
+                                        <span ng-if="missionsUnfinished.mission_state=='pause'" class="bm-main-three-line-title-tag"><i class="glyphicon glyphicon-pause"></i></span>
+                                        <span ng-if="missionsUnfinished.mission_state=='start'" class="bm-main-three-line-title-tag"><i class="glyphicon glyphicon-play"></i></span>
+                                        <span ng-if="missionsUnfinished.mission_state=='finished'" class="bm-main-three-line-title-tag"><i class="fa fa-check"></i></span>
+                                        <span ng-if="missionsUnfinished.mission_state=='notstart'" style="visibility:hidden" class="bm-main-three-line-title-tag-grey"><i class="fa fa-check"></i></span>
+
+                                        <span class="bm-main-three-line-title-font">{{missionsUnfinished.mission_name}}</span>
+                                        <span ng-if="vm.role == '9'" class="pull-right"><img class=" bm-img-three-points"  src="/born_manager/static/src/img/three-points.png"></span>
+                                    </div>
+
+                                    <div class="bm-main-three-line-detail">
+                                        <span class="bm-main-three-line-span"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/phone.png">{{missionsUnfinished.mission_contacts_phone}}</span>
+                                        <span class="bm-main-three-line-span"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/bounds.png">{{missionsUnfinished.mission_contacts_name}}</span>
+                                        <span class="bm-main-three-line-span"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/time.png">{{missionsUnfinished.mission_date}}</span>
+                                    </div>
+
+                                    <div class="bm-main-three-line-detail">
+                                        <span class="bm-main-three-line-span">
+                                            <img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/location-copy.png">{{missionsUnfinished.mission_address}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div ng-show="vm.showButton" class="bm-btn-add-more-wrapper">
+                        <button class="bm-btn-add-more" ng-click="vm.clickMore()"><span class="bm-btn-add-more-text">{{vm.missions_finished_numbers}}个已完成任务</span></button>
+                    </div>
+                    <div >
+                        <div ng-if="vm.showFinishedmissions" id="infinite3" infinite-scroll='vm.getCompanyMission("ok")' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
+                            <div ng-repeat="missionsFinished in vm.companyMissionFinished" class="bm-main-three-line-wrapper">
+                                <a ng-click="vm.jumpWithCache(missionsFinished.mission_id)">
+                                <div class="bm-main-three-line">
+                                    <div class="bm-main-three-line-title">
+                                        <!--状态图标-->
+                                        <span  class="bm-main-three-line-title-tag-grey"><i class="fa fa-check"></i></span>
+                                        <span class="bm-main-three-line-title-font-grey">{{missionsFinished.mission_name}}</span>
+                                    </div>
+
+                                    <div class="bm-main-three-line-detail">
+                                        <span class="bm-main-three-line-span-grey"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/phone.png">{{missionsFinished.mission_contacts_phone}}</span>
+                                        <span class="bm-main-three-line-span-grey"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/bounds.png">{{missionsFinished.mission_contacts_name}}</span>
+                                    </div>
+
+                                    <div class="bm-main-three-line-detail">
+                                        <span class="bm-main-three-line-span-grey">
+                                            <img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/location-copy.png">{{missionsFinished.mission_address}}
+                                        </span>
+                                    </div>
+                                </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

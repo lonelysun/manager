@@ -43,23 +43,29 @@
         <div ng-if="vm.show=='1'" id="triangle-up1">&nbsp;</div>
         <div ng-if="vm.show=='2'" id="triangle-up2">&nbsp;</div>
 
-        <div ng-if="vm.show=='1'" class="no-bg bm-item" data-ng-repeat="license in vm.licenses.accountone">
-            <a href="#/licenses/deatil/{{vm.date}}/{{license.company_id}}">
+        <div ng-if="vm.show=='1'" class="no-bg bm-item" data-ng-repeat="license in vm.licenses.accountone" style="margin-top:1px">
+            <a data-ng-click="vm.toLicenseDetail(license.company_id)">
 
                     <span class=" pull-right" style="color:#A0A0A0">
                         {{license.count}}
                         <i class=" fa fa-fw fa-angle-right text"></i>
                     </span>
                 {{license.name}}
+                <p class="h6" style="color: #A0A0A0;">
+                    {{license.check_date| limitTo:19}}
+                </p>
             </a>
         </div>
-        <div ng-if="vm.show=='2'" class="no-bg bm-item" data-ng-repeat="license in vm.licenses.accounttwo">
-            <a href="#/licenses/deatil/{{vm.date}}/{{license.company_id}}">
+        <div ng-if="vm.show=='2'" class="no-bg bm-item" data-ng-repeat="license in vm.licenses.accounttwo" style="margin-top:1px">
+            <a data-ng-click="vm.toLicenseDetail(license.company_id)">
                     <span class=" pull-right" style="color:#A0A0A0">
                         {{license.count}}
                         <i class=" fa fa-fw fa-angle-right text"></i>
                     </span>
                 {{license.name}}
+                <p class="h6" style="color: #A0A0A0;">
+                    {{license.check_date| limitTo:19}}
+                </p>
             </a>
         </div>
     </div>

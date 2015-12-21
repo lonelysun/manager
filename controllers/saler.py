@@ -921,6 +921,10 @@ class born_manager_sale(http.Controller):
 
         vals['state'] = 'finished'
 
+        #存入完成任务时间
+        vals['track_time'] = time.time()
+
+
         obj = request.registry['born.partner.track']
 
         obj.write(request.cr, SUPERUSER_ID,mission_id,vals,context=request.context)
@@ -993,9 +997,18 @@ class born_manager_sale(http.Controller):
 
     @http.route('/manager/saler/company/mission/<int:company_id>', type='http', auth="none",)
     def saler_get_company_mission(self, company_id, **post):
+        _logger.info('================>>>>>>>>>>0')
+
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
+
+
+        if int(post.get('hr_id_for_manager')) != 0:
+            hr_id = int(post.get('hr_id_for_manager'))
+        else:
+            hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+            hr_id = hr_id_list[0] or ''
 
         company_id = int(company_id)
 
@@ -1004,15 +1017,37 @@ class born_manager_sale(http.Controller):
 
         page_index=post.get('pageIndex',0)
 
+        saler_or_support = post.get('saler_or_support','')
+
+        require_mission_state = post.get('mission_state')
+
 
         # 由company_id 获得对对应的partner_id
         instance_of_company = company_obj.browse(request.cr, SUPERUSER_ID,company_id,context=request.context)
         partner_id = instance_of_company.partner_id.id
 
-        ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',partner_id),('state','in',('done','finished'))],int(page_index),5, context=request.context)
+        ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_company_id','=',company_id),('state','in',('finished','done'))],context=request.context)
+        missions_finished_numbers = len(ids)
+
+        if saler_or_support == 'saler':
+            ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_id','=',partner_id),('state','in',('done','finished'))],int(page_index),5, context=request.context)
+
+        #技术人员看到的公司任务不包括,公司是商户时的那些任务?
+        elif saler_or_support == 'support':
+            if require_mission_state == 'ok':
+                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_company_id','=',company_id),('state','in',('done','finished'))],int(page_index),5, context=request.context)
+            elif require_mission_state == 'notOk':
+                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('track_company_id','=',company_id),('state','not in',('done','finished'))],int(page_index),5, context=request.context)
+            else:
+                ids = []
+        else:
+            ids = []
         objs = mission_obj.browse(request.cr, SUPERUSER_ID,ids, context=request.context)
 
         missions_list = []
+
+        _logger.info('================>>>>>>>>>>3')
+        _logger.info(ids)
 
         for each_obj in objs:
             mission_id = each_obj.id
@@ -1028,21 +1063,42 @@ class born_manager_sale(http.Controller):
             mission_address = each_obj.contacts_address
             mission_state = each_obj.state
 
+            state_name_dict = {'start':u'开始','pause':u'暂停','finished':u'完成','notstart':u'未开始'}
+
+            mission_state_name = state_name_dict.get(mission_state)
+
+            # 判断该任务是否是自己负责的
+            if each_obj.employee_id.id ==  hr_id:
+                is_mine = True
+            else:
+                is_mine = False
+
             vals = {
                 'mission_id':mission_id,
                 'company_id':company_id,
                 'mission_name':mission_name,
+                'mission_state_name':mission_state_name,
                 'mission_company_name':mission_company_name,
                 'mission_contacts_phone':mission_contacts_phone,
                 'mission_contacts_name':mission_contacts_name,
                 'mission_date':mission_date,
                 'mission_address':mission_address,
-                'mission_state':mission_state
+                'mission_state':mission_state,
+                'is_mine':is_mine
             }
             missions_list.append(vals)
 
+
+
+        _logger.info('================>>>>>>>>>>2')
+        _logger.info(missions_finished_numbers)
+
+
         data = {
             'missions_list':missions_list,
+            'missions_finished_numbers':missions_finished_numbers
         }
+        _logger.info('================>>>>>>>>>>1')
+        _logger.info(data)
 
         return json.dumps(data,sort_keys=True)
