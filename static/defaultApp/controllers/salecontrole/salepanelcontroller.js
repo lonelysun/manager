@@ -155,6 +155,11 @@
             });
         };
 
+        vm.ToSaler = function(id){
+            if(vm.role == '8'){
+                $location.path('/saler/'+id);
+            }
+        }
 
         //获取首页的详细信息
         function getSalepanel() {

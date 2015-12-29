@@ -385,7 +385,7 @@ class born_manager_sale(http.Controller):
         # 获取头像
         hr_obj = request.registry['hr.employee']
         obj = hr_obj.browse(request.cr, SUPERUSER_ID,hr_id,context=request.context)
-        image = obj.user_id.image_medium
+        image = obj.user_id.image_medium or ''
 
         # 获取是否有未读信息
         push_obj = request.registry.get('born.push')
@@ -922,7 +922,7 @@ class born_manager_sale(http.Controller):
         vals['state'] = 'finished'
 
         #存入完成任务时间
-        vals['track_time'] = time.time()
+        vals['track_time'] = datetime.datetime.strftime(datetime.datetime.now(),'%Y-%m-%d %H:%M:%S')
 
 
         obj = request.registry['born.partner.track']

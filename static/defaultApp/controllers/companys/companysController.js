@@ -51,7 +51,7 @@
                 vm.state = 2;
             }
 
-        }
+        };
 
 
         //滚动翻页
@@ -70,6 +70,7 @@
                 vm.nav.display, vm.nav.current_date,vm.nav.current_week,vm.nav.current_year,vm.nav.current_month)
             .then(function (data) {
                 vm.updated_company_count = data['updated_company_count'];
+                    vm.not_updated_company_count = data['not_updated_company_count'];
                 //vm.updatedCompanys = data['updatedCompanys'];
                 //vm.not_updated_company_count = data['not_updated_company_count'];
                 //vm.companys = data['companys_data'];
@@ -88,7 +89,7 @@
                 vm.isLoad=true;
                 $timeout(function () {
                     vm.busy=false;
-                }, 1000);
+                }, 500);
             }, function (error) {
             	toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
             });
@@ -109,7 +110,7 @@
                 vm.isLoad=true;
                 $timeout(function () {
                     vm.busy=false;
-                }, 1000);
+                }, 500);
             }, function (error) {
             	toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
             });
@@ -129,7 +130,7 @@
                 vm.isLoad=true;
                 $timeout(function () {
                     vm.busy=false;
-                }, 1000);
+                }, 500);
             }, function (error) {
             	toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
             });
@@ -140,10 +141,14 @@
 
         //初始化
         function init() {
+
             displayModel.displayModel='none';
+            displayModel.showHeader='1';
+            displayModel.displayBottom='1';
+
             displayModel.displayEdit = '0';
             displayModel.displaySave = '0';
-            displayModel.displaySearch = '1';
+            displayModel.displaySearch = '0';
             displayModel.displayBack = '0';
             vm.state= 1;
             displayModel.backpath='/menu';

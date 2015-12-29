@@ -14,7 +14,7 @@
         <div class="bm-head-down">
             <div class="pull-left">
                 <a href="#/settings">
-                    <img  class="bm-head-img img" ng-if="vm.panel.img ==''" src="/born_manager/static/src/img/default_company.png">
+                    <img  class="bm-head-img img" ng-if="vm.panel.img ==''" src="/born_manager/static/src/img/default_employee.png">
                     <img  class="bm-head-img img" ng-if="vm.panel.img !=''" style="border-radius: 500px;" ng-src="data:image/png;base64,{{vm.panel.img}}" >
                 </a>
             </div>
@@ -50,7 +50,7 @@
                 <div class="bm-main-three-line-wrapper" style="padding-left: 25px;" data-ng-repeat="track in vm.tracklist">
                     <a href="#/approval/{{track.id}}">
                         <div class="bm-main-three-line">
-                            <img ng-if="track.user_img==''" class="pull-right" style="width:30px;padding-top: 10px;" src="/born_manager/static/src/img/defaultlogo.png">
+                            <img ng-if="track.user_img==''" class="pull-right" style="width:30px;padding-top: 10px;" src="/born_manager/static/src/img/default_employee.png">
                             <img ng-if="track.user_img!=''" class="pull-right" style="width:30px;margin-top: 10px;border-radius: 500px;;" ng-src="data:image/png;base64,{{track.user_img}}">
                             <div style="width:90%;color:black">
                                 <img style="width:14px;height:12px" class="bm-main-three-line-title-tag" src="/born_manager/static/src/img/saler/done.png">
@@ -75,7 +75,7 @@
                 <div class="bm-main-three-line-wrapper" style="padding-left: 25px;" data-ng-repeat="donetrack in vm.donetracklist">
                     <a href="#/saler/finishedMission/{{donetrack.id}}">
                         <div class="bm-main-three-line">
-                            <img ng-if="donetrack.user_img==''" class="pull-right opacity" style="width:30px;padding-top: 10px;" src="/born_manager/static/src/img/defaultlogo.png">
+                            <img ng-if="donetrack.user_img==''" class="pull-right opacity" style="width:30px;padding-top: 10px;" src="/born_manager/static/src/img/default_employee.png">
                             <img ng-if="donetrack.user_img!=''" class="pull-right opacity" style="width:30px;margin-top: 10px;border-radius: 500px;;" ng-src="data:image/png;base64,{{donetrack.user_img}}">
                             <div class="opacity" style="width:90%;color:black">
                                 <img style="width:14px;height:12px" class="bm-main-three-line-title-tag opacity" src="/born_manager/static/src/img/saler/done.png">
@@ -96,9 +96,9 @@
         <div>
             <div id="infinite1" infinite-scroll='vm.getTeamList()' infinite-scroll-parent="true" infinite-scroll-distance='1' infinite-scroll-disabled='vm.busy' >
                 <div class="bm-main-three-line-wrapper" style="padding-left: 25px;" data-ng-repeat="saler in vm.salers">
-                    <a href="#/saler/{{saler.id}}">
+                    <a data-ng-click="vm.ToSaler(saler.id)">
                         <div class="bm-main-three-line" style="padding-left: 30px;padding-bottom: 10px;">
-                            <img ng-if="saler.saler_img==''" class="pull-left" style="width: 30px;padding-top: 5px;margin-left: -30px;" src="/born_manager/static/src/img/defaultlogo.png">
+                            <img ng-if="saler.saler_img==''" class="pull-left" style="width: 30px;padding-top: 5px;margin-left: -30px;" src="/born_manager/static/src/img/default_employee.png">
                             <img ng-if="saler.saler_img!=''" class="pull-left" style="width: 30px;margin-top: 5px;margin-left: -30px;border-radius: 500px;;" ng-src="data:image/png;base64,{{saler.saler_img}}">
                             <i class="pull-right fa fa-angle-right" style="padding-top: 20px;"></i>
                             <div style="width: 100%;color: black;padding-left: 10px;">

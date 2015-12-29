@@ -48,7 +48,7 @@
 
                     var Id = MyCache.get('finishMission_come_from_partnerId');
 
-                    MyCache.put('saler_partner_display','mission');
+                    MyCache.put('saler_partnerOrCompany_display','mission');
                     $location.path('/saler/partner/'+Id);
                     MyCache.remove('finishMission_come_from');
                     MyCache.remove('finishMission_come_from_partnerId');
@@ -65,7 +65,8 @@
                 }else if(MyCache.get('finishMission_come_from') == 'page_support_company_mission'){
                     var Id = MyCache.get('finishMission_come_from_companyId');
 
-                    MyCache.put('support_company_display','mission');
+                    MyCache.put('saler_partnerOrCompany_display','mission');
+
                     $location.path('/saler/company/'+Id);
                     MyCache.remove('finishMission_come_from');
                     MyCache.remove('finishMission_come_from_companyId');

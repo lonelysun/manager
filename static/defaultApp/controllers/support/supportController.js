@@ -149,10 +149,10 @@
         vm.createMissionOrPatner = function () {
         	$scope.modalOptions = {
                 closeButtonText: '取消',
-                firstActionText:'新任务',
-                firstUrl:'#/createMission/9',
-                secondActionText:'',
-                secondUrl:''
+                firstActionText:'',
+                firstUrl:'',
+                secondActionText:'新任务',
+                secondUrl:'#/createMission/9'
             };
 
             ngDialog.open({
@@ -274,9 +274,11 @@
                 MyCache.put('hr_id_for_manager',hr_id_for_manager)
             }
 
-            displayModel.displayModel='none';
 
             vm.getInitData();
+
+            //console.info('......>');
+            //console.info(vm.initData.image);
 
             if(MyCache.get('support_display')){
                 vm.display = MyCache.get('support_display');
@@ -296,6 +298,15 @@
 
 
             displayModel.showHeader='0';
+            displayModel.displayCancel='1';
+            displayModel.displayBack = '0';
+            displayModel.title = '任务汇报';
+            displayModel.displaySubmit = '1';
+            displayModel.displayConfirm = '0';
+            displayModel.displaySave='0';
+            displayModel.displayCreate = '0';
+            displayModel.displaySearch = '0';
+            displayModel.displayBottom = '1';
 
             vm.role = MyCache.get('role_option');
 

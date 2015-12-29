@@ -1,27 +1,31 @@
-<div>
+
+<div class="bm-main-showbottom">
+    <carousel >
+        <slide>
+<div style="margin-bottom:30px">
     <div class="bm-head">
         <div class="text-center h2 text-white" style="padding-top:60px;padding-bottom:15px">
-            电商营收报表{{vm.title}}
+            店尚营收报表
         </div>
         <div class="no-border text-center " style="padding-top:15px;margin-bottom: 0px;background-color: inherit;">
             <div>
-                <button ng-class="{day: 'bm-top-btn-nobg-active'}[vm.report.display]" ng-click="vm.setDisplay('day')" class="  no-border bm-top-btn-nobg" style="width:40px" >全部</button>
-                <button ng-class="{day: 'bm-top-btn-nobg-active'}[vm.report.display]" ng-click="vm.setDisplay('day')" class="  no-border bm-top-btn-nobg"  >周</button>
-                <button ng-class="{week: 'bm-top-btn-nobg-active'}[vm.report.display]" ng-click="vm.setDisplay('week')" class=" no-border bm-top-btn-nobg"  >月</button>
-                <button ng-class="{month: 'bm-top-btn-nobg-active'}[vm.report.display]" ng-click="vm.setDisplay('month')" class=" no-border bm-top-btn-nobg" >年</button>
+                <!--<button ng-class="{all: 'bm-top-btn-nobg-active'}[vm.revenue.display]" ng-click="vm.setDisplay1('all')" class="  no-border bm-top-btn-nobg" style="width:40px" >全部</button>-->
+                <button ng-class="{week: 'bm-top-btn-nobg-active'}[vm.revenue.display]" ng-click="vm.setDisplay1('week')" class="  no-border bm-top-btn-nobg"  >周</button>
+                <!--<button ng-class="{month: 'bm-top-btn-nobg-active'}[vm.revenue.display]" ng-click="vm.setDisplay1('month')" class=" no-border bm-top-btn-nobg"  >月</button>-->
+                <button ng-class="{year: 'bm-top-btn-nobg-active'}[vm.revenue.display]" ng-click="vm.setDisplay1('year')" class=" no-border bm-top-btn-nobg" >年</button>
             </div>
         </div>
         <div ng-show="vm.report.display!='date'" class="panel" style="  margin-bottom: 0px;background-color: inherit;">
             <div class="hbox text-center text-sm " style="padding: 10px  10px;" >
-                <a  ng-click="vm.setPage(-1)" class="col text-left" style="width:30px;padding: 0px;">
+                <a  ng-click="vm.setPage1(-1)" class="col text-left" style="width:30px;padding: 0px;">
                     <span   class=" bm-nolight no-shadow  btn  no-border" style=";border-radius:50px 0px 0px 50px;   "  >
                         <i class="fa fa-angle-left"></i>
                     </span>
                 </a>
-                <a class="col bm-nolight" style=" padding: 5px 0px; ">
-                    <span class="bm-nolight">{{ vm.report.display_current }}2015 12</span>
+                <a class="col bm-nolight" style=" padding: 5px 0px;display: inline-table; ">
+                    <span class="bm-nolight">{{ vm.revenue.display_current }}</span>
                 </a>
-                <a ng-click="vm.setPage(1)" class="col text-right" style="width:30px;padding: 0px;">
+                <a ng-click="vm.setPage1(1)" class="col text-right" style="width:30px;padding: 0px;">
                     <span class="bm-nolight no-shadow  btn  no-border " style="border:0px;border-radius:0px 50px 50px 0px; " >
                         <i class="fa fa-angle-right"></i>
                     </span>
@@ -29,24 +33,263 @@
             </div>
         </div>
     </div>
-    <div>
-        <div>
-            <span class="pull-right">
-                ￥39786.67
+    <div style="
+border-bottom: solid 1px #f6f6f5;">
+        <div style="    background-color: white;
+    border-bottom: solid 1px #f6f6f5;
+    margin-left: 15px;
+    margin-right: 15px;
+    padding-bottom: 12px;
+    padding-top: 20px;">
+            <span class="pull-right" style="font-size:16px">
+                ￥{{vm.revenue.cash_total}}
             </span>
             <div>
-                <p class="text-black ">
-                    权益金（营）
+                <p class="text-black text-left" style="font-size:16px">
+                    营业额（营）
                 </p>
-                <p>
-                    日平均 ￥2987.02
+                <p class="text-left" style="font-size:12px">
+                    日平均 ￥{{vm.revenue.cash_avg}}
                 </p>
             </div>
         </div>
-        <div>
-            <canvas id="line" class="chart chart-line" chart-data="data"
+        <div style="margin-left: 10px;margin-right: 10px;">
+            <canvas id="line1" class="chart chart-line" chart-data="data"
                     chart-labels="labels" chart-legend="false" chart-series="series" chart-options = options
                     chart-click="onClick" chart-colours=colours ></canvas>
         </div>
     </div>
+    <div style="
+border-bottom: solid 1px #f6f6f5;">
+        <div style="background-color: white;
+    border-bottom: solid 1px #f6f6f5;
+    margin-left: 15px;
+    margin-right: 15px;
+    padding-bottom: 12px;
+    padding-top: 20px;">
+            <span class="pull-right" style="font-size:16px">
+                ￥{{vm.revenue.consume_total}}
+            </span>
+            <div>
+                <p class="text-black text-left" style="font-size:16px">
+                    销售额（收）
+                </p>
+                <p class="text-left" style="font-size:12px">
+                    日平均 ￥{{vm.revenue.consume_avg}}
+                </p>
+            </div>
+        </div>
+        <div style="    margin-left: 10px;
+    margin-right: 10px;">
+            <canvas id="line2" class="chart chart-line" chart-data="data1"
+                    chart-labels="labels" chart-legend="false" chart-series="series" chart-options = options
+                    chart-click="onClick" chart-colours=colours1 ></canvas>
+        </div>
+    </div>
+      <div class="panel hbox panel-default no-border" data-ng-repeat="company in vm.revenue.company_list" style="margin-bottom: 0px;">
+        <div class="bm-item" >
+            <a data-ng-click="">
+                <p class="text-left" style="padding-bottom:5px">
+                    <span>{{ company.name}}</span>
+                    <span class="pull-right">{{ company.count }}笔</span>
+                </p>
+                <p class="text-left" style="color:#A0A0A0;font-size:11px">
+                    <span>￥{{ company.cash }}(营)</span>
+                    <span class="pull-right" style="">￥{{ company.consume }}(收)</span>
+                </p>
+            </a>
+        </div>
+      </div>
+
+
+
+</div>
+        </slide>
+        <!--<slide>-->
+<!--<div style="margin-bottom:30px">-->
+    <!--<div class="bm-head">-->
+        <!--<div class="text-center h2 text-white" style="padding-top:60px;padding-bottom:15px">-->
+            <!--微卡报表{{vm.title}}-->
+        <!--</div>-->
+        <!--<div class="no-border text-center " style="padding-top:15px;margin-bottom: 0px;background-color: inherit;">-->
+            <!--<div>-->
+                <!--&lt;!&ndash;<button ng-class="{all: 'bm-top-btn-nobg-active'}[vm.report.display]" ng-click="vm.setDisplay('all')" class="  no-border bm-top-btn-nobg" style="width:40px" >全部</button>&ndash;&gt;-->
+                <!--<button ng-class="{week: 'bm-top-btn-nobg-active'}[vm.report.display]" ng-click="vm.setDisplay2('week')" class="  no-border bm-top-btn-nobg"  >周</button>-->
+                <!--&lt;!&ndash;<button ng-class="{month: 'bm-top-btn-nobg-active'}[vm.report.display]" ng-click="vm.setDisplay('month')" class=" no-border bm-top-btn-nobg"  >月</button>&ndash;&gt;-->
+                <!--<button ng-class="{year: 'bm-top-btn-nobg-active'}[vm.report.display]" ng-click="vm.setDisplay2('year')" class=" no-border bm-top-btn-nobg" >年</button>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div ng-show="vm.report.display!='date'" class="panel" style="  margin-bottom: 0px;background-color: inherit;">-->
+            <!--<div class="hbox text-center text-sm " style="padding: 10px  10px;" >-->
+                <!--<a  ng-click="vm.setPage2(-1)" class="col text-left" style="width:30px;padding: 0px;">-->
+                    <!--<span   class=" bm-nolight no-shadow  btn  no-border" style=";border-radius:50px 0px 0px 50px;   "  >-->
+                        <!--<i class="fa fa-angle-left"></i>-->
+                    <!--</span>-->
+                <!--</a>-->
+                <!--<a class="col bm-nolight" style=" padding: 5px 0px;display: inline-table; ">-->
+                    <!--<span class="bm-nolight">2015.12.21 - 2015.12.27</span>-->
+                <!--</a>-->
+                <!--<a ng-click="vm.setPage2(1)" class="col text-right" style="width:30px;padding: 0px;">-->
+                    <!--<span class="bm-nolight no-shadow  btn  no-border " style="border:0px;border-radius:0px 50px 50px 0px; " >-->
+                        <!--<i class="fa fa-angle-right"></i>-->
+                    <!--</span>-->
+                <!--</a>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div style="-->
+<!--border-bottom: solid 1px #f6f6f5;">-->
+        <!--<div style="    background-color: white;-->
+    <!--border-bottom: solid 1px #f6f6f5;-->
+    <!--margin-left: 15px;-->
+    <!--margin-right: 15px;-->
+    <!--padding-bottom: 12px;-->
+    <!--padding-top: 20px;">-->
+            <!--<span class="pull-right">-->
+                <!--280人-->
+            <!--</span>-->
+            <!--<div>-->
+                <!--<p class="text-black text-left">-->
+                    <!--注册用户-->
+                <!--</p>-->
+                <!--<p class="text-left">-->
+                    <!--日平均 30人-->
+                <!--</p>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div style="margin-left: 5px;margin-right: 5px;">-->
+            <!--<canvas id="line3" class="chart chart-line" chart-data="data"-->
+                    <!--chart-labels="label" chart-legend="false" chart-series="series" chart-options = options-->
+                    <!--chart-click="onClick" chart-colours=colours ></canvas>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div style="-->
+<!--border-bottom: solid 1px #f6f6f5;">-->
+        <!--<div style="background-color: white;-->
+    <!--border-bottom: solid 1px #f6f6f5;-->
+    <!--margin-left: 15px;-->
+    <!--margin-right: 15px;-->
+    <!--padding-bottom: 12px;-->
+    <!--padding-top: 20px;">-->
+            <!--<span class="pull-right">-->
+                <!--420人-->
+            <!--</span>-->
+            <!--<div>-->
+                <!--<p class="text-black text-left">-->
+                    <!--激活用户-->
+                <!--</p>-->
+                <!--<p class="text-left">-->
+                    <!--日平均 45人-->
+                <!--</p>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div style="    margin-left: 5px;-->
+    <!--margin-right: 5px;">-->
+            <!--<canvas id="line4" class="chart chart-line" chart-data="data1"-->
+                    <!--chart-labels="label1" chart-legend="false" chart-series="series1" chart-options = options-->
+                    <!--chart-click="onClick" chart-colours=colours1 ></canvas>-->
+        <!--</div>-->
+    <!--</div>-->
+            <!--<div  class="no-bg bm-item text-left">-->
+                <!--<span class="bm-main-three-line-title-font">美丽田园</span>-->
+                <!--<span class="pull-right bm-main-two-line-title-right-font-grey">231人</span>-->
+            <!--</div>-->
+            <!--<div  class="no-bg bm-item text-left">-->
+                <!--<span class="bm-main-three-line-title-font">美丽田园</span>-->
+                <!--<span class="pull-right bm-main-two-line-title-right-font-grey">231人</span>-->
+            <!--</div>-->
+            <!--<div  class="no-bg bm-item text-left">-->
+                <!--<span class="bm-main-three-line-title-font">美丽田园</span>-->
+                <!--<span class="pull-right bm-main-two-line-title-right-font-grey">231人</span>-->
+            <!--</div>-->
+            <!--<div  class="no-bg bm-item text-left">-->
+                <!--<span class="bm-main-three-line-title-font">美丽田园</span>-->
+                <!--<span class="pull-right bm-main-two-line-title-right-font-grey">231人</span>-->
+            <!--</div>-->
+            <!--<div  class="no-bg bm-item text-left">-->
+                <!--<span class="bm-main-three-line-title-font">美丽田园</span>-->
+                <!--<span class="pull-right bm-main-two-line-title-right-font-grey">231人</span>-->
+            <!--</div>-->
+
+<!--</div>-->
+        <!--</slide>-->
+        <slide>
+
+<div style="margin-bottom:30px">
+    <div class="bm-head" style="height:400px">
+        <div class="text-center h2 text-white" style="padding-top:60px;padding-bottom:15px">
+            销售团队统计{{vm.title}}
+        </div>
+        <div style="">
+            <span style="font-size: 40px;
+    position: absolute;
+    top: 165px;
+    color: white;">{{vm.salerTeam.ratio}}
+            <span class="h3">%</span></span>
+            <span class="h5" style="color: rgba(255, 255, 255, 0.5);
+    top: 105px;
+    left: 0px;
+    position: relative;">公司转化率</span>
+            <canvas id="doughnut" class="chart chart-doughnut"
+                    chart-data="data2" chart-labels="labels2"
+                    chart-colours=color chart-options = options2>
+            </canvas>
+        </div>
+        <div style="margin-top:10%">
+            <div class="pull-left" style="margin-left:10%">
+                <div class="text-white h2">
+                    {{vm.salerTeam.partner_number}}
+                </div>
+                <div class="h5" style="color: rgba(255, 255, 255, 0.5);">
+                    商户数
+                </div>
+            </div>
+            <div class="pull-left" style="margin-left:17%">
+                <div class="text-white h2">
+                    {{vm.salerTeam.track_number}}
+                </div>
+                <div class="h5" style="color: rgba(255, 255, 255, 0.5);">
+                    任务数
+                </div>
+            </div>
+            <div class="pull-right" style="margin-right:10%">
+                <div class="text-white h2">
+                    {{vm.salerTeam.company_number}}
+                </div>
+                <div class="h5" style="color: rgba(255, 255, 255, 0.5);">
+                    公司数
+                </div>
+            </div>
+        </div>
+    </div>
+                <div class="bm-main-three-line-wrapper" style="padding-left: 25px;" data-ng-repeat="team in vm.salerTeam.team_list">
+                        <div class="bm-main-three-line" style="padding-left: 30px;padding-bottom: 10px;">
+                            <img  class="pull-left" style="width: 30px;padding-top: 5px;margin-left: -30px;" src="/born_manager/static/src/img/default_employee.png">
+                            <!--<img  class="pull-left" style="width: 30px;margin-top: 5px;margin-left: -30px;border-radius: 500px;;" ng-src="data:image/png;base64,{{saler.saler_img}}">-->
+                            <div class="pull-right">
+                                <div style="color: black;padding-left: 10px;">{{team.ratio}}%</div>
+                                <div style="font-size:10px;padding-left: 10px;margin-top: 0px;color:#a0a0a0">转化率</div>
+                            </div>
+                            <div style="width: 100%;color: black;padding-left: 5px;" class="text-left">
+                                {{team.team_name}}
+                            </div>
+                            <div class="bm-main-three-line-detail text-left"  style="width:100%;font-size:10px;padding-left: 10px;margin-top: 0px;" >
+                                负责人：{{team.manager_name}}
+                            </div>
+                            <div class="bm-main-three-line-detail text-left"  style="width:100%;font-size:10px;padding-left: 10px;margin-top: 0px;" >
+                                商户数：{{team.partner_number}}
+                            </div>
+                            <div class="bm-main-three-line-detail text-left"  style="width:100%;font-size:10px;padding-left: 10px;margin-top: 0px;" >
+                                任务数：{{team.track_number}}
+                            </div>
+                            <div class="bm-main-three-line-detail text-left"  style="width:100%;font-size:10px;padding-left: 10px;margin-top: 0px;" >
+                                公司数：{{team.company_number}}
+                            </div>
+                        </div>
+                </div>
+
+</div>
+
+        </slide>
+    </carousel>
 </div>

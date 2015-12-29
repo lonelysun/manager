@@ -1,3 +1,4 @@
+<div style="margin-bottom:50px;">
 <div>
     <!--Head-->
     <div class="bm-head">
@@ -16,11 +17,11 @@
             <div class="pull-left">
                 <a ng-if="vm.role == '9'" href="#/settings">
                     <img ng-if="vm.initData.image != ''" class="bm-photo-round img" style="border-radius: 500px;" ng-src="data:image/png;base64,{{vm.initData.image}}">
-                    <img ng-if="vm.initData.image == ''" class="bm-photo-round img" ng-src="/born_manager/static/src/img/defaultlogo.png">
+                    <img ng-if="vm.initData.image == ''" class="bm-photo-round img" ng-src="/born_manager/static/src/img/default_employee.png">
                 </a>
                 <a ng-if="vm.role == '10'">
                     <img ng-if="vm.initData.image != ''" class="bm-photo-round img" style="border-radius: 500px;" ng-src="data:image/png;base64,{{vm.initData.image}}">
-                    <img ng-if="vm.initData.image == ''" class="bm-photo-round img" ng-src="/born_manager/static/src/img/defaultlogo.png">
+                    <img ng-if="vm.initData.image == ''" class="bm-photo-round img" ng-src="/born_manager/static/src/img/default_employee.png">
                 </a>
             </div>
 
@@ -122,13 +123,13 @@
                         <span class="pull-right bm-main-three-line-title-font-grey">{{company.use_days}}天<i class=" fa fa-fw fa-angle-right text"></i></span>
                     </div>
                     <div>
-                        <span class="bm-main-two-line-span-img"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/ticket.png"></span>
+                        <span class="bm-main-two-line-span-img" style="margin-left:-6px"><img class="bm-main-three-line-img" src="/born_manager/static/src/img/saler/ticket.png"></span>
                         <span class="bm-main-two-line-span">共{{company.total_operate_number}}单.</span>
                         <span class="bm-main-two-line-span">今日{{company.today_operate_number}}单.</span>
                         <!--<span class="bm-main-two-line-span">日均{{company.daily_average}}单.</span>-->
                     </div>
                     <div>
-                        <i class="icon-clock bm-i-clock"></i>
+                        <i class="icon-clock bm-i-clock" style="color:#BDBDBD"></i>
                         <span class="bm-main-two-line-span">注册时间: {{company.register_date_year}}年{{company.register_date_month}}月{{company.register_date_day}}日</span>
                     </div>
                 </div>
@@ -138,3 +139,4 @@
 
 </div>
 <div ng-show="vm.busy" class="text-center bm-loading" >正在加载...</div>
+</div>

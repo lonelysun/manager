@@ -21,6 +21,7 @@
         displayModel.placeholder = '0';
         displayModel.placeholderleft = '0';
         displayModel.displayBottom = '0';
+        displayModel.displayCancel = '0';
 
         vm.clicked = 'menu';
 

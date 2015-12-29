@@ -34,7 +34,7 @@
                 <div class="bm-main-three-line-wrapper" style="padding-left: 25px;" data-ng-repeat="saler in vm.ranking.salers" ng-if="saler.number!=0">
                         <div class="bm-main-three-line h4" style="padding-left: 30px;padding-bottom: 20px;">
                             <span class="pull-right">{{saler.number}}</span>
-                            <img ng-if="!saler.image_small" class="pull-left bm-img-s-l" src="/born_manager/static/src/img/defaultlogo.png">
+                            <img ng-if="!saler.image_small" class="pull-left bm-img-s-l" src="/born_manager/static/src/img/default_employee.png">
                             <img ng-if="saler.image_small" class="pull-left bm-img-s-l" ng-src="data:image/png;base64,{{saler.image_small}}">
                             <div style="width: 100%;padding-left: 10px;color:#a5a5a5">
                                 {{saler.name}}

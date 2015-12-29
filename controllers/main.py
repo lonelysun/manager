@@ -13,7 +13,7 @@ from openerp import http
 from openerp.http import request
 from openerp.tools.translate import _
 import openerp
-import time,datetime
+import time,datetime,calendar
 import logging
 import json
 from mako import exceptions
@@ -446,7 +446,7 @@ class born_manager(http.Controller):
 
 
 
-        # 计算数量
+        # 计算已审核数量
         sql=u"""with temp_a as (
                 select bos.company_id,rc.name
                 from born_operate_sync bos
@@ -458,6 +458,22 @@ class born_manager(http.Controller):
         request.cr.execute(sql)
         res_count=request.cr.fetchall()
         updated_company_count= int(res_count and res_count[0][0] or 0)
+
+
+        # 计算未审核公司数量
+        sql=u"""with temp_a as (SELECT
+                    tb1. ID,
+                    tb1. NAME
+                FROM
+                    res_company tb1
+                WHERE
+                    tb1. ID > 1   and  tb1.state='draft'
+                ORDER BY tb1.id DESC)
+                select count(*) from temp_a
+                """
+        request.cr.execute(sql)
+        res_count=request.cr.fetchall()
+        not_updated_company_count = int(res_count and res_count[0][0] or 0)
 
 
 
@@ -493,6 +509,7 @@ class born_manager(http.Controller):
             'current_week':current_week,
             'display_current':display_current,
             'display':display_type,
+            'not_updated_company_count':not_updated_company_count
 
         }
 
@@ -1422,11 +1439,292 @@ class born_manager(http.Controller):
         return json.dumps(val,sort_keys=True)
 
 
+    #获取店尚营收报表数据
+    @http.route('/manager/revenue',type="http",auth="none")
+    def revenue(self,**post):
+        uid=request.session.uid
+        if not uid:
+            werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
+
+        display_type = post.get('display','week')
+        current_date = post.get('current_date',False)
+        current_week = post.get('current_week',False)
+        current_year = post.get('current_year',False)
+        current_month = post.get('current_month',False)
+        direction = post.get('direction',0)
+
+
+        #计算当前的时间
+        if not current_date or current_date=='':
+            today = datetime.date.today()
+            current_date=today.strftime("%Y-%m-%d")
+            current_month=today.strftime("%Y-%m")
+            current_year=today.strftime("%Y")
+            current_week='%s %s' % (current_year,int(today.strftime("%W"))+1)
+
+        display_current=current_date
+        filter_week_year=current_week.split(' ')[0]
+        filter_week=current_week.split(' ')[1]
+
+        if direction=='1':
+            if display_type =='day':
+                today=datetime.datetime.strptime(current_date,'%Y-%m-%d')
+                current_date= today + datetime.timedelta(days=1)
+                current_date=current_date.strftime("%Y-%m-%d")
+            elif display_type == 'month':
+                today=datetime.datetime.strptime(current_month+'-01','%Y-%m-01')
+                current_month=today.replace(month=(today.month + 1 - 1) % 12 + 1, year=today.year if today.month < 12 else today.year + 1)
+                current_month=current_month.strftime("%Y-%m")
+            elif display_type=='year':
+                current_year=int(current_year)+1
+            elif display_type=='week':
+                filter_week=int(filter_week)+1
+                new_date = datetime.date(int(filter_week_year)+1,01,01)
+                new_date = new_date + datetime.timedelta(days=-1)
+                max_filter_week = new_date.strftime("%W")
+                if int(filter_week) > int(max_filter_week):
+                    filter_week=1
+                    filter_week_year=int(filter_week_year)+1
+                current_week='%s %s' % (filter_week_year,filter_week)
+        elif direction=='-1':
+            if display_type=='day':
+                today=datetime.datetime.strptime(current_date,'%Y-%m-%d')
+                current_date= today + datetime.timedelta(days=-1)
+                current_date=current_date.strftime("%Y-%m-%d")
+            elif display_type=='month':
+                today=datetime.datetime.strptime(current_month+'-01','%Y-%m-01')
+                current_month= today + datetime.timedelta(days=-1)
+                current_month=current_month.strftime("%Y-%m")
+            elif display_type=='year':
+                current_year=int(current_year)-1
+            elif display_type=='week':
+                filter_week=int(filter_week)-1
+                #前一年的最后一周
+                if filter_week <= 0:
+                    new_date = datetime.date(int(filter_week_year),01,01)
+                    new_date = new_date + datetime.timedelta(days=-1)
+                    filter_week = new_date.strftime("%W")
+                    filter_week_year = int(filter_week_year)-1
+                current_week='%s %s' % (filter_week_year,filter_week)
+
+        where = ""
+
+        if display_type=='day':
+            display_current=current_date
+            where +="  and TO_CHAR(bos.create_date,'YYYY-MM-DD') = '%s' " % (current_date)
+        elif display_type=='month':
+            display_current=current_month
+            where += "  and TO_CHAR(bos.create_date,'YYYY-MM') = '%s' " % (current_month)
+        elif display_type=='year':
+            display_current=current_year
+            where += "  and TO_CHAR(bos.create_date,'YYYY') = '%s' " % (current_year)
+
+            #getData --- month by month
+            count = 0
+            date_domain = []
+            then_date = datetime.datetime.strptime( str(current_year) + '-01', "%Y-%M")
+            while (count < 12):
+                date_domain.append(then_date.strftime("%Y-%m"))
+                then_date=then_date.replace(month=(then_date.month + 1 - 1) % 12 + 1)
+                count = count + 1
+        elif display_type=='week':
+            display_current= current_week
+
+            #change new show ways
+            f_year = current_week.split(' ')[0]
+            f_week = int(current_week.split(' ')[1]) - 1
+            f_current_week = '%s %s' % (f_year,f_week)
+            fist_day = datetime.datetime.strptime( f_current_week + ' 1', "%Y %W %w").strftime("%Y.%m.%d")
+            last_day = datetime.datetime.strptime( f_current_week + ' 0', "%Y %W %w").strftime("%Y.%m.%d")
+            display_current = fist_day + ' - ' +last_day
+            where += "  and TO_CHAR(bos.create_date,'YYYY') = '%s' and extract('week' from bos.create_date)::varchar = '%s' " % (filter_week_year,filter_week)
+
+            #getData  ---  day by day
+            then_date = datetime.datetime.strptime( f_current_week + ' 1', "%Y %W %w")
+            count = 0
+            date_domain = []
+            while (count < 7):
+                date_domain.append(then_date.strftime("%Y-%m-%d"))
+                then_date= then_date + datetime.timedelta(days=1)
+                count = count + 1
+
+
+        #营业额
+        sql=u""" SELECT  sum(
+            case when type in ('card','recharge','active','lost','upgrade','refund') then now_amount
+            when type in ('repayment') then now_card_amount
+            when type in ('buy','consume') then now_amount+now_card_amount else 0 end) as xianjin
+             from born_operate_sync bos where 1=1 %s;  """ %where
+        request.cr.execute(sql)
+        res_count = request.cr.fetchall()
+        cash_total= int(res_count and res_count[0][0] or 0)
+
+        #销售额
+        sql=u""" SELECT  sum(abs(now_card_amount)) +sum(consume_amount) as xiaohao
+             from born_operate_sync bos where type in ('buy','consume') %s; """ %where
+        request.cr.execute(sql)
+        res_count = request.cr.fetchall()
+        consume_total= int(res_count and res_count[0][0] or 0)
+
+        #getData day by day AND month by month
+        first_report_point = []
+        second_report_point = []
+        for date in date_domain:
+            if display_type=='week':
+                where_date ="  and TO_CHAR(bos.create_date,'YYYY-MM-DD') = '%s' " % (date)
+            elif display_type=='year':
+                where_date ="  and TO_CHAR(bos.create_date,'YYYY-MM') = '%s' " % (date)
+            sql=u""" SELECT  sum(
+                case when type in ('card','recharge','active','lost','upgrade','refund') then now_amount
+                when type in ('repayment') then now_card_amount
+                when type in ('buy','consume') then now_amount+now_card_amount else 0 end) as xianjin
+                 from born_operate_sync bos where 1=1 %s;  """ %where_date
+            request.cr.execute(sql)
+            res_count = request.cr.fetchall()
+            cash_detail= int(res_count and res_count[0][0] or 0)
+            first_report_point.append(cash_detail)
+            sql=u""" SELECT  sum(abs(now_card_amount)) +sum(consume_amount) as xiaohao
+                 from born_operate_sync bos where type in ('buy','consume') %s; """ %where_date
+            request.cr.execute(sql)
+            res_count = request.cr.fetchall()
+            consume_detail= int(res_count and res_count[0][0] or 0)
+            second_report_point.append(consume_detail)
+
+        if display_type=='week':
+            consume_avg = consume_total/7
+            cash_avg = cash_total/7
+        elif display_type=='year':
+            now_year=datetime.datetime.now().year
+            if now_year==current_year:
+                t1 = datetime.datetime.strptime(str(current_year)+'-01-01',"%Y-%m-%d")
+                t2 = datetime.datetime.strptime(str(current_year)+'-12-31',"%Y-%m-%d")
+                day_count = (t2-t1).days
+            else:
+                day_count = 365
+                if calendar.isleap(now_year):
+                    day_count = 366
+            consume_avg = consume_total/day_count
+            cash_avg = cash_total/day_count
+
+        #companys_data
+        sql_company = u"""
+            select rc.name,
+                count(bos.company_id),
+                sum(
+                    case when type in ('card','recharge','active','lost','upgrade','refund') then now_amount
+                    when type in ('repayment') then now_card_amount
+                    when type in ('buy','consume') then now_amount+now_card_amount else 0 end) as cash,
+                sum(
+                    case when type in ('buy','consume') then abs(now_card_amount) else 0 end)
+                    +sum(case when type in ('buy','consume') then consume_amount else 0 end) as consume
+                         from born_operate_sync bos
+            join res_company rc on rc.id = bos.company_id where 1=1 %s group by rc.name  order by count desc
+        """%where
+        request.cr.execute(sql_company)
+        company_list = request.cr.dictfetchall()
+
+
+        val = {
+            'display':display_type,
+            'second_report_point':second_report_point,
+            'first_report_point':first_report_point,
+            'date_point' : date_domain,
+            'consume_total' : consume_total,
+            'cash_total' : cash_total,
+            'consume_avg' : consume_avg,
+            'cash_avg' : cash_avg,
+            'company_list' : company_list,
+            'current_date':current_date,
+            'current_month':current_month,
+            'current_year':current_year,
+            'current_week':current_week,
+            'display_current':display_current,
+            'filter_week_year':filter_week_year,
+            'filter_week':filter_week,
+        }
 
 
 
+        return json.dumps(val,sort_keys=True)
 
 
+    #获取销售团队业绩报表信息
+    @http.route('/manager/saleTeamReport',type="http",auth="none")
+    def saleTeamReport(self,**post):
+        uid=request.session.uid
+        if not uid:
+            werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
+        commission_team = request.registry.get('commission.team')
+        business_obj = request.registry.get('born.business')
+        region_obj = request.registry.get('res.country.state.area.subdivide')
+        track_obj = request.registry.get('born.partner.track')
+        company_obj = request.registry.get('res.company')
+        team_ids = commission_team.search(request.cr, SUPERUSER_ID,[('team_type','=','sale')], context=request.context)
+        teams = commission_team.browse(request.cr, SUPERUSER_ID,team_ids, context=request.context)
+        data = []
+        for team in teams:
+            #获取团队负责的所有商圈id，行政区id
+            c_ids = set([city.id for city in team.city_ids])
+            s_ids = set([subdivide.id for subdivide in team.subdivide_ids])
+            country_ids = set([subdivide.country_id.id for subdivide in team.subdivide_ids])
+            b_ids = set([business.id for business in team.business_ids])
+            area_ids = set([business.area_id.id for business in team.business_ids])
+            all_cityids = [val for val in c_ids.difference(country_ids)]
+            exits_ids = region_obj.search(request.cr, SUPERUSER_ID,[('country_id','in',all_cityids)], context=request.context)
+            s_ids = s_ids | set(exits_ids)
+            all_business = [val for val in s_ids.difference(area_ids)]
+            exits_business = business_obj.search(request.cr, SUPERUSER_ID,[('area_id','in',all_business)], context=request.context)
+            b_ids = b_ids | set(exits_business)
+            businesses_ids = [id for id in b_ids]
+            subdivide_ids = [id for id in s_ids]
+            partner_obj = request.registry.get('res.partner')
 
+            domain = [('business_id','in',businesses_ids)]
+            #团队内商户数
+            partner_ids = partner_obj.search(request.cr, SUPERUSER_ID,domain, context=request.context)
+            #团队内任务数
+            domain = [('track_id','in',partner_ids)]
+            track_ids = track_obj.search(request.cr, SUPERUSER_ID,domain, context=request.context)
+            #团队内公司数
+            domain = [('id','in',partner_ids),('has_installed','=','true')]
+            company_ids = partner_obj.search(request.cr, SUPERUSER_ID,domain, context=request.context)
+            ratio = "%.0f" % ((len(company_ids)/ float(len(partner_ids)))*100)
+            val_list = {
+                'team_name' : team.name or '',
+                'manager_name' : team.manager_id.name or '',
+                'partner_number' : len(partner_ids),
+                'track_number' : len(track_ids),
+                'company_number' : len(company_ids),
+                'ratio' : ratio
+            }
+            data.append(val_list)
+        domain = [('is_company','=',True)]
+        #团队内商户数
+        partner_ids = partner_obj.search(request.cr, SUPERUSER_ID,domain, context=request.context)
+        #总任务数
+        sql = u"""
+            select count(*) from born_partner_track where track_id is not null
+        """
+        request.cr.execute(sql)
+        row = request.cr.fetchone()
+        track_number = row[0]
+        sql = u"""
+            select count(*) from res_partner where is_company is true and has_installed is true
+        """
+        request.cr.execute(sql)
+        row = request.cr.fetchone()
+        company_number = row[0]
+        all_ratio = "%.0f" % ((company_number/ float(len(partner_ids)))*100)
+        not_company = len(partner_ids)-company_number
+        val = {
+            'ratio': all_ratio,
+            'track_number':track_number,
+            'company_number':company_number,
+            'partner_number':len(partner_ids),
+            'not_company' :not_company,
+            'team_list': data
+        }
+
+        return json.dumps(val,sort_keys=True)
 

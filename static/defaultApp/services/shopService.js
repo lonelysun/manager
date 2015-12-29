@@ -109,6 +109,7 @@
      			});
         };
 
+
         //获取终端数据
         factory.getUsers = function (companyId) {
 
@@ -672,6 +673,33 @@
             }).then(function (results) {
                 return results.data;
             });
+        };
+
+        //获取店尚营收报表
+        factory.getRevenue = function (display,index,current_date,current_week,current_year,current_month,direction) {
+
+            return $http.get(serviceBase + 'revenue', {
+     			params : {
+                    display:display,
+                    index:index,
+                    current_date:current_date,
+                    current_week:current_week,
+                    current_year:current_year,
+                    current_month:current_month,
+                    direction:direction,
+     			}
+     			}).then(function(results) {
+     				return results.data;
+     			});
+        };
+
+
+        //获取销售团队业绩报表信息
+        factory.getsaleTeamReport = function () {
+
+            return $http.get(serviceBase + 'saleTeamReport').then(function(results) {
+     				return results.data;
+     			});
         };
 
         return factory;

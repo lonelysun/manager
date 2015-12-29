@@ -1,9 +1,9 @@
 (function () {
 
-    var injectParams = ['$scope', '$location', '$routeParams',
+    var injectParams = ['$scope', '$location', '$routeParams','ngDialog',
                         '$timeout', 'config','modalService', 'dataService','toaster','displayModel'];
 
-    var companyControllerNotUpdated = function ($scope, $location, $routeParams,
+    var companyControllerNotUpdated = function ($scope, $location, $routeParams,ngDialog,
                                            $timeout, config,modalService, dataService,toaster,displayModel) {
         var vm = this,
     	companyId = ($routeParams.companyId) ? parseInt($routeParams.companyId) : 0;
@@ -14,14 +14,9 @@
         vm.isLoad=false;
         vm.keyword='';
 
-        //vm.showheaderEdit = true;
-        //vm.showheaderSave = true;
-        //vm.showheaderSearch = true;
-        //vm.showheaderBack = true;
-        //vm.showheaderCancel = true;
-
         //获取公司明细
-        function getCompanyDetail() {
+        vm.getInitData = function () {
+
             dataService.getCompanyDetailNotUpdated(companyId)
             .then(function (data) {
             	vm.company = data;
@@ -32,41 +27,69 @@
             }, function (error) {
             	toaster.pop('error', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
             });
-        }
+
+        };
+
+
+
 
         vm.updateCompany = function () {
-
-        	var modalOptions = {
+        	$scope.modalOptions = {
+                titleText:'确认审核并开通帐套?',
+                titleState:'',
                 closeButtonText: '取消',
-                actionButtonText: '确认',
-                headerText: '系统提示',
-                bodyText: '您确认要审核并开通帐套吗?'
+
+                firstActionText:'确认',
+                showFirstText:true,
+
+                secondActionText:'',
+                showSecondText:false,
+
+                thirdActionText:'',
+                showThirdText:false
+
             };
 
-            modalService.showModal({}, modalOptions).then(function (result) {
-                if (result === 'ok') {
-                	dataService.updateCompany(vm.company.id)
+            ngDialog.openConfirm({
+                template:'/born_manager/static/defaultApp/partials/modalBottomFive.html',
+                className: 'ngdialog',
+                scope:$scope
+            }).then(function(data){
+                if (data == 'start'){
+
+                    dataService.updateCompany(vm.company.id)
                     .then(function (data) {
                         toaster.pop('success', "审核并开通帐套处理成功！");
                         vm.company.state='done';
                         vm.company.state_display='运行中';
+
+                            window.location.href = 'bornhr://back';
                     }, function (error) {
                     	toaster.pop('warning', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
                     });
+
+
                 }
-            });
+            })
+        };
+
+
+
+        vm.back = function(){
+            window.location.href = 'bornhr://back';
         };
 
         //初始化
         function init() {
-            getCompanyDetail();
-            displayModel.displayModel='none';
-            displayModel.displayModel='none';
+            vm.getInitData();
+            displayModel.showHeader='1';
             displayModel.displayEdit = '0';
             displayModel.displaySave = '0';
             displayModel.displaySearch = '0';
             displayModel.displayBack = '1';
-            displayModel.backpath='/companys';
+            displayModel.displayBottom = '0';
+
+            displayModel.headerBack = vm.back;
 
         }
 

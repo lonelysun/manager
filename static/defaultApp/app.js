@@ -388,11 +388,6 @@
 	            templateUrl: viewBase + 'salermanager/ranking.html',
 	            controllerAs: 'vm'
 	        })
-			.when('/report', {
-	            controller: 'ReportController',
-	            templateUrl: viewBase + 'report/reporttest.html',
-	            controllerAs: 'vm'
-	        })
 			.when('/reportline', {
 	            controller: 'ReportController',
 	            templateUrl: viewBase + 'report/reportLine.html',

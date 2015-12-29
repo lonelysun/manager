@@ -66,7 +66,8 @@
 
         //初始化
         function init() {
-            displayModel.displayModel='none';
+            displayModel.displayBack='0';
+            displayModel.displayCancel='0';
             if(companyId>0){
                getCompanyDetail();
             }

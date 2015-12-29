@@ -37,7 +37,6 @@
 
         vm.showset = function(flag){
             vm.show = flag;
-
         }
 
         vm.toLicenseDetail = function(company_id){

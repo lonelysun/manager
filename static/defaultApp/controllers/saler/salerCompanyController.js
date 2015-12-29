@@ -120,8 +120,13 @@
 
         //点击已完成任务跳转到已完成的任务详细页面
         vm.jumpWithCache = function(Id){
-            MyCache.put('finishedMission_come_from','page_company_mission');
-            MyCache.put('finishedMission_come_from_companyId',companyId);
+            if(vm.comeFrom == 'saler'){
+                MyCache.put('finishedMission_come_from','page_company_mission');
+            }else if(vm.comeFrom == 'support'){
+                MyCache.put('finishedMission_come_from','page_support_company_mission');
+            }
+
+            MyCache.put('finishedMission_come_from_companyId',Id);
 
             $location.path('/saler/finishedMission/'+Id)
         };
@@ -135,18 +140,20 @@
                 MyCache.put('support_display','companys');
             }
 
+            MyCache.remove('comeFrom');
+
 
             window.location.href = 'bornhr://back';
         };
 
         //改变任务状态
         vm.changeMissionState = function(missionsUnfinished){
-            console.info('---->>>>');
+            //console.info('---->>>>');
 
             if(vm.role != '9'){
                 return;
             }
-            console.info('---->>>><<<<<');
+            //console.info('---->>>><<<<<');
 
             var titleText,titleState;
             var showFirstText = false;
@@ -213,6 +220,7 @@
 
                     MyCache.put('finishMission_come_from','page_support_company_mission');
                     MyCache.put('firstComeIntoFinishMission','1');
+                    MyCache.put('finishMission_come_from_companyId',companyId)
                     MyCache.put('passedMissionTitle',titleText);
 
 
@@ -245,6 +253,7 @@
             displayModel.displaySearch = '0';
             displayModel.displaySave='0';
             displayModel.displayCancel='0';
+            displayModel.displayBottom='0';
 
             vm.getCompanyDetail();
             if(MyCache.get('saler_partnerOrCompany_display')){
@@ -257,19 +266,30 @@
 
             if (MyCache.get('comeFrom') == 'saler'){
                 vm.comeFrom = 'saler';
-                MyCache.remove('comeFrom');
+                //MyCache.remove('comeFrom');
             }else if (MyCache.get('comeFrom') == 'support'){
                 vm.comeFrom = 'support';
-                MyCache.remove('comeFrom');
+                //MyCache.remove('comeFrom');
+            }
+
+
+            if (MyCache.get('showClickMore')=='1'){
+                vm.showFinishedmissions = true;
+                MyCache.remove('showClickMore');
+                //console.info('======>>>1')
+            }
+            else{
+                vm.showFinishedmissions = false;
+                //console.info('======>>>2')
             }
 
             vm.role = MyCache.get('role_option');
         }
 
         init();
-        console.info('---->1');
-        console.info(vm.comeFrom);
-        console.info(vm.showButton);
+        //console.info('---->1');
+        //console.info(vm.comeFrom);
+        //console.info(vm.showButton);
     };
 
     salerCompanyController.$inject = injectParams;

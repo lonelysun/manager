@@ -46,7 +46,7 @@
                     $location.path('/support');
                     MyCache.remove('finishMission_come_from');
                 }else if(MyCache.get('finishMission_come_from')=='page_support_company_mission'){
-                    MyCache.put('support_company_display','mission');
+                    MyCache.put('saler_partnerOrCompany_display','mission');
                     var Id = MyCache.get('finishMission_come_from_companyId');
                     $location.path('/saler/company/'+Id);
                     MyCache.remove('finishMission_come_from');
