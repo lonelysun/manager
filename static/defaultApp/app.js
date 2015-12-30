@@ -1,6 +1,6 @@
 ﻿(function () {
   
-    var app = angular.module('managerApp', ['ngRoute', 'ngSanitize','ngAnimate','ngTouch','ngDialog','wc.directives','datePicker', 'ui.bootstrap', 'infinite-scroll','breeze.angular','toaster','chart.js','angular-carousel'],
+    var app = angular.module('managerApp', ['ngRoute', 'ngSanitize','ngAnimate','ngTouch','ngDialog','wc.directives','datePicker', 'ui.bootstrap', 'infinite-scroll','breeze.angular','toaster','chart.js','angular-carousel','Tek.progressBar'],
 	function($httpProvider) {
 	  // Use x-www-form-urlencoded Content-Type
 	  $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -167,6 +167,18 @@
 	            controllerAs: 'vm'
 	        })
 
+			.when('/test',{
+                controller: 'testController',
+	            templateUrl: viewBase + 'report/test.html',
+	            controllerAs: 'vm'
+            })
+			.when('/selecttest',{
+                controller: 'SelectTestController',
+	            templateUrl: viewBase + 'report/selectTest.html',
+	            controllerAs: 'vm'
+            })
+
+
 
 			//end test
 
@@ -207,61 +219,7 @@
 	            templateUrl: viewBase + 'menu/menus.html',
 	            controllerAs: 'vm'
 	        })
-            .when('/partners/default', {
-	            controller: 'PartnerController',
-	            templateUrl: viewBase + 'partners/partnersDefault.html',
-	            controllerAs: 'vm'
-	        })
 
-
-			.when('/partners/all', {
-	            controller: 'PartnerController',
-	            templateUrl: viewBase + 'partners/partners.html',
-	            controllerAs: 'vm'
-	        })
-
-			.when('/partners/tovisit', {
-	            controller: 'PartnerController',
-	            templateUrl: viewBase + 'partners/partners.html',
-	            controllerAs: 'vm'
-	        })
-
-			.when('/partners/visiting', {
-	            controller: 'PartnerController',
-	            templateUrl: viewBase + 'partners/partners.html',
-	            controllerAs: 'vm'
-	        })
-			.when('/partners/installed', {
-	            controller: 'PartnerController',
-	            templateUrl: viewBase + 'partners/partners.html',
-	            controllerAs: 'vm'
-	        })
-
-
-			//下面两个路由顺序不能相反
-			.when('/partners/newpartner', {
-	            controller: 'PartnerDetailController',
-	            templateUrl: viewBase + 'partners/partnersDetail.html',
-	            controllerAs: 'vm'
-	        })
-
-			.when('/partners/:partnerId', {
-	            controller: 'PartnerDetailController',
-	            templateUrl: viewBase + 'partners/partnersDetail.html',
-	            controllerAs: 'vm'
-	        })
-
-			//下面两个路由顺序不能相反
-			.when('/partners/:partnerId/newContact', {
-				controller: 'ContactController',
-				templateUrl: viewBase + 'partners/contact.html',
-				controllerAs: 'vm'
-			})
-			.when('/partners/:partnerId/:contactId', {
-	            controller: 'ContactController',
-	            templateUrl: viewBase + 'partners/contact.html',
-	            controllerAs: 'vm'
-	        })
 	        .when('/assignments', {
 	        	controller: 'AssignmentsController',
 	        	templateUrl: viewBase + 'salecontrole/assignments.html',

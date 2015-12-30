@@ -109,7 +109,6 @@
      			});
         };
 
-
         //获取终端数据
         factory.getUsers = function (companyId) {
 
@@ -171,65 +170,6 @@
         //        });
         //
         //};
-
-        //获取Partner详细信息
-        factory.getPartnerDetail = function (id) {
-            return $http.get(serviceBase + 'partners/' + id).then(function(results) {
-                return results.data;
-            });
-        };
-
-        //获取联系人
-        factory.getContact = function (partnerId,contactId) {
-            return $http.get(serviceBase +'partners/'+partnerId+'/'+contactId).then(function(results) {
-                return results.data;
-            });
-        };
-
-        //保存联系人
-        factory.submitContact = function (partnerId,contactId,contact) {
-            return $http.post(serviceBase +'partners/'+partnerId+'/'+contactId+'/submitContact',contact).then(function(results) {
-                return results.data;
-            });
-        };
-
-
-        //保存partner
-        factory.submitPartner = function (partnerId,partner) {
-            return $http.post(serviceBase +'partners/'+partnerId+'/submitPartner',partner).then(function(results) {
-                return results.data;
-            });
-        };
-
-
-
-        //获取省
-        factory.getState = function () {
-            return $http.get(serviceBase +'partners/getstate').then(function(results) {
-                return results.data;
-            });
-        };
-
-        //获取市
-        factory.getArea = function (stateId) {
-            return $http.get(serviceBase +'partners/getarea/bystateid/'+stateId).then(function(results) {
-                return results.data;
-            });
-        };
-
-        //获取县
-        factory.getSubdivide = function (areaId) {
-            return $http.get(serviceBase +'partners/getsubdivide/byareaid/'+areaId).then(function(results) {
-                return results.data;
-            });
-        };
-
-        //获取商圈
-        factory.getBusiness = function (subdivideId) {
-            return $http.get(serviceBase +'partners/getbusiness/bysubdivideid/'+subdivideId).then(function(results) {
-                return results.data;
-            });
-        };
 
 
         //Add by nisen, add new saler
@@ -477,6 +417,28 @@
      			});
 
         };
+
+
+
+        //获取商户来源的选项
+        factory.getSourceOptions = function () {
+            return $http.get(serviceBase + 'partnersourceoptions').then(function(results) {
+                return results.data;
+            });
+        };
+
+        //获取商户统计数据
+        factory.getPartnerStatistics = function (selectedSource) {
+            return $http.get(serviceBase + 'partner/statistics',{
+                    params : {
+                    selectedSource:selectedSource,
+     			}
+                }
+            ).then(function(results) {
+                return results.data;
+            });
+        };
+
 
 
 

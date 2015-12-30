@@ -1,0 +1,65 @@
+<div style="margin-top: 100px;padding:20px 20px 0 20px">
+<div >
+    <div class="bm-nested-items">
+        <span>
+            <label class="i-checks " style="">
+                <input type="checkbox"  data-ng-checked="isSelected_mark0()" data-ng-click="updateSelection_mark0($event)" >
+                <i></i>
+            </label>
+        </span>
+        <span><a ng-init="isCollapsed_mark1 = false" ng-click="isCollapsed_mark1 = !isCollapsed_mark1">市场部</a></span>
+    </div>
+    <div collapse="isCollapsed_mark1" style="margin-left: 25px">
+        <div class="bm-nested-items" ng-repeat="mark_source in data['mark']" >
+            <div>
+                <span>
+                    <label class="i-checks " style="">
+                        <input type="checkbox"  data-ng-checked="isSelected_mark1(mark_source)" data-ng-click="updateSelection_mark1($event,mark_source)" >
+                        <i></i>
+                    </label>
+                </span>
+                <span><a ng-init="isCollapsed_mark2 = false" ng-click="isCollapsed_mark2 = !isCollapsed_mark2">{{mark_source.name}}</a></span>
+            </div>
+            <div collapse="isCollapsed_mark2" style="margin-left: 25px">
+                <div class="bm-nested-items" ng-repeat="mark_source_detail in mark_source['detail']">
+                    <span>
+                        <label class="i-checks " style="">
+                            <input type="checkbox"  data-ng-checked="isSelected_mark2(mark_source_detail)" data-ng-click="updateSelection_mark2($event,mark_source_detail)" >
+                            <i></i>
+                        </label>
+                    </span>
+                    <span>{{mark_source_detail.name}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <div class="bm-nested-items">
+        <span>
+            <label class="i-checks " style="">
+                <input type="checkbox"  data-ng-checked="isSelected_sale0()" data-ng-click="updateSelection_sale0($event)" >
+                <i></i>
+            </label>
+        </span>
+        <span><a ng-init="isCollapsed_sale = false" ng-click="isCollapsed_sale = !isCollapsed_sale">销售部</a></span>
+    </div>
+    <div collapse="isCollapsed_sale" style="margin-left: 25px">
+        <div class="bm-nested-items" ng-repeat="sale_source in data['sale']">
+            <span>
+                <label class="i-checks " style="">
+                    <input type="checkbox"  data-ng-checked="isSelected_sale1(sale_source)" data-ng-click="updateSelection_sale1($event,sale_source)" >
+                    <i></i>
+                </label>
+            </span>
+            <span>{{sale_source.name}}</span>
+        </div>
+
+    </div>
+
+</div>
+<div class="no-bg bm-item" >
+    <button class="btn m-b-xs w-xs btn-danger" ng-click="closeThisDialog()" >取消</button>
+    <button style=" float: right" class="btn m-b-xs w-xs btn-info" ng-click="confirm('ok')">确定</button>
+</div>
+</div>

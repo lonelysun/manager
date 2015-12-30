@@ -615,10 +615,19 @@ class born_manager_sale(http.Controller):
 
         if  vals['ascription'] == 'sale':
             vals['sale_source'] = post.get('source2_id','')
+            vals['mark_source'] = ''
+            vals['mark_source_detail'] = ''
         elif vals['ascription'] == 'mark':
             vals['mark_source_detail'] = post.get('source3_id','')
             obj = request.registry['born.mark.source.detail'].browse(request.cr, SUPERUSER_ID,int(vals['mark_source_detail']),context=request.context)
             vals['mark_source'] = obj.source_id.id
+            vals['sale_source'] = ''
+        else:
+            vals['ascription'] = ''
+            vals['mark_source'] = ''
+            vals['sale_source'] = ''
+            vals['mark_source_detail'] = ''
+
 
         vals['partner_size_id'] = post.get('size_id','')
         vals['partner_environment_id'] = post.get('environment_id','')

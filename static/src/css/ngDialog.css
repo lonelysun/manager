@@ -94,6 +94,7 @@
   -webkit-animation: ngdialog-fadein 0.5s;
   animation: ngdialog-fadein 0.5s;
   pointer-events: all;
+  position:relative
 }
 
 .ngdialog.ngdialog-closing .ngdialog-content {

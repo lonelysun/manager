@@ -296,3 +296,166 @@ class born_manager_sale(http.Controller):
         }
 
         return json.dumps(data,sort_keys=True)
+
+    @http.route('/manager/partnersourceoptions', type='http', auth="none",)
+    def partner_source_options(self, **post):
+
+        uid=request.session.uid
+        if not uid:
+            werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
+
+        data = {'mark':[],'sale':[]}
+
+        mark_source_obj = request.registry.get('born.mark.source')
+        mark_source_detail_obj = request.registry.get('born.mark.source.detail')
+        sale_source_obj = request.registry.get('born.sale.source')
+
+
+        ids = mark_source_obj.search(request.cr, SUPERUSER_ID,[],context=request.context)
+        objs = mark_source_obj.browse(request.cr, SUPERUSER_ID,ids,context=request.context)
+
+        for each_obj in objs:
+            each_value = {}
+            each_value['id'] = each_obj.id
+            each_value['name'] = each_obj.name
+
+            detail_ids = mark_source_detail_obj.search(request.cr, SUPERUSER_ID,[('source_id','=',each_obj.id)],context=request.context)
+            detail_objs = mark_source_detail_obj.browse(request.cr, SUPERUSER_ID,detail_ids,context=request.context)
+
+            detail_list = []
+            for each_detail_obj in detail_objs:
+                each_detail_value = {}
+
+                each_detail_value['id'] = each_detail_obj.id
+                each_detail_value['name'] = each_detail_obj.name
+
+                detail_list.append(each_detail_value)
+
+            each_value['detail'] = detail_list
+
+            data['mark'].append(each_value)
+
+
+        ids = sale_source_obj.search(request.cr, SUPERUSER_ID,[],context=request.context)
+        objs = sale_source_obj.browse(request.cr, SUPERUSER_ID,ids,context=request.context)
+        for each_obj in objs:
+            each_value = {}
+            each_value['id'] = each_obj.id
+            each_value['name'] = each_obj.name
+
+            data['sale'].append(each_value)
+
+
+        return json.dumps(data,sort_keys=True)
+
+
+    @http.route('/manager/partner/statistics', type='http', auth="none",)
+    def partner_statistics(self, **post):
+
+        uid=request.session.uid
+        if not uid:
+            werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
+        _logger.info('---------post-------------')
+        _logger.info(post)
+
+        selectedSource_json = post.get('selectedSource')
+
+        _logger.info('---------selectedSource_json-------------')
+        _logger.info(selectedSource_json)
+        _logger.info(type(selectedSource_json))
+
+
+
+
+        selectedSource = {
+            'mark_source_detail': json.loads(selectedSource_json)['mark_source_detail'],
+            'sale_source':json.loads(selectedSource_json)['sale_source']
+        }
+
+        _logger.info('---------selectedSource-------------')
+        _logger.info(selectedSource)
+
+
+        _logger.info('---------before mark_source_detail-------------')
+        _logger.info(selectedSource['mark_source_detail'])
+        _logger.info('---------before sale_source-------------')
+        _logger.info(selectedSource['sale_source'])
+
+
+        if len(selectedSource['mark_source_detail']) == 0:
+            mark_source_detail = '(null)'
+        else:
+            mark_source_detail = '('+str(selectedSource['mark_source_detail'])[1:-1]+')'
+
+        if len(selectedSource['sale_source']) == 0:
+            sale_source = '(null)'
+        else:
+            sale_source = '('+str(selectedSource['sale_source'])[1:-1] +')'
+
+
+
+        _logger.info('---------mark_source_detail-------------')
+        _logger.info(mark_source_detail)
+        _logger.info('---------sale_source-------------')
+        _logger.info(sale_source)
+
+
+        sql = u'''
+            select count(*) from res_partner WHERE mark_source_detail in %s or sale_source in %s
+        ''' % (mark_source_detail, sale_source)
+        request.cr.execute(sql)
+        res_count = request.cr.fetchall()
+        all_number = int(res_count and res_count[0][0] or 0)
+
+
+        sql = u'''
+        select count(*) from (select rp.id from res_partner rp
+        right join born_partner_track bpt on rp.id = bpt.track_id
+        where rp.mark_source_detail in %s or rp.sale_source in %s
+        group by rp.id) as temp
+
+        ''' % (mark_source_detail, sale_source)
+        request.cr.execute(sql)
+        res_count = request.cr.fetchall()
+        has_mission_number= int(res_count and res_count[0][0] or 0)
+
+
+        sql = u'''
+        select count(*) from (select rp.id from res_partner rp
+        right join born_partner_track bpt on rp.id = bpt.track_id
+        where (rp.mark_source_detail in %s or rp.sale_source in %s) and rp.has_installed=true
+        group by rp.id) as temp
+
+        '''% (mark_source_detail, sale_source)
+        request.cr.execute(sql)
+        res_count = request.cr.fetchall()
+        has_installed_number = int(res_count and res_count[0][0] or 0)
+
+        sql = u'''
+            select count(*) from (
+            select rp.id, rc.id, (count(bos.id) / (now()::date-rc.create_date::date)) as avg from res_partner rp
+            right join born_partner_track bpt on rp.id = bpt.track_id
+            right join res_company rc on rc.partner_id = rp.id
+            right join born_operate_sync bos on bos.company_id =  rc.id
+            where (rp.mark_source_detail in %s  or rp.sale_source in %s) and rp.has_installed=true
+            group by rp.id, rc.id
+            ) as temp_a where temp_a.avg>1
+        '''% (mark_source_detail, sale_source)
+        request.cr.execute(sql)
+        res_count = request.cr.fetchall()
+        has_used_number = int(res_count and res_count[0][0] or 0)
+
+
+        data = {
+            'all_number':all_number,
+            'has_mission_number':has_mission_number,
+            'has_installed_number':has_installed_number,
+            'has_used_number':has_used_number
+        }
+
+        return json.dumps(data,sort_keys=True)
+
+
+
+
+

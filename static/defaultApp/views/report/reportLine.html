@@ -291,5 +291,89 @@ border-bottom: solid 1px #f6f6f5;">
 </div>
 
         </slide>
+        <slide>
+<div style="margin-bottom:80px">
+
+<div class="bm-head" style="height:220px">
+    <div class="text-center h2 text-white" style="padding-top:60px;padding-bottom:15px">商户统计{{vm.title}}</div>
+    <div class="bm-report-three text-left">
+        <span class="text-white ">来源</span>
+        <a ng-click="vm.chooseSources()">
+            <span class="pull-right">
+                <span class="bm-report-little-font">{{vm.state}}</span>
+                <span class="text-white"><i class="fa fa-angle-right" style="margin-left: 10px" ></i></span>
+            </span>
+        </a>
+    </div>
+    <!--<div class="bm-report-three">-->
+        <!--<span class="text-white">区域</span>-->
+        <!--<span class="pull-right">-->
+            <!--<span class="bm-report-little-font">上海等</span>-->
+            <!--<span class="text-white"><i class="fa fa-angle-right" style="margin-left: 10px" ></i></span>-->
+        <!--</span>-->
+    <!--</div>-->
+    <!--<div class="bm-report-three">-->
+        <!--<span class="text-white">商圈</span>-->
+        <!--<span class="pull-right">-->
+            <!--<span class="bm-report-little-font">古北</span>-->
+            <!--<span class="text-white"><i class="fa fa-angle-right" style="margin-left: 10px" ></i></span>-->
+        <!--</span>-->
+    <!--</div>-->
+</div>
+
+<div style="margin-left: 16px;margin-right: 16px; padding-top: 20px;height:260px">
+
+    <div class="bm-report-four-vertical-bar">
+        <tek-progress-bar class="m-tb-sm bottom"
+                  mode="vertical"
+                  bar-class="progress-bar-danger"
+                  ng-model="vm.progressVal1" style="position: inherit;"></tek-progress-bar>
+    </div>
+    <div class="bm-report-four-vertical-bar">
+        <tek-progress-bar class="m-tb-sm bottom"
+                  mode="vertical"
+                  bar-class="progress-bar-danger"
+                  ng-model="vm.progressVal2"  style="position: inherit;"></tek-progress-bar>
+    </div>
+    <div class="bm-report-four-vertical-bar">
+        <tek-progress-bar class="m-tb-sm bottom"
+                  mode="vertical"
+                  bar-class="progress-bar-danger"
+                  ng-model="vm.progressVal3"  style="position: inherit;"></tek-progress-bar>
+    </div>
+    <div class="bm-report-four-vertical-bar">
+        <tek-progress-bar class="m-tb-sm bottom"
+                  mode="vertical"
+                  bar-class="progress-bar-danger"
+                  ng-model="vm.progressVal4"  style="position: inherit;"></tek-progress-bar>
+    </div>
+
+
+</div>
+<div style="margin-left: 16px;margin-right: 16px;">
+    <div class="bm-report-four-vertical-bottom">
+        <div class="bm-report-four-vertical-bottom-up">{{vm.data.all_number}}</div>
+        <div class="bm-report-four-vertical-bottom-down">商户数</div>
+    </div>
+
+    <div class="bm-report-four-vertical-bottom">
+        <div class="bm-report-four-vertical-bottom-up">{{vm.data.has_mission_number}}</div>
+        <div class="bm-report-four-vertical-bottom-down">任务中</div>
+    </div>
+
+    <div class="bm-report-four-vertical-bottom">
+        <div class="bm-report-four-vertical-bottom-up">{{vm.data.has_installed_number}}</div>
+        <div class="bm-report-four-vertical-bottom-down">已安装</div>
+    </div>
+
+    <div class="bm-report-four-vertical-bottom">
+        <div class="bm-report-four-vertical-bottom-up">{{vm.data.has_used_number}}</div>
+        <div class="bm-report-four-vertical-bottom-down">使用中</div>
+    </div>
+</div>
+
+</div>
+
+        </slide>
     </carousel>
 </div>
