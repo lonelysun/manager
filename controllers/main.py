@@ -60,11 +60,12 @@ def serve_template(templatename, **kwargs):
 #服务
 class born_manager(http.Controller):
     
-    @http.route('/except_manager', type='http', auth="none",)
+    @http.route('/except_manager', type='http', auth="none",csrf=False)
     def Exception(self, **post):
+
         return serve_template('except.html')
     
-    @http.route('/manager', type='http', auth="none")
+    @http.route('/manager', type='http', auth="none",csrf=False)
     def manager_index(self,  **post):
 
         uid=request.session.uid
@@ -80,7 +81,7 @@ class born_manager(http.Controller):
 
 
     #获取可显示权限
-    @http.route('/manager/menu', type='http', auth="none",)
+    @http.route('/manager/menu', type='http', auth="none",csrf=False)
     def menu(self, **post):
 
         uid=request.session.uid
@@ -94,25 +95,20 @@ class born_manager(http.Controller):
         request.session.option = user.role_option
 
 
-        hr_obj = request.registry.get('hr.employee')
-        hr_id= hr_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-        saleteam_obj = request.registry.get('commission.team')
+        # hr_obj = request.registry.get('hr.employee')
+        # hr_id= hr_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+        saleteam_obj = request.registry.get('crm.team')
         if user.role_option=='7' or user.role_option=='9':
-            sql = u"""
-                select tid from commission_team_employee_rel where uid = %s
-            """ %(hr_id[0])
-            request.cr.execute(sql)
-            row = request.cr.fetchone()
-            if row:
-                team = saleteam_obj.browse(request.cr, SUPERUSER_ID, row[0], context=request.context)
-                request.session.manager_id = team.manager_id.id
+
+            if user.sale_team_id:
+                request.session.manager_id = user.sale_team_id.user_id.id
 
         else:
-            domain=[('manager_id','in',hr_id)]
+            domain=[('user_id','=',uid)]
             tid = saleteam_obj.search(request.cr, SUPERUSER_ID, domain, context=request.context)
             team = saleteam_obj.browse(request.cr, SUPERUSER_ID, tid, context=request.context)
             employee_ids = []
-            for employee in team.employee_ids:
+            for employee in team.member_ids:
                 employee_ids.append(employee.id)
             request.session.employee_ids = employee_ids
 
@@ -127,7 +123,7 @@ class born_manager(http.Controller):
         return json.dumps(val,sort_keys=True)
     
     #获取消息信息
-    @http.route('/manager/messages', type='http', auth="none",)
+    @http.route('/manager/messages', type='http', auth="none",csrf=False)
     def messages(self, **post):
 
         uid=request.session.uid
@@ -152,7 +148,7 @@ class born_manager(http.Controller):
         return json.dumps(data,sort_keys=True)
 
     #获取工作台信息
-    @http.route('/manager/panel', type='http', auth="none")
+    @http.route('/manager/panel', type='http', auth="none",csrf=False)
     def panel(self,  **post):
 
         uid=request.session.uid
@@ -338,7 +334,7 @@ class born_manager(http.Controller):
 
     # Try New
     #获取公司列表信息
-    @http.route('/manager/companys/updatedManagement', type='http', auth="none",)
+    @http.route('/manager/companys/updatedManagement', type='http', auth="none",csrf=False)
     def companysUpdatedManagement(self, **post):
 
         uid=request.session.uid
@@ -518,7 +514,7 @@ class born_manager(http.Controller):
 
 
 
-    @http.route('/manager/companys/notUpdatedManagement', type='http', auth="none",)
+    @http.route('/manager/companys/notUpdatedManagement', type='http', auth="none",csrf=False)
     def companysnotupdated(self, **post):
         uid=request.session.uid
         if not uid:
@@ -771,7 +767,7 @@ class born_manager(http.Controller):
 
 
     #获取已激活公司的详细信息
-    @http.route('/manager/company/updated/<int:company_id>', type='http', auth="none",)
+    @http.route('/manager/company/updated/<int:company_id>', type='http', auth="none",csrf=False)
     def company_updated(self, company_id, **post):
 
         data={}
@@ -980,7 +976,7 @@ class born_manager(http.Controller):
         return json.dumps(data,sort_keys=True)
 
     #获取未激活公司
-    @http.route('/manager/company/notupdated/<int:company_id>', type='http', auth="none",)
+    @http.route('/manager/company/notupdated/<int:company_id>', type='http', auth="none",csrf=False)
     def company_notupdated(self, company_id, **post):
         company_obj = request.registry.get('res.company')
         company = company_obj.browse(request.cr, SUPERUSER_ID,company_id, context=request.context)
@@ -1005,7 +1001,7 @@ class born_manager(http.Controller):
 
 
     #获取终端列表
-    @http.route('/manager/licenses', type='http', auth="none",)
+    @http.route('/manager/licenses', type='http', auth="none",csrf=False)
     def licenses(self, **post):
 
 
@@ -1149,7 +1145,7 @@ class born_manager(http.Controller):
         return json.dumps(val,sort_keys=True)
 
     #获取公司的终端列表
-    @http.route('/manager/licensesdetail',type='http',auth="none")
+    @http.route('/manager/licensesdetail',type='http',auth="none",csrf=False)
     def companyLicenses(self,**post):
         uid = request.session.uid
         if not uid:
@@ -1185,7 +1181,7 @@ class born_manager(http.Controller):
 
 
     #获取公司的门店列表
-    @http.route('/manager/shops', type='http', auth="none",)
+    @http.route('/manager/shops', type='http', auth="none",csrf=False)
     def shops(self, **post):
         uid=request.session.uid
         if not uid:
@@ -1210,7 +1206,7 @@ class born_manager(http.Controller):
         return json.dumps(data,sort_keys=True)
 
     #获取公司的用户的信息
-    @http.route('/manager/users', type='http', auth="none",)
+    @http.route('/manager/users', type='http', auth="none",csrf=False)
     def users(self, **post):
         uid=request.session.uid
         if not uid:
@@ -1234,7 +1230,7 @@ class born_manager(http.Controller):
 
 
     #获取现金列表
-    @http.route('/manager/cashs', type='http', auth="none",)
+    @http.route('/manager/cashs', type='http', auth="none",csrf=False)
     def cashs(self, **post):
 
         page_index=post.get('index',0)
@@ -1277,7 +1273,7 @@ class born_manager(http.Controller):
         return json.dumps(data,sort_keys=True)
 
     #审核设备
-    @http.route('/manager/updateLicense', type='http', auth="none",)
+    @http.route('/manager/updateLicense', type='http', auth="none",csrf=False)
     def updateOrder(self, **post):
         ret=False
         license_id=post.get('id',0)
@@ -1294,7 +1290,7 @@ class born_manager(http.Controller):
 
 
     #审核设备
-    @http.route('/manager/updateCompany', type='http', auth="none",)
+    @http.route('/manager/updateCompany', type='http', auth="none",csrf=False)
     def updateCompany(self, **post):
         ret=False
         comopany_id=post.get('id',0)
@@ -1308,7 +1304,7 @@ class born_manager(http.Controller):
 
 
     #获取用户基本信息
-    @http.route('/manager/user',type="http",auth="none")
+    @http.route('/manager/user',type="http",auth="none",csrf=False)
     def user_info(self,**post):
         uid=request.session.uid
         role_option = request.session.option
@@ -1322,27 +1318,35 @@ class born_manager(http.Controller):
         manager_name=''
         team_name=''
         #testing 查找团队与经理 by 刘浩
-        team_obj = request.registry.get('commission.team')
+        team_obj = request.registry.get('crm.team')
         hr_id= hr_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-        if(role_option in ('8','10') and hr_id):
-            manager_name=user.name
-            team_id = team_obj.search(request.cr, SUPERUSER_ID,[('manager_id','=',hr_id[0])], context=request.context)
+        if(role_option in ('8','10')):
+            team_id = team_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+            if team_id==[]:
+                werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
             team = team_obj.browse(request.cr, SUPERUSER_ID,team_id[0], context=request.context)
+            manager_name=user.name
             team_name = team.name
-        elif hr_id:
-            if len(hr_id)>1:
-                where=" and rel.uid in %s " % (tuple(hr_id),)
-            else:
-                where=" and rel.uid = %s " % (hr_id[0])
-            sql=u""" select team.name as team_name,emp.name_related as manager_name from commission_team_employee_rel rel join commission_team  team on team.id=rel.tid
-                join hr_employee emp on emp.id=team.manager_id
-                where 1=1 %s limit 1
-             """ % ( where,)
-            request.cr.execute(sql)
-            row = request.cr.fetchone()
-            if row:
-                team_name= row[0]
-                manager_name=row[1]
+        else:
+
+            if user.sale_team_id:
+                team_name= user.sale_team_id.name
+                manager_name=user.sale_team_id.user_id.name
+
+
+            # if len(hr_id)>1:
+            #     where=" and rel.uid in %s " % (tuple(hr_id),)
+            # else:
+            #     where=" and rel.uid = %s " % (hr_id[0])
+            # sql=u""" select team.name as team_name,emp.name_related as manager_name from commission_team_employee_rel rel join commission_team  team on team.id=rel.tid
+            #     join hr_employee emp on emp.id=team.manager_id
+            #     where 1=1 %s limit 1
+            #  """ % ( where,)
+            # request.cr.execute(sql)
+            # row = request.cr.fetchone()
+            # if row:
+            #     team_name= row[0]
+            #     manager_name=row[1]
 
         #end
 
@@ -1375,7 +1379,7 @@ class born_manager(http.Controller):
         return json.dumps(val,sort_keys=True)
 
     #修改用户基本信息
-    @http.route('/manager/regiest',type="http",auth="none")
+    @http.route('/manager/regiest',type="http",auth="none",csrf=False)
     def regiest(self,**post):
         uid=request.session.uid
         if not uid:
@@ -1393,7 +1397,7 @@ class born_manager(http.Controller):
         return json.dumps(values,sort_keys=True)
 
     #获取排行榜数据
-    @http.route('/manager/ranking',type="http",auth="none")
+    @http.route('/manager/ranking',type="http",auth="none",csrf=False)
     def ranking(self,**post):
         uid=request.session.uid
         if not uid:
@@ -1440,7 +1444,7 @@ class born_manager(http.Controller):
 
 
     #获取店尚营收报表数据
-    @http.route('/manager/revenue',type="http",auth="none")
+    @http.route('/manager/revenue',type="http",auth="none",csrf=False)
     def revenue(self,**post):
         uid=request.session.uid
         if not uid:
@@ -1649,13 +1653,13 @@ class born_manager(http.Controller):
 
 
     #获取销售团队业绩报表信息
-    @http.route('/manager/saleTeamReport',type="http",auth="none")
+    @http.route('/manager/saleTeamReport',type="http",auth="none",csrf=False)
     def saleTeamReport(self,**post):
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
-        commission_team = request.registry.get('commission.team')
+        commission_team = request.registry.get('crm.team')
         business_obj = request.registry.get('born.business')
         region_obj = request.registry.get('res.country.state.area.subdivide')
         track_obj = request.registry.get('born.partner.track')
@@ -1680,7 +1684,7 @@ class born_manager(http.Controller):
             subdivide_ids = [id for id in s_ids]
             partner_obj = request.registry.get('res.partner')
 
-            domain = [('business_id','in',businesses_ids)]
+            domain = [('business_id','in',businesses_ids),('is_sale','=',True)]
             #团队内商户数
             partner_ids = partner_obj.search(request.cr, SUPERUSER_ID,domain, context=request.context)
             #团队内任务数
@@ -1689,7 +1693,10 @@ class born_manager(http.Controller):
             #团队内公司数
             domain = [('id','in',partner_ids),('has_installed','=','true')]
             company_ids = partner_obj.search(request.cr, SUPERUSER_ID,domain, context=request.context)
-            ratio = "%.0f" % ((len(company_ids)/ float(len(partner_ids)))*100)
+            if(len(partner_ids)==0):
+                ratio = 0
+            else:
+                ratio = "%.0f" % ((len(company_ids)/ float(len(partner_ids)))*100)
             val_list = {
                 'team_name' : team.name or '',
                 'manager_name' : team.manager_id.name or '',
@@ -1710,7 +1717,7 @@ class born_manager(http.Controller):
         row = request.cr.fetchone()
         track_number = row[0]
         sql = u"""
-            select count(*) from res_partner where is_company is true and has_installed is true
+            select count(*) from res_partner where is_company is true and has_installed is true and is_sale is true
         """
         request.cr.execute(sql)
         row = request.cr.fetchone()

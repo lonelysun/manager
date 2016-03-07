@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!--任务Form View-->
+        <record id="form_view_born_manager_mission" model="ir.ui.view">
+            <field name="name">form_view_born_manager_sale_mission</field>
+            <field name="model">born.partner.track</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+						<button name="button_start" string="开始任务"
+                                states="notstart" type="object" class="oe_highlight" style="float:left"/>
+						<button name="button_pause" string="暂停任务"
+                                states="start" type="object" class="oe_highlight" style="float:left"/>
+						<button name="button_finish" string="完成任务"
+                                states="start,pause" type="object" class="oe_highlight" style="float:left"/>
+						<button name="button_done" string="批注任务"
+                                states="finished" type="object" class="oe_highlight" style="float:left"
+                                groups="born_manager.group_born_manager_salermanager"/>
+
+                        <field name="state" widget="statusbar" clickable="True" />
+					</header>
+                    <sheet>
+                        <group>
+                            <field name="track_id" string="商户" on_change="_onchange_track_id(track_id)"
+                                   domain="[('is_company','=',True),('has_installed','=',False),('is_sale','=',True),('id','in','born_function_partner')]"
+                                    options="{'no_create': True}"
+                                    attrs="{'invisible': [('user_role', 'in', ['9','10'])]}"/>
+
+                            <field name="track_company_id" string="公司" on_change="_onchange_track_company_id(track_company_id)"
+                                   domain="[('id','in','born_function_born_manager_company')]"
+                                    options="{'no_create': True}"
+                                    attrs="{'invisible': [('user_role', 'in', ['7','8'])]}"/>
+
+                            <field name="name"/>
+                            <field name="id" invisible="1"/>
+                            <field name="mission_date" attrs="{'readonly': [('id', '!=', False)]}"/>
+
+                            <field name="contacts_id" options="{'no_create': True}"/>
+                            <field name="contacts_mobile" />
+                            <field name="contacts_address" />
+
+                            <field name="employee_id" string="负责人" domain="[('id','in','born_function_manager_user')]"
+                                    options="{'no_create': True}"/>
+
+                            <field name="notes"/>
+                        </group>
+                        <group>
+                            <field name="result_title" />
+                            <!--one2many-->
+                            <field name="result_ids" widget="many2many_tags"/>
+                            <field name="image_url" />
+                            <field name="track_time" readonly="1" string="任务完成时间"/>
+                            <field name="user_role" invisible="1"/>
+                            <field name="remark" attrs="{'readonly': ['|',('user_role', '=', '7'),('user_role', '=', '9')]}"/>
+
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <!--任务Tree View-->
+        <record id="tree_view_born_manager_mission" model="ir.ui.view">
+            <field name="name">tree_view_born_manager_mission</field>
+            <field name="model">born.partner.track</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="user_role" invisible="1"/>
+                    <field name="track_id" string="商户" />
+                    <field name="track_company_id" string="公司" />
+                    <field name="mission_date"/>
+                    <field name="name"/>
+                    <field name="state" />
+                    <field name="employee_id" />
+                </tree>
+            </field>
+        </record>
+
+        <!--任务action-->
+        <record id="action_born_manager_mission" model="ir.actions.act_window">
+            <field name="name">action_born_manager_mission</field>
+            <field name="res_model">born.partner.track</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('id','in', 'born_function_mission')]</field>
+            <!--<field context="{'user_role':user_role}"></field>-->
+            <field name="view_id" ref="tree_view_born_manager_mission" />
+        </record>
+
+        <menuitem name="移动办公" id="menu_born_manager" sequence="10" parent="base.menu_base_partner" />
+        <menuitem name="任务" id="menu_born_manager_mission" sequence="1" parent="menu_born_manager" action="action_born_manager_mission" />
+
+        <!--修改公司ation过滤 -->
+        <record model="ir.actions.act_window" id="base.action_res_company_form">
+            <field name="domain">[('id','in','born_function_born_manager_company')]</field>
+        </record>
+        <!--修改商户列表权限 -->
+        <record model="ir.actions.act_window" id="base.action_partner_form">
+            <field name="domain">[('id','in','born_function_partner')]</field>
+        </record>
+         <!--修改团队列表权限 -->
+        <record model="ir.actions.act_window" id="sales_team.sales_team_config_action">
+            <field name="domain">[('id','in','born_function_team')]</field>
+        </record>
+
+    </data>
+</openerp>

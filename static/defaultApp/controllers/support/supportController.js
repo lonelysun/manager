@@ -22,14 +22,14 @@
         mission_state = '';
         vm.role = '';
 
-        var hr_id_for_manager = ($routeParams.supportId) ? parseInt($routeParams.supportId) : 0;
+        var user_id_for_manager = ($routeParams.supportId) ? parseInt($routeParams.supportId) : 0;
 
 
 
         //首页初始化数据
         vm.getInitData = function(){
 
-            dataService.getSupportInitData(hr_id_for_manager)
+            dataService.getSupportInitData(user_id_for_manager)
                 .then(function (data) {
                     vm.initData = data;
                     vm.isLoad=true;
@@ -52,7 +52,7 @@
                 missionLength = vm.missionsFinished.length;
             }
 
-            dataService.getSupportMissions(missionLength,vm.keyword,mission_state,hr_id_for_manager)
+            dataService.getSupportMissions(missionLength,vm.keyword,mission_state,user_id_for_manager)
             .then(function (data) {
                 var i;
                 if(mission_state=='notOk'){
@@ -90,7 +90,7 @@
             if(vm.busy)return;
             vm.busy=true;
 
-            dataService.getSupportCompanys(vm.companys.length,vm.keyword,hr_id_for_manager)
+            dataService.getSupportCompanys(vm.companys.length,vm.keyword,user_id_for_manager)
             .then(function (data) {
                 for (var i = 0; i < data['companys_list'].length; i++) {
                     vm.companys.push(data['companys_list'][i]);
@@ -133,7 +133,7 @@
         //供销售经理点击的返回到团队成员的按钮
         vm.goBack = function(){
             //清缓存
-            MyCache.remove('hr_id_for_manager');
+            MyCache.remove('user_id_for_manager');
             MyCache.put('comeFromSaler','team');
 
             $location.path('/menus');
@@ -267,11 +267,11 @@
         //初始化
         function init() {
 
-            if(MyCache.get('hr_id_for_manager')){
-                hr_id_for_manager = MyCache.get('hr_id_for_manager')
+            if(MyCache.get('user_id_for_manager')){
+                user_id_for_manager = MyCache.get('user_id_for_manager')
 
             }else{
-                MyCache.put('hr_id_for_manager',hr_id_for_manager)
+                MyCache.put('user_id_for_manager',user_id_for_manager)
             }
 
 

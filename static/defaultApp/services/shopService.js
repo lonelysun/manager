@@ -175,13 +175,13 @@
         //Add by nisen, add new saler
 
         //销售首页公司
-        factory.getCompanys = function (pageIndex,keyword,hr_id_for_manager) {
+        factory.getCompanys = function (pageIndex,keyword,user_id_for_manager) {
 
             return $http.get(serviceBase + 'saler/companys', {
      			params : {
                     index:pageIndex,
                     keyword:keyword,
-                    hr_id_for_manager:hr_id_for_manager
+                    user_id_for_manager:user_id_for_manager
      			}
      			}).then(function(results) {
      				return results.data;
@@ -190,13 +190,13 @@
         };
 
         //销售首页商户
-        factory.getPartners = function (pageIndex,keyword,hr_id_for_manager) {
+        factory.getPartners = function (pageIndex,keyword,user_id_for_manager) {
 
             return $http.get(serviceBase + 'saler/partners', {
      			params : {
                     index:pageIndex,
                     keyword:keyword,
-                    hr_id_for_manager:hr_id_for_manager
+                    user_id_for_manager:user_id_for_manager
      			}
      			}).then(function(results) {
      				return results.data;
@@ -206,14 +206,14 @@
 
 
         //销售首页任务
-        factory.getMissions = function (pageIndex,keyword,mission_state,hr_id_for_manager) {
+        factory.getMissions = function (pageIndex,keyword,mission_state,user_id_for_manager) {
 
             return $http.get(serviceBase + 'saler/missions', {
      			params : {
                     index:pageIndex,
                     keyword:keyword,
                     mission_state:mission_state,
-                    hr_id_for_manager:hr_id_for_manager
+                    user_id_for_manager:user_id_for_manager
      			}
      			}).then(function(results) {
      				return results.data;
@@ -222,15 +222,17 @@
         };
 
         //销售首页初始化数据
-        factory.getInitData = function (hr_id_for_manager) {
-
+        factory.getInitData = function (user_id_for_manager) {
+            debugger;
             return $http.get(serviceBase + 'saler/initdata',{
                 params: {
-                    hr_id_for_manager:hr_id_for_manager
+                    user_id_for_manager:user_id_for_manager
                 }
             }).then(function(results) {
+                debugger;
      				return results.data;
      			});
+            debugger;
 
         };
 
@@ -246,7 +248,7 @@
 
 
 
-        factory.getPartnerMission = function (pageIndex,keyword,partnerId,mission_state,hr_id_for_manager) {
+        factory.getPartnerMission = function (pageIndex,keyword,partnerId,mission_state,user_id_for_manager) {
 
             return $http.get(serviceBase + 'saler/partner/mission/', {
      			params : {
@@ -254,7 +256,7 @@
                     keyword:keyword,
                     partnerId:partnerId,
                     mission_state:mission_state,
-                    hr_id_for_manager:hr_id_for_manager
+                    user_id_for_manager:user_id_for_manager
      			}
      			}).then(function(results) {
      				return results.data;
@@ -271,13 +273,13 @@
 
 
 
-        factory.getOptionsService = function (pageIndex,option, environment,hr_id_for_manager) {
+        factory.getOptionsService = function (pageIndex,option, environment,user_id_for_manager) {
 
             return $http.get(serviceBase + 'saler/options/'+option, {
      			params : {
                     pageIndex:pageIndex,
                     environment:environment,
-                    hr_id_for_manager:hr_id_for_manager
+                    user_id_for_manager:user_id_for_manager
      			}
      			}).then(function(results) {
      				return results.data;
@@ -316,14 +318,14 @@
             });
         };
 
-        factory.getCompanyMission = function (pageIndex,keyword,companyId,comeFrom,mission_state,hr_id_for_manager) {
+        factory.getCompanyMission = function (pageIndex,keyword,companyId,comeFrom,mission_state,user_id_for_manager) {
             return $http.get(serviceBase + 'saler/company/mission/'+companyId,{
                 params : {
                     pageIndex:pageIndex,
                     keyword:keyword,
                     saler_or_support:comeFrom,
                     mission_state:mission_state,
-                    hr_id_for_manager:hr_id_for_manager
+                    user_id_for_manager:user_id_for_manager
      			}
             }).then(function(results) {
      				return results.data;
@@ -336,11 +338,11 @@
 
         //start for support
         //技术首页初始化数据
-        factory.getSupportInitData = function (hr_id_for_manager) {
+        factory.getSupportInitData = function (user_id_for_manager) {
 
             return $http.get(serviceBase + 'support/initdata',{
                 params: {
-                    hr_id_for_manager:hr_id_for_manager
+                    user_id_for_manager:user_id_for_manager
                 }
             }).then(function(results) {
      				return results.data;
@@ -349,14 +351,14 @@
         };
 
         //技术首页任务
-        factory.getSupportMissions = function (pageIndex,keyword,mission_state,hr_id_for_manager) {
+        factory.getSupportMissions = function (pageIndex,keyword,mission_state,user_id_for_manager) {
 
             return $http.get(serviceBase + 'support/missions', {
      			params : {
                     index:pageIndex,
                     keyword:keyword,
                     mission_state:mission_state,
-                    hr_id_for_manager:hr_id_for_manager
+                    user_id_for_manager:user_id_for_manager
      			}
      			}).then(function(results) {
      				return results.data;
@@ -366,13 +368,13 @@
 
 
         //技术首页公司
-        factory.getSupportCompanys = function (pageIndex,keyword,hr_id_for_manager) {
+        factory.getSupportCompanys = function (pageIndex,keyword,user_id_for_manager) {
 
             return $http.get(serviceBase + 'support/companys', {
      			params : {
                     index:pageIndex,
                     keyword:keyword,
-                    hr_id_for_manager:hr_id_for_manager
+                    user_id_for_manager:user_id_for_manager
      			}
      			}).then(function(results) {
      				return results.data;

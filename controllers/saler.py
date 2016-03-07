@@ -93,7 +93,7 @@ class born_manager_sale(http.Controller):
         return serve_template('index.html',user=user)
 
 
-    #获取partner列表信息
+    #获取companys列表信息
     @http.route('/manager/saler/companys', type='http', auth="none",)
     def saler_companys(self, **post):
 
@@ -110,11 +110,22 @@ class born_manager_sale(http.Controller):
             where = " and (c.name like '%%%s%%') " %(keyword)
 
 
-        if int(post.get('hr_id_for_manager')) != 0:
-            hr_id = int(post.get('hr_id_for_manager'))
+        # if int(post.get('hr_id_for_manager')) != 0:
+        #     hr_id = int(post.get('hr_id_for_manager'))
+        # else:
+        #     hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+        #     hr_id = hr_id_list[0] or ''
+
+        if int(post.get('user_id_for_manager')) != 0:
+            user_id = int(post.get('user_id_for_manager'))
         else:
-            hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-            hr_id = hr_id_list[0] or ''
+            user_id = uid
+
+        # from user_id get hr_id
+        hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=', user_id)], context=request.context)
+        hr_id = hr_id_list[0] or ''
+
+
 
         sql=u"""
             with tmp_a as (select b.company_id ,b.create_date::date as create_day,coalesce(count(*),0) cnt from born_operate_sync b
@@ -155,15 +166,16 @@ class born_manager_sale(http.Controller):
             companys_list.append(vals)
 
         data = {
-            'companys_list':companys_list
+            'companys_list': companys_list
         }
 
         return json.dumps(data,sort_keys=True)
 
 
+    # 获取销售人员所有任务
     @http.route('/manager/saler/missions', type='http', auth="none",)
     def saler_missions(self, **post):
-        uid=request.session.uid
+        uid = request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
@@ -175,11 +187,10 @@ class born_manager_sale(http.Controller):
         require_mission_state = post.get('mission_state')
 
 
-        if int(post.get('hr_id_for_manager')) != 0:
-            hr_id = int(post.get('hr_id_for_manager'))
+        if int(post.get('user_id_for_manager')) != 0:
+            user_id = int(post.get('user_id_for_manager'))
         else:
-            hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-            hr_id = hr_id_list[0] or ''
+            user_id = uid
 
         mission_obj = request.registry['born.partner.track']
 
@@ -187,15 +198,15 @@ class born_manager_sale(http.Controller):
         ids = []
         if require_mission_state == 'ok':
             if keyword == '':
-                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','in',('finished','done'))],int(page_index),5, order="write_date desc", context=request.context)
+                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',user_id),('state','in',('finished','done'))],int(page_index),5, order="write_date desc", context=request.context)
             else:
-                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','in',('finished','done')),('name','like',keyword)],int(page_index),5, order="write_date desc",context=request.context)
+                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',user_id),('state','in',('finished','done')),('name','like',keyword)],int(page_index),5, order="write_date desc",context=request.context)
 
         elif require_mission_state == 'notOk':
             if keyword == '':
-                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','not in',('finished','done'))],int(page_index),5, order="write_date desc",context=request.context)
+                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',user_id),('state','not in',('finished','done'))],int(page_index),5, order="write_date desc",context=request.context)
             else:
-                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','not in',('finished','done')),('name','like',keyword)],int(page_index),5, order="write_date desc",context=request.context)
+                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',user_id),('state','not in',('finished','done')),('name','like',keyword)],int(page_index),5, order="write_date desc",context=request.context)
 
         objs = mission_obj.browse(request.cr, SUPERUSER_ID,ids, context=request.context)
         missions_list = []
@@ -205,18 +216,22 @@ class born_manager_sale(http.Controller):
             mission_id = each_obj.id
             company_id = each_obj.track_id.id
             mission_name = each_obj.name or u'无'
-            mission_contacts_phone = each_obj.contacts_id.phone or u'无'
+            mission_contacts_phone = each_obj.contacts_id.mobile or u'无'
             mission_contacts_name = each_obj.contacts_id.name or u'无'
             if each_obj.mission_date:
                 mission_date = (each_obj.mission_date)[5:10]
             else:
                 mission_date = u'无'
-            mission_address = each_obj.contacts_address or u'无'
+            # mission_address = each_obj.contacts_address or u'无'
             mission_state = each_obj.state
 
             state_name_dict = {'start':u'开始','pause':u'暂停','finished':u'完成','notstart':u'未开始'}
 
             mission_state_name = state_name_dict.get(mission_state)
+
+            mission_street = each_obj.track_id.street or u'无'
+
+            mission_partner_name = each_obj.track_id.name or u'无'
 
             vals = {
                 'mission_id':mission_id,
@@ -226,13 +241,14 @@ class born_manager_sale(http.Controller):
                 'mission_contacts_phone':mission_contacts_phone,
                 'mission_contacts_name':mission_contacts_name,
                 'mission_date':mission_date,
-                'mission_address':mission_address,
-                'mission_state':mission_state
+                'mission_street':mission_street,
+                'mission_state':mission_state,
+                'mission_partner_name': mission_partner_name
             }
             missions_list.append(vals)
 
 
-        ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','in',('finished','done'))],context=request.context)
+        ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',user_id),('state','in',('finished','done'))],context=request.context)
         missions_finished_numbers = len(ids)
 
 
@@ -258,11 +274,16 @@ class born_manager_sale(http.Controller):
         else:
             where = " and (tb1.name like '%%%s%%') " %(keyword)
 
-        if int(post.get('hr_id_for_manager')) != 0:
-            hr_id = int(post.get('hr_id_for_manager'))
+        # if int(post.get('hr_id_for_manager')) != 0:
+        #     hr_id = int(post.get('hr_id_for_manager'))
+        # else:
+        #     hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+        #     hr_id = hr_id_list[0] or ''
+
+        if int(post.get('user_id_for_manager')) != 0:
+            user_id = int(post.get('user_id_for_manager'))
         else:
-            hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-            hr_id = hr_id_list[0] or ''
+            user_id = uid
 
 
         # partner_obj = request.registry['res.partner']
@@ -287,6 +308,10 @@ class born_manager_sale(http.Controller):
                     tb1.id = tb2.track_id
                 WHERE
                     tb2.employee_id = %s
+                AND
+                    tb1.has_installed = false
+                And
+                    tb1.is_sale = true
                 %s
                 GROUP BY
                     tb1.id,tb1.name
@@ -297,36 +322,7 @@ class born_manager_sale(http.Controller):
                 OFFSET
                     %s
 
-        """% (hr_id,where,page_index)
-
-
-        # this is real!!!
-        # sql = u"""
-        #         SELECT
-        #             tb1.id,
-        #             tb1.name,
-        #             COUNT (tb2.id)
-        #         FROM
-        #             res_partner tb1
-        #         RIGHT JOIN
-        #             born_partner_track tb2
-        #         ON
-        #             tb1.id = tb2.track_id
-        #         WHERE
-        #             tb1.has_installed = false
-        #             true
-        #         AND
-        #             tb2.employee_id = %s
-        #         GROUP BY
-        #             tb1.id,tb1.name
-        #         ORDER By
-        #             tb1.id DESC
-        #         LIMIT
-        #             10
-        #         OFFSET
-        #             %s
-        #
-        # """% (hr_id, page_index)
+        """% (user_id,where,page_index)
 
         request.cr.execute(sql)
         partners = request.cr.dictfetchall()
@@ -351,19 +347,31 @@ class born_manager_sale(http.Controller):
 
     @http.route('/manager/saler/initdata', type='http', auth="none",)
     def saler_initdata(self, **post):
-        uid=request.session.uid
+
+        print '--------------------->>>>>>>>>>>>>>>>'
+
+        uid = request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
-        if int(post.get('hr_id_for_manager')) != 0:
-            hr_id = int(post.get('hr_id_for_manager'))
-        else:
-            hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-            hr_id = hr_id_list[0] or ''
+        # if int(post.get('hr_id_for_manager')) != 0:
+        #     hr_id = int(post.get('hr_id_for_manager'))
+        # else:
+        #     hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+        #     hr_id = hr_id_list[0] or ''
 
+
+        if int(post.get('user_id_for_manager')) != 0:
+            user_id = int(post.get('user_id_for_manager'))
+        else:
+            user_id = uid
+
+        # 从user_id得到hr_id
+        hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+        hr_id = hr_id_list[0] or ''
 
         mission_obj = request.registry['born.partner.track']
-        ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','not in',('finished','done'))],context=request.context)
+        ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',user_id),('state','not in',('finished','done'))],context=request.context)
         mission_number = len(ids)
 
 
@@ -374,7 +382,7 @@ class born_manager_sale(http.Controller):
             on tb1.id = tb2.track_id
             where  tb2.employee_id = %s
             group by tb1.id) select count(*) from tmp
-            """ % (hr_id)
+            """ % (user_id)
 
 
         request.cr.execute(sql)
@@ -476,17 +484,24 @@ class born_manager_sale(http.Controller):
         return json.dumps(data,sort_keys=True)
 
 
+    # 具体某个商户的任务
     @http.route('/manager/saler/partner/mission', type='http', auth="none",)
     def saler_partner_mission(self, **post):
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
-        if int(post.get('hr_id_for_manager')) != 0:
-            hr_id = int(post.get('hr_id_for_manager'))
+        # if int(post.get('hr_id_for_manager')) != 0:
+        #     hr_id = int(post.get('hr_id_for_manager'))
+        # else:
+        #     hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+        #     hr_id = hr_id_list[0] or ''
+
+
+        if int(post.get('user_id_for_manager')) != 0:
+            user_id = int(post.get('user_id_for_manager'))
         else:
-            hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-            hr_id = hr_id_list[0] or ''
+            user_id = uid
 
         mission_obj = request.registry['born.partner.track']
 
@@ -509,21 +524,23 @@ class born_manager_sale(http.Controller):
             company_id = each_obj.track_id.id
             mission_company_name = each_obj.track_id.name
             mission_name = each_obj.name or u'无'
-            mission_contacts_phone = each_obj.contacts_phone or u'无'
+            mission_contacts_phone = each_obj.contacts_id.mobile or u'无'
             mission_contacts_name = each_obj.contacts_id.name or u'无'
             if each_obj.mission_date:
                 mission_date = (each_obj.mission_date)[5:10]
             else:
                 mission_date = ''
-            mission_address = each_obj.contacts_address or u'无'
+            # mission_address = each_obj.contacts_address or u'无'
             mission_state = each_obj.state
+
+            mission_street = each_obj.track_id.street or u'无'
 
             state_name_dict = {'start':u'开始','pause':u'暂停','finished':u'完成','notstart':u'未开始'}
 
             mission_state_name = state_name_dict.get(mission_state)
 
             # 判断该任务是否是自己负责的
-            if each_obj.employee_id.id ==  hr_id:
+            if each_obj.employee_id.id == user_id:
                 is_mine = True
             else:
                 is_mine = False
@@ -537,7 +554,8 @@ class born_manager_sale(http.Controller):
                 'mission_contacts_phone':mission_contacts_phone,
                 'mission_contacts_name':mission_contacts_name,
                 'mission_date':mission_date,
-                'mission_address':mission_address,
+                # 'mission_address':mission_address,
+                'mission_street':mission_street,
                 'mission_state':mission_state,
                 'is_mine':is_mine
             }
@@ -635,6 +653,8 @@ class born_manager_sale(http.Controller):
         vals['partner_room_id'] = post.get('room_id','')
 
 
+        vals['is_sale'] = True
+
         if partner_id != 0:
             # 修改商户
             obj = request.registry['res.partner'].browse(request.cr, SUPERUSER_ID,partner_id, context=request.context)
@@ -667,7 +687,11 @@ class born_manager_sale(http.Controller):
             return json.dumps(True,sort_keys=True)
         else:
             # 新建商户
+
+            vals['has_installed'] = False
+
             id = request.registry['res.partner'].create(request.cr, SUPERUSER_ID,vals,context=request.context)
+
 
             # 推送消息
             manager_id=request.session.manager_id
@@ -705,12 +729,18 @@ class born_manager_sale(http.Controller):
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
 
-        if int(post.get('hr_id_for_manager')) != 0:
-            hr_id = int(post.get('hr_id_for_manager'))
+        # if int(post.get('hr_id_for_manager')) != 0:
+        #     hr_id = int(post.get('hr_id_for_manager'))
+        # else:
+        #     hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+        #     hr_id = hr_id_list[0] or ''
+
+        if int(post.get('user_id_for_manager')) != 0:
+            user_id = int(post.get('user_id_for_manager'))
         else:
-            hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-            hr_id = hr_id_list[0] or ''
-        
+            user_id = uid
+
+
         record_limit = 10
 
         option = option
@@ -799,7 +829,7 @@ class born_manager_sale(http.Controller):
             obj = request.registry.get('born.partner.room')
             ids = obj.search(request.cr, SUPERUSER_ID,[],page_index,record_limit,context=request.context)
             data = obj.read(request.cr,SUPERUSER_ID,ids,fields=['name'],context=request.context)
-        
+
         elif option == 'partners':
             if environment == 'fromSalerSelectParner':
                 # 销售人员选择商户看到的商户
@@ -818,7 +848,11 @@ class born_manager_sale(http.Controller):
                 ON
                     tb1.id = tb2.track_id
                 WHERE
-                    true
+                    tb1.has_installed = false
+                AND
+                    tb1.is_sale = true
+                AND
+                    tb1.is_company = true
                 AND
                     tb2.employee_id = %s
                 GROUP BY
@@ -830,7 +864,7 @@ class born_manager_sale(http.Controller):
                 OFFSET
                     %s
 
-                """% (hr_id, record_limit,page_index)
+                """% (user_id, record_limit,page_index)
 
                 request.cr.execute(sql)
                 partners = request.cr.dictfetchall()
@@ -888,6 +922,7 @@ class born_manager_sale(http.Controller):
         return url
 
 
+    # 任务结果选项
     @http.route('/manager/saler/missionresults', type='http', auth="none",)
     def saler_mission_results(self, **post):
         uid=request.session.uid
@@ -904,6 +939,7 @@ class born_manager_sale(http.Controller):
         return json.dumps(data,sort_keys=True)
 
 
+    # 提交任务
     @http.route('/manager/saler/finishMission/post', type='http', auth="none",)
     def saler_finish_mission_post(self, **post):
         uid=request.session.uid
@@ -967,6 +1003,8 @@ class born_manager_sale(http.Controller):
 
         return json.dumps(True,sort_keys=True)
 
+
+    # 更改任务状态
     @http.route('/manager/saler/changeMissionState/post', type='http', auth="none",)
     def saler_change_mission_state(self, **post):
         uid=request.session.uid
@@ -980,6 +1018,8 @@ class born_manager_sale(http.Controller):
 
         return json.dumps(True,sort_keys=True)
 
+
+    # 查看已完成的任务
     @http.route('/manager/saler/getFinishedMission/<int:mission_id>', type='http', auth="none",)
     def saler_get_finished_mission(self, mission_id,**post):
         uid=request.session.uid
@@ -1004,20 +1044,25 @@ class born_manager_sale(http.Controller):
 
         return json.dumps(data,sort_keys=True)
 
+
+    # 具体某一公司的任务
     @http.route('/manager/saler/company/mission/<int:company_id>', type='http', auth="none",)
     def saler_get_company_mission(self, company_id, **post):
-        _logger.info('================>>>>>>>>>>0')
-
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
 
-        if int(post.get('hr_id_for_manager')) != 0:
-            hr_id = int(post.get('hr_id_for_manager'))
+        # if int(post.get('hr_id_for_manager')) != 0:
+        #     hr_id = int(post.get('hr_id_for_manager'))
+        # else:
+        #     hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+        #     hr_id = hr_id_list[0] or ''
+
+        if int(post.get('user_id_for_manager')) != 0:
+            user_id = int(post.get('user_id_for_manager'))
         else:
-            hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-            hr_id = hr_id_list[0] or ''
+            user_id = uid
 
         company_id = int(company_id)
 
@@ -1055,9 +1100,6 @@ class born_manager_sale(http.Controller):
 
         missions_list = []
 
-        _logger.info('================>>>>>>>>>>3')
-        _logger.info(ids)
-
         for each_obj in objs:
             mission_id = each_obj.id
             company_id = each_obj.track_id.id
@@ -1077,7 +1119,7 @@ class born_manager_sale(http.Controller):
             mission_state_name = state_name_dict.get(mission_state)
 
             # 判断该任务是否是自己负责的
-            if each_obj.employee_id.id ==  hr_id:
+            if each_obj.employee_id.id ==  user_id:
                 is_mine = True
             else:
                 is_mine = False
@@ -1097,17 +1139,9 @@ class born_manager_sale(http.Controller):
             }
             missions_list.append(vals)
 
-
-
-        _logger.info('================>>>>>>>>>>2')
-        _logger.info(missions_finished_numbers)
-
-
         data = {
             'missions_list':missions_list,
             'missions_finished_numbers':missions_finished_numbers
         }
-        _logger.info('================>>>>>>>>>>1')
-        _logger.info(data)
 
         return json.dumps(data,sort_keys=True)

@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+"access_born_manager_saler_track","born_manager_saler_track","model_born_partner_track","group_born_manager_saler",1,1,1,1
+"access_born_manager_saler_partner","born_manager_saler_partner","model_res_partner","group_born_manager_saler",1,1,1,1
+"access_born_manager_saler_company","born_manager_saler_company","model_res_company","group_born_manager_saler",1,0,0,0
+"access_born_manager_salermanager_company","born_manager_salermanager_company","model_res_company","group_born_manager_salermanager",1,1,1,1
+
+"access_born_manager_support_track","born_manager_saler_track","model_born_partner_track","group_born_manager_saler",1,1,1,1
+"access_born_manager_support_company","born_manager_saler_company","model_res_company","group_born_manager_saler",1,1,1,1

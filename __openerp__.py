@@ -18,13 +18,16 @@
     'sequence': 8,
     'website': 'http://www.wevip.com',
     'images': [],
-    'depends': ['base'],
- 
+    'depends': ['base','born_partner','site'],
     'demo': [],
     'init_xml': [],
     'data': [
-
+        # 'security/groups.xml',
+        # 'security/ir.model.access.csv',
+        'born_manager.xml',
     ],
+    'demo': [],
+    'init_xml': [],
     'auto_install': False,
     'application': True,
     'installable': True,

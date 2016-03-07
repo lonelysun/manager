@@ -33,12 +33,12 @@
 
 
 
-        var hr_id_for_manager;
+        var user_id_for_manager;
 
-        if(MyCache.get('hr_id_for_manager')){
-            hr_id_for_manager = parseInt(MyCache.get('hr_id_for_manager'))
+        if(MyCache.get('user_id_for_manager')){
+            user_id_for_manager = parseInt(MyCache.get('user_id_for_manager'))
         }else{
-            hr_id_for_manager = 0
+            user_id_for_manager = 0
         }
 
         //点击已完成的按钮,显示/隐藏 已完成的任务
@@ -82,8 +82,8 @@
             console.info(mission_state);
 
             console.info('--->5');
-            console.info(missionLength,vm.keyword,companyId,vm.comeFrom,mission_state,hr_id_for_manager);
-            dataService.getCompanyMission(missionLength,vm.keyword,companyId,vm.comeFrom,mission_state,hr_id_for_manager)
+            console.info(missionLength,vm.keyword,companyId,vm.comeFrom,mission_state,user_id_for_manager);
+            dataService.getCompanyMission(missionLength,vm.keyword,companyId,vm.comeFrom,mission_state,user_id_for_manager)
             .then(function (data) {
                     if(mission_state == 'notOk') {
 

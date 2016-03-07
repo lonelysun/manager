@@ -94,26 +94,39 @@ class born_manager_sale(http.Controller):
 
     @http.route('/manager/support/initdata', type='http', auth="none",)
     def support_initdata(self, **post):
-        uid=request.session.uid
+        uid = request.session.uid
+
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
 
-        if int(post.get('hr_id_for_manager')) != 0:
-            hr_id = int(post.get('hr_id_for_manager'))
+        # if int(post.get('hr_id_for_manager')) != 0:
+        #     hr_id = int(post.get('hr_id_for_manager'))
+        # else:
+        #     hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+        #     hr_id = hr_id_list[0] or ''
+
+
+        if int(post.get('user_id_for_manager')) != 0:
+            user_id = int(post.get('user_id_for_manager'))
         else:
-            hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-            hr_id = hr_id_list[0] or ''
+            user_id = uid
+
+
+        # 从user_id 获得hr_id
+        hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+        hr_id = hr_id_list[0] or ''
+
 
 
         # 获取待处理任务数量
         mission_obj = request.registry['born.partner.track']
-        ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','not in',('finished','done'))],context=request.context)
+        ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',user_id),('state','not in',('finished','done'))],context=request.context)
         mission_number = len(ids)
 
 
         # 获取负责的公司数量
         company_obj = request.registry['res.company']
-        ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id)],context=request.context)
+        ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',user_id)],context=request.context)
         company_number= len(ids)
 
         # 获取头像
@@ -152,11 +165,18 @@ class born_manager_sale(http.Controller):
         require_mission_state = post.get('mission_state')
 
 
-        if int(post.get('hr_id_for_manager')) != 0:
-            hr_id = int(post.get('hr_id_for_manager'))
+        # if int(post.get('hr_id_for_manager')) != 0:
+        #     hr_id = int(post.get('hr_id_for_manager'))
+        # else:
+        #     hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+        #     hr_id = hr_id_list[0] or ''
+
+        if int(post.get('user_id_for_manager')) != 0:
+            user_id = int(post.get('user_id_for_manager'))
         else:
-            hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-            hr_id = hr_id_list[0] or ''
+            user_id = uid
+
+
 
         mission_obj = request.registry['born.partner.track']
 
@@ -164,15 +184,15 @@ class born_manager_sale(http.Controller):
         ids = []
         if require_mission_state == 'ok':
             if keyword == '':
-                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','in',('finished','done'))],int(page_index),5, order="write_date desc", context=request.context)
+                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',user_id),('state','in',('finished','done'))],int(page_index),5, order="write_date desc", context=request.context)
             else:
-                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','in',('finished','done')),('name','like',keyword)],int(page_index),5, order="write_date desc",context=request.context)
+                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',user_id),('state','in',('finished','done')),('name','like',keyword)],int(page_index),5, order="write_date desc",context=request.context)
 
         elif require_mission_state == 'notOk':
             if keyword == '':
-                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','not in',('finished','done'))],int(page_index),5, order="write_date desc",context=request.context)
+                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',user_id),('state','not in',('finished','done'))],int(page_index),5, order="write_date desc",context=request.context)
             else:
-                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','not in',('finished','done')),('name','like',keyword)],int(page_index),5, order="write_date desc",context=request.context)
+                ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',user_id),('state','not in',('finished','done')),('name','like',keyword)],int(page_index),5, order="write_date desc",context=request.context)
 
         objs = mission_obj.browse(request.cr, SUPERUSER_ID,ids, context=request.context)
         missions_list = []
@@ -209,7 +229,7 @@ class born_manager_sale(http.Controller):
             missions_list.append(vals)
 
 
-        ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',hr_id),('state','in',('finished','done'))],context=request.context)
+        ids = mission_obj.search(request.cr, SUPERUSER_ID,[('employee_id','=',user_id),('state','in',('finished','done'))],context=request.context)
         missions_finished_numbers = len(ids)
 
 
@@ -237,13 +257,25 @@ class born_manager_sale(http.Controller):
             where = " and (c.name like '%%%s%%') " %(keyword)
 
 
-        if int(post.get('hr_id_for_manager')) != 0:
-            hr_id = int(post.get('hr_id_for_manager'))
-        else:
-            hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
-            hr_id = hr_id_list[0] or ''
+        # if int(post.get('hr_id_for_manager')) != 0:
+        #     hr_id = int(post.get('hr_id_for_manager'))
+        # else:
+        #     hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+        #     hr_id = hr_id_list[0] or ''
 
-        sql=u"""
+        if int(post.get('user_id_for_manager')) != 0:
+            user_id = int(post.get('user_id_for_manager'))
+        else:
+            user_id = uid
+
+        # 从user_id得到hr_id
+        hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
+        hr_id = hr_id_list[0] or ''
+
+
+
+
+        sql = u"""
             with tmp_a as (select b.company_id ,b.create_date::date as create_day,coalesce(count(*),0) cnt from born_operate_sync b
                 group by b.company_id ,b.create_date::date) ,
                 tmp_b as (select company_id,create_day,cnt from tmp_a
@@ -355,14 +387,14 @@ class born_manager_sale(http.Controller):
         uid=request.session.uid
         if not uid:
             werkzeug.exceptions.abort(werkzeug.utils.redirect('/except_manager', 303))
-        _logger.info('---------post-------------')
-        _logger.info(post)
+        # _logger.info('---------post-------------')
+        # _logger.info(post)
 
         selectedSource_json = post.get('selectedSource')
 
-        _logger.info('---------selectedSource_json-------------')
-        _logger.info(selectedSource_json)
-        _logger.info(type(selectedSource_json))
+        # _logger.info('---------selectedSource_json-------------')
+        # _logger.info(selectedSource_json)
+        # _logger.info(type(selectedSource_json))
 
 
 
@@ -372,14 +404,14 @@ class born_manager_sale(http.Controller):
             'sale_source':json.loads(selectedSource_json)['sale_source']
         }
 
-        _logger.info('---------selectedSource-------------')
-        _logger.info(selectedSource)
+        # _logger.info('---------selectedSource-------------')
+        # _logger.info(selectedSource)
 
 
-        _logger.info('---------before mark_source_detail-------------')
-        _logger.info(selectedSource['mark_source_detail'])
-        _logger.info('---------before sale_source-------------')
-        _logger.info(selectedSource['sale_source'])
+        # _logger.info('---------before mark_source_detail-------------')
+        # _logger.info(selectedSource['mark_source_detail'])
+        # _logger.info('---------before sale_source-------------')
+        # _logger.info(selectedSource['sale_source'])
 
 
         if len(selectedSource['mark_source_detail']) == 0:
@@ -394,10 +426,10 @@ class born_manager_sale(http.Controller):
 
 
 
-        _logger.info('---------mark_source_detail-------------')
-        _logger.info(mark_source_detail)
-        _logger.info('---------sale_source-------------')
-        _logger.info(sale_source)
+        # _logger.info('---------mark_source_detail-------------')
+        # _logger.info(mark_source_detail)
+        # _logger.info('---------sale_source-------------')
+        # _logger.info(sale_source)
 
 
         sql = u'''

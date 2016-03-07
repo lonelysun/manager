@@ -319,7 +319,7 @@
 
 
             ngDialog.openConfirm({
-                template:'/born_manager/static/defaultApp/views/report/selectTest.html',
+                template:'/born_manager/static/defaultApp/partials/selectSource.html',
                 className: 'ngdialog',
                 scope: vm1
             }).then(function (data) {

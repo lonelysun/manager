@@ -28,12 +28,12 @@
         var partnerId = ($routeParams.partnerId) ? parseInt($routeParams.partnerId) : 0;
 
 
-        var hr_id_for_manager;
+        var user_id_for_manager;
 
-        if(MyCache.get('hr_id_for_manager')){
-            hr_id_for_manager = parseInt(MyCache.get('hr_id_for_manager'))
+        if(MyCache.get('user_id_for_manager')){
+            user_id_for_manager = parseInt(MyCache.get('user_id_for_manager'))
         }else{
-            hr_id_for_manager = 0
+            user_id_for_manager = 0
         }
 
 
@@ -79,7 +79,7 @@
                 missionLengh = vm.missionsFinished.length;
             }
 
-            dataService.getPartnerMission(missionLengh,vm.keyword,partnerId,mission_state,hr_id_for_manager)
+            dataService.getPartnerMission(missionLengh,vm.keyword,partnerId,mission_state,user_id_for_manager)
             .then(function (data) {
                     var i;
                 if(mission_state=='notOk'){

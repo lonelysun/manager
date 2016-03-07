@@ -28,13 +28,13 @@
         vm.selectOption = {};
         vm.needAutoSave = false;
         vm.role_option = MyCache.get('role_option');
-        var hr_id_for_manager;
+        var user_id_for_manager;
 
-        if(MyCache.get('hr_id_for_manager')){
-            hr_id_for_manager = parseInt(MyCache.get('hr_id_for_manager'));
+        if(MyCache.get('user_id_for_manager')){
+            user_id_for_manager = parseInt(MyCache.get('user_id_for_manager'));
         }
         else{
-            hr_id_for_manager = 0;
+            user_id_for_manager = 0;
         }
 
 
@@ -63,7 +63,7 @@
             vm.busy=true;
 
 
-            dataService.getOptionsService(vm.options.length, option, environment,hr_id_for_manager)
+            dataService.getOptionsService(vm.options.length, option, environment,user_id_for_manager)
                 .then(function (data) {
                     for(var i = 0;i<data.length;i++){
                         vm.options.push(data[i]);

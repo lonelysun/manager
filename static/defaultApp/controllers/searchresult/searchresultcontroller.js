@@ -39,10 +39,10 @@
             displayModel.displayConfirm='0';
             displayModel.headerBack=vm.back;
             displayModel.title = '搜索结果';
-            if(MyCache.get('hr_id_for_manager')){
-                hr_id_for_manager = MyCache.get('hr_id_for_manager')
+            if(MyCache.get('user_id_for_manager')){
+                user_id_for_manager = MyCache.get('user_id_for_manager')
             }else{
-                hr_id_for_manager = 0;
+                user_id_for_manager = 0;
             }
         }
 
@@ -128,7 +128,7 @@
             else{
                 missionLengh = vm.missionsFinished.length;
             }
-            dataService.getMissions(missionLengh,vm.keyword,mission_state,hr_id_for_manager)
+            dataService.getMissions(missionLengh,vm.keyword,mission_state,user_id_for_manager)
             .then(function (data) {
                 if(mission_state=='notOk'){
                     if(data['missions_list'].length <5){
@@ -159,7 +159,7 @@
             if(vm.busy)return;
             vm.busy=true;
 
-            dataService.getPartners(vm.partners.length,vm.keyword,hr_id_for_manager)
+            dataService.getPartners(vm.partners.length,vm.keyword,user_id_for_manager)
             .then(function (data) {
                 for (var i = 0; i < data['partners_list'].length; i++) {
                     vm.partners.push(data['partners_list'][i]);
@@ -182,7 +182,7 @@
             if(vm.busy)return;
             vm.busy=true;
 
-            dataService.getCompanys(vm.companys.length,vm.keyword,hr_id_for_manager)
+            dataService.getCompanys(vm.companys.length,vm.keyword,user_id_for_manager)
             .then(function (data) {
                 for (var i = 0; i < data['companys_list'].length; i++) {
                     vm.companys.push(data['companys_list'][i]);
