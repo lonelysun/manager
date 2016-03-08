@@ -887,15 +887,18 @@ class born_salermanager(http.Controller):
                 }
                 data.append(val)
         else:
-            employee_ids = request.session.employee_ids
+            employee_ids = request.session.employee_hr_ids
             partner_obj = request.registry.get('res.company')
             if keyword == '':
                 domain = [('employee_id','in',employee_ids)]
             else:
                 domain = [('employee_id','in',employee_ids),('name','like',keyword)]
-            shop_ids = partner_obj.search(request.cr, SUPERUSER_ID,domain,int(indexPage),10, context=request.context)
-            shops = partner_obj.browse(request.cr, SUPERUSER_ID, shop_ids, context=request.context)
 
+            _logger.info(employee_ids)
+            shop_ids = partner_obj.search(request.cr, SUPERUSER_ID,domain,int(indexPage),10, context=request.context)
+            _logger.info(shop_ids)
+            shops = partner_obj.browse(request.cr, SUPERUSER_ID, shop_ids, context=request.context)
+            _logger.info(shops)
             data = []
             for shop in shops:
                 val = {

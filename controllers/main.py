@@ -106,7 +106,15 @@ class born_manager(http.Controller):
             domain=[('user_id','=',uid)]
             tid = saleteam_obj.search(request.cr, SUPERUSER_ID, domain, context=request.context)
             team = saleteam_obj.browse(request.cr, SUPERUSER_ID, tid, context=request.context)
+
             employee_ids = []
+            employee_hr_id = []
+            if user.role_option == '10':
+                for employee in team.member_ids:
+                    hr_id_list = request.registry['hr.employee'].search(request.cr, SUPERUSER_ID,[('user_id','=',employee.id)], context=request.context)
+                    hr_id = hr_id_list[0] or ''
+                    employee_hr_id.append(hr_id)
+                request.session.employee_hr_ids = employee_hr_id
             for employee in team.member_ids:
                 employee_ids.append(employee.id)
             request.session.employee_ids = employee_ids
