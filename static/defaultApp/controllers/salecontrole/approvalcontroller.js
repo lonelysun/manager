@@ -31,6 +31,7 @@
         }
 
         vm.approval = function(){
+
         	if(vm.track.remark==""){
         		vm.track.remark="无";
             }
@@ -41,7 +42,7 @@
             }, function (error) {
              toaster.pop('warning', "处理失败", "很遗憾处理失败，由于网络原因无法连接到服务器！");
             });        	
-        }
+        };
 
         
         function gettrack() {

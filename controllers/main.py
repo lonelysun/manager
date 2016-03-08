@@ -62,7 +62,6 @@ class born_manager(http.Controller):
     
     @http.route('/except_manager', type='http', auth="none",csrf=False)
     def Exception(self, **post):
-
         return serve_template('except.html')
     
     @http.route('/manager', type='http', auth="none",csrf=False)

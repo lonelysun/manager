@@ -113,7 +113,7 @@
             }else if (optionType == 'partners') {
                 vm.track.partnerid = MyCache.get('optionObj').id;
                 vm.track.partnername = MyCache.get('optionObj').name;
-                vm.track.street = MyCache.get('optionObj').address;
+                vm.track.street = MyCache.get('optionObj').street;
                 vm.getPerson();
             }
         }

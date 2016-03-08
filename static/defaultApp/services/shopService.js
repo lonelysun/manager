@@ -223,16 +223,13 @@
 
         //销售首页初始化数据
         factory.getInitData = function (user_id_for_manager) {
-            debugger;
             return $http.get(serviceBase + 'saler/initdata',{
                 params: {
                     user_id_for_manager:user_id_for_manager
                 }
             }).then(function(results) {
-                debugger;
      				return results.data;
      			});
-            debugger;
 
         };
 

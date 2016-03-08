@@ -1,4 +1,4 @@
-﻿﻿<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html ng-app="managerApp" >
 <head>
     <title>${user.name}</title>
@@ -27,7 +27,7 @@
     <!--<link href="/born_manager/static/src/js/angular-tek-progress-bar/examples/css/style.css" rel="stylesheet" />-->
 
 </head>
-<body  style="background-color:white">
+<body  style="background-color:white" onselectstart="return false">
     <div ng-controller="NavbarController as vm"  class="h4 app-header navbar navbar-fixed-top" style="min-height: 0px;">
             <!-- navbar header -->
             <div ng-cloak  class="bm-navbar-header text-center " ng-if="vm.showHeader()=='1'" style="line-height: 30px; padding-top: 24px;padding-bottom: 9px;">

@@ -80,7 +80,7 @@ class born_manager_sale(http.Controller):
     def Exception(self, **post):
         return serve_template('except.html')
 
-    @http.route('/manager', type='http', auth="none")
+    @http.route('/manager', type='http', auth="none",csrf=False)
     def manager_index(self,  **post):
 
         uid=request.session.uid
@@ -94,7 +94,7 @@ class born_manager_sale(http.Controller):
 
 
     #获取companys列表信息
-    @http.route('/manager/saler/companys', type='http', auth="none",)
+    @http.route('/manager/saler/companys', type='http', auth="none",csrf=False)
     def saler_companys(self, **post):
 
         uid=request.session.uid
@@ -173,7 +173,7 @@ class born_manager_sale(http.Controller):
 
 
     # 获取销售人员所有任务
-    @http.route('/manager/saler/missions', type='http', auth="none",)
+    @http.route('/manager/saler/missions', type='http', auth="none",csrf=False)
     def saler_missions(self, **post):
         uid = request.session.uid
         if not uid:
@@ -260,7 +260,7 @@ class born_manager_sale(http.Controller):
 
 
 
-    @http.route('/manager/saler/partners', type='http', auth="none",)
+    @http.route('/manager/saler/partners', type='http', auth="none",csrf=False)
     def saler_partners(self, **post):
         uid=request.session.uid
         if not uid:
@@ -345,10 +345,8 @@ class born_manager_sale(http.Controller):
         return json.dumps(data,sort_keys=True)
 
 
-    @http.route('/manager/saler/initdata', type='http', auth="none",)
+    @http.route('/manager/saler/initdata', type='http', auth="none",csrf=False)
     def saler_initdata(self, **post):
-
-        print '--------------------->>>>>>>>>>>>>>>>'
 
         uid = request.session.uid
         if not uid:
@@ -414,7 +412,7 @@ class born_manager_sale(http.Controller):
         return json.dumps(data,sort_keys=True)
 
 
-    @http.route('/manager/saler/partner/info/<int:partner_id>', type='http', auth="none",)
+    @http.route('/manager/saler/partner/info/<int:partner_id>', type='http', auth="none",csrf=False)
     def saler_partner_info(self,partner_id):
         uid=request.session.uid
         if not uid:
@@ -485,7 +483,7 @@ class born_manager_sale(http.Controller):
 
 
     # 具体某个商户的任务
-    @http.route('/manager/saler/partner/mission', type='http', auth="none",)
+    @http.route('/manager/saler/partner/mission', type='http', auth="none",csrf=False)
     def saler_partner_mission(self, **post):
         uid=request.session.uid
         if not uid:
@@ -572,7 +570,7 @@ class born_manager_sale(http.Controller):
         return json.dumps(data,sort_keys=True)
 
 
-    @http.route('/manager/saler/partner/post/<int:partner_id>', type='http', auth="none",)
+    @http.route('/manager/saler/partner/post/<int:partner_id>', type='http', auth="none",csrf=False)
     def saler_partner_post(self, partner_id, **post):
         uid=request.session.uid
         if not uid:
@@ -585,6 +583,7 @@ class born_manager_sale(http.Controller):
         vals['categorys_id'] = post.get('category_id','')
         vals['business_id'] = post.get('bussiness_id','')
         vals['comment'] =post.get('comment','')
+        vals['is_company'] = True
 
         #根据business_id得到上层数据
         if vals['business_id']:
@@ -664,8 +663,11 @@ class born_manager_sale(http.Controller):
             manager_id=request.session.manager_id
 
             if manager_id:
-                hr_obj=request.registry.get('hr.employee')
-                hr=hr_obj.browse(request.cr,SUPERUSER_ID,int(manager_id),request.context)
+                # hr_obj=request.registry.get('hr.employee')
+                # hr=hr_obj.browse(request.cr,SUPERUSER_ID,int(manager_id),request.context)
+
+                manager_user_obj = request.registry.get('res.users')
+                manager_obj = manager_user_obj.browse(request.cr,SUPERUSER_ID,manager_id,request.context)
 
                 res_user_obj = request.registry.get('res.users')
                 obj = res_user_obj.browse(request.cr,SUPERUSER_ID,uid,request.context)
@@ -676,14 +678,15 @@ class born_manager_sale(http.Controller):
                 push_obj = request.registry.get('born.push')
                 vm = {
                     'title':title,
-                    'phone':hr.mobile_phone,
+                    'phone':manager_obj.login,
                     'content':message,
                     'type':'internal',
                     'state':'draft',
-                    'user_id':hr.user_id.id,
+                    'user_id':manager_obj.id,
                     'message_type':'10',
                 }
                 push_id = push_obj.create(request.cr,SUPERUSER_ID,vm,context=request.context)
+                push_obj.send_message(request.cr,SUPERUSER_ID,push_id,context=request.context)
             return json.dumps(True,sort_keys=True)
         else:
             # 新建商户
@@ -693,12 +696,17 @@ class born_manager_sale(http.Controller):
             id = request.registry['res.partner'].create(request.cr, SUPERUSER_ID,vals,context=request.context)
 
 
+
+
             # 推送消息
             manager_id=request.session.manager_id
 
             if manager_id:
-                hr_obj=request.registry.get('hr.employee')
-                hr=hr_obj.browse(request.cr,SUPERUSER_ID,int(manager_id),request.context)
+                # hr_obj=request.registry.get('hr.employee')
+                # hr=hr_obj.browse(request.cr,SUPERUSER_ID,int(manager_id),request.context)
+
+                manager_user_obj = request.registry.get('res.users')
+                manager_obj = manager_user_obj.browse(request.cr,SUPERUSER_ID,manager_id,request.context)
 
                 res_user_obj = request.registry.get('res.users')
                 obj = res_user_obj.browse(request.cr,SUPERUSER_ID,uid,request.context)
@@ -710,19 +718,20 @@ class born_manager_sale(http.Controller):
                 push_obj = request.registry.get('born.push')
                 vm = {
                     'title':title,
-                    'phone':hr.mobile_phone,
+                    'phone': manager_obj.login,
                     'content':message,
                     'type':'internal',
                     'state':'draft',
-                    'user_id':hr.user_id.id,
+                    'user_id':manager_obj.id,
                     'message_type':'9',
                 }
                 push_id = push_obj.create(request.cr,SUPERUSER_ID,vm,context=request.context)
+                push_obj.send_message(request.cr,SUPERUSER_ID,push_id,context=request.context)
 
             return json.dumps({'id':id},sort_keys=True)
 
 
-    @http.route('/manager/saler/options/<option>', type='http', auth="none",)
+    @http.route('/manager/saler/options/<option>', type='http', auth="none",csrf=False)
     def saler_options(self, option, **post):
         uid=request.session.uid
         if not uid:
@@ -923,7 +932,7 @@ class born_manager_sale(http.Controller):
 
 
     # 任务结果选项
-    @http.route('/manager/saler/missionresults', type='http', auth="none",)
+    @http.route('/manager/saler/missionresults', type='http', auth="none",csrf=False)
     def saler_mission_results(self, **post):
         uid=request.session.uid
         if not uid:
@@ -940,7 +949,7 @@ class born_manager_sale(http.Controller):
 
 
     # 提交任务
-    @http.route('/manager/saler/finishMission/post', type='http', auth="none",)
+    @http.route('/manager/saler/finishMission/post', type='http', auth="none",csrf=False)
     def saler_finish_mission_post(self, **post):
         uid=request.session.uid
         if not uid:
@@ -979,8 +988,8 @@ class born_manager_sale(http.Controller):
         manager_id=request.session.manager_id
 
         if manager_id:
-            hr_obj = request.registry.get('hr.employee')
-            hr = hr_obj.browse(request.cr,SUPERUSER_ID,int(manager_id),request.context)
+            manager_user_obj = request.registry.get('res.users')
+            manager_obj = manager_user_obj.browse(request.cr,SUPERUSER_ID,manager_id,request.context)
 
 
             res_user_obj = request.registry.get('res.users')
@@ -990,22 +999,24 @@ class born_manager_sale(http.Controller):
             title=u'任务完成'
             message=u"%s 完成了 %s" % (user_name, mission_name)
             push_obj = request.registry.get('born.push')
+
             vm = {
                 'title':title,
-                'phone':hr.mobile_phone,
+                'phone':manager_obj.login,
                 'content':message,
                 'type':'internal',
                 'state':'draft',
-                'user_id':hr.user_id.id,
+                'user_id':manager_obj.id,
                 'message_type':'6',
             }
             push_id = push_obj.create(request.cr,SUPERUSER_ID,vm,context=request.context)
+            push_obj.send_message(request.cr,SUPERUSER_ID,push_id,context=request.context)
 
         return json.dumps(True,sort_keys=True)
 
 
     # 更改任务状态
-    @http.route('/manager/saler/changeMissionState/post', type='http', auth="none",)
+    @http.route('/manager/saler/changeMissionState/post', type='http', auth="none",csrf=False)
     def saler_change_mission_state(self, **post):
         uid=request.session.uid
         if not uid:
@@ -1020,7 +1031,7 @@ class born_manager_sale(http.Controller):
 
 
     # 查看已完成的任务
-    @http.route('/manager/saler/getFinishedMission/<int:mission_id>', type='http', auth="none",)
+    @http.route('/manager/saler/getFinishedMission/<int:mission_id>', type='http', auth="none",csrf=False)
     def saler_get_finished_mission(self, mission_id,**post):
         uid=request.session.uid
         if not uid:
@@ -1046,7 +1057,7 @@ class born_manager_sale(http.Controller):
 
 
     # 具体某一公司的任务
-    @http.route('/manager/saler/company/mission/<int:company_id>', type='http', auth="none",)
+    @http.route('/manager/saler/company/mission/<int:company_id>', type='http', auth="none",csrf=False)
     def saler_get_company_mission(self, company_id, **post):
         uid=request.session.uid
         if not uid:

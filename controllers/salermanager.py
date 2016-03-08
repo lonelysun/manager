@@ -712,27 +712,53 @@ class born_salermanager(http.Controller):
 
         track_obj.create(request.cr, SUPERUSER_ID,vals,context=request.context)
 
-        #推送
-        user_obj=request.registry.get('res.users')
-        user=user_obj.browse(request.cr,SUPERUSER_ID,int(vals.get('employee_id')),request.context)
 
-        if user:
-                title=u'您有一个新的任务'
-                message=u"您有一笔新的任务，截止最晚完成时间%s。" % (vals.get('mission_date'))
+        # 消息推送
+        if post.get('option')=='8' or post.get('option')=='10':
+            # 经理给员工推送
+            user_obj=request.registry.get('res.users')
+            user=user_obj.browse(request.cr,SUPERUSER_ID,int(vals.get('employee_id')),request.context)
+
+            if user:
+                    title=u'您有一个新的任务'
+                    message=u"您有一笔新的任务，截止最晚完成时间%s。" % (vals.get('mission_date'))
+                    push_obj = request.registry.get('born.push')
+                    vm = {
+                        'title':title,
+                        'phone':user.login,
+                        'content':message,
+                        'type':'internal',
+                        'state':'draft',
+                        'user_id':user.id,
+                        'message_type':'4',
+                    }
+                    push_id = push_obj.create(request.cr,SUPERUSER_ID,vm,context=request.context)
+                    push_obj.send_message(request.cr,SUPERUSER_ID,push_id,context=request.context)
+
+        elif post.get('option')=='7' or post.get('option')=='9':
+            # 员工给经理推送
+            user_obj=request.registry.get('res.users')
+            saler_name = user_obj.browse(request.cr,SUPERUSER_ID,uid,request.context).name
+
+            manager_id=request.session.manager_id
+
+            if manager_id:
+                manager_obj = user_obj.browse(request.cr,SUPERUSER_ID,manager_id,request.context)
+
+                title=u'%s 新建了任务' % saler_name
+                message=u"%s 给自己新建了一个任务: %s" % (vals.get('mission_date'),vals.get('name'))
                 push_obj = request.registry.get('born.push')
                 vm = {
                     'title':title,
-                    'phone':user.login,
+                    'phone':manager_obj.login,
                     'content':message,
                     'type':'internal',
                     'state':'draft',
-                    'user_id':user.id,
+                    'user_id':manager_obj.id,
                     'message_type':'4',
                 }
                 push_id = push_obj.create(request.cr,SUPERUSER_ID,vm,context=request.context)
                 push_obj.send_message(request.cr,SUPERUSER_ID,push_id,context=request.context)
-
-
 
         return json.dumps(True,sort_keys=True)
 
@@ -759,7 +785,7 @@ class born_salermanager(http.Controller):
                         'trackid' : track.id,
                         'time' : time or '',
                         'saler' : track.employee_id.name,
-                        'saler_img' : track.employee_id.user_id.image_small,
+                        'saler_img' : track.employee_id.image_small or '',
                         'name' : track.name or '',
                         'result_title':track.result_title or '',
                         'result' : track_result or '',
@@ -770,10 +796,9 @@ class born_salermanager(http.Controller):
                         'mission_date' : mission_date or '',
                         'employee_id': track.employee_id.id
             }
-
         return json.dumps(track_val,sort_keys=True)
 
-#经理批注
+    # 经理批注
     @http.route('/manager/approval',type="http",auth="none",csrf=False)
     def approval(self,**post):
         uid=request.session.uid
@@ -784,12 +809,12 @@ class born_salermanager(http.Controller):
         vals = {}
         vals['remark'] = post.get('remark')
         vals['state'] = 'done'
+
         track_obj.write(request.cr,SUPERUSER_ID,id,vals)
 
         #推送
-        user_obj=request.registry.get('res.user')
-        user=user_obj.browse(request.cr,SUPERUSER_ID,int(vals.get('employee_id')),request.context)
-
+        user_obj=request.registry.get('res.users')
+        user=user_obj.browse(request.cr,SUPERUSER_ID,int(post.get('employee_id')),request.context)
         if user:
                 title=u'任务已批注'
                 message=u"任务：%s，经理已批注。" % (post.get('name'))
@@ -805,7 +830,6 @@ class born_salermanager(http.Controller):
                 }
                 push_id = push_obj.create(request.cr,SUPERUSER_ID,vm,context=request.context)
                 push_obj.send_message(request.cr,SUPERUSER_ID,push_id,context=request.context)
-
         return json.dumps(True,sort_keys=True)
 
 
@@ -825,7 +849,8 @@ class born_salermanager(http.Controller):
             # hr_id= hr_obj.search(request.cr, SUPERUSER_ID,[('user_id','=',uid)], context=request.context)
             # manager_id=hr_id
             saleteam_obj = request.registry.get('crm.team')
-            domain=[('user_id','in',uid)]
+            # domain=[('user_id','in',uid)]
+            domain=[('user_id','=',uid)]
             tid = saleteam_obj.search(request.cr, SUPERUSER_ID, domain, context=request.context)
             team = saleteam_obj.browse(request.cr, SUPERUSER_ID, tid, context=request.context)
             business_obj = request.registry.get('born.business')

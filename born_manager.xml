@@ -4,13 +4,13 @@
 
         <!--任务Form View-->
         <record id="form_view_born_manager_mission" model="ir.ui.view">
-            <field name="name">form_view_born_manager_sale_mission</field>
+            <field name="name">任务表单视图</field>
             <field name="model">born.partner.track</field>
             <field name="arch" type="xml">
                 <form>
                     <header>
 						<button name="button_start" string="开始任务"
-                                states="notstart" type="object" class="oe_highlight" style="float:left"/>
+                                states="notstart,pause" type="object" class="oe_highlight" style="float:left"/>
 						<button name="button_pause" string="暂停任务"
                                 states="start" type="object" class="oe_highlight" style="float:left"/>
 						<button name="button_finish" string="完成任务"
@@ -64,7 +64,7 @@
 
         <!--任务Tree View-->
         <record id="tree_view_born_manager_mission" model="ir.ui.view">
-            <field name="name">tree_view_born_manager_mission</field>
+            <field name="name">任务列表视图</field>
             <field name="model">born.partner.track</field>
             <field name="arch" type="xml">
                 <tree>
@@ -81,7 +81,7 @@
 
         <!--任务action-->
         <record id="action_born_manager_mission" model="ir.actions.act_window">
-            <field name="name">action_born_manager_mission</field>
+            <field name="name">任务</field>
             <field name="res_model">born.partner.track</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>

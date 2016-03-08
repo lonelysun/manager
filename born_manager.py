@@ -197,25 +197,18 @@ class born_manager_mission(osv.osv):
         return ids
 
 
-
-
-
     def _get_user_role(self, cr, uid, ids, name,arg=None, context=None):
         res={}
         user_obj = self.pool.get('res.users')
-        print '*************************'
-
         for id in ids:
             user = user_obj.browse(cr,uid,uid,context=context)
 
             res[id] = user.role_option
 
-        print res
-
         return res
+
     def _default_get_role(self, cr, uid, name,arg=None, context=None):
         res={}
-        print '----------------->>>>>>>'
         user_obj = self.pool.get('res.users')
 
         user = user_obj.browse(cr,uid,uid,context=context)

@@ -1,6 +1,6 @@
 <div class="bm-move" style="background-color:white">
     <div ng-if="vm.track.img!=''">
-        <img src="{{vm.track.img}}" style="width:100%">
+        <img ng-src="{{vm.track.img}}" style="width:100%">
     </div>
                 <div class="bm-main-three-line-wrapper" style="padding-left: 25px;" >
                 <!--<div class="bm-main-three-line-wrapper" style="padding-left: 25px;" data-ng-repeat="saler in vm.salers">-->
@@ -10,8 +10,8 @@
                                     {{re}}
                                 </div>
                             </span>
-                            <img ng-if="vm.track.saler_img==null" class="pull-left bm-img-s-l" src="/born_manager/static/src/img/defaultlogo.png">
-                            <img ng-if="vm.track.saler_img!=null" class="pull-left bm-img-s-l" ng-src="data:image/png;base64,{{vm.track.saler_img}}">
+                            <img ng-if="vm.track.saler_img==''" class="pull-left bm-img-s-l" src="/born_manager/static/src/img/default_employee.png">
+                            <img ng-if="vm.track.saler_img!=''" class="pull-left bm-img-s-l" ng-src="data:image/png;base64,{{vm.track.saler_img}}">
                             <div class="h5" style="width: 100%;color: black;padding-left: 10px;margin-top:8px">
                                 {{vm.track.saler}}
                             </div>
@@ -40,7 +40,7 @@
     </div>
     <div class="bm-main-three-line-wrapper" >
         <div class="bm-main-three-line" style="padding-left:0px">
-            <input type="text" class="editable editable-click no-border text-left " style="width:100%" placeholder="添加批注" />
+            <input type="text" class="editable editable-click no-border text-left " data-ng-model = "vm.track.remark" style="width:100%" placeholder="添加批注" />
         </div>
     </div>
         <div class="bm-item">
